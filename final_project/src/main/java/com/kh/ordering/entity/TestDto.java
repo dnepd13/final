@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
-public class Dto {
+public class TestDto {
 	private int admin_no;
 	private String admin_id,
 						admin_pw,

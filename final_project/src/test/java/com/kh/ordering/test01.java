@@ -8,7 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.kh.ordering.entity.Dto;
+import com.kh.ordering.entity.TestDto;
 
 import lombok.extern.slf4j.Slf4j;
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -25,7 +25,7 @@ public class test01 {
 	
 	@Test
 	public void test() {
-		Dto dto = Dto.builder()
+		TestDto dto = TestDto.builder()
 								.admin_no(1)
 								.admin_id("admin")
 								.admin_pw("admin")
