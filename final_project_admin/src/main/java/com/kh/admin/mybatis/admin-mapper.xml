@@ -20,8 +20,11 @@
 		-$의 경우 SQL Injection 이라는 해킹 공격에 매우 취약하므로 사용에 주의
  -->
  
- <mapper namespace="memo"> <!-- 이건 꼭 있어야한다 -->
-
+ <mapper namespace="admin"> <!-- 이건 꼭 있어야한다 -->
+ 	<select id="login" parameterType="adminDto" resultType="adminDto">
+ 		select * from admin where admin_id = #{admin_id} and admin_pw=#{admin_pw} 
+ 	</select>
+ 	
 
  </mapper> 
 

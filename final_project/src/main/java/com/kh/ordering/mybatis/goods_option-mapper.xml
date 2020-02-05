@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ 
+ <mapper namespace="goods_option">
+	<!-- 상품 옵션 등록 -->
+	<insert id="insert" parameterType="optionDto">
+		insert into goods_option values(
+			goods_option_seq.nextval,
+			#{goods_no},
+			#{goods_option_title},
+			#{goods_option_content},
+			#{goods_option_price},
+			#{goods_option_stock},
+			#{goods_option_status}
+		)
+	</insert>
+	
+	<!-- 상품 옵션 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete goods_option where goods_option_no = ${goods_option_no}
+	</delete>
+	
+	<!-- 상품 옵션 단일 조회 -->
+	<select id="get" parameterType="int" resultType="optionDto">
+		select * from goods_option where goods_option_no = ${goods_option_no}
+	</select>	
+	
+	<!-- 상품 옵션 전체 조회 -->
+	<select id="getList" resultType="optionDto">
+		select * from goods_option
+	</select>
+ </mapper>

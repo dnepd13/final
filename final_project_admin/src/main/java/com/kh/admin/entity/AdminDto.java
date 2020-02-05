@@ -1,4 +1,4 @@
-package com.kh.ordering.entity;
+package com.kh.admin.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
-public class TestDto {
+public class AdminDto {
 	private int admin_no;
 	private String admin_id,
 						admin_pw,

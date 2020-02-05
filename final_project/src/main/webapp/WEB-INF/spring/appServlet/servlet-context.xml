@@ -26,11 +26,11 @@
 	</beans:bean>
 	
 		<!-- 자동스캔 -->
-	<context:component-scan base-package="com.kh.ordering" use-default-filters="false">
+		<context:component-scan base-package="com.kh.ordering">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
-	
-	<!-- 파일 업로드에 필요한 도구를 등록: CommonsMultipartResolver -->
+
+		<!-- 파일 업로드에 필요한 도구를 등록: CommonsMultipartResolver -->
 <beans:bean id = "multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="defaultEncoding" value="UTF-8"></beans:property>
 		<beans:property name="maxUploadSize" value="10000000"></beans:property>
