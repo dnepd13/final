@@ -20,11 +20,67 @@
 		-$의 경우 SQL Injection 이라는 해킹 공격에 매우 취약하므로 사용에 주의
  -->
  
- <mapper namespace="memo"> <!-- 이건 꼭 있어야한다 -->
- 	<insert id="insert" parameterType="com.kh.ordering.entity.Dto">
- 		insert into admin values(#{admin_no}, #{admin_id}, #{admin_pw}, #{admin_name}, #{admin_email}, #{admin_grade}, sysdate, sysdate)
+ <mapper namespace="seller"> <!-- 이건 꼭 있어야한다 -->
+ 	<insert id="insert" parameterType="seller">
+ 	insert into seller(seller_no, seller_id, seller_pw, seller_name,  seller_email, seller_phone, 
+					seller_birth, seller_addr_post, seller_addr_basic, seller_addr_extra, 
+					seller_store_name, seller_store_phone, 
+					seller_join_date, seller_agree_date, 
+					seller_cid, seller_bank_code, seller_bank_account, seller_bank_username,seller_bank_birth
+                    ) values(4, 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', sysdate, sysdate, 'ddd', 'd', 'ddd', 'ddd', 'ddd');
+<!--  		insert into seller( -->
+<!--  							seller_no,  -->
+<!--  							seller_id,  -->
+<!--  							seller_pw,  -->
+<!--  							seller_name,   -->
+<!--  							seller_email,  -->
+<!--  							seller_phone,  -->
+<!-- 							seller_birth,  -->
+<!-- 							seller_addr_post,  -->
+<!-- 							seller_addr_basic,  -->
+<!-- 							seller_addr_extra,  -->
+<!-- 							seller_store_name,  -->
+<!-- 							seller_store_phone,  -->
+<!-- 							seller_store_fax, -->
+<!-- 							seller_agree_date,  -->
+<!-- 							seller_cid,  -->
+<!-- 							seller_bank_code,  -->
+<!-- 							seller_bank_account,  -->
+<!-- 							seller_bank_username, -->
+<!-- 							seller_bank_birth,  -->
+<!-- 							seller_grade -->
+<!--                     ) -->
+<!--  		 values( -->
+<!--  		                                     #{seller_no},  -->
+<!--  		                                     #{seller_id},  -->
+<!--  		                                     #{seller_pw},  -->
+<!--  		                                     #{seller_name},  -->
+<!--  		                                     #{seller_email},  -->
+<!--  		                                     #{seller_phone}, -->
+<!--  		                                     #{seller_birth}, -->
+<!--  		                                     #{seller_addr_post}, -->
+<!--  		                                     #{seller_addr_basic}, -->
+<!--  		                                     #{seller_addr_extra}, -->
+<!--  		                                     #{seller_store_name}, -->
+<!--  		                                     #{seller_store_phone}, -->
+<!--  		                                     #{seller_store_fax}, -->
+<!--  		                                     to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' ), -->
+<!--  		                                     'ddd',		                                      -->
+<!--  		                                     #{seller_bank_code},  -->
+<!--  		                                     #{seller_bank_account},  -->
+<!--  		                                     #{seller_bank_username},  -->
+<!--  		                                     #{seller_bank_birth}, -->
+<!--  		                                     '브론즈' -->
+<!--  		                                     ) -->
+ 											
+ 
  	</insert>
-
+ 	<select id="sequence" resultType="int">
+ 		 select seller_seq.nextval from dual 	
+ 	</select>
+ 	<select id="login" parameterType="com.kh.ordering.entity.SellerDto" >
+		select*from seller where id =#{id}
+ 	</select>
  </mapper> 
 
 
