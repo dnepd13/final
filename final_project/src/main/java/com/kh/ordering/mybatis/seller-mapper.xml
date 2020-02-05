@@ -20,6 +20,7 @@
 		-$의 경우 SQL Injection 이라는 해킹 공격에 매우 취약하므로 사용에 주의
  -->
 
+
 <mapper namespace="memo"></mapper>
 
 
