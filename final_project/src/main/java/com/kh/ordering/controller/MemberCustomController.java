@@ -36,6 +36,12 @@ public class MemberCustomController {
 		
 		memberCustomService.MemberCustom(session, customOrderDto, memberCustomDto);
 		
-		return "redirect:/member/customOrder";
+		return "redirect:/member/customList";
 	}
+	
+	@GetMapping("/customList")
+	public String memberCustomList() {
+		return "member/customList";
+	}
+	
 }

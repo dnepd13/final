@@ -49,5 +49,10 @@
 	<insert id="customInsert" parameterType="sellerCustomDto">
 		insert into seller_custom_order	values(seller_custom_order_seq.nextval,#{custom_order_no},#{seller_no})
 	</insert>
+	
+	<!-- 전체 요청서 보기(카테고리 미구현) -->
+	<select id="getListCustom" resultType="customOrderDto">
+		select *from custom_order where custom_order_type='요청서'
+	</select>
  </mapper>
 

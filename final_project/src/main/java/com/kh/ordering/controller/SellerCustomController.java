@@ -4,13 +4,14 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
-import com.kh.ordering.service.MemberCustomService;
+import com.kh.ordering.repository.SellerDao;
 import com.kh.ordering.service.SellerCustomService;
 
 @Controller
@@ -36,6 +37,14 @@ public class SellerCustomController {
 		
 		sellerCustomService.SellerCustom(session, customOrderDto, sellerCustomDto);
 		
-		return "redirect:/seller/customOrder";
+		return "redirect:/seller/customList";
+	}
+	
+	@Autowired
+	private SellerDao sellerDao;
+	@GetMapping("/customList")
+	public String getListCustom(Model model) {
+		model.addAttribute("getListCustom", sellerDao.getListCustom());
+		return "seller/customList";
 	}
 }

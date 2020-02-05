@@ -1,5 +1,7 @@
 package com.kh.ordering.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -36,6 +38,12 @@ public class SellerDaoImpl implements SellerDao {
 	public int CustomSeq() {
 		
 		return sqlSession.selectOne("seller.customSeq");
+	}
+	// 구매자 요청서 전체보기(카테고리 조건 미구현)
+	@Override
+	public List<CustomOrderDto> getListCustom() {
+		
+		return sqlSession.selectList("seller.getListCustom");
 	}
 
 }
