@@ -5,7 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @AllArgsConstructor @NoArgsConstructor @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 public class TestDto {
 	private int admin_no;
 	private String admin_id,

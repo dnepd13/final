@@ -33,7 +33,6 @@ public class test01 {
 								.admin_email("admin@admin.com")
 								.admin_grade("관리자")
 				.build();
-		
 		sqlSession.insert("memo.insert", dto);
 	}
 }
