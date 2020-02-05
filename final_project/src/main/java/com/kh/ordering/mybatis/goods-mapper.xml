@@ -21,9 +21,7 @@
  -->
  
  <mapper namespace="memo"> <!-- 이건 꼭 있어야한다 -->
- 	<insert id="insert" parameterType="com.kh.ordering.entity.Dto">
- 		insert into admin values(#{admin_no}, #{admin_id}, #{admin_pw}, #{admin_name}, #{admin_email}, #{admin_grade}, sysdate, sysdate)
- 	</insert>
+
 
  </mapper> 
 

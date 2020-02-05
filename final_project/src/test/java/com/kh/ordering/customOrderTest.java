@@ -8,6 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.TestDto;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 })
 @WebAppConfiguration
 @Slf4j
-public class test01 {
+public class customOrderTest {
 	
 	@Autowired
 	private SqlSession sqlSession;
-	
+/*	
 	@Test
 	public void test() {
 		TestDto dto = TestDto.builder()
@@ -35,5 +36,22 @@ public class test01 {
 				.build();
 		
 		sqlSession.insert("memo.insert", dto);
+	}
+*/
+
+	@Test
+	public void customInsert() {
+		CustomOrderDto customOrderDto = CustomOrderDto.builder()
+																							.custom_order_no(1)
+																							.custom_order_title("제목")
+																							.custom_order_content("내용")
+																							.custom_order_date("20200205")
+																							.custom_order_price(10000)
+																							.custom_order_hopedate("내이띾지")
+																							.custom_order_status("진행중")
+																							.custom_order_type("요청서")
+																							.build();
+		
+		sqlSession.insert("member.customReq", customOrderDto);
 	}
 }
