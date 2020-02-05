@@ -13,6 +13,7 @@
  	
  	<!-- 별칭-->
  	<typeAliases>
-<!--  		<typeAlias type="com.kh.sts17.entity.MemoDto" alias="memoDto"/> -->
+ 		<typeAlias type="com.kh.ordering.entity.GoodsDto" alias="goodsDto"/>
+ 		<typeAlias type="com.kh.ordering.entity.GoodsOptionDto" alias="optionDto"/>
  	</typeAliases>
  </configuration>

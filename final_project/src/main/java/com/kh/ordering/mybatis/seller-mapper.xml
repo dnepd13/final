@@ -19,17 +19,9 @@
 	- $는 값을 있는 그대로 출력하는 명령이므로 주로 "항목"에 사용
 		-$의 경우 SQL Injection 이라는 해킹 공격에 매우 취약하므로 사용에 주의
  -->
- 
- <mapper namespace="memo"> <!-- 이건 꼭 있어야한다 -->
-<!--  	<insert id="insert" parameterType="com.kh.ordering.entity.Dto"> -->
-<!--  		insert into admin values(#{admin_no}, #{admin_id}, #{admin_pw}, #{admin_name}, #{admin_email}, #{admin_grade}, sysdate, sysdate) -->
-<!--  	</insert> -->
-
- </mapper> 
 
 
-
-
+<mapper namespace="memo"></mapper>
 
 
 
