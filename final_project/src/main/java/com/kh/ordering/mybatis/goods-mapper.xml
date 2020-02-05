@@ -9,7 +9,7 @@
 	<select id="getSequence" resultType="int">
 		select goods_seq.currval from dual
 	</select>
-	
+
 	<!-- 상품 등록  -->
 	<insert id="insert" parameterType="GoodsDto">
 		insert into goods values(
@@ -50,3 +50,4 @@
 		select * from goods
 	</select>
 </mapper>
+
