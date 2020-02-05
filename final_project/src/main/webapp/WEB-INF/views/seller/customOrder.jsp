@@ -6,6 +6,7 @@
 <h3>견적서</h3>
 <div>
 	<form action="customOrder" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="custom_order_no" value="2">
 		<input type="hidden" name="seller_id" value="seller">
 		<input type="text" name="custom_order_title" placeholder="견적서 제목" required>
 		<h5>견적서의 상세내용을 작성해주세요.</h5>
