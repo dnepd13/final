@@ -4,17 +4,15 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.kh.admin.entity.AdminDto;
-
 @Repository
-public class LoginDaoImpl implements LoginDao{
+public class BoardDaoImpl implements BoardDao{
 
 	@Autowired
 	private SqlSession sqlSession;
 	@Override
-	public AdminDto login(AdminDto adminDto) {
-		AdminDto login = sqlSession.selectOne("admin.login", adminDto);
-		return login;
+	public int getBoardList() {
+		
+		return sqlSession.selectOne("admin.getBoardListCnt");
 	}
 
 }

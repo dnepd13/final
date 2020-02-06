@@ -15,5 +15,7 @@
  	<typeAliases>
 <!--  		<typeAlias type="com.kh.sts17.entity.MemoDto" alias="memoDto"/> -->
 		<typeAlias type="com.kh.admin.entity.AdminDto" alias="adminDto"/>
+		<typeAlias type="com.kh.admin.vo.PagingVO" alias="paging"/>
+		<typeAlias type="com.kh.admin.entity.SellerDto" alias="sellerDto"/>
  	</typeAliases>
  </configuration>

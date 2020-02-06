@@ -1,5 +1,7 @@
 package com.kh.admin;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +11,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.kh.admin.entity.AdminDto;
-import com.kh.admin.repository.LoginDao;
+import com.kh.admin.entity.SellerDto;
+import com.kh.admin.repository.AdminDao;
+import com.kh.admin.repository.SellerDao;
+import com.kh.admin.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,15 +28,27 @@ import lombok.extern.slf4j.Slf4j;
 public class Test01 {
 
 	@Autowired
-	LoginDao loginDao;
+	AdminDao loginDao;
 	
-	@Test
-	public void test1() {
-		AdminDto adminDto = AdminDto.builder()
-															.admin_id("admin")
-															.admin_pw("admin")
-														.build();
-		AdminDto login = loginDao.login(adminDto);
-		log.info(login.getAdmin_id());
-	}
+	@Autowired
+	private SellerDao sellerDao;
+	
+//	@Test
+//	public void test1() {
+//		AdminDto adminDto = AdminDto.builder()
+//															.admin_id("admin")
+//															.admin_pw("admin")
+//														.build();
+//		AdminDto login = loginDao.login(adminDto);
+//		log.info(login.getAdmin_id());
+//	}
+//	public void test2() {
+//
+//		PagingVO vo = PagingVO.builder()
+//												.start(1)
+//												.finish(5)
+//											.build();
+//		List<SellerDto> list = sellerDao.sellerGetList(vo);
+//		log.info("list={}", list.size());
+//	}
 }

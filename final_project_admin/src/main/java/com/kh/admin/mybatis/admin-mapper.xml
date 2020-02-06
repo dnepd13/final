@@ -21,22 +21,78 @@
  -->
  
  <mapper namespace="admin"> <!-- 이건 꼭 있어야한다 -->
- 	<select id="login" parameterType="adminDto" resultType="adminDto">
- 		select * from admin where admin_id = #{admin_id} and admin_pw=#{admin_pw} 
+ 	<!-- 로그인을 위한 아이디 불러오기 -->
+ 	<select id="getId" parameterType="adminDto" resultType="adminDto">
+ 		select * from admin where admin_id = #{admin_id}
  	</select>
  	
-
+ 	<!-- 관리자 가입시키기 -->
+	<insert id="insert" parameterType="adminDto">
+		insert into admin() values(
+							admin_seq.nextval, 
+							#{admin_id},
+							#{admin_pw},
+							#{admin_name},
+							#{admin_email},
+							'일반관리자',
+							to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' ),
+							to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' )
+							)
+	</insert>
+	
+	<!-- 최종로그인 일시 변동 -->
+	<update id="lastLogin" parameterType="adminDto">
+		update admin set admin_last_login = sysdate
+	</update>
+	
+	<!-- 관리자 리스트 뽑아오기 -->
+	<select id="getList" resultType="adminDto">
+<!-- 		select * from admin where admin_grade = '일반관리자' -->
+		select * from(
+			select rownum rn, A.* from(
+				select * from admin where admin_grade = '일반관리자' order by admin_no desc
+			)A
+		)where rn between #{startList} and #{listSize}
+	</select>
+	
+	<select id="getBoardListCnt" resultType="int">
+		select 
+			count(*) 
+		from 
+			admin
+	</select>
+		
+	<!-- 총 관리자 갯수 출력 -->
+	<select id="countBoard" resultType="int">
+		select count(*) from admin where admin_grade ='일반관리자'
+	</select>	
+		
+	<select id="selectBoard" parameterType="paging" resultType="adminDto">
+			select * from(
+			select rownum rn, A.* from(
+				select * from admin where admin_grade = '일반관리자' order by admin_no desc
+			)A
+		)where rn between #{start} and #{finish}
+	</select>	
+	
+	<!-- 관리자 삭제 -->
+	<delete id="delete" parameterType="adminDto">
+		delete admin where admin_no = #{admin_no}
+	</delete>
+	
+	<!-- 판매자 리스트 불러오기 -->
+	<select id="sellerGetList" parameterType="paging" resultType="sellerDto">
+		select * from(
+			select rownum rn, A.* from(
+				select * from seller order by seller_no desc
+			)A
+		)where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 판매자 목록 총 갯수 가져오기 -->
+	<select id="sellerCount" resultType="int">
+		select count(*) from seller 
+	</select>	
  </mapper> 
 
-
-
-
-
-
-
-
-
-
-
-
-
+ 
