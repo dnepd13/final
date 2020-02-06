@@ -31,7 +31,8 @@
 		</choose>
 			#{goods_stock},
 			#{goods_status},
-			#{goods_content}
+			#{goods_content},
+			#{category_no}
 		)
 	</insert>
 	
@@ -48,6 +49,31 @@
 	<!-- 전체 조회  -->
 	<select id="getList" resultType="goodsDto">
 		select * from goods
+	</select>
+	
+	<resultMap type="goodsVO" id="getGoodsVO">
+		<result column="goods_no" property="goods_no"/>
+		<result column="seller_no" property="seller_no"/>
+		<result column="goods_name" property="goods_name"/>
+		<result column="goods_price" property="goods_price"/>
+		<result column="goods_discount_price" property="goods_discount_price"/>
+		<result column="goods_discount_start" property="goods_discount_start"/>
+		<result column="goods_discount_finish" property="goods_discount_finish"/>
+		<result column="goods_stock" property="goods_stock"/>
+		<result column="goods_status" property="goods_status"/>
+		<result column="goods_content" property="goods_content"/>
+		<result column="category_no" property="category_no"/>
+		
+		<collection property="goodsOptionList" javaType="list" 
+					ofType="goodsOptionDto" select="getGoodsOption" column="goods_no"></collection>
+	</resultMap>
+	
+	<select id="getGoodsVO" parameterType="int" resultMap="getGoodsVO">
+		select * from goods where goods_no = #{goods_no}
+	</select> 
+	
+	<select id="getGoodsOption" parameterType="int" resultType="goodsOptionDto">
+		select * from goods_option where goods_no = #{goods_no}
 	</select>
 </mapper>
 

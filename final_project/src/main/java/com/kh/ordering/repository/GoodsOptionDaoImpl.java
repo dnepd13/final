@@ -33,7 +33,13 @@ public class GoodsOptionDaoImpl implements GoodsOptionDao{
 	}
 	
 	@Override
+	public List<GoodsOptionDto> getList(int goods_no) {
+		return sqlSession.selectList("goods_option.search", goods_no);
+	}
+	
+	@Override
 	public int getSequence() { // 마지막 시퀀스 반환(currval)
 		return sqlSession.selectOne("goods_option.getSequence");
 	}
+	
 }

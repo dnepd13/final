@@ -9,5 +9,6 @@ public interface GoodsOptionDao {
 	void delete(int goods_option_no);
 	GoodsOptionDto get(int goods_option_no);
 	List<GoodsOptionDto> getList();
+	List<GoodsOptionDto> getList(int goods_no);
 	int getSequence();
 }

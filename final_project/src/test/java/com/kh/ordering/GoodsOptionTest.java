@@ -1,5 +1,9 @@
 package com.kh.ordering;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,20 +28,28 @@ public class GoodsOptionTest {
 	@Autowired
 	private GoodsOptionDao goodsOptionDao;
 	
+	@Autowired
+	private SqlSession sqlSession;
+	
 //	 상품 옵션 등록 테스트 [완료]
-//	@Test
-//	public void insertTest() {
-//		GoodsOptionDto goodsOptionDto = GoodsOptionDto.builder()
-//												.goods_no(6)
-//												.goods_option_title("노랑")
-//												.goods_option_content("신맛입니다.")
-//												.goods_option_price(1500)
-//												.goods_option_stock(10)
-//												.goods_option_status("Y")
-//										.build();
-//		
-//		goodsOptionDao.insert(goodsOptionDto);
-//	}
+	@Test
+	public void insertTest() {
+		List<GoodsOptionDto> list = new ArrayList<>();
+		for(int i=0; i < 10; i++) {
+			GoodsOptionDto goodsOptionDto = GoodsOptionDto.builder()
+					.goods_no(33)
+					.goods_option_title("초록")
+					.goods_option_content("초록입니다.")
+					.goods_option_price(1500)
+					.goods_option_stock(10)
+					.goods_option_status("Y")
+			.build();
+			sqlSession.insert("goods_option.insert", goodsOptionDto);
+//			list.add(goodsOptionDto);
+		}
+		
+//		sqlSession.insert("goods_option.insertAll", list);
+	}
 	
 //	상품 옵션 삭제 테스트 [완료]
 //	@Test
@@ -52,9 +64,9 @@ public class GoodsOptionTest {
 //	}
 	
 //	상품 옵션 전체 조회 테스트 [완료]
-	@Test
-	public void getListTest() {
-		log.info("{}", goodsOptionDao.getList());
-	}
+//	@Test
+//	public void getListTest() {
+//		log.info("{}", goodsOptionDao.getList());
+//	}
 	
 }
