@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.repository.GoodsDao;
+import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.service.GoodsService;
+import com.kh.ordering.vo.GoodsVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,14 +24,20 @@ public class GoodsController {
 	@Autowired
 	private GoodsService goodsService;
 	
+	@Autowired
+	private GoodsDao goodsDao;
+	
+	@Autowired
+	private GoodsOptionDao goodsOptionDao;
+	
 	@GetMapping("/insert")
 	public String insert() {
 		return "goods/insert";
 	}
 	
 	@PostMapping("/insert")
-	public String insert(@ModelAttribute GoodsDto goodsDto) {
-		return "redirect:get?goods_no=" + goodsService.insert(goodsDto);
+	public String insert(@ModelAttribute GoodsVO goodsVO) {
+		return "redirect:get?goods_no=" + goodsService.insert(goodsVO);
 	}
 	
 	@GetMapping("/get")
@@ -50,4 +57,11 @@ public class GoodsController {
 		model.addAttribute("list", goodsService.getList());
 		return "goods/getList";
 	}
+	
+	@GetMapping("/goodsInfo")
+	public String goodsInfo(@RequestParam int goods_no, Model model) {
+		model.addAttribute("goodsVO", goodsService.getGoodsVO(goods_no));
+		return "goods/goodsInfo";
+	}
+	
 }

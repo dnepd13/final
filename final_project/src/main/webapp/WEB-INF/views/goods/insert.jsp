@@ -1,34 +1,56 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="EUC-KR"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
-<h1>»óÇ° µî·Ï ÆäÀÌÁö</h1>
+<html>
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+ <script src="https://code.jquery.com/jquery-latest.js"></script>
+ <script src="${pageContext.request.contextPath}/resources/js/goodsOption.js"></script>
+</head>
+<body>
+<h1>ìƒí’ˆ ë“±ë¡ íŽ˜ì´ì§€</h1>
 
 <form action="insert" method="post">
 	
-	<!-- ¼¼¼Ç¿¡¼­ ¹øÈ£ °¡Á®¿Í¼­ È÷µçÀ¸·Î ³Ï±æ °Å --------------------------->
-	<p>ÆÇ¸ÅÀÚ ¹øÈ£ </p>
+	<!-- ì„¸ì…˜ì—ì„œ ë²ˆí˜¸ ê°€ì ¸ì™€ì„œ ížˆë“ ìœ¼ë¡œ ë„’ê¸¸ ê±° --------------------------->
+	<p>íŒë§¤ìž ë²ˆí˜¸ </p>
 	<input type="text" name="seller_no" required><br><br>
 	<!-- -------------------------------------------------- -->
 	
-	<p>»óÇ° ÀÌ¸§ </p>
+	<p>ìƒí’ˆ ì´ë¦„ </p>
 	<input type="text" name="goods_name" required><br><br>
-	<p>»óÇ° °¡°Ý </p>
+	<p>ìƒí’ˆ ê°€ê²© </p>
 	<input type="text" name="goods_price" required><br><br>
-	<p>»óÇ° ¼ö·® </p>
+	<p>ìƒí’ˆ ìˆ˜ëŸ‰ </p>
 	<input type="text" name="goods_stock" required><br><br>
-	<p>ÇÒÀÎ °¡°Ý </p>
+	<p>í• ì¸ ê°€ê²© </p>
 	<input type="text" name="goods_discount_price" required><br><br>
-	<p>ÇÒÀÎ ½ÃÀÛ </p>
+	<p>í• ì¸ ì‹œìž‘ </p>
 	<input type="date" name="goods_discount_start" required><br><br>
-	<p>ÇÒÀÎ Á¾·á </p>
+	<p>í• ì¸ ì¢…ë£Œ </p>
 	<input type="date" name="goods_discount_finish" required><br><br>
-	<p>ÆÇ¸Å ¿©ºÎ </p>
+	<p>íŒë§¤ ì—¬ë¶€ </p>
 	<select name="goods_status">
 		<option value="Y">Y</option>
 		<option value="N">N</option>
 	</select><br><br>
-	<p>»óÇ° ¼³¸í : </p>
-	<input type="text" name="goods_content">
-	<input type="submit" value="µî·Ï">
+	<p>ìƒí’ˆ ì„¤ëª… : </p>
+	<input type="text" name="goods_content"><br><br>
+	<p>ì¹´í…Œê³ ë¦¬ë²ˆí˜¸ : </p>
+	<input type="text" name="category_no"><br><br>
+	
+	
+	<p>ì˜µì…˜</p>
+	<button class="addOptionBtn">ì˜µì…˜ ì¶”ê°€</button>
+    <ul class="optionArea">
+      <li>ì´ë¦„ 		ë‚´ìš©		 ê°€ê²©		 ìˆ˜ëŸ‰ 		ìƒíƒœ</li>
+    </ul>
+	
+	
+	<input type="submit" value="ë“±ë¡">
 </form>
+
+</body>
+</html>

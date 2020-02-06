@@ -1,4 +1,8 @@
-package com.kh.ordering.entity;
+package com.kh.ordering.vo;
+
+import java.util.List;
+
+import com.kh.ordering.entity.GoodsOptionDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,10 +10,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class GoodsDto {
+public class GoodsVO {
 	private int goods_no;
 	private int seller_no;
 	private String goods_name;
@@ -21,4 +25,5 @@ public class GoodsDto {
 	private String goods_status;
 	private String goods_content;
 	private int category_no;
+	private List<GoodsOptionDto> goodsOptionList;
 }

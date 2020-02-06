@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ 
+ <mapper namespace="category">
+	<!-- 카테고리 등록 -->
+	<insert id="insert" parameterType="categoryDto">
+		insert into category values(
+			category_seq.nextval,
+			#{category_large},
+			#{category_middle},
+			#{category_small}		
+		)
+	</insert>
+	
+	<!-- 카테고리 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete category where category_no = #{category_no}
+	</delete>
+	
+	<!-- 카테고리 단일 조회 -->
+	<select id="get" parameterType="int" resultType="categoryDto">
+		select * from category where category_no = #{category_no}
+	</select>	
+	
+	<!-- 카테고리 전체 조회 -->
+	<select id="getList" resultType="categoryDto">
+		select * from category
+	</select>
+ </mapper>
