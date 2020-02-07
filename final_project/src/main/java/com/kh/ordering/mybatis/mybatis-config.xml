@@ -12,14 +12,14 @@
  		<setting name="cacheEnabled" value="true"/>
  		<setting name="defaultStatementTimeout" value="10000"/>
  	</settings>
- 	
- 	<!-- 별칭-->
- 	
  	<typeAliases>
-		<!-- 판매자 Dto Alias -->
+
+		<!-- 판매자 Dto Alias--> 		
  		<typeAlias type="com.kh.ordering.entity.SellerDto" alias="seller"/>	
- 		
  		<!-- 주문제작 Dto Alias -->
+ 		<typeAlias type="com.kh.ordering.entity.MemberDto" alias="memberDto"/>
+		<typeAlias type="com.kh.ordering.entity.Member_PointDto" alias="member_PointDto"/>
+ 		
 		<typeAlias type="com.kh.ordering.entity.CustomOrderDto" alias="customOrderDto"/>
 		<typeAlias type="com.kh.ordering.entity.MemberCustomOrderDto" alias="memberCustomDto"/>
 		<typeAlias type="com.kh.ordering.entity.SellerCustomOrderDto" alias="sellerCustomDto"/>
