@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.admin.entity.AdminDto;
 import com.kh.admin.entity.CategoryDto;
+import com.kh.admin.entity.PremiumDto;
 import com.kh.admin.repository.AdminDao;
 import com.kh.admin.repository.CategoryDao;
+import com.kh.admin.repository.PremiumDao;
 import com.kh.admin.service.BoardService;
 import com.kh.admin.vo.PagingVO;
 
@@ -40,6 +42,10 @@ public class AdminController {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private PremiumDao premiumDao;
+	
 	//---------------------------로그인창----------------------------------
 	@GetMapping("/")
 	public String login() {
@@ -103,11 +109,6 @@ public class AdminController {
 		adminDao.regist(adminDto);
 
 		return "/regist";
-	}
-	//---------------------------수수료창----------------------------------
-	@GetMapping("/premium")
-	public String premium() {
-		return "/premium";
 	}
 	
 	//---------------------------로그아웃창----------------------------------
@@ -176,5 +177,58 @@ public class AdminController {
 		
 		return "redirect:/category";
 	}
+	//---------------------------수수료창----------------------------------
+	@GetMapping("/premium")
+	public String premium(Model model) {
+		List<PremiumDto> list = premiumDao.premiumGetList();
+		model.addAttribute("list", list);
+		return "/premium";
+	}
+	
+	//---------------------------수수료 추가----------------------------------
+	@PostMapping("/premium")
+	public String premium(@ModelAttribute PremiumDto premiumDto) {
+		premiumDao.premiumInsert(premiumDto);
+		return "redirect:/premium";
+	}
+	//---------------------------수수료 변경----------------------------------
+	@PostMapping("premiumUpdate")
+	@ResponseBody
+	public String premiumUpdate(
+			@RequestParam int premium_no, 
+			@RequestParam int premium_price,
+			@RequestParam int premium_rate
+			) {
+		PremiumDto premiumDto = PremiumDto.builder()
+																		.premium_no(premium_no)
+																		.premium_price(premium_price)
+																		.premium_rate(premium_rate)
+																	.build();
+		premiumDao.premiumUpdate(premiumDto);
+		return "redirect:/premium";
+	}
+	
+	
+	//---------------------------수수료 삭제----------------------------------
+	@PostMapping("/premiumDelete")
+	@ResponseBody
+	public String premiumDelete(
+			@RequestParam int premium_no
+			) {
+		PremiumDto premiumDto = PremiumDto.builder()
+																	.premium_no(premium_no)
+																		.build();
+		premiumDao.premiumDelete(premiumDto);
+		return "redirect:/premium";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
+

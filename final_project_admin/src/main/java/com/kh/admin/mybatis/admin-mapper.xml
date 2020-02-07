@@ -145,6 +145,55 @@
 	<select id="memberCount" resultType="int">
 		select count(*) from member
 	</select>
+	
+	<!-- 수수료 리스트 -->
+	<select id="premiumGetList" resultType="premiumDto">
+		select * from premium order by premium_price desc
+	</select>
+	
+	<!-- 수수료 추가 -->
+	<insert id="premiumInsert" parameterType="premiumDto">
+		insert into premium values(premium_seq.nextval, #{premium_price}, #{premium_rate})
+	</insert>
+	
+	<!-- 수수료 변경 -->
+	<update id="premiumUpdate" parameterType="premiumDto">
+		update premium 
+			set 
+				premium_price = #{premium_price}, 
+				premium_rate = #{premium_rate}
+			where
+				premium_no = #{premium_no}
+	</update>
+	
+	<!-- 수수료 삭제 -->
+	<delete id="premiumDelete" parameterType="premiumDto">
+		delete premium where premium_no = #{premium_no}
+	</delete>
+	
+	<!-- 관리문의게시판 리스트 뽑기 -->
+	<select id="adminQnaGetList" resultType="adminQnaDto">
+		select * from(
+			select rownum rn, A.* from (
+				select * from admin_qna 
+				connect by prior admin_qna_no=super_no 
+				start with super_no is null 
+				order siblings by group_no desc, admin_qna_no asc
+			)A
+		) where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 관리문의게시판 총 갯수 구하기 -->
+	<select id="adminQnaCount" resultType="int">
+		select count(*) from admin_qna
+	</select>
+	
+	<!-- 관리문의게시판 글 상세보기 1개 뽑기 -->
+	<select id="adminQnaGetOne" parameterType="adminQnaDto" resultType="adminQnaDto">
+		select * from admin_qna where admin_qna_no = #{admin_qna_no}
+	</select>
+	
+	
  </mapper> 
 
  

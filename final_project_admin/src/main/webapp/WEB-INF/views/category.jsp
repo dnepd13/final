@@ -77,8 +77,11 @@
 		});
 		
 		$(".btn-delete").click(function(){
+			$(this).parent().parent().remove();
+			
 			var td = $(this).parent();
 			var category_no = td.data("category-no");
+			
 			$.ajax({
 				url:"categoryDelete",
 				type:"post",
