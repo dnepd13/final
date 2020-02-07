@@ -21,22 +21,179 @@
  -->
  
  <mapper namespace="admin"> <!-- 이건 꼭 있어야한다 -->
- 	<select id="login" parameterType="adminDto" resultType="adminDto">
- 		select * from admin where admin_id = #{admin_id} and admin_pw=#{admin_pw} 
+ 	<!-- 로그인을 위한 아이디 불러오기 -->
+ 	<select id="getId" parameterType="adminDto" resultType="adminDto">
+ 		select * from admin where admin_id = #{admin_id}
  	</select>
  	
-
+ 	<!-- 관리자 가입시키기 -->
+	<insert id="insert" parameterType="adminDto">
+		insert into admin values(
+							admin_seq.nextval,	 
+							#{admin_id}, 
+							#{admin_pw}, 
+							#{admin_name}, 
+							#{admin_email}, 
+							'일반관리자', 
+							to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss'), 
+							to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss'))
+	</insert>
+	
+	<!-- 최종로그인 일시 변동 -->
+	<update id="lastLogin" parameterType="adminDto">
+		update admin set admin_last_login = sysdate
+	</update>
+	
+	<!-- 관리자 리스트 뽑아오기 -->
+	<select id="getList" resultType="adminDto">
+<!-- 		select * from admin where admin_grade = '일반관리자' -->
+		select * from(
+			select rownum rn, A.* from(
+				select * from admin where admin_grade = '일반관리자' order by admin_no desc
+			)A
+		)where rn between #{startList} and #{listSize}
+	</select>
+	
+	<select id="getBoardListCnt" resultType="int">
+		select 
+			count(*) 
+		from 
+			admin
+	</select>
+		
+	<!-- 총 관리자 갯수 출력 -->
+	<select id="countBoard" resultType="int">
+		select count(*) from admin where admin_grade ='일반관리자'
+	</select>	
+		
+	<select id="selectBoard" parameterType="paging" resultType="adminDto">
+			select * from(
+			select rownum rn, A.* from(
+				select * from admin where admin_grade = '일반관리자' order by admin_no desc
+			)A
+		)where rn between #{start} and #{finish}
+	</select>	
+	
+	<!-- 관리자 삭제 -->
+	<delete id="delete" parameterType="adminDto">
+		delete admin where admin_no = #{admin_no}
+	</delete>
+	
+	<!-- 판매자 리스트 불러오기 -->
+	<select id="sellerGetList" parameterType="paging" resultType="sellerDto">
+		select * from(
+			select rownum rn, A.* from(
+				select * from seller order by seller_no desc
+			)A
+		)where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 판매자 목록 총 갯수 가져오기 -->
+	<select id="sellerCount" resultType="int">
+		select count(*) from seller 
+	</select>	
+	
+	<!-- 카테고리 리스트 불러오기 -->
+	<select id="sellerGetCategoryList" parameterType="paging" resultType="categoryDto">
+		select * from(
+			select rownum rn, A.* from(
+				select * from category 
+				order by category_large desc,
+				category_middle, 
+				category_small
+			)A
+		)where rn between #{start} and #{finish}
+	</select>
+	<!-- 카테고리 목록 총 갯수 가져오기 -->
+	<select id="categoryCount" resultType="int">
+		select count(*) from category 
+	</select>	
+	<!-- 카테고리 등록하기 -->
+	<insert id="categoryInsert" parameterType="categoryDto">
+		insert into category values(
+					category_seq.nextval,
+					#{category_large}, 
+					#{category_middle}, 
+					#{category_small})
+	</insert>
+	<!-- 카테고리 수정하기 -->
+	<update id="categoryUpdate" parameterType="categoryDto">
+		update category set 
+			category_large = #{category_large},
+			category_middle = #{category_middle},
+			category_small = #{category_small}
+		where
+			category_no = #{category_no}
+			
+	</update>
+	<!-- 카테고리 삭제하기 -->
+	<delete id="categoryDelete" parameterType="int">
+		delete category where category_no = #{category_no}
+	</delete>
+	
+	<!-- 회원 리스트 -->
+	<select id="memberGetList" parameterType="Paging" resultType="memberDto">
+		select * from(
+			select rownum rn, A.* from(
+				select * from member 
+				order by member_no desc
+			)A
+		)where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 회원 총 갯수 -->
+	<select id="memberCount" resultType="int">
+		select count(*) from member
+	</select>
+	
+	<!-- 수수료 리스트 -->
+	<select id="premiumGetList" resultType="premiumDto">
+		select * from premium order by premium_price desc
+	</select>
+	
+	<!-- 수수료 추가 -->
+	<insert id="premiumInsert" parameterType="premiumDto">
+		insert into premium values(premium_seq.nextval, #{premium_price}, #{premium_rate})
+	</insert>
+	
+	<!-- 수수료 변경 -->
+	<update id="premiumUpdate" parameterType="premiumDto">
+		update premium 
+			set 
+				premium_price = #{premium_price}, 
+				premium_rate = #{premium_rate}
+			where
+				premium_no = #{premium_no}
+	</update>
+	
+	<!-- 수수료 삭제 -->
+	<delete id="premiumDelete" parameterType="premiumDto">
+		delete premium where premium_no = #{premium_no}
+	</delete>
+	
+	<!-- 관리문의게시판 리스트 뽑기 -->
+	<select id="adminQnaGetList" resultType="adminQnaDto">
+		select * from(
+			select rownum rn, A.* from (
+				select * from admin_qna 
+				connect by prior admin_qna_no=super_no 
+				start with super_no is null 
+				order siblings by group_no desc, admin_qna_no asc
+			)A
+		) where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 관리문의게시판 총 갯수 구하기 -->
+	<select id="adminQnaCount" resultType="int">
+		select count(*) from admin_qna
+	</select>
+	
+	<!-- 관리문의게시판 글 상세보기 1개 뽑기 -->
+	<select id="adminQnaGetOne" parameterType="adminQnaDto" resultType="adminQnaDto">
+		select * from admin_qna where admin_qna_no = #{admin_qna_no}
+	</select>
+	
+	
  </mapper> 
 
-
-
-
-
-
-
-
-
-
-
-
-
+ 
