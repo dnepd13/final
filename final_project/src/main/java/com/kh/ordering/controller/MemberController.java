@@ -64,10 +64,7 @@ public class MemberController {
 			
 			sqlSession.insert("member_PointDto.pointregist", member_PointDto);
 			
-			
-			
-			
-			return "redirect:index"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
+			return "member/login"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
 		}
 	
 		//레지스트 입력 후 포인트 등록에 불러온 시퀀스 번호를 넣고 입력한다
@@ -104,7 +101,7 @@ public class MemberController {
 	member_PointDao.registsuccess(member_pointDto);
 		
 		
-		return "redirect:index"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
+		return "redirect:home"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
 	}	
 	
 	@GetMapping("/index")
@@ -125,11 +122,11 @@ public class MemberController {
 			//세션에 회원 정보 추가
 			//필요하다면 쿠키도 생성
 			
-			return "redirect:index";
+			return "redirect:/home";
 		}
 		else {
 			log.info("로그인 실패");
-			return "redirect:login";
+			return "member/login";
 		}
 	}
 	
