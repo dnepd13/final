@@ -63,16 +63,17 @@
 	<!-- 전체 견적서 보기(카테고리 미구현) -->
 	<select id="getListCustom" resultType="customOrderVO">
 		select *from seller_custom_view
-	</select>	
+	</select>
+	<!-- 견적서 상세내용 보기. 단일조회 -->
+	<select id="getCustomNo">
+		select *from sseller_custom_view where custom_order_no = #{custom_order_no}
+	</select>
+	
 	<!-- 내가 보낸 요청서만 보기 -->
 	<select id="getListReq" parameterType="int" resultType="customOrderVO">
 		select *from member_custom_view where member_no =#{member_no}
 	</select>
 	
-	<!-- 요청서 삭제 -->
-	<delete id="deleteCustom" parameterType="int">
-		delete member_custom_order where member no=#{member_no} 
-	</delete>
  </mapper> 
 
 

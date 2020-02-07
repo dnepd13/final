@@ -72,9 +72,5 @@
 		select *from seller_custom_view where seller_no=#{seller_no}
 	</select>
 	
-	<!-- 견적서 삭제 -->
-	<delete id="deleteCustom" parameterType="int">
-		delete seller_custom_order where seller no=#{seller_no} 
-	</delete>
  </mapper>
 

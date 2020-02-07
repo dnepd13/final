@@ -5,24 +5,16 @@
 <h3>member Custom List.jsp</h3>
 
 <h4>받은 견적서 전부 보여주기</h4>
-	<table>
-		<tr>
-			<th>견적서 제목</th>
-			<th>견적서 내용</th>
-			<th>견적서 가격</th>
-			<th>견적서 가능기간</th>
-			<th></th>
-		</tr>
-		<c:forEach var="sellerCustom" items="${getListCustom }">
-		<tr>
-			<td>${sellerCustom.custom_order_title }</td>
-			<td>${sellerCustom.custom_order_content }</td>
-			<td>${sellerCustom.custom_order_price }</td>
-			<td>${sellerCustom.custom_order_hopedate }</td>
-			<td><a href="">수락 및 결제하기</a></td>		
-		</tr>
-		</c:forEach>
-	</table>
+<c:forEach var="sellerCustom" items="${getListCustom }">
+	<div>
+	보낸사람: ${sellerCustom.member_id } <br>
+	제목: <a href="customInfoResp?custom_order_no=${sellerCustom.custom_order_no }">
+						${sellerCustom.custom_order_title }
+			</a> <br>	
+	작성일: ${sellerCustom.custom_order_date } <br>
+	<hr>
+	</div>
+</c:forEach>
 
 <h4>보낸 요청서</h4>
 	<table>
@@ -39,7 +31,7 @@
 			<td>${memberCustom.custom_order_content }</td>
 			<td>${memberCustom.custom_order_price }</td>
 			<td>${memberCustom.custom_order_hopedate }</td>
-			<td>견적대기중</td>		
+			<td>${memberCustom.custom_order_status }</td>		
 		</tr>
 		</c:forEach>
 	</table>

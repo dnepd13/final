@@ -4,13 +4,14 @@
     
 <h3>seller Custom List.jsp</h3>
 	
-<h4>받은 요청서 전부 보여주기</h4>
+<h4>요청서 상세내용</h4>
 <c:forEach var="memberCustom" items="${getListCustom }">
 	<div>
 	보낸사람: ${memberCustom.member_id } <br>
-	제목: <a href="customContent?custom_order_no=${memberCustom.custom_order_no }">
+	제목: <a href="customInfoReq?custom_order_no=${memberCustom.custom_order_no }">
 						${memberCustom.custom_order_title }
 			</a> <br>	
+	작성일: ${memberCustom.custom_order_date } <br>
 	<hr>
 	</div>
 </c:forEach>
