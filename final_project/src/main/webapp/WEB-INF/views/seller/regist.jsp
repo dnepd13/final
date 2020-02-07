@@ -19,5 +19,6 @@
 판매자 사업장 은행계좌번호 <input type="text" name="seller_bank_account"><br><br>
 판매자 사업장 은행예금주 <input type="text" name="seller_bank_username"><br><br>
 판매자 사업장 은행 주민 등록번호 <input type="text" name="seller_bank_birth"><br><br>
+<input type="hidden" name=seller_agree_date" value="${dTime }">
 <input type="submit" value="가입하기">
 </form>

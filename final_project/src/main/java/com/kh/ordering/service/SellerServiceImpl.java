@@ -1,5 +1,6 @@
 package com.kh.ordering.service;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,4 +24,19 @@ private SellerDao sellerDao;
 				sellerDao.regist(sellerDto);
 	}
 
-}
+
+
+//	@Override
+//	public SellerDto login(SellerDto sellerDto) {//보낸거 id pw
+//		sellerDto.getSeller_id();
+//	SellerDto find = sellerDao.login(sellerDto);//로그인으로 들어간거
+//		return sellerDto;
+//	}
+	public SellerDto login(SellerDto sellerDto) {//보낸거 id pw
+		sellerDto.getSeller_id();
+		//로그인으로 들어간거
+		return sellerDao.login(sellerDto);
+	}
+	}
+
+

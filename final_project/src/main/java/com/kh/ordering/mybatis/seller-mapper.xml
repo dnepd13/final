@@ -20,66 +20,41 @@
 		-$의 경우 SQL Injection 이라는 해킹 공격에 매우 취약하므로 사용에 주의
  -->
  
+
  <mapper namespace="seller"> <!-- 이건 꼭 있어야한다 -->
- 	<insert id="insert" parameterType="seller">
- 	insert into seller(seller_no, seller_id, seller_pw, seller_name,  seller_email, seller_phone, 
-					seller_birth, seller_addr_post, seller_addr_basic, seller_addr_extra, 
-					seller_store_name, seller_store_phone, 
-					seller_join_date, seller_agree_date, 
-					seller_cid, seller_bank_code, seller_bank_account, seller_bank_username,seller_bank_birth
-                    ) values(4, 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', 'ddd', sysdate, sysdate, 'ddd', 'd', 'ddd', 'ddd', 'ddd');
-<!--  		insert into seller( -->
-<!--  							seller_no,  -->
-<!--  							seller_id,  -->
-<!--  							seller_pw,  -->
-<!--  							seller_name,   -->
-<!--  							seller_email,  -->
-<!--  							seller_phone,  -->
-<!-- 							seller_birth,  -->
-<!-- 							seller_addr_post,  -->
-<!-- 							seller_addr_basic,  -->
-<!-- 							seller_addr_extra,  -->
-<!-- 							seller_store_name,  -->
-<!-- 							seller_store_phone,  -->
-<!-- 							seller_store_fax, -->
-<!-- 							seller_agree_date,  -->
-<!-- 							seller_cid,  -->
-<!-- 							seller_bank_code,  -->
-<!-- 							seller_bank_account,  -->
-<!-- 							seller_bank_username, -->
-<!-- 							seller_bank_birth,  -->
-<!-- 							seller_grade -->
-<!--                     ) -->
-<!--  		 values( -->
-<!--  		                                     #{seller_no},  -->
-<!--  		                                     #{seller_id},  -->
-<!--  		                                     #{seller_pw},  -->
-<!--  		                                     #{seller_name},  -->
-<!--  		                                     #{seller_email},  -->
-<!--  		                                     #{seller_phone}, -->
-<!--  		                                     #{seller_birth}, -->
-<!--  		                                     #{seller_addr_post}, -->
-<!--  		                                     #{seller_addr_basic}, -->
-<!--  		                                     #{seller_addr_extra}, -->
-<!--  		                                     #{seller_store_name}, -->
-<!--  		                                     #{seller_store_phone}, -->
-<!--  		                                     #{seller_store_fax}, -->
-<!--  		                                     to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' ), -->
-<!--  		                                     'ddd',		                                      -->
-<!--  		                                     #{seller_bank_code},  -->
-<!--  		                                     #{seller_bank_account},  -->
-<!--  		                                     #{seller_bank_username},  -->
-<!--  		                                     #{seller_bank_birth}, -->
-<!--  		                                     '브론즈' -->
-<!--  		                                     ) -->
- 											
- 
- 	</insert>
+ <!-- 회원가입 구문 -->
+ 	<insert id="regist" parameterType="seller">
+ 		    insert into seller(
+ 										seller_no, seller_id, seller_pw, seller_name, seller_email, seller_phone, 
+										seller_birth, seller_addr_post, seller_addr_basic, seller_addr_extra, 
+										seller_store_name, seller_store_phone, seller_store_fax,
+										seller_agree_date, seller_cid, seller_bank_code, seller_bank_account, 
+										seller_bank_username,seller_bank_birth, seller_grade
+						    			)
+ 		  					values(
+ 		                                     #{seller_no},   #{seller_id}, #{seller_pw}, #{seller_name}, 
+ 		                                     #{seller_email}, #{seller_phone}, #{seller_birth}, #{seller_addr_post},
+ 		                                     #{seller_addr_basic}, #{seller_addr_extra}, #{seller_store_name},
+ 		                                     #{seller_store_phone},#{seller_store_fax},
+ 		                                     to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' ),
+ 		                                     'cid', #{seller_bank_code}, #{seller_bank_account}, 
+ 		                                     #{seller_bank_username}, #{seller_bank_birth},
+ 		                                     '브론즈'
+ 		                                     )											
+ 		</insert>
+ 	<!-- seller_no 시퀀스 주기 -->
  	<select id="sequence" resultType="int">
  		 select seller_seq.nextval from dual 	
  	</select>
- 	<select id="login" parameterType="com.kh.ordering.entity.SellerDto" >
-		select*from seller where id =#{id}
+ 	<!-- seller_cid를 seller_no로 쓰겠다 -->
+<!--  	<select id="seller_cid" resultType="int"> -->
+<!--  			select seller_cid -->
+<!--  	</select> -->
+
+<!-- 판매자 로그인 구문 -->
+<!-- 비밀번호 암호화 -->
+ 	<select id="login" parameterType="seller" resultType="seller">
+		select*from seller where seller_id =#{seller_id}
  	</select>
  </mapper> 
 

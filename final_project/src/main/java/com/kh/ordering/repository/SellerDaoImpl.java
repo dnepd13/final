@@ -21,9 +21,20 @@ private SqlSession sqlSession;
 
 	@Override
 	public void regist(SellerDto sellerDto) {
-		sqlSession.insert("seller.insert",sellerDto);
+		sqlSession.insert("seller.regist",sellerDto);
 	
 	}
+
+	@Override
+	public SellerDto login(SellerDto sellerDto) {
+			System.out.println("sellerDaoimpl Dto ="+sellerDto);
+		 	SellerDto find = sqlSession.selectOne("seller.login",sellerDto);
+		 	System.out.println("sellerDaoimpl Find ="+find);
+			return find;
+		
+	}
+
+
 
 		
 }

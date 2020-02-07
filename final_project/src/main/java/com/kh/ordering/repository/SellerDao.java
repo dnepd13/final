@@ -6,4 +6,6 @@ public interface SellerDao {
 	int getSequence();
 	void regist(SellerDto sellerDto);
 
+SellerDto login(SellerDto sellerDto);
+
 }
