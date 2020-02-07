@@ -22,11 +22,55 @@
 		##이건 안쓰는 테스트용입니다
  -->
  
- <mapper namespace="memo"> <!-- 이건 꼭 있어야한다 -->
- 	<insert id="insert" parameterType="com.kh.ordering.entity.Dto">
- 		insert into admin values(#{admin_no}, #{admin_id}, #{admin_pw}, #{admin_name}, #{admin_email}, #{admin_grade}, sysdate, sysdate)
- 	</insert>
+ 
+ <mapper namespace="memberDto"> <!-- 이건 꼭 있어야한다 -->
+ 	
+ 			<select id="MemberSeq" resultType="int">
+			Select member_seq.nextval from dual
+		</select>
+ 	
+ 	<!-- 가입용 sql구문 -->
+ <insert id="regist" parameterType="memberDto">
 
+ 	
+
+ 		insert 
+ 		into member(
+ 		member_no,
+ 		member_id,
+ 		member_pw,
+ 		member_name,
+ 		member_email,
+ 		member_phone,
+ 		member_birth,
+ 		member_join_date,
+ 		member_last_login,
+ 		member_agree_date,
+ 		member_grade
+ 		)	
+ 		values(
+ 		#{member_no},
+ 		#{member_id},
+ 		#{member_pw},
+ 		#{member_name},
+ 		#{member_email},
+ 		#{member_phone},
+ 		#{member_birth},
+ 		sysdate,
+ 		sysdate,
+ 		sysdate,
+ 		'브론즈'
+ 		)
+ 		
+	</insert> 
+	
+	<delete id="delete" parameterType="int">
+		delete member where member_no = #{member_no}
+	</delete>
+<!-- 	<insert id="login" parameterType="memberDto">
+	
+	</insert> -->
+	
  </mapper> 
 
 

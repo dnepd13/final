@@ -13,6 +13,17 @@
  	
  	<!-- 별칭-->
  	<typeAliases>
-<!--  		<typeAlias type="com.kh.sts17.entity.MemoDto" alias="memoDto"/> -->
+		<!-- 여기는 구매자에 관한 mybatis 입니다. -->
+	 	<typeAlias type="com.kh.ordering.entity.MemberDto" alias="memberDto"/>
+		<typeAlias type="com.kh.ordering.entity.Member_PointDto" alias="member_PointDto"/>
  	</typeAliases>
+
+ 	
  </configuration>
+ 
+
+  	 <!--   <typeAliases>
+  	 여기는 구매자에 관한 mybatis 입니다.
+  	 <typeAlias type="com.kh.ordering.entity.member_PointDto" alias="member_PointDto"></typeAlias>
+ 	</typeAliases> -->
+ 	

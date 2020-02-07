@@ -8,32 +8,67 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.kh.ordering.entity.TestDto;
+import com.kh.ordering.entity.MemberDto;
 
 import lombok.extern.slf4j.Slf4j;
+
+//Spring 기존 환경을 테스트에 연동하고 싶은 경우 사용
+
+
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
+
+
+
 	"file:src/main/webapp/WEB-INF/spring/root-context.xml",
+
+
+
 	"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"
+
+
+
 })
+
+
+
 @WebAppConfiguration
+
+
+
 @Slf4j
-public class test01 {
-	
+public class MemberTest01 {
+
 	@Autowired
 	private SqlSession sqlSession;
-	
+
+
+
+
+
+
+
 	@Test
 	public void test() {
-		TestDto dto = TestDto.builder()
-								.admin_no(1)
-								.admin_id("admin")
-								.admin_pw("admin")
-								.admin_name("관리자")
-								.admin_email("admin@admin.com")
-								.admin_grade("관리자")
+
+
+
+		MemberDto memberDto = MemberDto.builder()
+				.member_name("홍길동")
+				.member_birth("20000101")
+				.member_phone("01012113434")
+				.member_id("cda12")
+				.member_pw("cda12")
+				.member_email("cd12a@test.com")
 				.build();
-		
-		sqlSession.insert("memo.insert", dto);
-	}
+
+
+
+		sqlSession.insert("member.regist", memberDto);
+
+
+
+}
+				
 }
