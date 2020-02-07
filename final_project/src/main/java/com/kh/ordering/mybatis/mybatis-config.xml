@@ -13,6 +13,17 @@
  	
  	<!-- 별칭-->
  	<typeAliases>
-<!--  		<typeAlias type="com.kh.sts17.entity.MemoDto" alias="memoDto"/> -->
+ 		
+ 		<!-- 주문제작 Dto Alias -->
+		<typeAlias type="com.kh.ordering.entity.CustomOrderDto" alias="customOrderDto"/>
+		<typeAlias type="com.kh.ordering.entity.MemberCustomOrderDto" alias="memberCustomDto"/>
+		<typeAlias type="com.kh.ordering.entity.SellerCustomOrderDto" alias="sellerCustomDto"/>
+		<typeAlias type="com.kh.ordering.vo.CustomOrderVO" alias="customOrderVO"/>
+
+ 		<typeAlias type="com.kh.ordering.entity.GoodsDto" alias="goodsDto"/>
+ 		<typeAlias type="com.kh.ordering.entity.GoodsOptionDto" alias="goodsOptionDto"/>
+ 		<typeAlias type="com.kh.ordering.entity.CategoryDto" alias="categoryDto"/>
+		<typeAlias type="com.kh.ordering.vo.GoodsVO" alias="goodsVO"/>
+		
  	</typeAliases>
  </configuration>
