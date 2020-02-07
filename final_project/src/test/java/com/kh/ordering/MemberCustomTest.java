@@ -10,7 +10,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
-import com.kh.ordering.entity.SellerAlarmDto;
+import com.kh.ordering.entity.SellerCustomAlarmDto;
 
 import lombok.extern.slf4j.Slf4j;
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -57,7 +57,7 @@ public class MemberCustomTest {
 		sqlSession.insert("member.customInsert", memberCustom);
 		
 		// 판매자 요청서 도착 알람 생성
-		SellerAlarmDto sellerAlarmDto = SellerAlarmDto.builder()
+		SellerCustomAlarmDto sellerCustomAlarmDto = SellerCustomAlarmDto.builder()
 																						.seller_alarm_no(1) //테이블 고유번호
 																						.seller_no(2) //판매자 번호
 																						.member_custom_order_no(1)	 //요청서 번호
@@ -65,6 +65,6 @@ public class MemberCustomTest {
 																						.seller_alarm_check("N") //알람확인여부
 																						.seller_alarm_delete("N") //알람삭제
 																						.build();
-		sqlSession.insert("seller.insertAlarm", sellerAlarmDto);
+		sqlSession.insert("seller.insertAlarm", sellerCustomAlarmDto);
 	}
 }

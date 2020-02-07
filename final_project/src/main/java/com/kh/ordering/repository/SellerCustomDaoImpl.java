@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.ordering.entity.CustomOrderDto;
-import com.kh.ordering.entity.SellerAlarmDto;
+import com.kh.ordering.entity.SellerCustomAlarmDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.vo.CustomOrderVO;
 
 @Repository
-public class SellerDaoImpl implements SellerDao {
+public class SellerCustomDaoImpl implements SellerCustomDao {
 
 	@Autowired
 	private SqlSession sqlSession;
@@ -42,10 +42,10 @@ public class SellerDaoImpl implements SellerDao {
 		return sqlSession.selectOne("seller.customSeq");
 	}
 	
-	@Override // 구매자 요청서 전체보기(카테고리 조건 미구현)
-	public List<CustomOrderDto> getListCustom() {
+	@Override // 구매자 1:1 요청서 보기(카테고리 조건 미구현)
+	public List<CustomOrderVO> getListCustom(int seller_no) {
 		
-		return sqlSession.selectList("seller.getListCustom");
+		return sqlSession.selectList("seller.getListCustom", seller_no);
 	}	
 	@Override // 요청서 상세보기. 주문제작 번호 단일조회
 	public CustomOrderVO customOrderVO(int custom_order_no) {		
@@ -61,7 +61,7 @@ public class SellerDaoImpl implements SellerDao {
 	
 // 요청서 도착 알람 테이블 입력
 	@Override
-	public void CustomAlarmInsert(SellerAlarmDto sellerAlramDto) {
+	public void CustomAlarmInsert(SellerCustomAlarmDto sellerAlramDto) {
 		sqlSession.insert("seller.insertAlarm", sellerAlramDto);
 	}
 

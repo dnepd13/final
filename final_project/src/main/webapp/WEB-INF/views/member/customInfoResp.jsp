@@ -17,6 +17,14 @@
 	<hr>
 	</div>
 
-
-<h4>보낸 견적서</h4>
-    
+ <h4>보낸 요청서 상세내용</h4>   
+<c:forEach var="memberCustom" items="${getListReq }">
+	보낸사람:
+	제목: ${memberCustom.custom_order_title } <br>
+	상세내용 <br>
+	${memberCustom.custom_order_content } <br>
+	희망가격: ${memberCustom.custom_order_price } <br>
+	희망날짜: ${memberCustom.custom_order_hopedate } <br>
+	현재상태: ${memberCustom.custom_order_status }
+	<hr>
+</c:forEach>

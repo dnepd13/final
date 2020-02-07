@@ -4,7 +4,7 @@
     
 <h3>seller Custom List.jsp</h3>
 	
-<h4>요청서 상세내용</h4>
+<h4>요청서 목록</h4>
 <c:forEach var="memberCustom" items="${getListCustom }">
 	<div>
 	보낸사람: ${memberCustom.member_id } <br>

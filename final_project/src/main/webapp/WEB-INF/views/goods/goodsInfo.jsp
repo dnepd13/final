@@ -11,7 +11,7 @@
 <p>상품 옵션 (goodsOptionList)</p>
 <p>${goodsVO.goodsOptionList}</p>
 
-<p>1:1 요청서 <a href="${pageContext.request.contextPath}/member/customOrder?seller_no=91">seller_no 받아오기</a></p>
+<p><a href="${pageContext.request.contextPath}/member/customOrder?seller_no=93">1:1 요청서  seller_no=93</a></p>
 <hr>
 
 <p>상품 문의</p>

@@ -59,9 +59,14 @@
 	</insert>
 	
 	<!-- 전체 요청서 보기(카테고리 미구현) -->
-	<select id="getListCustom" resultType="customOrderVO">
+	<select id="getListAll" resultType="customOrderVO">
 		select *from member_custom_view
 	</select>
+	<!-- 나에게 온 요청서만 보기 -->
+	<select id="getListCustom" parameterType="int" resultType="customOrderVO">
+		select *from member_custom_view where seller_no= #{seller_no} order by custom_order_date desc
+	</select>
+	
 	<!-- 요청서 상세내용 보기. 단일조회 -->
 	<select id="getCustomNo" parameterType="int" resultType="customOrderVO">
 		select *from member_custom_view where custom_order_no = #{custom_order_no}
@@ -73,4 +78,5 @@
 	</select>
 	
  </mapper>
+
 

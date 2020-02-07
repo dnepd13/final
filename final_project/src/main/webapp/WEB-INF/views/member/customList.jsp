@@ -17,21 +17,12 @@
 </c:forEach>
 
 <h4>보낸 요청서</h4>
-	<table>
-		<tr>
-			<th>요청서 제목</th>
-			<th>요청서 내용</th>
-			<th>요청서 가격</th>
-			<th>요청서 희망기간</th>
-			<th>요청상태</th>
-		</tr>
-		<c:forEach var="memberCustom" items="${getListReq }">
-		<tr>
-			<td>${memberCustom.custom_order_title }</td>
-			<td>${memberCustom.custom_order_content }</td>
-			<td>${memberCustom.custom_order_price }</td>
-			<td>${memberCustom.custom_order_hopedate }</td>
-			<td>${memberCustom.custom_order_status }</td>		
-		</tr>
-		</c:forEach>
-	</table>
+<c:forEach var="memberCustom" items="${getListReq }">
+	<div>
+	<a href="customInfoResp?custom_order_no=${memberCustom.custom_order_no }">
+		제목: ${memberCustom.custom_order_title }
+	</a> <br>
+	작성일: ${memberCustom.custom_order_date }
+	<hr>
+	</div>
+</c:forEach>

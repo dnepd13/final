@@ -21,12 +21,17 @@
 		
 		##이건 안쓰는 테스트용입니다
  -->
+
  
  <mapper namespace="member">
  <!-- session id로 회원 번호 구하기-->
  	<select id="getNo" parameterType="String" resultType="int">
  		select member_no from member where member_id = #{member_id}
  	</select>
+ 	
+ 	 			<select id="MemberSeq" resultType="int">
+			Select member_seq.nextval from dual
+		</select>
  	
  <!-- 회원 요청서 sql -->
  	<!-- 요청서 작성 -->
@@ -66,13 +71,59 @@
 	</select>
 	<!-- 견적서 상세내용 보기. 단일조회 -->
 	<select id="getCustomNo">
-		select *from sseller_custom_view where custom_order_no = #{custom_order_no}
+		select *from seller_custom_view where custom_order_no = #{custom_order_no}
 	</select>
 	
 	<!-- 내가 보낸 요청서만 보기 -->
 	<select id="getListReq" parameterType="int" resultType="customOrderVO">
-		select *from member_custom_view where member_no =#{member_no}
+		select A.*, B.member_no from
+   			custom_order A inner join member_custom_order B
+       		on a.custom_order_no = b.custom_order_no where member_no=#{member_no}
 	</select>
+	
+	
+<!-- 회원 기능 -->	
+	
+	 <insert id="regist" parameterType="memberDto">
+ 	
+
+ 		insert 
+ 		into member(
+ 		member_no,
+ 		member_id,
+ 		member_pw,
+ 		member_name,
+ 		member_email,
+ 		member_phone,
+ 		member_birth,
+ 		member_join_date,
+ 		member_last_login,
+ 		member_agree_date,
+ 		member_grade
+ 		)	
+ 		values(
+ 		#{member_no},
+ 		#{member_id},
+ 		#{member_pw},
+ 		#{member_name},
+ 		#{member_email},
+ 		#{member_phone},
+ 		#{member_birth},
+ 		sysdate,
+ 		sysdate,
+ 		sysdate,
+ 		'브론즈'
+ 		)
+	</insert> 
+	
+	<delete id="delete" parameterType="int">
+		delete member where member_no = #{member_no}
+	</delete>
+
+
+
+
+
 	
  </mapper> 
 
