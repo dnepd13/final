@@ -44,12 +44,6 @@ private SellerDao sellerDao;
 
 
 
-	@Override
-	public CustomOrderDto SellerCustom(HttpSession session, CustomOrderDto customOrderDto,
-			SellerCustomOrderDto sellerCustomDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	}
 
 
