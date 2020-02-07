@@ -1,7 +1,7 @@
 package com.kh.ordering.controller;
 import java.util.*;
 import java.text.*;
-import org.apache.ibatis.session.SqlSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kh.ordering.entity.SellerDto;
-import com.kh.ordering.repository.SellerDao;
+
 import com.kh.ordering.service.SellerService;
 
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@Slf4j
+//@Slf4j
 @RequestMapping("/seller")
 public class SellerController {
 	@Autowired
@@ -65,10 +65,10 @@ public class SellerController {
 		return "seller/regist_success";
 	}
 //가입완료후 페이지
-//	@PostMapping("/regist_success")
-//	private String regist_success(@ModelAttribute SellerDto sellerDto) {
-//		return "redirect:seller/regist_success";
-//	}
+	@PostMapping("/regist_success")
+	private String regist_success(@ModelAttribute SellerDto sellerDto) {
+		return "redirect:seller/regist_success";
+	}
 	
 	//판매자 로그인
 	@GetMapping("/login")
