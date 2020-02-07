@@ -111,5 +111,33 @@ public class SellerController {
 	public String management(@ModelAttribute SellerDto sellerDto ) {
 		return"redirect:/seller/management";
 	}
-	//판매자
+	//판매자 정보 조회/수정
+	@GetMapping("/info")
+	public String info() {
+		return "seller/info";
+	}
+	@PostMapping("/info")
+	public String info(@ModelAttribute SellerDto sellerDto) {
+		return"redirect:/seller/management";
+	}
+	
+	//판매자 비밀번호 변경
+	@GetMapping("/password")
+	public String password() {
+		return "seller/password";
+		
+	}
+	@PostMapping("/password")
+	public String password(@ModelAttribute SellerDto sellerDto) {
+		return"redirect:/seller/password_success";
+	}
+	//판매자 비밀번호 변경 성공 페이지
+	@GetMapping("/password_success")
+	public String password_success() {
+		return "seller/password_success";
+	}
+	@PostMapping("/password_success")
+	 public String password_success(@ModelAttribute SellerDto sellerDto) {
+		return "redirect:/";
+	}
 }
