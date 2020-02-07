@@ -77,7 +77,7 @@ public class SellerController {
 		
 	}
 	@PostMapping("/login")
-	private String login(@ModelAttribute SellerDto sellerDto) {
+	private String login(@ModelAttribute SellerDto sellerDto  ) {
 		//비밀번호 암호화
 		//아이디 검색을 하고 결과 유무 확인
 			SellerDto find = sellerService.login(sellerDto);
@@ -102,4 +102,14 @@ public class SellerController {
 		}
 	}
 	
+	// 판매자 관리 페이지
+	@GetMapping("/management")
+	 public String management() {
+		return"seller/management";
+	}
+	@PostMapping("/management")
+	public String management(@ModelAttribute SellerDto sellerDto ) {
+		return"redirect:/seller/management";
+	}
+	//판매자
 }

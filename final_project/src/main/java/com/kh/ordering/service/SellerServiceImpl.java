@@ -1,9 +1,13 @@
 package com.kh.ordering.service;
 
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.ordering.entity.CustomOrderDto;
+import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.entity.SellerDto;
 import com.kh.ordering.repository.SellerDao;
 @Service
@@ -36,6 +40,15 @@ private SellerDao sellerDao;
 		sellerDto.getSeller_id();
 		//로그인으로 들어간거
 		return sellerDao.login(sellerDto);
+	}
+
+
+
+	@Override
+	public CustomOrderDto SellerCustom(HttpSession session, CustomOrderDto customOrderDto,
+			SellerCustomOrderDto sellerCustomDto) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	}
 

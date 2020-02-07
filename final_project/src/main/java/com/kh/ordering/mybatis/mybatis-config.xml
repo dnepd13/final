@@ -4,7 +4,9 @@
  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-config.dtd"> 
  
- <configuration><!-- 이건 꼭 있어야 한다 -->
+ 
+  <configuration>
+  <!-- 이건 꼭 있어야 한다 -->
 	<!-- 기본 운영 설정 -->
  	<settings>
  		<setting name="cacheEnabled" value="true"/>
@@ -12,8 +14,21 @@
  	</settings>
  	
  	<!-- 별칭-->
+ 	
  	<typeAliases>
- 		<typeAlias type="com.kh.ordering.entity.SellerDto" alias="seller"/>
-<!--  		<typeAlias type="com.kh.sts17.entity.MemoDto" alias="memoDto"/> -->
- 	</typeAliases>
+		<!-- 판매자 Dto Alias -->
+ 		<typeAlias type="com.kh.ordering.entity.SellerDto" alias="seller"/>	
+ 		
+ 		<!-- 주문제작 Dto Alias -->
+		<typeAlias type="com.kh.ordering.entity.CustomOrderDto" alias="customOrderDto"/>
+		<typeAlias type="com.kh.ordering.entity.MemberCustomOrderDto" alias="memberCustomDto"/>
+		<typeAlias type="com.kh.ordering.entity.SellerCustomOrderDto" alias="sellerCustomDto"/>
+		<typeAlias type="com.kh.ordering.vo.CustomOrderVO" alias="customOrderVO"/>
+
+ 		<typeAlias type="com.kh.ordering.entity.GoodsDto" alias="goodsDto"/>
+ 		<typeAlias type="com.kh.ordering.entity.GoodsOptionDto" alias="goodsOptionDto"/>
+ 		<typeAlias type="com.kh.ordering.entity.CategoryDto" alias="categoryDto"/>
+		<typeAlias type="com.kh.ordering.vo.GoodsVO" alias="goodsVO"/>
+		
+	</typeAliases>
  </configuration>

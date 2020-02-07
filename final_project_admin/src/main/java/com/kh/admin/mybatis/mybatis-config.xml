@@ -14,5 +14,6 @@
  	<!-- 별칭-->
  	<typeAliases>
 <!--  		<typeAlias type="com.kh.sts17.entity.MemoDto" alias="memoDto"/> -->
+		<typeAlias type="com.kh.admin.entity.AdminDto" alias="adminDto"/>
  	</typeAliases>
  </configuration>
