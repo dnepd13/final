@@ -62,7 +62,7 @@ public class MemberController {
 		
 			
 			
-			sqlSession.insert("memberDto.regist",memberDto);
+			sqlSession.insert("me4thhhhhhhhhh4ggggggmberDto.regist",memberDto);
 
 			
 	
