@@ -42,7 +42,7 @@
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
 			<li class="page-item">
-     			 <a class="page-link" href="${pageContext.request.contextPath}/admin/manage?pno1=${paging.startBlock-1}">&laquo;</a>
+     			 <a class="page-link" href="${pageContext.request.contextPath}/seller/manage?pno1=${paging.startBlock-1}">&laquo;</a>
    			 </li>
 		</c:if>
 		<c:forEach begin="${paging.startBlock }" end="${paging.finishBlock }" var="p">
@@ -54,14 +54,14 @@
 				</c:when>
 				<c:when test="${p != paging.pno }">
 					<li class="page-item active">
-      					<a class="page-link" href="${pageContext.request.contextPath}/admin/manage?pno1=${p}">${p }</a>
+      					<a class="page-link" href="${pageContext.request.contextPath}/seller/manage?pno1=${p}">${p }</a>
    					 </li>
 				</c:when>
 			</c:choose>
 		</c:forEach>
 		<c:if test="${paging.finishBlock < paging.pagecount}">
 			<li class="page-item">
-     			 <a class="page-link" href="${pageContext.request.contextPath}/admin/manage?pno1=${paging.finishBlock+1}">&raquo;</a>
+     			 <a class="page-link" href="${pageContext.request.contextPath}/seller/manage?pno1=${paging.finishBlock+1}">&raquo;</a>
     		</li>
 		</c:if>
 	</ul>

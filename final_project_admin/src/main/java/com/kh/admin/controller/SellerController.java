@@ -37,9 +37,6 @@ public class SellerController {
 		model.addAttribute("paging", vo);
 		//판매자 리스트 불러오기
 		List<SellerDto> list = sellerDao.sellerGetList(vo);
-		
-			log.info("list={}", list.get(0));
-		
 		model.addAttribute("list", list);
 		return "seller/manage";
 	}

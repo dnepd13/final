@@ -4,6 +4,7 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">    
 <h1>관리자 관리</h1>
 <h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
+
 <table class="table table-hover">
   <thead>
     <tr>

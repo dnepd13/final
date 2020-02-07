@@ -28,16 +28,15 @@
  	
  	<!-- 관리자 가입시키기 -->
 	<insert id="insert" parameterType="adminDto">
-		insert into admin() values(
-							admin_seq.nextval, 
-							#{admin_id},
-							#{admin_pw},
-							#{admin_name},
-							#{admin_email},
-							'일반관리자',
-							to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' ),
-							to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' )
-							)
+		insert into admin values(
+							admin_seq.nextval,	 
+							#{admin_id}, 
+							#{admin_pw}, 
+							#{admin_name}, 
+							#{admin_email}, 
+							'일반관리자', 
+							to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss'), 
+							to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss'))
 	</insert>
 	
 	<!-- 최종로그인 일시 변동 -->
@@ -93,6 +92,59 @@
 	<select id="sellerCount" resultType="int">
 		select count(*) from seller 
 	</select>	
+	
+	<!-- 카테고리 리스트 불러오기 -->
+	<select id="sellerGetCategoryList" parameterType="paging" resultType="categoryDto">
+		select * from(
+			select rownum rn, A.* from(
+				select * from category 
+				order by category_large desc,
+				category_middle, 
+				category_small
+			)A
+		)where rn between #{start} and #{finish}
+	</select>
+	<!-- 카테고리 목록 총 갯수 가져오기 -->
+	<select id="categoryCount" resultType="int">
+		select count(*) from category 
+	</select>	
+	<!-- 카테고리 등록하기 -->
+	<insert id="categoryInsert" parameterType="categoryDto">
+		insert into category values(
+					category_seq.nextval,
+					#{category_large}, 
+					#{category_middle}, 
+					#{category_small})
+	</insert>
+	<!-- 카테고리 수정하기 -->
+	<update id="categoryUpdate" parameterType="categoryDto">
+		update category set 
+			category_large = #{category_large},
+			category_middle = #{category_middle},
+			category_small = #{category_small}
+		where
+			category_no = #{category_no}
+			
+	</update>
+	<!-- 카테고리 삭제하기 -->
+	<delete id="categoryDelete" parameterType="int">
+		delete category where category_no = #{category_no}
+	</delete>
+	
+	<!-- 회원 리스트 -->
+	<select id="memberGetList" parameterType="Paging" resultType="memberDto">
+		select * from(
+			select rownum rn, A.* from(
+				select * from member 
+				order by member_no desc
+			)A
+		)where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 회원 총 갯수 -->
+	<select id="memberCount" resultType="int">
+		select count(*) from member
+	</select>
  </mapper> 
 
  

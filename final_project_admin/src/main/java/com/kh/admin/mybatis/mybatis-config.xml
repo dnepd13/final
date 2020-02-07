@@ -17,5 +17,7 @@
 		<typeAlias type="com.kh.admin.entity.AdminDto" alias="adminDto"/>
 		<typeAlias type="com.kh.admin.vo.PagingVO" alias="paging"/>
 		<typeAlias type="com.kh.admin.entity.SellerDto" alias="sellerDto"/>
+ 		<typeAlias type="com.kh.admin.entity.CategoryDto" alias="categoryDto"/>
+ 		<typeAlias type="com.kh.admin.entity.MemberDto" alias="memberDto"/>
  	</typeAliases>
  </configuration>

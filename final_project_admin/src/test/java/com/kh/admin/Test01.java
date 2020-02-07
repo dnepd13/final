@@ -17,7 +17,8 @@ import com.kh.admin.repository.SellerDao;
 import com.kh.admin.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
-
+import java.util.*;
+import java.text.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
 	"file:src/main/webapp/WEB-INF/spring/root-context.xml",
@@ -50,5 +51,15 @@ public class Test01 {
 //											.build();
 //		List<SellerDto> list = sellerDao.sellerGetList(vo);
 //		log.info("list={}", list.size());
+////	}
+//	@Test
+//	public void test() {
+//	
+//		 
+//		 
+//		SimpleDateFormat formatter = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss", Locale.KOREA );
+//		Date currentTime = new Date ( );
+//		String dTime = formatter.format ( currentTime );
+//		System.out.println ( dTime );
 //	}
 }
