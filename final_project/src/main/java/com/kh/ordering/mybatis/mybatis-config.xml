@@ -18,6 +18,7 @@
 		<typeAlias type="com.kh.ordering.entity.CustomOrderDto" alias="customOrderDto"/>
 		<typeAlias type="com.kh.ordering.entity.MemberCustomOrderDto" alias="memberCustomDto"/>
 		<typeAlias type="com.kh.ordering.entity.SellerCustomOrderDto" alias="sellerCustomDto"/>
+		<typeAlias type="com.kh.ordering.vo.CustomOrderVO" alias="customOrderVO"/>
 
  		<typeAlias type="com.kh.ordering.entity.GoodsDto" alias="goodsDto"/>
  		<typeAlias type="com.kh.ordering.entity.GoodsOptionDto" alias="optionDto"/>

@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.ordering.entity.CustomOrderDto;
+import com.kh.ordering.entity.SellerAlarmDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
+import com.kh.ordering.vo.CustomOrderVO;
 
 public interface SellerDao {
 // 판매자 주문제작 Dao
@@ -18,4 +20,10 @@ public interface SellerDao {
 	void SellerCustom(SellerCustomOrderDto sellerCustomDto); // 견적서 관리 테이블
 	//구매자 요청서 보기
 	List<CustomOrderDto> getListCustom();
+	//구매자 요청서 단일조회
+	CustomOrderVO customOrderVO(int custom_order_no);
+	//내가 보낸 견적서 보기
+	List<CustomOrderDto> getListResp(int seller_no);
+	//요청서 도착 알람 생성
+	void CustomAlarmInsert(SellerAlarmDto sellerAlarmDto);
 }

@@ -50,9 +50,31 @@
 		insert into seller_custom_order	values(seller_custom_order_seq.nextval,#{custom_order_no},#{seller_no})
 	</insert>
 	
+	<!-- 요청서 도착 알람 -->
+	<insert id="insertAlarm">
+		insert into seller_alarm(seller_alarm_no, seller_no, member_custom_order_no,
+												seller_alarm_check, seller_alarm_delete)
+								values(seller_alarm_seq.nextval, #{seller_no}, #{member_custom_order_no},
+											'N', 'N')
+	</insert>
+	
 	<!-- 전체 요청서 보기(카테고리 미구현) -->
-	<select id="getListCustom" resultType="customOrderDto">
-		select *from custom_order where custom_order_type='요청서'
+	<select id="getListCustom" resultType="customOrderVO">
+		select *from member_custom_view
 	</select>
+	<!-- 요청서 상세내용 보기. 단일조회 -->
+	<select id="getCustomNo" parameterType="int" resultType="customOrderVO">
+		select *from member_custom_view where custom_order_no = #{custom_order_no}
+	</select>
+	
+	<!-- 내가 보낸 견적서 목록 -->
+	<select id="getListResp" parameterType="int" resultType="customOrderVO">
+		select *from seller_custom_view where seller_no=#{seller_no}
+	</select>
+	
+	<!-- 견적서 삭제 -->
+	<delete id="deleteCustom" parameterType="int">
+		delete seller_custom_order where seller no=#{seller_no} 
+	</delete>
  </mapper>
 
