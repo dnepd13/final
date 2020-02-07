@@ -1,6 +1,6 @@
 package com.kh.ordering.repository;
 
-import java.util.List;
+
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import com.kh.ordering.vo.CustomOrderVO;
 public class SellerDaoImpl implements SellerDao {
 	@Autowired
 	private SqlSession sqlSession;
+	private int info_edit;
 	//판매자 번호 시퀀스
 	@Override
 	public int getSequence() {
@@ -37,6 +38,17 @@ public class SellerDaoImpl implements SellerDao {
 			return find;
 		
 	}
+	//판매 정보 조회
+	@Override
+	public SellerDto info(SellerDto sellerDto) {
+    SellerDto info = sqlSession.selectOne("seller.info", sellerDto);
+		return sellerDto;
+	}
+//	@Override
+//	public SellerDto info_edit(SellerDto sellerDto) {
+//	 info_edit =sqlSession.update("seller.info_edit", sellerDto);
+//		return sellerDto;
+	//}
 
 
 }

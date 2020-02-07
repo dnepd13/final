@@ -15,6 +15,8 @@ public interface SellerDao {
 	void regist(SellerDto sellerDto);
 	
 	SellerDto login(SellerDto sellerDto);
+	SellerDto info(SellerDto sellerDto);
+//	SellerDto info_edit(SellerDto sellerDto);
 
 
 

@@ -43,6 +43,24 @@ private SellerDao sellerDao;
 	}
 
 
+
+	@Override
+	public SellerDto info(SellerDto sellerDto) {
+			sellerDto.getSeller_id();
+			
+		return sellerDao.info(sellerDto);
+	}
+
+
+
+//	@Override
+//	public SellerDto info_edit(SellerDto sellerDto) {
+//					sellerDto.getSeller_id();
+//					
+//		return sellerDao.info_edit(sellerDto);
+//	}
+
+
 	}
 
 

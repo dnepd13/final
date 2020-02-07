@@ -1,5 +1,8 @@
 package com.kh.ordering.controller;
 import java.util.*;
+
+import javax.servlet.http.HttpSession;
+
 import java.text.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,12 @@ import com.kh.ordering.service.SellerService;
 public class SellerController {
 	@Autowired
 	private SellerService sellerService;
+	
+	//판매자 메인 홈
+	@GetMapping("/main")
+	public String main() {
+		return "/seller/main";
+	}
 	//회원가입 전 이용약관동의 받기
 	@GetMapping("/regist_agree")
 	public String regist_agree() {	  
@@ -77,7 +86,8 @@ public class SellerController {
 		
 	}
 	@PostMapping("/login")
-	private String login(@ModelAttribute SellerDto sellerDto  ) {
+	private String login(@ModelAttribute SellerDto sellerDto, 
+									HttpSession session) {
 		//비밀번호 암호화
 		//아이디 검색을 하고 결과 유무 확인
 			SellerDto find = sellerService.login(sellerDto);
@@ -92,7 +102,8 @@ public class SellerController {
 //			boolean correct = sellerDto.getSeller_pw().equals(find.getSeller_pw());
 //			log.info("current={}",correct);
 					if(correct == true) {   //비밀번호일치
-						return "redirect:/";				
+						session.setAttribute("seller_id", find.getSeller_id());
+						return "redirect:/seller/main";				
 					}
 					else {
 //						log.info("asda");
@@ -101,7 +112,12 @@ public class SellerController {
 			
 		}
 	}
-	
+//판매자 로그아웃 
+	@GetMapping("/logout")
+		public String logout(HttpSession session) {
+		session.removeAttribute("seller_id");
+		return "redirect:/";
+	}
 	// 판매자 관리 페이지
 	@GetMapping("/management")
 	 public String management() {
@@ -111,14 +127,26 @@ public class SellerController {
 	public String management(@ModelAttribute SellerDto sellerDto ) {
 		return"redirect:/seller/management";
 	}
-	//판매자 정보 조회/수정
+	//판매자 정보 조회
 	@GetMapping("/info")
 	public String info() {
 		return "seller/info";
 	}
 	@PostMapping("/info")
-	public String info(@ModelAttribute SellerDto sellerDto) {
-		return"redirect:/seller/management";
+	public String info(SellerDto sellerDto,Model model) {
+		
+		sellerService.info(sellerDto);
+		return"redirect:/seller/info_edit";
+	}
+	//판매자 정보 수정
+	@GetMapping("/info_edit")
+	public String info_edit() {
+		return "seller/info_edit";		
+	}
+	@PostMapping("/info_edit")
+	public String info_edit(@ModelAttribute SellerDto sellerDto) {
+//		sellerService.info_edit(sellerDto);
+		return "redirect:/seller/info";		
 	}
 	
 	//판매자 비밀번호 변경

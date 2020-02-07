@@ -10,5 +10,9 @@ public interface SellerService {
 	
 	//판매자 로그인 Service
 	SellerDto login(SellerDto sellerDto);
+	//판매자 정보조회
+	SellerDto info(SellerDto sellerDto);
+
+//	SellerDto info_edit(SellerDto sellerDto);
 
 }
