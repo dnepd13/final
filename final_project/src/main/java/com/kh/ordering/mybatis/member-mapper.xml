@@ -29,9 +29,7 @@
  		select member_no from member where member_id = #{member_id}
  	</select>
  	
- 	 			<select id="MemberSeq" resultType="int">
-			Select member_seq.nextval from dual
-		</select>
+
  	
  <!-- 회원 요청서 sql -->
  	<!-- 요청서 작성 -->
@@ -72,7 +70,15 @@
 	
 	
 	
-	 <insert id="regist" parameterType="memberDto">
+	
+	
+	<!-- 멤버를 생성하기위한 시퀀스 생성 -->
+	 	<select id="MemberSeq" resultType="int">
+			Select member_seq.nextval from dual
+		</select>
+	
+	<!-- 회원가입  -->
+	 <insert id="regist" parameterType="member">
  	
 
  		insert 
@@ -104,9 +110,29 @@
  		)
 	</insert> 
 	
+	<!-- 로그인 -->
+	<select id="login" parameterType="member" resultType="member">
+		select * from member
+		where
+			member_id=#{member_id}
+			and
+			member_pw=#{member_pw}
+	
+	</select>
+	
+	
+	<!-- 회원삭제 -->
 	<delete id="delete" parameterType="int">
 		delete member where member_no = #{member_no}
 	</delete>
+
+
+
+
+
+
+
+
 
 
 

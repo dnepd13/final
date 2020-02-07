@@ -1,5 +1,7 @@
 package com.kh.ordering.service;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import com.kh.ordering.entity.CustomOrderDto;
@@ -12,4 +14,9 @@ public interface MemberService {
 														CustomOrderDto customOrderDto,
 														MemberCustomOrderDto memberCustomDto,
 														SellerAlarmDto sellerAlarmDto);
+
+//로그인 상태확인
+
+
+
 }

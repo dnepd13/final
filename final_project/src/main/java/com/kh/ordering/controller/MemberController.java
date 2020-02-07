@@ -49,22 +49,26 @@ public class MemberController {
 		@PostMapping("/regist")
 		public String regist(@ModelAttribute MemberDto member) {	
 		 
-			//멤버의 시퀀스 번호를 불러온다
+			//멤버의 시퀀스 번호를 저장한다
 			int seq = memberDao.MemberSeq(); 
 			
+			//멤버 시퀀스를  저장한다
 			member.setMember_no(seq);
 			
 			System.out.println(member);
-			
-			
-		//불러온 시퀀스 번호를 멤버 dto에 저장하고 레지스트에 입력한다
 		
-		
-			
-			
+			//멤버 시퀀스를 회원에게 입력받은 6개의 데이터에 넣고 입력
 			sqlSession.insert("member.regist",member);
-
 			
+			Member_PointDto member_PointDto = Member_PointDto.builder().member_no(seq).build();
+			
+			sqlSession.insert("member_PointDto.pointregist", member_PointDto);
+			
+			
+			
+			
+			return "redirect:index"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
+		}
 	
 		//레지스트 입력 후 포인트 등록에 불러온 시퀀스 번호를 넣고 입력한다
 			
@@ -75,9 +79,7 @@ public class MemberController {
 //		memberDao.regist(memberDto);
 		
 		
-		return "redirect:index"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
-	}
-		
+	
 	
 		
 	
@@ -103,7 +105,6 @@ public class MemberController {
 		
 		
 		return "redirect:index"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
-		
 	}	
 	
 	@GetMapping("/index")
@@ -114,6 +115,22 @@ public class MemberController {
 	@GetMapping("/login")
 	public String login() {
 		return "member/login"; 
+	}
+	
+	@PostMapping("/login")
+	public String login(@ModelAttribute MemberDto member) {
+		MemberDto find = memberDao.login(member);
+		if(find != null) {
+			log.info("로그인 성공");
+			//세션에 회원 정보 추가
+			//필요하다면 쿠키도 생성
+			
+			return "redirect:index";
+		}
+		else {
+			log.info("로그인 실패");
+			return "redirect:login";
+		}
 	}
 	
 

@@ -66,17 +66,25 @@ public class MemberDaoImpl implements MemberDao{
 
 		
 
-		@Override
+		@Override // 요청서 저장
 		public int MemberSeq() {
 			return sqlSession.selectOne("member.MemberSeq");
 		}
 
-		@Override
+		@Override //회원가입
 		public void regist(MemberDto member) {
 			sqlSession.insert("member.regist", member); //세션값에 있는 regist를 저장
 			
+			}
+		
+		
+		
+		
+		
+		@Override //로그인
+		public MemberDto login(MemberDto member) {
+			return sqlSession.selectOne("member.login", member);
 		}
-
 
 
 		

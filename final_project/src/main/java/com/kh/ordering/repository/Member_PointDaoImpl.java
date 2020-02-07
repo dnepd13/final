@@ -11,11 +11,25 @@ public class Member_PointDaoImpl implements Member_PointDao{
 
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	@Override
-	public void registsuccess(Member_PointDto member_PointDto) {
-		sqlSession.insert("member_pointDto.regist", member_PointDto);
+	public int MemberGetSeq() {
+		
+		return sqlSession.selectOne("member_PointDto.MemberGetSeq");
+	}
+
+	@Override
+	public void pointregist(Member_PointDto member_PointDto) {
+		sqlSession.insert("member_PointDto.pointregist", member_PointDto);
 		
 	}
+
+	@Override
+	public void registsuccess(Member_PointDto member_pointDto) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
 
 }
