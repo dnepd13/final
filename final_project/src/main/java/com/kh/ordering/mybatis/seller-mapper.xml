@@ -20,22 +20,62 @@
 		-$의 경우 SQL Injection 이라는 해킹 공격에 매우 취약하므로 사용에 주의
  -->
  
- <mapper namespace="memo"> <!-- 이건 꼭 있어야한다 -->
-<!--  	<insert id="insert" parameterType="com.kh.ordering.entity.Dto"> -->
-<!--  		insert into admin values(#{admin_no}, #{admin_id}, #{admin_pw}, #{admin_name}, #{admin_email}, #{admin_grade}, sysdate, sysdate) -->
-<!--  	</insert> -->
-
- </mapper> 
-
-
-
-
-
-
-
-
-
-
-
+ <mapper namespace="seller">
+  <!-- session id로 판매자 번호 구하기-->
+ 	<select id="getNo" parameterType="String" resultType="int">
+ 		select seller_no from seller where seller_id = #{seller_id}
+ 	</select>
+ 	
+ <!-- 판매자 견적서 sql -->
+ 	<!-- 견적서 작성 -->
+	<insert id="customResp" parameterType="customOrderDto">
+		insert into custom_order
+						(custom_order_no,
+						custom_order_title, custom_order_content, custom_order_date,
+						custom_order_price, custom_order_hopedate,
+						custom_order_status, custom_order_type)
+			values(custom_order_seq.nextval,
+						#{custom_order_title}, #{custom_order_content}, sysdate,
+						#{custom_order_price}, #{custom_order_hopedate},
+						'진행 중', '견적서')
+	</insert>
+	
+	<!-- 견적서 시퀀스번호 -->
+	<select id="customSeq" resultType="int">
+		select custom_order_seq.currval from dual
+	</select>
+	
+	<!-- 견적서 관리 테이블 -->
+	<insert id="customInsert" parameterType="sellerCustomDto">
+		insert into seller_custom_order	values(seller_custom_order_seq.nextval,#{custom_order_no},#{seller_no})
+	</insert>
+	
+	<!-- 요청서 도착 알람 -->
+	<insert id="insertAlarm">
+		insert into seller_alarm(seller_alarm_no, seller_no, member_custom_order_no,
+												seller_alarm_check, seller_alarm_delete)
+								values(seller_alarm_seq.nextval, #{seller_no}, #{member_custom_order_no},
+											'N', 'N')
+	</insert>
+	
+	<!-- 전체 요청서 보기(카테고리 미구현) -->
+	<select id="getListCustom" resultType="customOrderVO">
+		select *from member_custom_view
+	</select>
+	<!-- 요청서 상세내용 보기. 단일조회 -->
+	<select id="getCustomNo" parameterType="int" resultType="customOrderVO">
+		select *from member_custom_view where custom_order_no = #{custom_order_no}
+	</select>
+	
+	<!-- 내가 보낸 견적서 목록 -->
+	<select id="getListResp" parameterType="int" resultType="customOrderVO">
+		select *from seller_custom_view where seller_no=#{seller_no}
+	</select>
+	
+	<!-- 견적서 삭제 -->
+	<delete id="deleteCustom" parameterType="int">
+		delete seller_custom_order where seller no=#{seller_no} 
+	</delete>
+ </mapper>
 
 

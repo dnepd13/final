@@ -47,14 +47,14 @@ public class MemberController {
 //			) {
 		
 		@PostMapping("/regist")
-		public String regist(@ModelAttribute MemberDto memberDto) {	
+		public String regist(@ModelAttribute MemberDto member) {	
 		 
 			//멤버의 시퀀스 번호를 불러온다
 			int seq = memberDao.MemberSeq(); 
 			
-			memberDto.setMember_no(seq);
+			member.setMember_no(seq);
 			
-			System.out.println(memberDto);
+			System.out.println(member);
 			
 			
 		//불러온 시퀀스 번호를 멤버 dto에 저장하고 레지스트에 입력한다
@@ -62,7 +62,7 @@ public class MemberController {
 		
 			
 			
-			sqlSession.insert("me4thhhhhhhhhh4ggggggmberDto.regist",memberDto);
+			sqlSession.insert("member.regist",member);
 
 			
 	

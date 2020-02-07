@@ -13,9 +13,22 @@
  	
  	<!-- 별칭-->
  	<typeAliases>
-		<!-- 여기는 구매자에 관한 mybatis 입니다. -->
-	 	<typeAlias type="com.kh.ordering.entity.MemberDto" alias="memberDto"/>
+ 		
+ 		<!-- 주문제작 Dto Alias -->
+ 		<typeAlias type="com.kh.ordering.entity.MemberDto" alias="memberDto"/>
 		<typeAlias type="com.kh.ordering.entity.Member_PointDto" alias="member_PointDto"/>
+ 		
+		<typeAlias type="com.kh.ordering.entity.CustomOrderDto" alias="customOrderDto"/>
+		<typeAlias type="com.kh.ordering.entity.MemberCustomOrderDto" alias="memberCustomDto"/>
+		<typeAlias type="com.kh.ordering.entity.SellerCustomOrderDto" alias="sellerCustomDto"/>
+		<typeAlias type="com.kh.ordering.vo.CustomOrderVO" alias="customOrderVO"/>
+
+ 		<typeAlias type="com.kh.ordering.entity.GoodsDto" alias="goodsDto"/>
+ 		<typeAlias type="com.kh.ordering.entity.GoodsOptionDto" alias="goodsOptionDto"/>
+ 		<typeAlias type="com.kh.ordering.entity.CategoryDto" alias="categoryDto"/>
+		<typeAlias type="com.kh.ordering.vo.GoodsVO" alias="goodsVO"/>
+		
+
  	</typeAliases>
 
  	
