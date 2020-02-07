@@ -47,10 +47,32 @@
 		select custom_order_seq.currval from dual
 	</select>
 	
-	<!-- 요청서 관리 테이블 -->
+	<!-- 요청서 관리 테이블 등록-->
 	<insert id="customInsert" parameterType="memberCustomDto">
-		insert into member_custom_order	 values(member_custom_order_seq.nextval, #{member_no}, #{custom_order_no})
+		insert into member_custom_order	values(member_custom_order_seq.nextval, #{member_no}, #{custom_order_no})
 	</insert>
+	
+	<!-- 견적서 도착 알람 -->
+	<insert id="insertAlarm">
+		insert into member_alarm(member_alarm_no, member_no, seller_custom_order_no,
+												member_alarm_check, member_alarm_delete)
+								values(member_alarm_seq.nextval, #{member_no}, #{seller_custom_order_no},
+											'N', 'N')
+	</insert>
+
+	<!-- 전체 견적서 보기(카테고리 미구현) -->
+	<select id="getListCustom" resultType="customOrderVO">
+		select *from seller_custom_view
+	</select>	
+	<!-- 내가 보낸 요청서만 보기 -->
+	<select id="getListReq" parameterType="int" resultType="customOrderVO">
+		select *from member_custom_view where member_no =#{member_no}
+	</select>
+	
+	<!-- 요청서 삭제 -->
+	<delete id="deleteCustom" parameterType="int">
+		delete member_custom_order where member no=#{member_no} 
+	</delete>
  </mapper> 
 
 

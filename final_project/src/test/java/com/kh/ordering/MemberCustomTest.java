@@ -10,6 +10,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
+import com.kh.ordering.entity.SellerAlarmDto;
 
 import lombok.extern.slf4j.Slf4j;
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -44,12 +45,26 @@ public class MemberCustomTest {
 		
 		sqlSession.insert("member.customReq", customOrderDto);
 		
+		// 요청서 시퀀스번호 가져오기
+		int custom_order_no = sqlSession.selectOne("member.customSeq");
+		
 		// 요청서 관리테이블 등록
 		MemberCustomOrderDto memberCustom = MemberCustomOrderDto.builder()
 																													.member_custom_order_no(1)
-																													.custom_order_no(customOrderDto.getCustom_order_no())
+																													.custom_order_no(custom_order_no)
 																													.member_no(member_no)
 																													.build();
-		sqlSession.insert("member.memberCustom", memberCustom);
+		sqlSession.insert("member.customInsert", memberCustom);
+		
+		// 판매자 요청서 도착 알람 생성
+		SellerAlarmDto sellerAlarmDto = SellerAlarmDto.builder()
+																						.seller_alarm_no(1) //테이블 고유번호
+																						.seller_no(2) //판매자 번호
+																						.member_custom_order_no(1)	 //요청서 번호
+																						.seller_alarm_date("20200206") //알람 확인날짜
+																						.seller_alarm_check("N") //알람확인여부
+																						.seller_alarm_delete("N") //알람삭제
+																						.build();
+		sqlSession.insert("seller.insertAlarm", sellerAlarmDto);
 	}
 }

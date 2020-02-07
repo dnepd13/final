@@ -1,5 +1,9 @@
 package com.kh.ordering.repository;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -36,6 +40,18 @@ public class MemberDaoImpl implements MemberDao{
 	public int CustomSeq() {
 		
 		return sqlSession.selectOne("member.customSeq");
+	}
+
+	@Override // 판매자가 보낸 견적서 보기
+	public List<CustomOrderDto> getListCustom() {
+		
+		return sqlSession.selectList("member.getListCustom");
+	}
+
+	@Override // 내가 보낸 요청서 보기
+	public List<CustomOrderDto> getListReq(int member_no) {
+		
+		return sqlSession.selectList("member.getListReq", member_no);
 	}
 
 }
