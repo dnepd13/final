@@ -33,6 +33,27 @@ public class BoardDaoImpl implements BoardDao{
 		AdminQnaBoardDto result = sqlSession.selectOne("admin.adminQnaGetOne", adminQnaBoardDto);
 		return result;
 	}
+	
+	//새글쓰기
+	@Override
+	public void qnaBoardInsertNew(AdminQnaBoardDto adminQnaBoardDto) {
+		sqlSession.insert("admin.adminQnaNewWrite", adminQnaBoardDto);
+	}
+
+	@Override
+	public void qnaBoardInsertSecond(AdminQnaBoardDto adminQnaBoardDto) {
+		sqlSession.insert("admin.adminQnaSecondWrite", adminQnaBoardDto);
+	}
+
+	@Override
+	public void qnaBoardUpdate(AdminQnaBoardDto adminQnaBoardDto) {
+		sqlSession.update("admin.qnaBoardUpdate", adminQnaBoardDto);	
+	}
+
+	@Override
+	public void qnaBoardDelete(AdminQnaBoardDto adminQnaBoardDto) {
+		sqlSession.delete("admin.qnaBoardDelete", adminQnaBoardDto);
+	}
 
 	
 }

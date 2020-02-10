@@ -193,7 +193,74 @@
 		select * from admin_qna where admin_qna_no = #{admin_qna_no}
 	</select>
 	
+	<!-- 관리문의게시판 새글쓰기 -->
+	<insert id="adminQnaNewWrite" parameterType="adminQnaDto">
+		insert into admin_qna(
+			admin_qna_no,
+			admin_no,
+			admin_qna_content,
+			admin_qna_title,
+			admin_qna_writer,
+			admin_qna_date,
+			admin_qna_head,
+			group_no,
+			admin_qna_usertype
+		) values(
+			admin_qna_seq.nextval, 
+			#{admin_no},
+			#{admin_qna_content},
+			#{admin_qna_title},
+			#{admin_qna_writer},
+			to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' ),
+			#{admin_qna_head},
+			admin_qna_seq.nextval,
+			'관리자'
+		)
+	</insert>
+	
+	<!-- 관리문의게시판 답글쓰기 -->
+	<insert id="adminQnaSecondWrite" parameterType="adminQnaDto">
+		insert into admin_qna(
+			admin_qna_no,
+			admin_no,
+			admin_qna_content,
+			admin_qna_title,
+			admin_qna_writer,
+			admin_qna_date,
+			admin_qna_head,
+			group_no,
+			super_no,
+			admin_qna_usertype
+		) values(
+			admin_qna_seq.nextval, 
+			#{admin_no},
+			#{admin_qna_content},
+			#{admin_qna_title},
+			#{admin_qna_writer},
+			to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' ),
+			#{admin_qna_head},
+			#{group_no},
+			#{super_no},
+			'관리자'
+		)
+	</insert>
+	
+	<!-- qna 글 수정 관리자용 -->
+	<update id="qnaBoardUpdate"  parameterType="adminQnaDto">
+		update admin_qna 
+			set 
+				admin_qna_title = #{admin_qna_title},
+				admin_qna_content = #{admin_qna_content},
+				admin_qna_date = to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' )
+			where
+				admin_qna_no = #{admin_qna_no}
+	</update>
+	
+	<!-- qna글 삭제 -->
+	<delete id="qnaBoardDelete" parameterType="adminQnaDto">
+		delete admin_qna where admin_qna_no = #{admin_qna_no}
+	</delete>
 	
  </mapper> 
-
+	
  
