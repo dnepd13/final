@@ -49,7 +49,7 @@ public class MemberCustomService implements MemberService{
 															.seller_no(seller_no)
 															.member_custom_order_no(custom_order_no)
 															.build();
-		sellerDao.CustomAlarmInsert(sellerAlarmDto);
+		//sellerDao.CustomAlarmInsert(sellerAlarmDto);
 		return null;
 	}
 }

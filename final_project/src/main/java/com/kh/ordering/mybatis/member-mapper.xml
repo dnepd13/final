@@ -64,8 +64,7 @@
 								values(member_alarm_seq.nextval, #{member_no}, #{seller_custom_order_no},
 											'N', 'N')
 	</insert>
-	
-	
+
 	
 	
 	
@@ -73,7 +72,6 @@
 	
 	
 	 <insert id="regist" parameterType="memberDto">
- 	
 
  		insert 
  		into member(
