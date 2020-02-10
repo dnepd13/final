@@ -35,7 +35,7 @@
 			#{category_no}
 		)
 	</insert>
-	
+
 	<!-- 상품 삭제  -->
 	<delete id="delete" parameterType="int">
 		delete goods where goods_no = #{goods_no}
@@ -76,4 +76,5 @@
 		select * from goods_option where goods_no = #{goods_no}
 	</select>
 </mapper>
+
 

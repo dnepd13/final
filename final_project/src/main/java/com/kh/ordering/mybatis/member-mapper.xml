@@ -100,7 +100,6 @@
 <!-- 회원 기능 -->	
 	
 	 <insert id="regist" parameterType="memberDto">
- 	
 
  		insert 
  		into member(
