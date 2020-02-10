@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ 
+ <mapper namespace="files">
+ <!-- files 테이블 -->
+ 	<insert id="insert" parameterType="com.kh.ordering.entity.FilesDto">
+ 		insert into files values(#{files_no}, #{files_size},#{files_savename},#{files_uploadname})
+ 	</insert>
+ 	
+ 	<!-- 파일 다음 시퀀스번호 -->
+ 	<select id="getSeq" resultType="int">
+ 		select files_seq.nextval from dual
+ 	</select>
+ 	
+ 	<!-- 주문제작/파일 테이블 -->
+ 	<insert id="customInsert" parameterType="com.kh.ordering.entity.CustomOrderFilesDto">
+ 		insert into files_custom_order values(#{files_no}, #{custom_order_no})
+ 	</insert>
+ </mapper>

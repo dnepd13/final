@@ -40,7 +40,7 @@
 						'진행 중', '견적서')
 	</insert>
 	
-	<!-- 견적서 시퀀스번호 -->
+	<!-- 주문제작 테이블 현재 시퀀스번호 -->
 	<select id="customSeq" resultType="int">
 		select custom_order_seq.currval from dual
 	</select>
@@ -49,6 +49,10 @@
 	<insert id="customInsert" parameterType="sellerCustomDto">
 		insert into seller_custom_order	values(seller_custom_order_seq.nextval,#{custom_order_no},#{seller_no})
 	</insert>
+	<!-- 견적서 관리테이블 현재 시퀀스번호 -->
+	<select id="customOrderSeq" resultType="int">
+		select seller_custom_order_seq.currval from dual
+	</select>
 	
 	<!-- 요청서 도착 알람 -->
 	<insert id="insertAlarm">
@@ -59,22 +63,30 @@
 	</insert>
 	
 	<!-- 전체 요청서 보기(카테고리 미구현) -->
-	<select id="getListAll" resultType="customOrderVO">
-		select *from member_custom_view
-	</select>
+<!-- 	<select id="getListAll" resultType="customOrderVO"> -->
+<!-- 		select *from member_custom_view -->
+<!-- 	</select> -->
 	<!-- 나에게 온 요청서만 보기 -->
 	<select id="getListCustom" parameterType="int" resultType="customOrderVO">
-		select *from member_custom_view where seller_no= #{seller_no} order by custom_order_date desc
-	</select>
-	
+		select A.*, B.member_id from
+	    	member_custom_view A inner join member B
+	        	on A.member_no = B.member_no
+		where seller_no= #{seller_no} order by custom_order_date desc
+	</select>	
 	<!-- 요청서 상세내용 보기. 단일조회 -->
-	<select id="getCustomNo" parameterType="int" resultType="customOrderVO">
-		select *from member_custom_view where custom_order_no = #{custom_order_no}
+	<select id="getListInfo" parameterType="int" resultType="customOrderVO">
+		select a.*, b.member_id from
+		    member_custom_view A inner join member B
+		        on a.member_no = b.member_no
+		where custom_order_no = #{custom_order_no}
 	</select>
 	
 	<!-- 내가 보낸 견적서 목록 -->
 	<select id="getListResp" parameterType="int" resultType="customOrderVO">
-		select *from seller_custom_view where seller_no=#{seller_no}
+		select A.*, B.seller_no from
+    		custom_order A inner join seller_custom_order B
+        		on a.custom_order_no = b.custom_order_no
+        where seller_no=#{seller_no}
 	</select>
 	
  </mapper>
