@@ -52,4 +52,19 @@
 		select * from goods_option where goods_no = #{goods_no}
 	</select>
 	
+	<resultMap type="goodsOptionVO" id="getGoodsOptionVO">
+		<result column="goods_option_title" property="goods_option_title"/>
+		
+		<collection property="goodsOptionList" javaType="list"
+					ofType="goodsOptionDto" select="getGoodsOption" column="goods_option_title"></collection>
+	</resultMap>
+	
+	<select id="getGoodsOptionVOList" parameterType="int" resultMap="getGoodsOptionVO">
+		select distinct goods_option_title from goods_option where goods_no = ${goods_no}
+	</select>
+	
+	<select id="getGoodsOption" parameterType="String" resultType="goodsOptionDto">
+		select * from goods_option where goods_option_title = #{goods_option_title}
+	</select>
+	
  </mapper>
