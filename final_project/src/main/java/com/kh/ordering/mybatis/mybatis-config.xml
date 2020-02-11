@@ -17,6 +17,7 @@
  		<!-- 주문제작 Dto Alias -->
  		<typeAlias type="com.kh.ordering.entity.MemberDto" alias="member"/>
 		<typeAlias type="com.kh.ordering.entity.Member_PointDto" alias="member_PointDto"/>
+ 		<typeAlias type="com.kh.ordering.entity.Member_AddrDto" alias="member_AddrDto"/>
  		
 		<typeAlias type="com.kh.ordering.entity.CustomOrderDto" alias="customOrderDto"/>
 		<typeAlias type="com.kh.ordering.entity.MemberCustomOrderDto" alias="memberCustomDto"/>

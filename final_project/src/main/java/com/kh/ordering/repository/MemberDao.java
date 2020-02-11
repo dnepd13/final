@@ -37,13 +37,21 @@ public interface MemberDao {
 		// 멤버 테이블 시퀀스
 		int MemberSeq();
 		
+		
 		// 멤버 테이블 가입
 		void regist(MemberDto member);
 		
 	
 		//로그인 
 		MemberDto login(MemberDto member);
+		
+		//회원 최종로그인변동
+		void lastLogin(MemberDto member);
+		
+//		//멤버아이디로 번호 구해오기
+//		int findno(@RequestParam MemberDto member, int member_no);
+//		
 
-	
-		}
 
+
+}

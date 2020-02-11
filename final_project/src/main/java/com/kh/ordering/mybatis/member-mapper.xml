@@ -76,6 +76,7 @@
 	 	<select id="MemberSeq" resultType="int">
 			Select member_seq.nextval from dual
 		</select>
+		
 	
 	<!-- 회원가입  -->
 	 <insert id="regist" parameterType="member">
@@ -115,10 +116,20 @@
 		select * from member
 		where
 			member_id=#{member_id}
-			and
-			member_pw=#{member_pw}
+		
 	
 	</select>
+	
+	<!-- 최종 로그인 변경  -->
+	<update id="lastLogin" parameterType="member">
+		update member set member_last_login = sysdate where member_id= #{member_id}
+	</update>
+	
+	<!-- 배송지 테이블에서 id로 멤버 no 찾기  -->
+	<select id="findno" parameterType="member" resultType="int">
+		select member_no from member where member_id = #{member_id}
+	</select>
+	
 	
 	
 	<!-- 회원삭제 -->

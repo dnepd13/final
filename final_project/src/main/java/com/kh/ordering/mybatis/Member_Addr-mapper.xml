@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+  <mapper namespace="member_AddrDto">
+  
+  <!-- 인서트 구문 배송지 -->
+   <insert id="insertaddr" parameterType="member_AddrDto">
+   	insert into member_addr(
+   	member_addr_no,
+   	member_name_extra,
+   	member_addr_post,
+   	member_addr_basic,
+   	member_addr_extra,
+   	member_addr_status,
+   	member_no
+   	)
+	values(
+	member_addr_seq.nextval,
+	#{member_name_extra},
+	#{member_addr_post},
+	#{member_addr_basic},
+	#{member_addr_extra},
+	'기본주소',
+	#{member_no}
+	)
+   </insert>
+  </mapper>

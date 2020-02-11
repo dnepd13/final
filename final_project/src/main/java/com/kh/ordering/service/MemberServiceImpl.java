@@ -21,4 +21,10 @@ public class MemberServiceImpl implements MemberService{
 		return null;
 	}
 
+//	@Override
+//	public Member_AddrDto Member_InsertAddr() {
+//		 TODO Auto-generated method stub
+//		return null;
+//	}
+
 }
