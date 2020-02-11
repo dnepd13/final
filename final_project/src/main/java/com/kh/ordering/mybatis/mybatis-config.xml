@@ -4,16 +4,18 @@
  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-config.dtd"> 
  
- <configuration><!-- 이건 꼭 있어야 한다 -->
+ 
+  <configuration>
+  <!-- 이건 꼭 있어야 한다 -->
 	<!-- 기본 운영 설정 -->
  	<settings>
  		<setting name="cacheEnabled" value="true"/>
  		<setting name="defaultStatementTimeout" value="10000"/>
  	</settings>
- 	
- 	<!-- 별칭-->
  	<typeAliases>
- 		
+
+		<!-- 판매자 Dto Alias--> 		
+ 		<typeAlias type="com.kh.ordering.entity.SellerDto" alias="seller"/>	
  		<!-- 주문제작 Dto Alias -->
  		<typeAlias type="com.kh.ordering.entity.MemberDto" alias="member"/>
 		<typeAlias type="com.kh.ordering.entity.Member_PointDto" alias="member_PointDto"/>
@@ -29,15 +31,5 @@
  		<typeAlias type="com.kh.ordering.entity.CategoryDto" alias="categoryDto"/>
 		<typeAlias type="com.kh.ordering.vo.GoodsVO" alias="goodsVO"/>
 		
-
- 	</typeAliases>
-
- 	
+	</typeAliases>
  </configuration>
- 
-
-  	 <!--   <typeAliases>
-  	 여기는 구매자에 관한 mybatis 입니다.
-  	 <typeAlias type="com.kh.ordering.entity.member_PointDto" alias="member_PointDto"></typeAlias>
- 	</typeAliases> -->
- 	

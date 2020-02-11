@@ -173,34 +173,38 @@ public class MemberController {
 	
 	
 	
-	@GetMapping("/insertaddr")
-	public String registaddr() {
-		
-		return "member/insertaddr";
-	}
-	
-	@PostMapping("/insertaddr")
-	public String registaddr(@ModelAttribute Member_AddrDto member_AddrDto) {
-
-		// session값에 있는 아이디를 찾아서 번호를 구해왔고 
-//		String member_id =(String)session.getAttribute("member");
-//		int member_no = memberDao.findno("member_id");
+//	@GetMapping("/insertaddr")
+//	public String registaddr() {
 //		
-//		log.info("member={}",member_no);		
-		
-//		member_AddrDto = Member_AddrDto.builder().member_no(member_no).build();
-		
-		//멤버 시퀀스를 회원에게 입력받은 4개의 데이터에 넣고 입력
-		//sqlSession.insert("member_AddrDto.insertaddr",member_AddrDto);
-//		member_addrDto에 번호를 152번으로 설정한 뒤  DAO를 이용하여 insert
-		
-
-		
-		return "redirect:/member/insertaddr";
-		
-		
-		
-	
-	}	
-	
+//		return "member/insertaddr";
+//	}
+//	
+//	@PostMapping("/insertaddr")
+//	public String registaddr(@ModelAttribute Member_AddrDto member_AddrDto) {
+//
+//		// session값에 있는 아이디를 찾아서 번호를 구해왔고 
+////		String member_id =(String)session.getAttribute("member");
+////		int member_no = memberDao.findno("member_id");
+////		
+////		log.info("member={}",member_no);		
+//		
+////		member_AddrDto = Member_AddrDto.builder().member_no(member_no).build();
+//		
+//		//멤버 시퀀스를 회원에게 입력받은 4개의 데이터에 넣고 입력
+//		//sqlSession.insert("member_AddrDto.insertaddr",member_AddrDto);
+//		
+////		member_addrDto에 번호를 152번으로 설정한 뒤  DAO를 이용하여 insert
+//		int no = 152;
+//		member_AddrDto = Member_AddrDto.builder().member_no(no).build();
+//		log.info("no={}", no);
+//		
+//		member_AddrDao.registaddr(member_AddrDto);
+//		log.info("member_AddrDto={}",member_AddrDto);
+//		return "redirect:/member/insertaddr";
+//		
+//		
+//		
+//	
+//	}	
+//	
 }

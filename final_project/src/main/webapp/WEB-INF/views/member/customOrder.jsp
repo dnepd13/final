@@ -25,9 +25,7 @@
 <!-- 요쳥서 작성페이지: hidden 값은 나중에 회원/판매자에서 정보 가져오기 -->
 <div>
 	<form action="customOrder" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="seller_no" value="2">
-		<input type="hidden" name="member_id" value="member">
-		
+		<input type="hidden" name="seller_no" value="${seller_no }">
 		<input type="text" name="custom_order_title" placeholder="요청서 제목" required>
 		<h5>요청하는 상세내용을 작성해주세요.</h5>
 		<textarea name="custom_order_content" required></textarea>
@@ -36,7 +34,7 @@
 		<h5>희망 기한은 언제인가요? (00월 00일까지, 다음주 수요일 등)</h5>
 		<input type="text" name="custom_order_hopedate">
 		<h5>원하는 디자인 등이 있다면 업로드해주세요.</h5>
-		<input type="file" multiple>
+		<input type="file" name="files" multiple>
 		<br><br>
 		<input type="submit" value="요청서 보내기">
 	</form>

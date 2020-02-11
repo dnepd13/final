@@ -54,6 +54,10 @@
 	<insert id="customInsert" parameterType="memberCustomDto">
 		insert into member_custom_order	values(member_custom_order_seq.nextval, #{member_no}, #{custom_order_no})
 	</insert>
+	<!-- 요청서 관리테이블 현재 시퀀스번호 -->
+	<select id="customOrderSeq" resultType="int">
+		select member_custom_order_seq.currval from dual
+	</select>
 	
 	<!-- 견적서 도착 알람 -->
 	<insert id="insertAlarm">
@@ -62,12 +66,33 @@
 								values(member_alarm_seq.nextval, #{member_no}, #{seller_custom_order_no},
 											'N', 'N')
 	</insert>
+
+	<!-- 전체 견적서 보기(카테고리 미구현) -->
+	<select id="getListAll" resultType="customOrderVO">
+		select *from seller_custom_view
+	</select>
+	<!-- 나에게 온 견적서만 보기 -->
+	<select id="getListCustom" parameterType="int" resultType="customOrderVO">
+		select A.*, B.seller_id from
+	    	seller_custom_view A inner join seller B
+	        	on A.seller_no = B.seller_no
+		where member_no = #{member_no} order by custom_order_date desc
+	</select>
+	<!-- 견적서 상세내용 보기. 단일조회 -->
+	<select id="getListInfo" resultType="customOrderVO">
+		select A.*, B.seller_id from
+		    seller_custom_view A inner join seller B
+		        on A.seller_no = B.seller_no
+		where custom_order_no = #{custom_order_no}
+	</select>
 	
-	
-	
-	
-	
-	
+	<!-- 내가 보낸 요청서 목록 -->
+	<select id="getListReq" parameterType="int" resultType="customOrderVO">
+		select A.*, B.member_no from
+   			custom_order A inner join member_custom_order B
+       			on a.custom_order_no = b.custom_order_no
+       	where member_no=#{member_no}
+	</select>
 	
 	
 	
@@ -80,7 +105,6 @@
 	
 	<!-- 회원가입  -->
 	 <insert id="regist" parameterType="member">
- 	
 
  		insert 
  		into member(
@@ -140,17 +164,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	<!-- 전체 견적서 보기(카테고리 미구현) -->
 	<select id="getListCustom" resultType="customOrderVO">
 		select *from seller_custom_view
@@ -164,6 +177,7 @@
 	<delete id="deleteCustom" parameterType="int">
 		delete member_custom_order where member no=#{member_no} 
 	</delete>
+
 
  </mapper> 
 

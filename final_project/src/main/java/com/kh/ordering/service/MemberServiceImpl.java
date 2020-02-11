@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
-import com.kh.ordering.entity.SellerAlarmDto;
 import com.kh.ordering.repository.MemberDao;
 
 public class MemberServiceImpl implements MemberService{
@@ -16,7 +15,7 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Override
 	public CustomOrderDto MemberCustom(HttpSession session, CustomOrderDto customOrderDto,
-			MemberCustomOrderDto memberCustomDto, SellerAlarmDto sellerAlarmDto) {
+			MemberCustomOrderDto memberCustomDto) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -9,4 +9,8 @@ public interface BoardDao {
 	public int adminQnaCount();
 	public List<AdminQnaBoardDto> qnaBoardGetList(PagingVO vo);
 	public AdminQnaBoardDto qnaBoardGetOne(AdminQnaBoardDto adminQnaBoardDto);
+	public void qnaBoardInsertNew(AdminQnaBoardDto adminQnaBoardDto);
+	public void qnaBoardInsertSecond(AdminQnaBoardDto adminQnaBoardDto);
+	public void qnaBoardUpdate(AdminQnaBoardDto adminQnaBoardDto);
+	public void qnaBoardDelete(AdminQnaBoardDto adminQnaBoardDto);
 }

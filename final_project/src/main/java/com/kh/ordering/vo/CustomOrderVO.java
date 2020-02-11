@@ -18,6 +18,7 @@ public class CustomOrderVO {
 	private String custom_order_hopedate;	// 희망날짜
 	private String custom_order_status;	// 진행상황: 진행 중, 채택완료
 	private String custom_order_type;	// 구분: 요청서, 견적서
+	private int custom_order_category;
 	
 //	판매자 견적서 관리
 	private int seller_custom_order_no;
@@ -27,6 +28,17 @@ public class CustomOrderVO {
 	private int member_custom_order_no; // 요청서관리 고유번호
 	private int member_no; // 회원번호
 
+//	알람
+	private int seller_alram_no;
+	private String seller_alram_date;
+	private String seller_check;
+	private String seller_delete;
+	
+	private int member_alram_no;
+	private String member_alram_date;
+	private String member_check;
+	private String member_delete;
+	
 // 회원 정보
 	private String member_id;
 	private String member_name;

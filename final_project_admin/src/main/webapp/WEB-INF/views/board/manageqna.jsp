@@ -21,7 +21,16 @@
   	<c:forEach var="list" items="${list }">
     <tr>
       <th class="table-light">${list.admin_qna_head }</th>
-      <td><a href="${pageContext.request.contextPath}/board/detailqna?admin_qna_no=${list.admin_qna_no}">${list.admin_qna_title }</a></td>
+      <td>
+      <c:choose>
+      <c:when test="${list.super_no > 0}">
+     	 	<a href="${pageContext.request.contextPath}/board/detailqna?admin_qna_no=${list.admin_qna_no}">---->${list.admin_qna_title }</a>
+      </c:when>
+     	<c:otherwise>
+     		<a href="${pageContext.request.contextPath}/board/detailqna?admin_qna_no=${list.admin_qna_no}">${list.admin_qna_title }</a>
+     	</c:otherwise>
+      </c:choose>
+      </td>
       <td>${list.admin_qna_writer }</td>
       <td>${list.admin_qna_usertype }</td>
       <td>${list.admin_qna_date }</td>
