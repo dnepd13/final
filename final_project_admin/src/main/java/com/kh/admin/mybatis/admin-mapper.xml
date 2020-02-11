@@ -29,14 +29,14 @@
  	<!-- 관리자 가입시키기 -->
 	<insert id="insert" parameterType="adminDto">
 		insert into admin values(
-							admin_seq.nextval,	 
-							#{admin_id}, 
-							#{admin_pw}, 
-							#{admin_name}, 
-							#{admin_email}, 
-							'일반관리자', 
-							to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss'), 
-							to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss'))
+							admin_seq.nextval,	
+							#{admin_id},
+							#{admin_pw},
+							#{admin_name},
+							#{admin_email},
+							'일반관리자',
+							sysdate,
+							sysdate)
 	</insert>
 	
 	<!-- 최종로그인 일시 변동 -->
@@ -87,6 +87,16 @@
 			)A
 		)where rn between #{start} and #{finish}
 	</select>
+	
+	<!-- 판매자 단일 조회 -->
+	<select id="sellerGetOne" parameterType="sellerDto" resultType="sellerDto">
+		select * from seller where seller_no = #{seller_no}
+	</select>
+	
+	<!-- 판매자 삭제 -->
+	<delete id="sellerDelete" parameterType="sellerDto">
+		delete seller where seller_no = #{seller_no}
+	</delete>
 	
 	<!-- 판매자 목록 총 갯수 가져오기 -->
 	<select id="sellerCount" resultType="int">
@@ -140,6 +150,16 @@
 			)A
 		)where rn between #{start} and #{finish}
 	</select>
+	
+	<!-- 회원 단일 조회 -->
+	<select id="memberGetOne" parameterType="memberDto" resultType="memberDto">
+		select * from member where member_no = #{member_no}
+	</select>
+	
+	<!-- 회원 삭제하기 -->
+	<delete id="memberDelete" parameterType="memberDto">
+		delete member where member_no = #{member_no}
+	</delete>	
 	
 	<!-- 회원 총 갯수 -->
 	<select id="memberCount" resultType="int">
@@ -211,7 +231,7 @@
 			#{admin_qna_content},
 			#{admin_qna_title},
 			#{admin_qna_writer},
-			to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' ),
+			sysdate,
 			#{admin_qna_head},
 			admin_qna_seq.nextval,
 			'관리자'
@@ -237,7 +257,7 @@
 			#{admin_qna_content},
 			#{admin_qna_title},
 			#{admin_qna_writer},
-			to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' ),
+			sysdate,
 			#{admin_qna_head},
 			#{group_no},
 			#{super_no},
@@ -251,7 +271,7 @@
 			set 
 				admin_qna_title = #{admin_qna_title},
 				admin_qna_content = #{admin_qna_content},
-				admin_qna_date = to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' )
+				admin_qna_date = sysdate
 			where
 				admin_qna_no = #{admin_qna_no}
 	</update>
@@ -261,6 +281,66 @@
 		delete admin_qna where admin_qna_no = #{admin_qna_no}
 	</delete>
 	
+	<!-- 회원 개인 포인트 총합 -->
+	<select id="pointSumMember" parameterType="point" resultType="int">
+		select sum(member_point_change) from member_point where member_no = #{member_no}
+	</select>
+	
+	<!-- 회원 개인 포인트 목록 갯수 구해오기 -->
+	<select id="pointMemberCount" parameterType="point" resultType="int">
+		select count(*) from member_point where member_no = #{member_no}
+	</select>
+	
+	<!-- 회원 포인트 조회 --> 
+	<select id="pointMember" parameterType="paging" resultType="point">
+		select * from(
+			select rownum rn, A.* from(
+				select 
+						*
+				from 
+						member_point
+				where member_no = #{member_no}
+				order by member_point_date
+			)A
+		)where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 회원 포인트 삭제 -->
+	<delete id="pointDelete" parameterType="int">
+		delete member_point where member_point_no = #{member_point_no}
+	</delete>
+	
+	<!-- 회원 포인트 추가 -->
+	<insert id="pointRegist" parameterType="point">
+		insert into member_point 
+			values(
+				member_point_seq.nextval, 
+				#{member_point_status},
+				sysdate,
+				#{member_point_limit},
+				#{member_point_change},
+				#{member_point_content},
+				#{member_no}
+				)
+	</insert>
+	
+	<!-- resultMap을 써보자... -->
+	<resultMap  id="base" type="base">
+		<result property="goods_no" column="goods_no"/>
+		<result property="seller_no" column="seller_no"/>
+		<result property="goods_name" column="goods_name"/>	
+		<result property="goods_price" column="goods_price"/>	
+		<result property="goods_discount_price" column="goods_discount_price"/>	
+		<result property="goods_discount_start" column="goods_discount_start"/>	
+		<result property="goods_discount_finish" column="goods_discount_finish"/>	
+		<result property="goods_stock" column="goods_stock"/>	
+		<result property="goods_status" column="goods_status"/>	
+		<result property="goods_content" column="goods_content"/>	
+		<result property="category_no" column="category_no"/>	
+	</resultMap>
+	
+	<!-- 상품 불러오기 -->
+	<select id=""></select>
  </mapper> 
 	
  

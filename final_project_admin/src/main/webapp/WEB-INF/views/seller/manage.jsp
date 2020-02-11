@@ -15,7 +15,7 @@
       <th width="15%">등급</th>
       <th width="10%">가입일</th>
       <th width="10%">마지막 접속일시</th>
-      <th width = "10%">수정</th>
+      <th width = "10%">상세보기</th>
     </tr>
   </thead>
   <tbody>
@@ -29,9 +29,9 @@
       <td>${list.seller_join_date}</td>
       <td>${list.seller_last_login}</td>
       <td>
-      		<form action="" method="post">
-      			<input type="hidden" name="" value="">
-      			<input type="submit" value="수정">
+      		<form action="sellerpage" method="post">
+      			<input type="hidden" name = "seller_no" value="${list.seller_no }">
+      			<input type="submit" value="상세보기">
       		</form>
       </td>
     </tr>

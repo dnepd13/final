@@ -8,5 +8,5 @@ public interface BoardService {
 	public PagingVO categoryPagination(String pno1);
 	public PagingVO memberPagination(String pno1);
 	public PagingVO adminQnaPagination(String pno1);
-
+	public PagingVO pointPagination(String pno1, int member_no);
 }

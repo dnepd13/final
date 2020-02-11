@@ -26,4 +26,16 @@ public class SellerDaoImpl implements SellerDao{
 		return list;
 	}
 
+	//판매자 단일 조회
+	@Override
+	public SellerDto sellerGetOne(SellerDto sellerDto) {
+		
+		return sqlSession.selectOne("admin.sellerGetOne", sellerDto);
+	}
+
+	@Override
+	public void sellerDelete(SellerDto sellerDto) {
+		sqlSession.delete("admin.sellerDelete", sellerDto);
+	}
+
 }

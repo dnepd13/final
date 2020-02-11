@@ -22,8 +22,10 @@ import com.kh.admin.entity.CategoryDto;
 import com.kh.admin.entity.PremiumDto;
 import com.kh.admin.repository.AdminDao;
 import com.kh.admin.repository.CategoryDao;
+import com.kh.admin.repository.MemberDao;
 import com.kh.admin.repository.PremiumDao;
 import com.kh.admin.service.BoardService;
+import com.kh.admin.vo.MemberPointVO;
 import com.kh.admin.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,9 @@ public class AdminController {
 	
 	@Autowired
 	private PremiumDao premiumDao;
+	
+	@Autowired
+	private MemberDao memberDao;
 	
 	//---------------------------로그인창----------------------------------
 	@GetMapping("/")
@@ -222,8 +227,7 @@ public class AdminController {
 		return "redirect:/premium";
 	}
 	
-	
-	
+
 	
 	
 	
