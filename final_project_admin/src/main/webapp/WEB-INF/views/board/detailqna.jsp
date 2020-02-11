@@ -11,9 +11,17 @@
 <h3>${one.admin_qna_content}</h3>
 <hr>
 <div class="btn-group-vertical">
-	<a href="${pageContext.request.contextPath}/board/write?admin_qna_no=${one.admin_qna_no}"><button type="button" class="btn btn-primary">답글쓰기</button></a>
+	<a href="${pageContext.request.contextPath}/board/write?admin_qna_no1=${one.admin_qna_no}"><button type="button" class="btn btn-primary">답글쓰기</button></a>
 </div>
-
-
+<c:if test="${one.admin_qna_writer == admin_id }">
+<div class="btn-group-vertical">
+	<a href="${pageContext.request.contextPath}/board/editqna?admin_qna_no1=${one.admin_qna_no}"><button type="button" class="btn btn-primary">수정</button></a>
+</div>
+</c:if>
+<c:if test="${admin_grade=='총괄관리자' or one.admin_qna_writer == admin_id }">
+<div class="btn-group-vertical">
+	<a href="${pageContext.request.contextPath}/board/delete?admin_qna_no1=${one.admin_qna_no}"><button type="button" class="btn btn-primary">삭제</button></a>
+</div>
+</c:if>
 
 
