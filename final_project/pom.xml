@@ -222,12 +222,12 @@
 		    <version>5.2.1.RELEASE</version>
 		</dependency>
 				
-<!-- 웹소캣 라이브러리 -->
+		<!-- 웹소캣 라이브러리 -->
 		<dependency>
 		   	<groupId>org.springframework</groupId>
 	  	  	<artifactId>spring-websocket</artifactId>
 	    <version>${org.springframework-version}</version>
-</dependency>
+		</dependency>
 		 
 		 <!-- 젝슨 -->
 	    <dependency>
@@ -235,7 +235,14 @@
 		    <artifactId>jackson-databind</artifactId>
 	   		 <version>2.10.1</version>
 	    </dependency>
-
+		
+		<!-- JSON SIMPLE -->
+		<dependency>
+		    <groupId>com.googlecode.json-simple</groupId>
+		    <artifactId>json-simple</artifactId>
+		    <version>1.1.1</version>
+		</dependency>
+		
 	</dependencies>
 	
     

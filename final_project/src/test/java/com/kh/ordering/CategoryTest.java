@@ -7,7 +7,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.repository.CategoryDao;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +43,13 @@ public class CategoryTest {
 //		log.info("{}", categoryDao.get(1));
 //	}
 	
+//	@Test
+//	public void getListTest() {
+//		log.info("{}", categoryDao.getList());
+//	}
+	
 	@Test
-	public void getListTest() {
-		log.info("{}", categoryDao.getList());
+	public void search() {
+		log.info("{}", categoryDao.getList("category_small", "반지"));
 	}
 }
