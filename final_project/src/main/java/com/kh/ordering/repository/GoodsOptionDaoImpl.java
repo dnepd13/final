@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.vo.GoodsOptionVO;
 
 public class GoodsOptionDaoImpl implements GoodsOptionDao{
 	
@@ -42,4 +43,8 @@ public class GoodsOptionDaoImpl implements GoodsOptionDao{
 		return sqlSession.selectOne("goods_option.getSequence");
 	}
 	
+	@Override
+	public List<GoodsOptionVO> getGoodsOptionVOList(int goods_no) {
+		return sqlSession.selectList("goods_option.getGoodsOptionVOList", goods_no);
+	}
 }
