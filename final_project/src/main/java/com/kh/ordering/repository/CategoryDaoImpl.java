@@ -28,7 +28,25 @@ public class CategoryDaoImpl implements CategoryDao{
 	}
 	
 	@Override
+	public CategoryDto get(String category_name) {
+		return sqlSession.selectOne("category.getCategoryNo", category_name);
+	}
+	
+	@Override
 	public List<CategoryDto> getList() {
 		return sqlSession.selectList("category.getList");
+	}
+	
+	@Override
+	public List<String> getList(String type, String category_name) {
+		
+		switch (type) {
+		case "category_large": return sqlSession.selectList("category.searchLarge");
+		case "category_middle": return sqlSession.selectList("category.searchMiddle", category_name);	
+		case "category_small": return sqlSession.selectList("category.searchSmall", category_name);
+		default:
+			return null;
+		}
+		
 	}
 }

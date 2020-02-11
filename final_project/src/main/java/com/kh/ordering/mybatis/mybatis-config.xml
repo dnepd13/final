@@ -29,7 +29,11 @@
  		<typeAlias type="com.kh.ordering.entity.GoodsDto" alias="goodsDto"/>
  		<typeAlias type="com.kh.ordering.entity.GoodsOptionDto" alias="goodsOptionDto"/>
  		<typeAlias type="com.kh.ordering.entity.CategoryDto" alias="categoryDto"/>
+
+		<typeAlias type="com.kh.ordering.vo.GoodsVO" alias="goodsVO"/>
+		<typeAlias type="com.kh.ordering.vo.GoodsOptionVO" alias="goodsOptionVO"/>
 		<typeAlias type="com.kh.ordering.vo.GoodsVO" alias="goodsVO"/>
 		
 	</typeAliases>
  </configuration>
+

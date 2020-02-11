@@ -1,5 +1,7 @@
 package com.kh.ordering.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.service.GoodsService;
@@ -30,8 +36,12 @@ public class GoodsController {
 	@Autowired
 	private GoodsOptionDao goodsOptionDao;
 	
+	@Autowired
+	private CategoryDao categoryDao;
+	
 	@GetMapping("/insert")
-	public String insert() {
+	public String insert(Model model) {
+		model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
 		return "goods/insert";
 	}
 	
@@ -59,9 +69,34 @@ public class GoodsController {
 	}
 	
 	@GetMapping("/goodsInfo")
-	public String goodsInfo(@RequestParam int goods_no, Model model) {
+	public String goodsInfo(@RequestParam int goods_no, Model model) throws JsonProcessingException {
+		String jsonGoodsVO = new ObjectMapper().writeValueAsString(goodsService.getGoodsVO(goods_no));
+		String jsonGoodsOptionVOList = new ObjectMapper().writeValueAsString(goodsService.getGoodsOptionVOList(goods_no));
+		
 		model.addAttribute("goodsVO", goodsService.getGoodsVO(goods_no));
+		model.addAttribute("goodsOptionVOList", goodsService.getGoodsOptionVOList(goods_no));
+		model.addAttribute("jsonGoodsVO", jsonGoodsVO);
+		model.addAttribute("jsonGoodsOptionVOList", jsonGoodsOptionVOList);
+		
 		return "goods/goodsInfo";
 	}
 	
+	@PostMapping("/large")
+	@ResponseBody
+	public List<String> large(@RequestParam String category_name) {
+		return categoryDao.getList("category_middle", category_name);
+	}
+	
+	@PostMapping("/middle")
+	@ResponseBody
+	public List<String> middle(@RequestParam String category_name) {
+		return categoryDao.getList("category_small", category_name);
+	}
+	
+	@PostMapping("/small")
+	@ResponseBody
+	public int small(@RequestParam String category_name) {
+		return categoryDao.get(category_name).getCategory_no();
+	}
+
 }

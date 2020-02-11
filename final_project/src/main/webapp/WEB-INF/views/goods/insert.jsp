@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +10,65 @@
  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
  <script src="https://code.jquery.com/jquery-latest.js"></script>
  <script src="${pageContext.request.contextPath}/resources/js/goodsOption.js"></script>
+ <script>
+ 	 $(function(){
+	 	 var category_largeList = "${category_largeList}";
+	 	 category_largeList = category_largeList.substring(1, category_largeList.length-1).split(",");
+ 		 $.each(category_largeList, function(index, item){
+ 			 var option = $("<option value='"+item+"'>"+item+"</option>");
+ 			 $(".category_large").append(option);
+ 		 });
+ 		 
+ 		 
+ 		 $(".category_large").change(function(){
+	 		 $(".middleChild").nextAll().remove();
+	 		 $(".smallChild").nextAll().remove();
+ 			 var category_name = $(this).val();
+ 			 var url = "large";
+ 			 $.ajax({
+ 				 type: "POST",
+ 			 	 url: url,
+ 			 	 data: {"category_name":category_name},
+ 			 	 success: function(resp){
+ 			 		 $.each(resp, function(index, item){
+ 			 			var option = $("<option value='"+item+"'>"+item+"</option>");
+ 			 			$(".category_middle").append(option);
+ 			 		 });
+ 			 	 }
+ 			 });
+ 		 });
+ 		 
+ 		 $(".category_middle").change(function(){
+ 			$(".smallChild").nextAll().remove();
+			 var category_name = $(this).val();
+			 var url = "middle";
+			 $.ajax({
+				 type: "POST",
+			 	 url: url,
+			 	 data: {"category_name":category_name},
+			 	 success: function(resp){
+			 		 $.each(resp, function(index, item){
+			 			var option = $("<option value='"+item+"'>"+item+"</option>");
+			 			$(".category_small").append(option);
+			 		 });
+			 	 }
+			 });
+ 		 });
+ 		 
+ 		 $(".category_small").change(function(){
+ 			var category_name = $(this).val();
+			 var url = "small";
+			 $.ajax({
+				 type: "POST",
+			 	 url: url,
+			 	 data: {"category_name":category_name},
+			 	 success: function(resp){
+		 			 $(".category_no").val(resp);
+			 	 }
+			 });
+ 		 });
+ 	 });
+ </script>
 </head>
 <body>
 <h1>상품 등록 페이지</h1>
@@ -38,10 +99,18 @@
 	</select><br><br>
 	<p>상품 설명 : </p>
 	<input type="text" name="goods_content"><br><br>
-	<p>카테고리번호 : </p>
-	<input type="text" name="category_no"><br><br>
 	
-	
+	<select class="category_large" name="category_middle">
+			<option class="largeChild">선택</option>
+	</select>
+	<select class="category_middle" name="category_middle">
+			<option class="middleChild">선택</option>
+	</select>
+	<select class="category_small" name="category_middle">
+			<option class="smallChild">선택</option>
+	</select>
+	<input class="category_no" type="hidden" name="category_no" value="">	
+		
 	<p>옵션</p>
 	<button class="addOptionBtn">옵션 추가</button>
     <ul class="optionArea">
