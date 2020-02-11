@@ -6,11 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.kh.ordering.entity.CustomOrderDto;
-import com.kh.ordering.entity.SellerAlarmDto;
-import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.entity.SellerDto;
-import com.kh.ordering.vo.CustomOrderVO;
 
 @Repository
 public class SellerDaoImpl implements SellerDao {
