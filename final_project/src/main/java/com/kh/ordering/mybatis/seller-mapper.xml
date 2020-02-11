@@ -95,7 +95,7 @@
 	</select>
 	
 	<!-- 요청서 도착 알람 -->
-	<insert id="insertAlarm">
+	<insert id="insertAlarm" parameterType="sellerAlarmDto">
 		insert into seller_alarm(seller_alarm_no, seller_no,
 		member_custom_order_no,
 		seller_alarm_check, seller_alarm_delete)
@@ -119,15 +119,20 @@
 		select a.*, b.member_id from
 		    member_custom_view A inner join member B
 		        on a.member_no = b.member_no
-		where custom_order_no = #{custom_order_no}
+		where member_custom_order_no = #{member_custom_order_no}
 	</select>
+	<!-- 요청서 상세보기 클릭하면 판매자 알람테이블 업데이트 -->
+	<update id="updateAlarm" parameterType="sellerAlarmDto">
+		update seller_alarm set seller_alarm_date=sysdate, seller_alarm_check='Y'
+   			where seller_no=#{seller_no} and member_custom_order_no=#{member_custom_order_no}
+	</update>
 
 	<!-- 내가 보낸 견적서 목록 -->
 	<select id="getListResp" parameterType="int" resultType="customOrderVO">
 		select A.*, B.seller_no from
     		custom_order A inner join seller_custom_order B
         		on a.custom_order_no = b.custom_order_no
-        where seller_no=#{seller_no}
+        where seller_no=#{seller_no} order by a.custom_order_date desc
 	</select>
 	
  </mapper>

@@ -53,14 +53,13 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 		
 		// 견적서 저장 테이블 시퀀스 가져오기
 		int custom_order_no = sellerCustomDao.CustomSeq();
-
 		// 견적서 관리 테이블에 판매자번호, 견적서 번호 등록
 		sellerCustomDto = SellerCustomOrderDto.builder()
 																		.custom_order_no(custom_order_no)
 																		.seller_no(seller_no)
 																		.build();
 		sellerCustomDao.SellerCustom(sellerCustomDto);
-		
+
 		//		- 파일이 있으면 파일테이블에 등록
 		if(files!=null) {
 			File dir = new File("D:/upload");
@@ -99,6 +98,7 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 				sellerCustomDao.CustomFilesInsert(customOrderFilesDto);
 			}
 		}
+
 		int seller_custom_order_no = sellerCustomDao.CustomOrderSeq();
 		//구매자에게 견적서 도착 알람 생성
 		// - 구매자 ID 통해서 구매자 회원번호 가져오기

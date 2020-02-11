@@ -5,13 +5,13 @@
 <h3>seller Custom List.jsp</h3>
 	
 <h4>요청서 목록</h4>
-<c:forEach var="memberCustom" items="${getListReq }">
+<c:forEach var="memberReq" items="${getListReq }">
 	<div>
-	보낸사람: ${memberCustom.member_id } <br>
-	제목: <a href="customInfoReq?custom_order_no=${memberCustom.custom_order_no }">
-						${memberCustom.custom_order_title }
+	보낸사람: ${memberReq.member_id } <br>
+	제목: <a href="customInfoReq?member_custom_order_no=${memberReq.member_custom_order_no }">
+						${memberReq.custom_order_title }
 			</a> <br>	
-	작성일: ${memberCustom.custom_order_date } <br>
+	작성일: ${memberReq.custom_order_date } <br>
 	<hr>
 	</div>
 </c:forEach>

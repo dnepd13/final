@@ -47,8 +47,8 @@ public class MemberCustomController {
 															Model model) {
 		
 		//로그인을 가정한 세션설정. 로그인 유지기능 완료 후 수정하기
-		String member_id = "member";
-		session.setAttribute("member_id", member_id);
+//		String member_id = "member";
+//		session.setAttribute("member_id", member_id);
 
 		model.addAttribute("seller_no", seller_no);
 		
@@ -72,16 +72,15 @@ public class MemberCustomController {
 	// 구매자가 받은 견적서 및 보낸 요청서 목록 페이지
 	@GetMapping("/customList")
 	public String memberCustomList(Model model, HttpSession session) {
-		
 		// 나중에 세션 ID 수정하기
-		String id = "cool121";
+		String id = "member";
 		session.setAttribute("member_id", id);
 		
 		String member_id=(String)session.getAttribute("member_id");
 		int member_no = memberCustomDao.getNo(member_id);
 		
 		// 1:1 받은 견적서
-		model.addAttribute("getListCustom", memberCustomDao.getListCustom(member_no));		
+		model.addAttribute("getListResp", memberCustomDao.getListResp(member_no));		
 		
 		// 내가 보낸 요청서		
 		model.addAttribute("getListReq", memberCustomDao.getListReq(member_no));
@@ -90,10 +89,18 @@ public class MemberCustomController {
 	}
 // 받은 견적서 상세 페이지
 	@GetMapping("/customInfoResp")
-	public String memberCustomResp(int custom_order_no, Model model) {
+	public String memberCustomResp(HttpSession session,
+																	@RequestParam int seller_custom_order_no, Model model) {
+		// 상세페이지 이동하면 구매자 알람테이블의 '알람체크','알람 확인시간' update
+		String member_id=(String)session.getAttribute("member_id");
+		int member_no = memberCustomDao.getNo(member_id);
 		
-		CustomOrderVO content = memberCustomDao.customOrderVO(custom_order_no);
+		memberCustomDao.UpdateAlarm(member_no, seller_custom_order_no);
+		
+		CustomOrderVO content = memberCustomDao.customOrderVO(seller_custom_order_no);
 		model.addAttribute("getListInfoResp", content);
+		
+		session.removeAttribute("member_id");
 		
 		return "member/customInfoResp";
 	}

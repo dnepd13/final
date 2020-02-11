@@ -31,7 +31,7 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 		return member_no;
 	}
 	
-	//	Member 요청서 작성
+//	Member 요청서 작성
 	@Override // 요청서 저장
 	public void CustomOrderInsert(CustomOrderDto customOrderDto) {
 		sqlSession.insert("member.customReq", customOrderDto);
@@ -50,6 +50,11 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 		return sqlSession.selectOne("member.customSeq");
 	}
 	
+	@Override // 견적서 도착 알람 테이블 입력
+	public void CustomAlarmInsert(MemberCustomAlarmDto memberCustomAlarmDto) {
+		sqlSession.insert("member.insertAlarm", memberCustomAlarmDto);
+	}
+	
 	@Override // 파일 .nextval 시퀀스번호
 	public int FileSeq() {
 		return sqlSession.selectOne("files.getSeq");
@@ -64,13 +69,21 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	}
 
 	@Override // 판매자가 보낸 견적서 전체보기
-	public List<CustomOrderDto> getListCustom(int member_no) {
+	public List<CustomOrderDto> getListResp(int member_no) {
 		
 		return sqlSession.selectList("member.getListCustom", member_no);
 	}	
 	@Override // 판매자 견적서 상세보기. 주문제작번호 단일조회
-	public CustomOrderVO customOrderVO(int custom_order_no) {
-		return sqlSession.selectOne("member.getListInfo", custom_order_no);
+	public CustomOrderVO customOrderVO(int seller_custom_order_no) {
+		return sqlSession.selectOne("member.getListInfo", seller_custom_order_no);
+	}
+	@Override // 견적서 상세페이지 확인하면 구매자 알람테이블 업데이트
+	public void UpdateAlarm(int member_no, int seller_custom_order_no) {
+		MemberCustomAlarmDto updateAlarm = MemberCustomAlarmDto.builder()
+																																.member_no(member_no)
+																																.seller_custom_order_no(seller_custom_order_no)
+																																.build();
+		sqlSession.update("member.updateAlarm", updateAlarm);
 	}
 
 	@Override // 내가 보낸 요청서 보기
@@ -79,10 +92,6 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 		return sqlSession.selectList("member.getListReq", member_no);
 	}	
 	
-// 견적서 도착 알람 테이블 입력
-	@Override
-	public void CustomAlarmInsert(MemberCustomAlarmDto memberCustomAlarmDto) {
-		sqlSession.insert("member.insertAlarm", memberCustomAlarmDto);
-	}
+
 
 }

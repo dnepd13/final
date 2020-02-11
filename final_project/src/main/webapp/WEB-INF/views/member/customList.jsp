@@ -7,12 +7,12 @@
 
 <h4>받은 견적서 전부 보여주기</h4>
 <div>
-<c:forEach var="sellerCustom" items="${getListCustom }">
-	보낸사람: ${sellerCustom.seller_id } <br>
-	제목: <a href="customInfoResp?custom_order_no=${sellerCustom.custom_order_no }">
-						${sellerCustom.custom_order_title }
+<c:forEach var="sellerResp" items="${getListResp }">
+	보낸사람: ${sellerResp.seller_id } <br>
+	제목: <a href="customInfoResp?seller_custom_order_no=${sellerResp.seller_custom_order_no }">
+						${sellerResp.custom_order_title }
 			</a> <br>	
-	작성일: ${sellerCustom.custom_order_date } <br>
+	작성일: ${sellerResp.custom_order_date } <br>
 	<hr>
 </c:forEach>
 </div>

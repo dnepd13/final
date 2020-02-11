@@ -85,15 +85,20 @@
 		select A.*, B.seller_id from
 		    seller_custom_view A inner join seller B
 		        on A.seller_no = B.seller_no
-		where custom_order_no = #{custom_order_no}
+		where seller_custom_order_no = #{seller_custom_order_no}
 	</select>
+	<!-- 견적서 상세내용 확인하면 구매자 알람 업데이트 -->
+	<update id="updateAlarm" parameterType="memberAlarmDto">
+		update member_alarm set member_alarm_date=sysdate, member_alarm_check='Y'
+    		where member_no=#{member_no} and seller_custom_order_no=#{seller_custom_order_no}
+	</update>
 	
 	<!-- 내가 보낸 요청서 목록 -->
 	<select id="getListReq" parameterType="int" resultType="customOrderVO">
 		select A.*, B.member_no from
    			custom_order A inner join member_custom_order B
        			on a.custom_order_no = b.custom_order_no
-       	where member_no=#{member_no}
+       	where member_no=#{member_no} order by a.custom_order_date desc
 	</select>
 	
 	

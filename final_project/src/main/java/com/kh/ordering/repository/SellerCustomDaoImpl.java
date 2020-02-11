@@ -46,6 +46,11 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	public int CustomSeq() {	
 		return sqlSession.selectOne("seller.customSeq");
 	}
+
+	@Override // 요청서 도착 알람 테이블 입력
+	public void CustomAlarmInsert(SellerCustomAlarmDto sellerAlramDto) {
+		sqlSession.insert("seller.insertAlarm", sellerAlramDto);
+	}
 	
 	@Override // 파일 .nextval 시퀀스
 	public int FilesSeq() {
@@ -61,13 +66,21 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	}
 	
 	@Override // 구매자 1:1 요청서 보기(카테고리 조건 미구현)
-	public List<CustomOrderVO> getListCustom(int seller_no) {
+	public List<CustomOrderVO> getListReq(int seller_no) {
 		
 		return sqlSession.selectList("seller.getListCustom", seller_no);
 	}	
 	@Override // 구매자 요청서 상세보기. 주문제작 번호 단일조회
-	public CustomOrderVO customOrderVO(int custom_order_no) {		
-		return sqlSession.selectOne("seller.getListInfo", custom_order_no);
+	public CustomOrderVO customOrderVO(int member_custom_order_no) {		
+		return sqlSession.selectOne("seller.getListInfo", member_custom_order_no);
+	}	
+	@Override // 요청서 상세페이지 접속하면 판매자 알람테이블 업데이트
+	public void UpdateAlarm(int seller_no, int member_custom_order_no) {
+		SellerCustomAlarmDto updateAlarm = SellerCustomAlarmDto.builder()
+																														.seller_no(seller_no)
+																														.member_custom_order_no(member_custom_order_no)
+																														.build();
+		sqlSession.update("seller.updateAlarm", updateAlarm);
 	}
 	
 	// 내가 보낸 견적서 보기
@@ -75,12 +88,6 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	public List<CustomOrderDto> getListResp(int seller_no) {
 		
 		return sqlSession.selectList("seller.getListResp", seller_no);
-	}
-	
-// 요청서 도착 알람 테이블 입력
-	@Override
-	public void CustomAlarmInsert(SellerCustomAlarmDto sellerAlramDto) {
-		sqlSession.insert("seller.insertAlarm", sellerAlramDto);
 	}
 
 }
