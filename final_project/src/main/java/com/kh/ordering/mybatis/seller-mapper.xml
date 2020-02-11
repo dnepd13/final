@@ -2,57 +2,133 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
- 
- <!-- 
- 	명령을 전달하기 위한 파일 
- 	namespace : 영역을 부르는 별칭
- 	parameterType : 이 명령을 실행하기 위해 필요한 데이터의 형태
- 	resultType : 기대되는 결과물의 형태 (목록이든 아니든 dto 형태로 표기)
- 	
- 	부등호(<,>,=)를 쓰고 싶다면 
- 	<![CDATA[
- 	이곳에 명령어를 넣는다
- 	]]> 
-	
-	형태에 따라 파라미터를 다르게 설정할 수 있다
-	- #은 형태를 추론해 자동으로 따옴표 설정 및 인코딩 처리를 수행
-	- $는 값을 있는 그대로 출력하는 명령이므로 주로 "항목"에 사용
-		-$의 경우 SQL Injection 이라는 해킹 공격에 매우 취약하므로 사용에 주의
- -->
- 
- <mapper namespace="seller">
+
+<!-- 명령을 전달하기 위한 파일 namespace : 영역을 부르는 별칭 parameterType : 이 명령을 실행하기 위해 
+	필요한 데이터의 형태 resultType : 기대되는 결과물의 형태 (목록이든 아니든 dto 형태로 표기) 부등호(<,>,=)를 쓰고 
+	싶다면 <![CDATA[ 이곳에 명령어를 넣는다 ]]> 형태에 따라 파라미터를 다르게 설정할 수 있다 - #은 형태를 추론해 자동으로 
+	따옴표 설정 및 인코딩 처리를 수행 - $는 값을 있는 그대로 출력하는 명령이므로 주로 "항목"에 사용 -$의 경우 SQL Injection 
+	이라는 해킹 공격에 매우 취약하므로 사용에 주의 -->
+<mapper namespace="seller"> <!-- 이건 꼭 있어야한다 -->
+	<!-- 회원가입 구문 -->
+	<insert id="regist" parameterType="seller">
+		insert into seller(
+		seller_no, seller_id, seller_pw, seller_name, seller_email, seller_phone,
+		seller_birth, seller_addr_post, seller_addr_basic, seller_addr_extra,
+		seller_store_name, seller_store_phone, seller_store_fax,
+		seller_agree_date, seller_cid, seller_bank_code, seller_bank_account,
+		seller_bank_username,seller_bank_birth, seller_grade
+		)
+		values(
+		#{seller_no}, #{seller_id}, #{seller_pw}, #{seller_name},
+		#{seller_email}, #{seller_phone}, #{seller_birth}, #{seller_addr_post},
+		#{seller_addr_basic}, #{seller_addr_extra}, #{seller_store_name},
+		#{seller_store_phone},#{seller_store_fax},
+		to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' ),
+		'cid', #{seller_bank_code}, #{seller_bank_account},
+		#{seller_bank_username}, #{seller_bank_birth},
+		'브론즈'
+		)
+	</insert>
+	<!-- seller_no 시퀀스 주기 -->
+	<select id="sequence" resultType="int">
+		select seller_seq.nextval from dual
+	</select>
+	<!-- seller_cid를 seller_no로 쓰겠다 -->
+	<!-- <select id="seller_cid" resultType="int"> -->
+	<!-- select seller_cid -->
+	<!-- </select> -->
+
+	<!-- 판매자 로그인 구문 -->
+	<!-- 비밀번호 암호화 -->
+	<select id="login" parameterType="seller" resultType="seller">
+		select*from seller where seller_id =#{seller_id}
+	</select>
+	<!-- 판매자 정보 조회 -->
+	<select id="info" parameterType="seller" resultType="seller">
+		select*from seller where seller_id=#{seller_id}
+	</select>
+	<!-- 판매자 정보 수정 -->
+<!-- 	<update id="info_edit" parameterMap="seller"> -->
+<!-- 		update seller set #{seller_email}, #{seller_phone}, #{seller_store_phone}, -->
+<!-- 		#{seller_store_fax}, 'cid', #{seller_bank_code}, -->
+<!-- 		#{seller_bank_account}, -->
+<!-- 		#{seller_bank_username}, #{seller_bank_birth} -->
+<!-- 		where seller_id =#{seller_id} -->
+<!-- 	</update> -->
+
   <!-- session id로 판매자 번호 구하기-->
  	<select id="getNo" parameterType="String" resultType="int">
  		select seller_no from seller where seller_id = #{seller_id}
  	</select>
  	
  <!-- 판매자 견적서 sql -->
+ 
  	<!-- 견적서 작성 -->
 	<insert id="customResp" parameterType="customOrderDto">
 		insert into custom_order
-						(custom_order_no,
-						custom_order_title, custom_order_content, custom_order_date,
-						custom_order_price, custom_order_hopedate,
-						custom_order_status, custom_order_type)
-			values(custom_order_seq.nextval,
-						#{custom_order_title}, #{custom_order_content}, sysdate,
-						#{custom_order_price}, #{custom_order_hopedate},
-						'진행 중', '견적서')
+		(custom_order_no,
+		custom_order_title, custom_order_content, custom_order_date,
+		custom_order_price, custom_order_hopedate,
+		custom_order_status, custom_order_type)
+		values(custom_order_seq.nextval,
+		#{custom_order_title}, #{custom_order_content}, sysdate,
+		#{custom_order_price}, #{custom_order_hopedate},
+		'진행 중', '견적서')
 	</insert>
 	
-	<!-- 견적서 시퀀스번호 -->
+	<!-- 주문제작 테이블 현재 시퀀스번호 -->
 	<select id="customSeq" resultType="int">
-		select custom_order_seq.currval from dual
+		select
+		custom_order_seq.currval from dual
 	</select>
-	
+
 	<!-- 견적서 관리 테이블 -->
 	<insert id="customInsert" parameterType="sellerCustomDto">
-		insert into seller_custom_order	values(seller_custom_order_seq.nextval,#{custom_order_no},#{seller_no})
+		insert into
+		seller_custom_order
+		values(seller_custom_order_seq.nextval,#{custom_order_no},#{seller_no})
 	</insert>
-	
-	<!-- 전체 요청서 보기(카테고리 미구현) -->
-	<select id="getListCustom" resultType="customOrderDto">
-		select *from custom_order where custom_order_type='요청서'
+
+	<!-- 견적서 관리테이블 현재 시퀀스번호 -->
+	<select id="customOrderSeq" resultType="int">
+		select seller_custom_order_seq.currval from dual
 	</select>
+	
+	<!-- 요청서 도착 알람 -->
+	<insert id="insertAlarm">
+		insert into seller_alarm(seller_alarm_no, seller_no,
+		member_custom_order_no,
+		seller_alarm_check, seller_alarm_delete)
+		values(seller_alarm_seq.nextval, #{seller_no}, #{member_custom_order_no},
+		'N', 'N')
+	</insert>
+
+	<!-- 전체 요청서 보기(카테고리 미구현) -->
+<!-- 	<select id="getListAll" resultType="customOrderVO"> -->
+<!-- 		select *from member_custom_view -->
+<!-- 	</select> -->
+	<!-- 나에게 온 요청서만 보기 -->
+	<select id="getListCustom" parameterType="int" resultType="customOrderVO">
+		select A.*, B.member_id from
+	    	member_custom_view A inner join member B
+	        	on A.member_no = B.member_no
+		where seller_no= #{seller_no} order by custom_order_date desc
+	</select>	
+	<!-- 요청서 상세내용 보기. 단일조회 -->
+	<select id="getListInfo" parameterType="int" resultType="customOrderVO">
+		select a.*, b.member_id from
+		    member_custom_view A inner join member B
+		        on a.member_no = b.member_no
+		where custom_order_no = #{custom_order_no}
+	</select>
+
+	<!-- 내가 보낸 견적서 목록 -->
+	<select id="getListResp" parameterType="int" resultType="customOrderVO">
+		select A.*, B.seller_no from
+    		custom_order A inner join seller_custom_order B
+        		on a.custom_order_no = b.custom_order_no
+        where seller_no=#{seller_no}
+	</select>
+	
  </mapper>
 
