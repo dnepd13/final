@@ -5,15 +5,17 @@
 
 <h3>구매자가 보낸 요청서. member customListReq.jsp</h3>
 
-<a href="remove">임시 세션지우기</a>
+<a href="${pageContext.request.contextPath }">home</a> &#124; 
+<a href="customListResp">받은 견적서</a>
 <h4>확인 안 한 견적서 몇 개냐: <span>${customAlarm } 개</span></h4>	
 
 <c:forEach var="memberCustom" items="${getListReq }">
 <div>
-	<p><a href="#">삭제</a></p>
-	<a href="customInfoReq?member_custom_order_no=${memberCustom.member_custom_order_no }">
+	<a href="customInfoReq?member_custom_order_no=${member.Custom.member_custom_order_no }">
 		제목: ${memberCustom.custom_order_title }
-	</a> <br>
+	</a> 
+	<span><a href="#"> &timesb;</a></span>
+	<br>
 	작성일: ${memberCustom.custom_order_date }
 	<hr>
 </div>
