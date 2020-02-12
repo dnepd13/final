@@ -101,9 +101,9 @@
 		update member_alarm set member_alarm_date=sysdate, member_alarm_check='Y'
     		where member_no=#{member_no} and seller_custom_order_no=#{seller_custom_order_no}
 	</update>
-	<!-- 구매자 알람테이블 check N 상태 count -->
-	<select id="customCheck" resultType="int">
-		select count(*) from member_alarm where member_alarm_check='N'
+	<!-- 구매자 알람테이블 check N 상태 count (새 요청서 개수에 활용) -->
+	<select id="customCheck" parameterType="int" resultType="int">
+		select count(*) from member_alarm where member_alarm_check='N' and member_no=#{member_no}
 	</select>
 	
 	<!-- 구매자가 보낸 요청서 총 개수(목적:페이징) -->

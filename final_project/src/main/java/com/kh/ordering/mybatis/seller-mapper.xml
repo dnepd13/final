@@ -96,8 +96,9 @@
 		insert into seller_alarm(seller_alarm_no, seller_no,
 													member_custom_order_no,
 													seller_alarm_check, seller_alarm_delete)
-							values(seller_alarm_seq.nextval, #{seller_no}, #{member_custom_order_no},
-										N', 'N')
+							values(seller_alarm_seq.nextval, #{seller_no},
+										#{member_custom_order_no},
+										'N', 'N')
 	</insert>
 
 	<!-- 전체 요청서 보기(카테고리 미구현) -->
@@ -146,7 +147,7 @@
 	
 	<!-- 판매자 알람테이블 check N 상태 count (새 요청서 개수에 활용) -->
 	<select id="customCheck" resultType="int">
-		select count(*) from seller_alarm where seller_alarm_check='N'
+		select count(*) from seller_alarm where seller_alarm_check='N' and seller_no=#{seller_no}
 	</select>
 
 	<!-- 판매자가 보낸 견적서 총 개수(목적:페이징) -->

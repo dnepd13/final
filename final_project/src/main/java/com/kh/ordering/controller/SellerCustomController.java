@@ -71,7 +71,7 @@ public class SellerCustomController {
 	public String getListCustomReq(Model model, HttpSession session,
 														@RequestParam(value="pageNo", required=false, defaultValue = "0") String pageNo) {
 		//로그인을 가정한 세션설정. 로그인 유지기능 완료 후 수정하기
-		String id = "seller";
+		String id = "test1";
 		session.setAttribute("seller_id", id);
 		
 		// 나중에 세션 ID 수정하기
@@ -83,7 +83,7 @@ public class SellerCustomController {
 		model.addAttribute("paging", result);
 		
 		// 알람 check N count 개수
-		model.addAttribute("customAlarm", sellerCustomDao.customAlarm());
+		model.addAttribute("customAlarm", sellerCustomDao.customAlarm(seller_no));
 
 		// 1:1 받은 요청서
 		List<CustomOrderVO> list = sellerCustomDao.getListReq(result);
@@ -124,7 +124,7 @@ public class SellerCustomController {
 		model.addAttribute("paging", result);
 
 		// 알람 check N count 개수
-		model.addAttribute("customAlarm", sellerCustomDao.customAlarm());
+		model.addAttribute("customAlarm", sellerCustomDao.customAlarm(seller_no));
 
 		// 내가 보낸 견적서		
 		List<CustomOrderDto> list = sellerCustomDao.getListResp(result);
@@ -145,6 +145,6 @@ public class SellerCustomController {
 	@GetMapping("/remove")
 	public String remove(HttpSession session) {
 		session.removeAttribute("seller_no");
-		return "seller/customList";
+		return "redirect:/";
 	}
 }

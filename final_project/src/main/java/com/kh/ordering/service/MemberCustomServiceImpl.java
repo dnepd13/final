@@ -112,7 +112,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 		// 요청서 관리테이블 현재 시퀀스번호
 		int member_custom_order_no = memberCustomDao.CustomOrderSeq();
 		
-		// 판매자에게 요청서 도착 알람 생성
+		// 판매자 요청서 도착 알람 생성
 		sellerCustomAlarmDto = SellerCustomAlarmDto.builder()
 																					.seller_no(seller_no)
 																					.member_custom_order_no(member_custom_order_no)

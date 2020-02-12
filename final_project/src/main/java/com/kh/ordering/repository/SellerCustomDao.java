@@ -37,7 +37,7 @@ public interface SellerCustomDao {
 	//요청서 누르면 판매자 알림테이블 업데이트
 	void UpdateAlarm(int seller_no, int member_custom_order_no);
 	//판매자 알람테이블 check N
-	int customAlarm();
+	int customAlarm(int seller_no);
 	
 	//판매자가 받은 요청서 count
 	int customReqCount(int seller_no);

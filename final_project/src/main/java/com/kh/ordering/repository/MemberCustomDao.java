@@ -34,7 +34,7 @@ public interface MemberCustomDao {
 	//견적서 누르면 구매자 알림테이블 업데이트
 	void UpdateAlarm(int member_no, int seller_custom_order_no);
 	//구매 알람테이블 견적서 총 개수 check N
-	int customAlarm();
+	int customAlarm(int member_no);
 	
 	//구매자가 받은 견적서 count
 	int customRespCount(int member_no);

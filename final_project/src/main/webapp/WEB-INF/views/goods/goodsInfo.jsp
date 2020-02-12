@@ -24,7 +24,7 @@
 				$(".options").each(function(i){
 					var no = $(this).val();
 					var arr = goodsOptionVOList[i].goodsOptionList;
-					var index = arr.findIndex(dto => dto.goods_option_no == no);
+					var index = arr.findIndex(dto >= dto.goods_option_no == no);
 					price += arr[index].goods_option_price;
 				});
 				var div = $("<div class='total_price_area'></div>");
@@ -90,7 +90,7 @@
 <p>상품 옵션 (goodsOptionList)</p>
 <p>${goodsVO.goodsOptionList}</p>
 
-<p><a href="${pageContext.request.contextPath}/member/customOrder?seller_no=93">1:1 요청서</a></p>
+<p><a href="${pageContext.request.contextPath}/member/customOrder?seller_no=164">1:1 요청서</a></p>
 
 <hr>
 <form>

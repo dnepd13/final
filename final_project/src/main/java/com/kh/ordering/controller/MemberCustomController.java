@@ -85,7 +85,7 @@ public class MemberCustomController {
 		model.addAttribute("paging", result);
 		
 		// 알람 check N count 개수		
-		model.addAttribute("customAlarm", memberCustomDao.customAlarm());
+		model.addAttribute("customAlarm", memberCustomDao.customAlarm(member_no));
 
 		// 1:1 받은 견적서
 		List<CustomOrderVO> list = memberCustomDao.getListResp(result);
@@ -124,7 +124,7 @@ public class MemberCustomController {
 		model.addAttribute("paging", result);
 		
 		// 알람 check N count 개수		
-		model.addAttribute("customAlarm", memberCustomDao.customAlarm());
+		model.addAttribute("customAlarm", memberCustomDao.customAlarm(member_no));
 		
 		// 내가 보낸 요청서		
 		List<CustomOrderDto> list = memberCustomDao.getListReq(result);
@@ -145,6 +145,6 @@ public class MemberCustomController {
 	@GetMapping("/remove")
 	public String remove(HttpSession session) {
 		session.removeAttribute("member_no");
-		return "member/customList";
+		return "redirect:/";
 	}
 }

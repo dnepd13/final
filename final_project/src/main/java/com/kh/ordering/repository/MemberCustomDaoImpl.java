@@ -87,8 +87,8 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 		sqlSession.update("member.updateAlarm", updateAlarm);
 	}
 	@Override // 구매자 알람테이블 check N count
-	public int customAlarm() {
-		return sqlSession.selectOne("member.customCheck");
+	public int customAlarm(int member_no) {
+		return sqlSession.selectOne("member.customCheck", member_no);
 	}
 
 	@Override // 구매자가 받은 견적서 count
