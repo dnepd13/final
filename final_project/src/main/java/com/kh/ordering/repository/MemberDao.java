@@ -14,9 +14,7 @@ import com.kh.ordering.vo.CustomOrderVO;
 public interface MemberDao {
 
 // 회원 주문제작 Dao
-	//회원 아이디로 번호 가져오기
-	int MemberNo(@RequestParam String member_id);
-	
+
 	
 //회원 정보 가입
 
@@ -37,10 +35,13 @@ public interface MemberDao {
 		
 		//회원 최종로그인변동
 		void lastLogin(MemberDto member);
+
+
+		int getNo(@RequestParam String member_id);
 		
-//		//멤버아이디로 번호 구해오기
+//		//멤버아이디로 번호 구해오기 (영락)
 //		int findno(@RequestParam MemberDto member, int member_no);
-//		
+		
 
 
 

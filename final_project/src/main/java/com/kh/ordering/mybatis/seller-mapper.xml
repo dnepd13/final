@@ -45,7 +45,7 @@
 	</select>
 	<!-- 판매자 정보 조회 -->
 	<select id="info" parameterType="seller" resultType="seller">
-		select*from seller where seller_id=#{seller_id}
+		select * from seller where seller_id=#{seller_id}
 	</select>
 	<!-- 판매자 정보 수정 -->
 <!-- 	<update id="info_edit" parameterMap="seller"> -->

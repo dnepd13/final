@@ -1,7 +1,8 @@
  package com.kh.ordering.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Set;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -23,6 +24,7 @@ import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.Member_AddrDao;
 import com.kh.ordering.repository.Member_PointDao;
 import com.kh.ordering.service.MemberService;
+import com.kh.ordering.service.Member_AddrService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,6 +42,9 @@ public class MemberController {
 	
 	@Autowired
 	private Member_AddrDao member_AddrDao;
+	
+	@Autowired
+	private Member_AddrService member_AddrService;
 	
 	@Autowired
 	private PasswordEncoder encoder;
@@ -82,8 +87,10 @@ public class MemberController {
 			//멤버 시퀀스를 회원에게 입력받은 6개의 데이터에 넣고 입력
 			sqlSession.insert("member.regist",member);
 			
+			//멤버 포인트테이블에  불러온 시퀀스를 넣는다
 			Member_PointDto member_PointDto = Member_PointDto.builder().member_no(seq).build();
 			
+			//시퀀스를 넣은 포인트에 데이터를 넣고 입력
 			sqlSession.insert("member_PointDto.pointregist", member_PointDto);
 			
 			return "member/login"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
@@ -132,13 +139,25 @@ public class MemberController {
 				
 			
 			log.info("로그인 성공");
-			//세션에 회원 정보 추가 member_id
+			//세션에 회원 정보인  member_id, member_no 를 추가 
 			session.setAttribute("member_id", find.getMember_id());
+//			session.setAttribute("member_no", find.getMember_no());
+			log.info("no ={}",find.getMember_no());
+		
 			
 			// 최종로그인
 			memberDao.lastLogin(member);
 			log.info("1={}", find);
 			//필요하다면 쿠키도 생성
+			
+			  session.getAttribute("member_id");
+			
+//			String member_id = session.getno("member_id");
+//			  
+//			memberDao.getNo(String member_id, member);  
+//			
+			
+			log.info("member={}",member);
 			
 			return "redirect:/home";
 		}
@@ -155,33 +174,64 @@ public class MemberController {
 
 	//로그아웃
 	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.removeAttribute("member_id");
+	public String logout(HttpSession session ) {
 		
-		return "/home";
+		
+		session.removeAttribute("member_id");
+		log.info("session ={}", session);
+		
+//		session.removeAttribute("member_no");
+		
+		return "redirect:/home";
 	}
 	
 	
 	
 	
-	@GetMapping("/shipaddr")
-	public String shipaddress () {
-	
-	
-		return "member/shipaddr";
+	@GetMapping("/addrinfo")
+	public String addrinfo (HttpSession session,Model model ) {
+		String member_id = (String)session.getAttribute("member_id");
+		int member_no = memberDao.getNo(member_id);
+		
+//		int member_no = (int) session.getAttribute("member_no");
+		
+		List<Member_AddrDto> list = member_AddrDao.getListAddr(member_no);
+		log.info("list={}",list);
+		
+		model.addAttribute("addrinfo", list);
+		
+		
+		return "member/addrinfo";
 	}
 	
-	
-	
-//	@GetMapping("/insertaddr")
-//	public String registaddr() {
+//	@PostMapping("addrinfo")
+//	public String addrinfo(HttpSession session, Model model) {
+//		//번호를 구하고
+//		int member_no = (int) session.getAttribute("member_no");	
 //		
-//		return "member/insertaddr";
-//	}
 //	
-//	@PostMapping("/insertaddr")
-//	public String registaddr(@ModelAttribute Member_AddrDto member_AddrDto) {
-//
+////		model.addAllAttributes("getListAddr" ,member_AddrDao.getListAddr(member_no));
+//		model.addAllAttributes(member_AddrDao.getListAddr(member_no));
+//		
+//		log.info("model= {}",model);
+//		
+//		return "redirect:/member/addrinfo";
+//	}
+
+	
+	
+	
+	
+	@GetMapping("/insertaddr")
+	public String registaddr() {
+		
+		return "member/insertaddr";
+	}
+	
+	@PostMapping("/insertaddr")
+	public String registaddr(@ModelAttribute Member_AddrDto member_AddrDto,
+								MemberDto member,HttpSession session) {
+
 //		// session값에 있는 아이디를 찾아서 번호를 구해왔고 
 ////		String member_id =(String)session.getAttribute("member");
 ////		int member_no = memberDao.findno("member_id");
@@ -192,19 +242,55 @@ public class MemberController {
 //		
 //		//멤버 시퀀스를 회원에게 입력받은 4개의 데이터에 넣고 입력
 //		//sqlSession.insert("member_AddrDto.insertaddr",member_AddrDto);
-//		
+	
 ////		member_addrDto에 번호를 152번으로 설정한 뒤  DAO를 이용하여 insert
-//		int no = 152;
-//		member_AddrDto = Member_AddrDto.builder().member_no(no).build();
-//		log.info("no={}", no);
-//		
-//		member_AddrDao.registaddr(member_AddrDto);
+	
+		//세션에 저장되어있는(로그인) member no를 불러온다
+		
+		String member_id = (String)session.getAttribute("member_id");
+		int member_no = memberDao.getNo(member_id);
+		
+
+		
+//		member_AddrDto = Member_AddrDto.builder().member_no(no)
+//				.member_addr_basic(member_AddrDto.getMember_addr_basic())
+//				.member_addr_extra(member_AddrDto.getMember_addr_extra())
+//				.member_addr_post(member_AddrDto.getMember_addr_post())
+//				.member_name_extra(member_AddrDto.getMember_name_extra())
+//				.build();
+		//위의 코드랑 같다
+	
+		
+		member_AddrDto.setMember_no(member_no);
+			
+		log.info("no={}", member_no);
+
+		
+		member_AddrDao.insertaddr(member_AddrDto);
 //		log.info("member_AddrDto={}",member_AddrDto);
-//		return "redirect:/member/insertaddr";
-//		
-//		
-//		
-//	
-//	}	
-//	
+		return "redirect:/member/insertaddr";
+		
+	}
+		
+	
+		@GetMapping("/pointinfo")
+		public String pointinfo (HttpSession session, Model model ) {
+			String member_id = (String)session.getAttribute("member_id");
+			int member_no = memberDao.getNo(member_id);
+			
+			List<Member_PointDto> pointlist = member_PointDao.getListPoint(member_no);
+			log.info("pointlist={}",pointlist);
+			
+			model.addAttribute("pointinfo",pointlist);
+			
+			return "member/pointinfo";
+		}
+		
+	
+	
+	
+	
+	
+	
+	
 }

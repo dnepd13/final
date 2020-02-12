@@ -74,7 +74,7 @@ public class MemberCustomController {
 	public String memberCustomList(Model model, HttpSession session) {
 		
 		// 나중에 세션 ID 수정하기
-		String id = "cool121";
+		String id = "member";
 		session.setAttribute("member_id", id);
 		
 		String member_id=(String)session.getAttribute("member_id");

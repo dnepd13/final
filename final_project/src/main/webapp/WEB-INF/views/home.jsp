@@ -4,6 +4,8 @@
 
 <h1>홈</h1>
 
+<!-- 바뀐 session의 member_no에서 memeber_id를 구해서 확인  -->
+
 <!-- 로그인 내용  -->
 <c:if test="${member_id == null}">
 <form role="form" method="post" autocomplete="off" action="/member/login">

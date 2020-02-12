@@ -24,10 +24,10 @@
 
  
  <mapper namespace="member">
- <!-- session id로 회원 번호 구하기-->
+ <!-- session id로 회원 번호 구하기 -->
  	<select id="getNo" parameterType="String" resultType="int">
  		select member_no from member where member_id = #{member_id}
- 	</select>
+	</select>
  	
 
  	
@@ -140,9 +140,13 @@
 		select * from member
 		where
 			member_id=#{member_id}
-		
-	
 	</select>
+	
+<!-- 	<select id="getNo" parameterType="String" resultType="member">
+		select member_no from member
+		where
+			member_id=#{member_id}
+	</select> -->
 	
 	<!-- 최종 로그인 변경  -->
 	<update id="lastLogin" parameterType="member">
@@ -159,23 +163,6 @@
 	<!-- 회원삭제 -->
 	<delete id="delete" parameterType="int">
 		delete member where member_no = #{member_no}
-	</delete>
-
-
-
-
-	<!-- 전체 견적서 보기(카테고리 미구현) -->
-	<select id="getListCustom" resultType="customOrderVO">
-		select *from seller_custom_view
-	</select>	
-	<!-- 내가 보낸 요청서만 보기 -->
-	<select id="getListReq" parameterType="int" resultType="customOrderVO">
-		select *from member_custom_view where member_no =#{member_no}
-	</select>
-	
-	<!-- 요청서 삭제 -->
-	<delete id="deleteCustom" parameterType="int">
-		delete member_custom_order where member no=#{member_no} 
 	</delete>
 
 

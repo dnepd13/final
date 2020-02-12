@@ -49,4 +49,9 @@
 		)
 	</insert>
 	
+	<!-- 회원 포인트 조회 -->
+	<select id="getListPoint" parameterType="int" resultType="member_PointDto">
+		select * from member_point where member_no = #{member_no} order by member_point_no asc
+	</select>
+	
  </mapper> 

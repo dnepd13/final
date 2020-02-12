@@ -57,13 +57,24 @@ public class MemberDaoImpl implements MemberDao{
 			
 		}
 
+
 		@Override
-		public int MemberNo(String member_id) {
-			// TODO Auto-generated method stub
-			return 0;
+		public int getNo(String member_id) {
+			int member_no = sqlSession.selectOne("member.getNo", member_id);
+			return member_no;
+			
 		}
 
-//		//멤버 id로 번호 구하기
+
+
+//		@Override
+//		public void saveNO(MemberDto member) {
+//			
+//			member = ; 
+//			
+//		}
+
+//		//멤버 id로 번호 구하기 (영락)
 //		@Override
 //		public int findno(MemberDto member,int member_no) {
 //			

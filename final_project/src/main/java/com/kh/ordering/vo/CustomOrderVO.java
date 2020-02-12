@@ -24,9 +24,7 @@ public class CustomOrderVO {
 	private int seller_custom_order_no;
 	private int seller_no; 
 	
-//	회원 견적서 관리
-	private int member_custom_order_no; // 요청서관리 고유번호
-	private int member_no; // 회원번호
+ 
 
 //	알람
 	private int seller_alram_no;

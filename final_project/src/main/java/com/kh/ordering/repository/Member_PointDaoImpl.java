@@ -1,5 +1,7 @@
 package com.kh.ordering.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,10 +26,12 @@ public class Member_PointDaoImpl implements Member_PointDao{
 		
 	}
 
+
+
 	@Override
-	public void registsuccess(Member_PointDto member_pointDto) {
-		// TODO Auto-generated method stub
-		
+	public List<Member_PointDto> getListPoint(int member_no) {
+
+		return sqlSession.selectList("member_PointDto.getListPoint",member_no);
 	}
 	
 

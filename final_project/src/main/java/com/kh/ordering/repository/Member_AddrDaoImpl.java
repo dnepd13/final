@@ -1,5 +1,7 @@
 package com.kh.ordering.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,11 +14,23 @@ public class Member_AddrDaoImpl implements Member_AddrDao{
 	private SqlSession sqlSession;
 
 	@Override
-	public void registaddr(Member_AddrDto member_AddrDto) {
+	public void insertaddr(Member_AddrDto member_AddrDto) {
 		
 		//번호 추출
 		sqlSession.insert("member_AddrDto.insertaddr", member_AddrDto);
 	}
+
+	@Override
+	public List<Member_AddrDto> getListAddr(int member_no) {
+		
+		return sqlSession.selectList("member_AddrDto.getListAddr", member_no);
+	}
+
+//	@Override
+//	public Member_AddrDto addrinfo(Member_AddrDto member_AddrDto) {
+//		Member_AddrDto addrinfo = sqlSession.selectOne("member_AddrDto.addrinfo", member_AddrDto);
+//		return member_AddrDto;
+//	}
 
 	
 	
