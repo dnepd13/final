@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.kh.admin.entity.SellerDto;
+import com.kh.admin.vo.BlockSellerVO;
 import com.kh.admin.vo.PagingVO;
 
+@Repository
 public class SellerDaoImpl implements SellerDao{
 
 	@Autowired
@@ -20,9 +23,9 @@ public class SellerDaoImpl implements SellerDao{
 	}
 
 	@Override
-	public List<SellerDto> sellerGetList(PagingVO vo) {
+	public List<BlockSellerVO> sellerGetList(PagingVO vo) {
 			
-		List<SellerDto> list = sqlSession.selectList("admin.sellerGetList", vo);
+		List<BlockSellerVO> list = sqlSession.selectList("admin.sellerGetList", vo);
 		return list;
 	}
 

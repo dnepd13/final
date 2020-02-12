@@ -15,6 +15,7 @@ import com.kh.admin.entity.AdminDto;
 import com.kh.admin.entity.SellerDto;
 import com.kh.admin.repository.SellerDao;
 import com.kh.admin.service.BoardService;
+import com.kh.admin.vo.BlockSellerVO;
 import com.kh.admin.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,8 @@ public class SellerController {
 		PagingVO vo = boardService.sellerPagination(pno1);
 		model.addAttribute("paging", vo);
 		//판매자 리스트 불러오기
-		List<SellerDto> list = sellerDao.sellerGetList(vo);
+		List<BlockSellerVO> list = sellerDao.sellerGetList(vo);
+		log.info("list={}", list);
 		model.addAttribute("list", list);
 		return "seller/manage";
 	}

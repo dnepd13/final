@@ -16,3 +16,4 @@
 <h1><a href="${pageContext.request.contextPath}/sales/status">사이트매출현황</a></h1><br>
 <h1><a href="${pageContext.request.contextPath}/category">카테고리 관리</a></h1><br>
 <h1><a href="${pageContext.request.contextPath}/goods">전체 상품 관리</a></h1><br>
+<h1><a href="${pageContext.request.contextPath}/blocklist">차단된 회원 목록</a></h1><br>

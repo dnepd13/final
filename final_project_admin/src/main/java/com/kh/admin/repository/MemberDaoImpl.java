@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.admin.entity.MemberDto;
+import com.kh.admin.vo.BlockMemberVO;
 import com.kh.admin.vo.MemberPointVO;
 import com.kh.admin.vo.PagingVO;
 
@@ -23,8 +24,8 @@ public class MemberDaoImpl implements MemberDao{
 	}
 
 	@Override
-	public List<MemberDto> memberGetList(PagingVO vo) {
-		List<MemberDto> list = sqlSession.selectList("admin.memberGetList", vo);
+	public List<BlockMemberVO> memberGetList(PagingVO vo) {
+		List<BlockMemberVO> list = sqlSession.selectList("admin.memberGetList", vo);
 		return list;
 	}
 

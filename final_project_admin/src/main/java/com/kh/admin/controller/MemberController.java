@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.admin.entity.MemberDto;
 import com.kh.admin.repository.MemberDao;
 import com.kh.admin.service.BoardService;
+import com.kh.admin.vo.BlockMemberVO;
 import com.kh.admin.vo.MemberPointVO;
 import com.kh.admin.vo.PagingVO;
 
@@ -32,6 +33,7 @@ public class MemberController {
 	@Autowired
 	private MemberDao memberDao;
 	
+	//회원 목록 뽑기
 	@GetMapping("/manage")
 	public String manage(
 			Model model,
@@ -40,7 +42,8 @@ public class MemberController {
 		
 		PagingVO vo = boardService.memberPagination(pno1);
 		model.addAttribute("paging", vo);
-		List<MemberDto> list = memberDao.memberGetList(vo);
+		List<BlockMemberVO> list = memberDao.memberGetList(vo);
+		log.info("list={}", list);
 		model.addAttribute("list", list);
 		return "member/manage";
 	}

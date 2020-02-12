@@ -1,16 +1,12 @@
-package com.kh.admin.vo;
-
-import java.util.List;
-
-import com.kh.admin.entity.GoodsOptionDto;
+package com.kh.admin.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class GoodsVO {
+@Data @AllArgsConstructor @NoArgsConstructor @Builder
+public class GoodsDto {
 	private int goods_no,
 					seller_no,
 					goods_price,
@@ -22,5 +18,4 @@ public class GoodsVO {
 						goods_discount_finish,
 						goods_status,
 						goods_content;
-	private List<GoodsOptionDto> goodsOptionList;
 }
