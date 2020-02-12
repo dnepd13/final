@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">    
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
 <h1>회원 관리창 입니다</h1>
 <h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
 
@@ -10,12 +10,13 @@
     <tr>
       <th width="15%">아이디</th>
       <th width="15%">이름</th>
-      <th width="15%">이메일</th>
+      <th width="1%">이메일</th>
       <th width="10%">연락처</th>
-      <th width="15%">등급</th>
+      <th width="1%">등급</th>
       <th width="10%">가입일</th>
       <th width="10%">마지막 접속일시</th>
-      <th width = "10%">수정</th>
+      <th width = "10%">상세보기</th>
+      <th width = "10%">차단</th>
     </tr>
   </thead>
   <tbody>
@@ -27,13 +28,23 @@
       <td>${list.member_phone}</td>
       <td>${list.member_grade}</td>
       <td>${list.member_join_date}</td>
-      <td>${list.member_last_login}</td>
+      <td>${list.member_last_login} </td>
       <td>
-      		<form action="" method="post">
-      			<input type="hidden" name="" value="">
-      			<input type="submit" value="수정">
+      		<form action="memberpage" method="post">
+      			<input type="hidden" name="member_no" value="${list.member_no }">
+      			<input type="submit" value="상세보기">
       		</form>
       </td>
+      <c:choose>
+      	<c:when test="${list.block_no > 0 }">
+      		<td>차단된 회원</td>
+      	</c:when>
+      	<c:otherwise>
+		      <td>
+		      	<a href="${pageContext.request.contextPath}/block?member_no=${list.member_no}"><button type="button" class="btn btn-primary">차단하기</button></a>
+		      </td>
+      	</c:otherwise>
+      </c:choose>
     </tr>
 	</c:forEach>
   </tbody>

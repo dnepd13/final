@@ -131,8 +131,8 @@
  						data-category-large="${list.category_large}" 
  						data-category-middle="${list.category_middle}" 
  						data-category-small="${list.category_small}">
-   			<button type="button" class="btn-modify" >수정</button>
-   			<button type="button" class="btn-delete" >삭제</button>
+   			<button type="button" class="btn btn-primary btn-modify" >수정</button>
+   			<button type="button" class="btn btn-primary btn-delete" >삭제</button>
       </td>
     </tr>
 	</c:forEach>
