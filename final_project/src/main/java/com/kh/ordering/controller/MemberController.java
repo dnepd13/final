@@ -219,9 +219,6 @@ public class MemberController {
 //	}
 
 	
-	
-	
-	
 	@GetMapping("/insertaddr")
 	public String registaddr() {
 		
