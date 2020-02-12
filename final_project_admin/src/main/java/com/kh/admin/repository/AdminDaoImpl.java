@@ -1,11 +1,15 @@
 package com.kh.admin.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.admin.entity.AdminDto;
+import com.kh.admin.entity.BlockDto;
 import com.kh.admin.entity.CategoryDto;
+import com.kh.admin.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,6 +44,27 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public void lastLogin(AdminDto adminDto) {
 		sqlSession.update("admin.lastLogin", adminDto);
+	}
+
+	@Override
+	public void block(BlockDto blockDto) {
+		sqlSession.insert("admin.block", blockDto);
+	}
+
+	@Override
+	public int blockCount() {
+		return sqlSession.selectOne("admin.blockCount");
+	}
+
+	@Override
+	public List<BlockDto> blockList(PagingVO paging) {
+		List<BlockDto> list = sqlSession.selectList("admin.blockList", paging);
+		return list;
+	}
+
+	@Override
+	public void blockDelete(BlockDto blockDto) {
+		sqlSession.delete("admin.blockDelete", blockDto);
 	}
 
 	

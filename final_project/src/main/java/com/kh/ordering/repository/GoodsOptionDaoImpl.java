@@ -1,5 +1,6 @@
 package com.kh.ordering.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -39,6 +40,15 @@ public class GoodsOptionDaoImpl implements GoodsOptionDao{
 	}
 	
 	@Override
+	public List<GoodsOptionDto> getList(List<Integer> list) {
+		List<GoodsOptionDto> optionList = new ArrayList<>();
+		for(int no : list) {
+			optionList.add(this.get(no));
+		}
+		return optionList;
+	}
+	
+	@Override
 	public int getSequence() { // 마지막 시퀀스 반환(currval)
 		return sqlSession.selectOne("goods_option.getSequence");
 	}
@@ -47,4 +57,5 @@ public class GoodsOptionDaoImpl implements GoodsOptionDao{
 	public List<GoodsOptionVO> getGoodsOptionVOList(int goods_no) {
 		return sqlSession.selectList("goods_option.getGoodsOptionVOList", goods_no);
 	}
+	
 }

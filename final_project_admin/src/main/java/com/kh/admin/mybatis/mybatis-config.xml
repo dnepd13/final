@@ -21,5 +21,13 @@
  		<typeAlias type="com.kh.admin.entity.MemberDto" alias="memberDto"/>
  		<typeAlias type="com.kh.admin.entity.PremiumDto" alias="premiumDto"/>
  		<typeAlias type="com.kh.admin.entity.AdminQnaBoardDto" alias="adminQnaDto"/>
+ 		<typeAlias type="com.kh.admin.vo.MemberPointVO" alias="point"/>
+ 		<typeAlias type="com.kh.admin.entity.GoodsDto" alias="goodsDto"/>
+ 		<typeAlias type="com.kh.admin.entity.GoodsOptionDto" alias="goodsOptionDto"/>
+ 		<typeAlias type="com.kh.admin.vo.GoodsVO" alias="goodsVO"/>
+		<typeAlias type="com.kh.admin.vo.SellerGoodsVO" alias="sellerGoodsVO"/> 	
+ 		<typeAlias type="com.kh.admin.entity.BlockDto" alias="blockDto"/>
+ 		<typeAlias type="com.kh.admin.vo.BlockMemberVO" alias="blockMemberDto"/>
+ 		<typeAlias type="com.kh.admin.vo.BlockSellerVO" alias="blockSellerDto"/>
  	</typeAliases>
  </configuration>

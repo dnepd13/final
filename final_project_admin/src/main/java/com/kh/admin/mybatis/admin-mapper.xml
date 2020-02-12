@@ -29,14 +29,14 @@
  	<!-- 관리자 가입시키기 -->
 	<insert id="insert" parameterType="adminDto">
 		insert into admin values(
-							admin_seq.nextval,	 
-							#{admin_id}, 
-							#{admin_pw}, 
-							#{admin_name}, 
-							#{admin_email}, 
-							'일반관리자', 
-							to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss'), 
-							to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss'))
+							admin_seq.nextval,	
+							#{admin_id},
+							#{admin_pw},
+							#{admin_name},
+							#{admin_email},
+							'일반관리자',
+							sysdate,
+							sysdate)
 	</insert>
 	
 	<!-- 최종로그인 일시 변동 -->
@@ -80,13 +80,27 @@
 	</delete>
 	
 	<!-- 판매자 리스트 불러오기 -->
-	<select id="sellerGetList" parameterType="paging" resultType="sellerDto">
+	<select id="sellerGetList" parameterType="paging" resultType="blockSellerDto">
 		select * from(
 			select rownum rn, A.* from(
-				select * from seller order by seller_no desc
+				select a.seller_no, a.seller_id, a.seller_name, a.seller_email, a.seller_phone, a.seller_birth, a.seller_addr_post, a.seller_addr_basic,
+				 a.seller_addr_extra, a.seller_store_name, a.seller_store_phone, a.seller_store_fax, seller_join_date, seller_last_login, a.seller_agree_date, a.seller_cid, a.seller_bank_code,
+				  a.seller_bank_account, a.seller_bank_username, a.seller_bank_birth, a.seller_grade, b.block_no
+				from seller a left outer join block b on a.seller_no = b.seller_no 
+				order by seller_no desc
 			)A
 		)where rn between #{start} and #{finish}
 	</select>
+	
+	<!-- 판매자 단일 조회 -->
+	<select id="sellerGetOne" parameterType="sellerDto" resultType="sellerDto">
+		select * from seller where seller_no = #{seller_no}
+	</select>
+	
+	<!-- 판매자 삭제 -->
+	<delete id="sellerDelete" parameterType="sellerDto">
+		delete seller where seller_no = #{seller_no}
+	</delete>
 	
 	<!-- 판매자 목록 총 갯수 가져오기 -->
 	<select id="sellerCount" resultType="int">
@@ -132,14 +146,26 @@
 	</delete>
 	
 	<!-- 회원 리스트 -->
-	<select id="memberGetList" parameterType="Paging" resultType="memberDto">
+	<select id="memberGetList" parameterType="Paging" resultType="blockMemberDto">
 		select * from(
 			select rownum rn, A.* from(
-				select * from member 
-				order by member_no desc
+				select a.member_no, a.member_id, a.member_name, a.member_email, a.member_phone, a.member_birth, a.member_join_date, a.member_last_login,
+				    a.member_agree_date, a.member_grade, b.block_no
+				from member a left outer join block b on a.member_no = b.member_no
+				order by a.member_no desc
 			)A
 		)where rn between #{start} and #{finish}
 	</select>
+	
+	<!-- 회원 단일 조회 -->
+	<select id="memberGetOne" parameterType="memberDto" resultType="memberDto">
+		select * from member where member_no = #{member_no}
+	</select>
+	
+	<!-- 회원 삭제하기 -->
+	<delete id="memberDelete" parameterType="memberDto">
+		delete member where member_no = #{member_no}
+	</delete>	
 	
 	<!-- 회원 총 갯수 -->
 	<select id="memberCount" resultType="int">
@@ -211,7 +237,7 @@
 			#{admin_qna_content},
 			#{admin_qna_title},
 			#{admin_qna_writer},
-			to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' ),
+			sysdate,
 			#{admin_qna_head},
 			admin_qna_seq.nextval,
 			'관리자'
@@ -237,7 +263,7 @@
 			#{admin_qna_content},
 			#{admin_qna_title},
 			#{admin_qna_writer},
-			to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' ),
+			sysdate,
 			#{admin_qna_head},
 			#{group_no},
 			#{super_no},
@@ -251,7 +277,7 @@
 			set 
 				admin_qna_title = #{admin_qna_title},
 				admin_qna_content = #{admin_qna_content},
-				admin_qna_date = to_date(sysdate, 'yyyy-mm-dd hh24:mi:ss' )
+				admin_qna_date = sysdate
 			where
 				admin_qna_no = #{admin_qna_no}
 	</update>
@@ -259,6 +285,142 @@
 	<!-- qna글 삭제 -->
 	<delete id="qnaBoardDelete" parameterType="adminQnaDto">
 		delete admin_qna where admin_qna_no = #{admin_qna_no}
+	</delete>
+	
+	<!-- 회원 개인 포인트 총합 -->
+	<select id="pointSumMember" parameterType="point" resultType="int">
+		select sum(member_point_change) from member_point where member_no = #{member_no}
+	</select>
+	
+	<!-- 회원 개인 포인트 목록 갯수 구해오기 -->
+	<select id="pointMemberCount" parameterType="point" resultType="int">
+		select count(*) from member_point where member_no = #{member_no}
+	</select>
+	
+	<!-- 회원 포인트 조회 --> 
+	<select id="pointMember" parameterType="paging" resultType="point">
+		select * from(
+			select rownum rn, A.* from(
+				select 
+						*
+				from 
+						member_point
+				where member_no = #{member_no}
+				order by member_point_date
+			)A
+		)where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 회원 포인트 삭제 -->
+	<delete id="pointDelete" parameterType="int">
+		delete member_point where member_point_no = #{member_point_no}
+	</delete>
+	
+	<!-- 회원 포인트 추가 -->
+	<insert id="pointRegist" parameterType="point">
+		insert into member_point 
+			values(
+				member_point_seq.nextval, 
+				#{member_point_status},
+				sysdate,
+				#{member_point_limit},
+				#{member_point_change},
+				#{member_point_content},
+				#{member_no}
+				)
+	</insert>
+	
+	<!-- resultMap을 써보자... -->
+	<resultMap type="goodsVO" id="getGoodsVO">
+		<result column="goods_no" property="goods_no"/>
+		<result column="seller_no" property="seller_no"/>
+		<result column="goods_name" property="goods_name"/>
+		<result column="goods_price" property="goods_price"/>
+		<result column="goods_discount_price" property="goods_discount_price"/>
+		<result column="goods_discount_start" property="goods_discount_start"/>
+		<result column="goods_discount_finish" property="goods_discount_finish"/>
+		<result column="goods_stock" property="goods_stock"/>
+		<result column="goods_status" property="goods_status"/>
+		<result column="goods_content" property="goods_content"/>
+		<result column="category_no" property="category_no"/>
+	
+		<collection property="goodsOptionList" 
+						javaType="list"
+						ofType="goodsOptionDto"
+						select="getGoodsOption"
+						column="goods_no"
+						></collection>	
+	</resultMap>
+	
+		<!-- 그냥 상품 불러오기 -->
+		<select id="goodsList" resultType="sellerGoodsVO">
+			select S.seller_id, S.seller_name, S.seller_grade, G.* from seller S 
+   				 left outer join goods G on S.seller_no = G.seller_no
+		</select>
+	
+	<!-- resultMap사용해 상품 불러오기 -->
+		<select id="getGoodsVO" parameterType="int"  resultMap="getGoodsVO">
+			select * from goods
+		</select>
+	
+		<select id="getGoodsOption" parameterType="int" resultType="goodsOptionDto">
+			select * from goods_option where goods_no = #{goods_no}
+		</select>
+		
+	<!-- 회원 및 판매자 차단하기 -->
+		<insert id="block" parameterType="blockDto">
+			insert into 
+				block(
+					block_no,
+					block_content,
+					block_id,
+					block_group,
+					block_date,
+					<choose>
+						<when test="member_no !=0">
+						member_no
+						</when>
+						<otherwise>
+						seller_no
+						</otherwise>
+					</choose>
+				) 
+			values(
+				block_seq.nextval,
+				#{block_content},
+				#{block_id},
+				#{block_group},
+				sysdate,
+				<choose>
+					<when test="member_no != 0">
+						#{member_no}
+					</when>
+					<otherwise>
+						#{seller_no}
+					</otherwise>
+				</choose>
+				
+						)
+		</insert>
+	
+	<!-- 차단된 회원 목록 불러오기 -->
+	<select id="blockList" parameterType="paging" resultType="blockDto">
+		select * from(
+			select rownum rn, A.* from(
+				select * from block
+				order by block_no desc
+			)A
+		)where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 차단 회원 목록 총 수 -->
+	<select id="blockCount" resultType="int">
+		select count(*) from block
+	</select>
+	
+	<!-- 차단 해제 -->
+	<delete id="blockDelete" parameterType="blockDto">
+		delete block where block_no = #{block_no}
 	</delete>
 	
  </mapper> 

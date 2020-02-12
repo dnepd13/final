@@ -13,4 +13,5 @@ public interface GoodsOptionDao {
 	List<GoodsOptionDto> getList(int goods_no);
 	int getSequence();
 	List<GoodsOptionVO> getGoodsOptionVOList(int goods_no);
+	List<GoodsOptionDto> getList(List<Integer> list);
 }

@@ -18,13 +18,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.admin.entity.AdminDto;
+import com.kh.admin.entity.BlockDto;
 import com.kh.admin.entity.CategoryDto;
+import com.kh.admin.entity.MemberDto;
 import com.kh.admin.entity.PremiumDto;
+import com.kh.admin.entity.SellerDto;
 import com.kh.admin.repository.AdminDao;
 import com.kh.admin.repository.CategoryDao;
+import com.kh.admin.repository.GoodsDao;
+import com.kh.admin.repository.MemberDao;
 import com.kh.admin.repository.PremiumDao;
+import com.kh.admin.repository.SellerDao;
 import com.kh.admin.service.BoardService;
+import com.kh.admin.vo.GoodsVO;
+import com.kh.admin.vo.MemberPointVO;
 import com.kh.admin.vo.PagingVO;
+import com.kh.admin.vo.SellerGoodsVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,6 +55,15 @@ public class AdminController {
 	@Autowired
 	private PremiumDao premiumDao;
 	
+	@Autowired
+	private MemberDao memberDao;
+	
+	@Autowired
+	private GoodsDao goodsDao;
+	
+	@Autowired
+	private SellerDao sellerDao;
+	
 	//---------------------------로그인창----------------------------------
 	@GetMapping("/")
 	public String login() {
@@ -60,12 +78,14 @@ public class AdminController {
 			) {
 			try {
 			AdminDto login= adminDao.login(adminDto);
+			
 			log.info("1={}",login);
 			if(login == null) {
 				return "redirect:/?error";
 			}
 			else {
 				boolean correct = passwordEncoder.matches(adminDto.getAdmin_pw(), login.getAdmin_pw());
+				log.info("correct={}",correct);
 				if(correct) {
 					
 					session.setAttribute("admin_id", login.getAdmin_id());
@@ -74,6 +94,7 @@ public class AdminController {
 					return "redirect:/home";
 				}
 				else {
+					log.info("???");
 					return "redirect:/?error";
 				}
 			}
@@ -222,13 +243,93 @@ public class AdminController {
 		return "redirect:/premium";
 	}
 	
+	//---------------------------상품 리스트 뽑기----------------------------------
+
+	@GetMapping("/goods")
+	public String goods(Model model) {
+		List<SellerGoodsVO> list = goodsDao.listGoods();
+		log.info("list={}",list);
+		model.addAttribute("list", list);
+		return "/goods";
+	}
 	
+	//resultmap을 써서 부른것
+	//	@GetMapping("/goods")
+//	public String goods(
+//			Model model
+//			) {
+//		List<GoodsVO> list= goodsDao.getGoodsVO();
+//		model.addAttribute("list", list);
+//		return "/goods";
+//	}
 	
+	//---------------------------차단----------------------------------
+	@GetMapping("/block")
+	public String block(
+			@RequestParam(value = "member_no", required = false, defaultValue = "0") int member_no,
+			@RequestParam(value = "seller_no", required = false, defaultValue = "0") int seller_no,
+			Model model
+			) {
+		//member_no가 0이 멤버를 모델
+		if(member_no != 0) {
+			MemberDto memberDto = MemberDto.builder().member_no(member_no).build();
+			MemberDto result = memberDao.memberGetOne(memberDto);
+			
+			model.addAttribute("id", result.getMember_id());
+			model.addAttribute("no", result.getMember_no());
+		}
+		else {
+			SellerDto sellerDto = SellerDto.builder().seller_no(seller_no).build();
+			SellerDto result =  sellerDao.sellerGetOne(sellerDto);
+			model.addAttribute("id", result.getSeller_id());
+			model.addAttribute("no", result.getSeller_no());
+		}
+		
+		return "/block";
+	}
 	
+	@PostMapping("block")
+	public String block(
+			@ModelAttribute BlockDto blockDto
+			) {
+		//멤버 번호를 가지고 있으면 멤버를 차단하고 멤버리스트로 리턴
+		if(blockDto.getMember_no() != 0) {
+			adminDao.block(blockDto);
+			return "redirect:/member/manage";
+		}
+		//셀러 번호를 가지고 있으면 셀러를 차단하고 셀러리스트로 리턴
+		else if(blockDto.getSeller_no() != 0) {
+			adminDao.block(blockDto);
+			return "redirect:/seller/manage";
+		}
+		//아니면 오류
+		else {
+			return "redirect:/";
+		}
+	}
 	
+	@GetMapping("/blocklist")
+	public String blocklist(
+			Model model,
+			@RequestParam(value="pno1", required = false) String pno1
+			) {
+		
+			PagingVO vo = boardService.blockPagination(pno1);
+			model.addAttribute("paging",vo);
+			
+			List<BlockDto> list = adminDao.blockList(vo);
+			model.addAttribute("list", list);
+				
+		return "/blocklist";
+	}
 	
-	
-	
+	@PostMapping("blocklist")
+	public String blocklist(
+			@ModelAttribute BlockDto blockDto
+			) {
+		adminDao.blockDelete(blockDto);
+		return "redirect:/blocklist";
+	}
 	
 }
 

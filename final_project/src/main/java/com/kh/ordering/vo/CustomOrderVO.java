@@ -36,10 +36,9 @@ public class CustomOrderVO {
 //	판매자 견적서 관리
 	private int seller_custom_order_no;
 	private int seller_no; 
-	
 //	회원 견적서 관리
-	private int member_custom_order_no; // 요청서관리 고유번호
-	private int member_no; // 회원번호
+	private int member_custom_order_no;
+	private int member_no;
 
 // 회원 정보
 	private String member_id;

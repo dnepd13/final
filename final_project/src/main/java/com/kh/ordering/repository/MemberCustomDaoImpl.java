@@ -98,7 +98,7 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	
 	// 내가 보낸 요청서 보기
 	@Override // 목록
-	public List<CustomOrderDto> getListReq(PagingVO paging) {	
+	public List<CustomOrderVO> getListReq(PagingVO paging) {	
 		return sqlSession.selectList("member.getListReq", paging);
 	}
 	@Override // 상세보기

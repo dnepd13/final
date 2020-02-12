@@ -40,7 +40,7 @@ public interface MemberCustomDao {
 	int customRespCount(int member_no);
 	
 	//내가 보낸 요청서 보기
-	List<CustomOrderDto> getListReq(PagingVO paging); // 목록
+	List<CustomOrderVO> getListReq(PagingVO paging); // 목록
 	CustomOrderVO customOrderVO2(int member_custom_order_no); // 상세보기
 	int customReqCount(int member_no); // 내가 보낸 요청서 총 개수
 }

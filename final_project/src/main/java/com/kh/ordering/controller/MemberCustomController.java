@@ -48,8 +48,8 @@ public class MemberCustomController {
 															Model model) {
 		
 //		로그인을 가정한 세션설정. 로그인 유지기능 완료 후 수정하기
-		String member_id = "member";
-		session.setAttribute("member_id", member_id);
+//		String member_id = "member";
+//		session.setAttribute("member_id", member_id);
 
 		model.addAttribute("seller_no", seller_no);
 		
@@ -75,8 +75,8 @@ public class MemberCustomController {
 	public String getListCustomResp(Model model, HttpSession session,
 																@RequestParam(value="pageNo", required=false, defaultValue="0") String pageNo) {
 //		 나중에 세션 ID 수정하기
-		String id = "member";
-		session.setAttribute("member_id", id);
+//		String id = "member";
+//		session.setAttribute("member_id", id);
 		
 		String member_id=(String)session.getAttribute("member_id");
 		int member_no = memberCustomDao.getNo(member_id);
@@ -127,8 +127,10 @@ public class MemberCustomController {
 		model.addAttribute("customAlarm", memberCustomDao.customAlarm(member_no));
 		
 		// 내가 보낸 요청서		
-		List<CustomOrderDto> list = memberCustomDao.getListReq(result);
+		List<CustomOrderVO> list = memberCustomDao.getListReq(result);
 		model.addAttribute("getListReq", list);
+		
+		log.info("getListReq={}", list );
 		
 		return "member/customListReq";
 	}

@@ -12,13 +12,13 @@
  <script src="${pageContext.request.contextPath}/resources/js/goodsOption.js"></script>
  <script>
  	 $(function(){
-	 	 var category_largeList = "${category_largeList}";
+////////////	카테고리	///////////////////////////////////
+ 		 var category_largeList = "${category_largeList}";
 	 	 category_largeList = category_largeList.substring(1, category_largeList.length-1).split(",");
  		 $.each(category_largeList, function(index, item){
  			 var option = $("<option value='"+item+"'>"+item+"</option>");
  			 $(".category_large").append(option);
  		 });
- 		 
  		 
  		 $(".category_large").change(function(){
 	 		 $(".middleChild").nextAll().remove();
@@ -67,7 +67,10 @@
 			 	 }
 			 });
  		 });
- 	 });
+//////////////////////////////////////////////////////////////////////		 
+ 		 
+ 		 
+	});
  </script>
 </head>
 <body>
@@ -117,7 +120,46 @@
       <li>이름 		내용		 가격		 수량 		상태</li>
     </ul>
 	
-	
+	<hr><hr><hr>
+	<h1>배송 정보 입력</h1>
+	배송여부 : 
+	<select name="delivery_agree">
+		<option value="Y">Y</option>
+		<option value="N">N</option>
+	</select>
+	<br>
+	묶음 배송 여부 : 
+	<select name="delivery_set_agree">
+		<option value="Y">Y</option>
+		<option value="N">N</option>
+	</select>
+	<br>
+	묶음 배송 조건 금액 : 
+	<input type="text" name="delivery_set_op_price">
+	<br>
+	택배 회사 : 
+	<select name="delivery_company">
+		<option value="우체국">우체국</option>
+		<option value="한진">한진</option>
+		<option value="로젠">로젠</option>
+	</select>
+	<br>
+	배송비 : 
+	<input type="text" name="delivery_price">
+	<br>
+	상품별 배송비 : 
+	<select name="delivery_option">
+		<option value="무료">무료</option>
+		<option value="유료">유료</option>
+		<option value="조건부무료">조건부무료</option>
+	</select>
+	<br>
+	조건부 무료 금액 : 
+	<input type="text" name="delivery_op_price">
+	<br>
+	반품 배송비 :
+	<input type="text" name="delivery_return_price">
+	<br>	
 	<input type="submit" value="등록">
 </form>
 

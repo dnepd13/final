@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="delivery">
+ 	<!-- 등록 -->
+ 	<insert id="insert" parameterType="deliveryVO">
+ 		insert into delivery values(
+ 			delivery_seq.nextval,
+ 			#{delivery_agree},
+ 			#{delivery_set_agree},
+ 			#{delivery_company},
+ 			#{delivery_price},
+ 			#{delivery_option},
+ 			#{delivery_set_op_price},
+ 			#{delivery_return_price},
+ 			#{goods_no},
+ 			#{seller_no},
+ 			#{delivery_op_price}
+ 		)
+ 	</insert>
+ 	
+ 	<!-- 삭제 -->
+ 	<delete id="delete" parameterType="int">
+ 		delete delivery where delivery_no = #{delivery_no}
+ 	</delete>
+ 	
+ 	<!-- 단일 조회 -->
+ 	<select id="get" parameterType="int" resultType="deliveryDto">
+		select * from delivery where delivery_no = #{delivery_no}
+	</select>	
+	
+	<!-- 카테고리 전체 조회 -->
+	<select id="getList" resultType="deliveryDto">
+		select * from delivery
+	</select>
+	
+ </mapper>

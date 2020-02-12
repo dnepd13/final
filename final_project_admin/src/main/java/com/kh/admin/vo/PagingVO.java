@@ -16,6 +16,6 @@ public class PagingVO {
 		public int finishBlock;
 		public int start;
 		public int finish;
-
+		public int member_no;
 		
 }
