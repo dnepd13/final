@@ -6,7 +6,7 @@ $(function(){
 		$(this).find("input[type=password]").each(function(){
 			//this == 입력창
 			var text = $(this).val();
-			text=CryptoJs.HmacSHA256(text, "kh");
+			text=CryptoJs.HmacSHA256(text);
 			text = CryptoJs.enc.Base64.stringify(text);
 			$(this).val(text);
 			

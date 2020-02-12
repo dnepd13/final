@@ -15,6 +15,9 @@ import com.kh.ordering.vo.CustomOrderVO;
 
 import com.kh.ordering.entity.MemberDto;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class MemberDaoImpl implements MemberDao{
 
@@ -27,20 +30,70 @@ public class MemberDaoImpl implements MemberDao{
 
 		
 
-		@Override
+		@Override // 요청서 저장
 		public int MemberSeq() {
 			return sqlSession.selectOne("member.MemberSeq");
 		}
 
-		@Override
+		@Override //회원가입
 		public void regist(MemberDto member) {
 			sqlSession.insert("member.regist", member); //세션값에 있는 regist를 저장
+			
+			}
+		
+		
+		
+		
+		
+		@Override //로그인
+		public MemberDto login(MemberDto member) {
+			return sqlSession.selectOne("member.login", member);
+		}
+
+		//최종 로그인 변동 하기
+		@Override
+		public void lastLogin(MemberDto member) {
+		sqlSession.update("member.lastLogin", member);
+			
+		}
+
+
+		@Override
+		public int getNo(String member_id) {
+			int member_no = sqlSession.selectOne("member.getNo", member_id);
+			return member_no;
 			
 		}
 
 
 
+//		@Override
+//		public void saveNO(MemberDto member) {
+//			
+//			member = ; 
+//			
+//		}
+
+//		//멤버 id로 번호 구하기 (영락)
+//		@Override
+//		public int findno(MemberDto member,int member_no) {
+//			
+//			log.info("member_id= {}", member_id);
+//			
+//			
+//	//맵퍼에 있는 정보를 불러오는것 mapper의 namespace member와 select항목의 finddo를 찾아 불러오는것
+//	//parameterType(보내는값 int String vo, Dto등을 지정) 		
+//			member_no = sqlSession.selectOne("member.findno", member_id);
+//			log.info("member_no={}", member_no);
+//			
+//			return member_no;
+//		} 
+
+
+	
+
 		
+	
 		
 		
 //		@Override
