@@ -102,7 +102,7 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	
 	// 내가 보낸 견적서 보기
 	@Override	// 목록
-	public List<CustomOrderVO> getListResp(PagingVO paging) {
+	public List<CustomOrderDto> getListResp(PagingVO paging) {
 		return sqlSession.selectList("seller.getListResp", paging);
 	}
 	@Override // 상세보기

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
  
  <script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/toast/hakademy-toast.min.js"></script>
      <script>
@@ -34,7 +35,7 @@
     
 <button class="toast"></button>
 
-<h3>받은 요청서 customListReq.jsp</h3>
+<h3>판매자가 받은 요청서 customListReq.jsp</h3>
 <a href="remove">임시 세션지우기</a>
 <h4>확인 안 한 요청서 몇 개냐: <span class="alarm">${customAlarm } 개</span></h4>	
 
@@ -45,7 +46,11 @@
 	보낸사람: ${memberReq.member_id } <br>
 	제목: <a href="customInfoReq?member_custom_order_no=${memberReq.member_custom_order_no }">
 						${memberReq.custom_order_title }
-			</a> 
+			</a>
+			<span style="color: red">
+				<c:set var="check" value="${memberReq.seller_alarm_check }"/> 
+				<c:if test="${functions : contains(check, 'N') }"> new </c:if>
+			</span>
 			<br>	
 	작성일: ${memberReq.custom_order_date } <br>
 	<hr>

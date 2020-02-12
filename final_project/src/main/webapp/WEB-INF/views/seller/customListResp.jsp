@@ -34,7 +34,7 @@
     
 <button class="toast"></button>
 
-<h3>보낸 견적서 customListResp.jsp</h3>
+<h3>판매자가 보낸 견적서 customListResp.jsp</h3>
 <a href="remove">임시 세션지우기</a>
 <h4>확인 안 한 요청서 몇 개냐: <span class="alarm">${customAlarm } 개</span></h4>	
 

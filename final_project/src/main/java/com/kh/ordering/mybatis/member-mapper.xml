@@ -73,12 +73,21 @@
 	<select id="getListAll" resultType="customOrderVO">
 		select *from seller_custom_view
 	</select>
+	
+	<!-- 구매자가 받은 견적서 총 개수(목적: 페이징) -->
+	<select id="customRespTest" parameterType="int" resultType="int">
+		select count(*) from member_alarm where member_no=#{member_no}
+	</select>
 	<!-- 나에게 온 견적서만 보기 -->
 	<select id="getListResp" parameterType="int" resultType="customOrderVO">
-		select A.*, B.seller_id from
-	    	seller_custom_view A inner join seller B
-	        	on A.seller_no = B.seller_no
-		where member_no = #{member_no} order by custom_order_date desc
+		select *from(
+			select rownum rn, RN.*from(
+				select A.*, B.seller_id from
+			    	seller_custom_view A inner join seller B
+			        	on A.seller_no = B.seller_no
+				where member_no = #{member_no} order by custom_order_date desc
+			)RN
+		)where rn between #{start} and #{finish}
 	</select>
 	<!-- 견적서 상세내용 보기. 단일조회 -->
 	<select id="getListInfoResp" resultType="customOrderVO">
@@ -97,12 +106,21 @@
 		select count(*) from member_alarm where member_alarm_check='N'
 	</select>
 	
+	<!-- 구매자가 보낸 요청서 총 개수(목적:페이징) -->
+	<select id="customReqCount" parameterType="int" resultType="int">
+		select count(*) from member_custom_order where member_no=#{member_no}
+	</select>
+	
 	<!-- 내가 보낸 요청서 목록 -->
 	<select id="getListReq" parameterType="int" resultType="customOrderVO">
-		select A.*, B.member_no, B.member_custom_order_no from
-   			custom_order A inner join member_custom_order B
-       			on a.custom_order_no = b.custom_order_no
-       	where member_no=#{member_no} order by a.custom_order_date desc
+		select *from(
+			select rownum rn, RN.*from(
+				select A.*, B.member_no, B.member_custom_order_no from
+				    custom_order A inner join member_custom_order B
+				        on a.custom_order_no = b.custom_order_no
+				    where member_no =#{member_no } order by custom_order_date desc
+			)RN
+		)where rn between #{start} and #{finish}
 	</select>
 	<select id="getListInfoReq" parameterType="int" resultType="customOrderVO">
 		select *from member_custom_view where member_custom_order_no=#{member_custom_order_no}

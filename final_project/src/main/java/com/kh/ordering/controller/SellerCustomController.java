@@ -58,13 +58,11 @@ public class SellerCustomController {
 	public String memberCustom(HttpSession session,
 														@RequestParam int member_no,
 														@ModelAttribute FilesVO files,
-														@ModelAttribute CustomOrderDto customOrderDto,
-														@ModelAttribute SellerCustomOrderDto sellerCustomDto,
-														@ModelAttribute MemberCustomAlarmDto memberCustomAlarmDto) throws IllegalStateException, IOException {
+														@ModelAttribute CustomOrderDto customOrderDto) throws IllegalStateException, IOException {
 
 		//판매자 견적서 보내기
 		//견적서 작성 --> 주문제작 테이블 데이터 입력 --> 관리테이블 데이터 등록 --> 구매자 알람 테이블 등록
-		sellerCustomService.SellerCustom(session, member_no, files, customOrderDto, sellerCustomDto, memberCustomAlarmDto);
+		sellerCustomService.SellerCustom(session, member_no, files, customOrderDto);
 		return "redirect:/seller/customListResp";
 	}
 	
@@ -100,7 +98,7 @@ public class SellerCustomController {
 		String seller_id = (String)session.getAttribute("seller_id");
 		int seller_no = sellerCustomDao.getNo(seller_id);
 		
-		// 판매자 알림 업데이트 후
+		// 판매자 알람 업데이트 후
 		sellerCustomDao.UpdateAlarm(seller_no, member_custom_order_no);
 		// 상세페이지 보기
 		CustomOrderVO content = sellerCustomDao.customOrderVO1(member_custom_order_no);
@@ -124,13 +122,12 @@ public class SellerCustomController {
 		PagingVO result= sellerCustomService.customRespPaging(pageNo, seller_no);
 		
 		model.addAttribute("paging", result);
-		
+
 		// 알람 check N count 개수
-//		int customAlarm = sellerCustomDao.customAlarm();
 		model.addAttribute("customAlarm", sellerCustomDao.customAlarm());
 
 		// 내가 보낸 견적서		
-		List<CustomOrderVO> list = sellerCustomDao.getListResp(result);
+		List<CustomOrderDto> list = sellerCustomDao.getListResp(result);
 		model.addAttribute("getListResp", list);
 	
 		return "seller/customListResp";

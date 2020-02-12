@@ -29,6 +29,10 @@ public class CustomOrderVO {
 	private FilesDto filesDto;
 	private CustomOrderFilesDto customOrderFilesDto;
 	
+// 알람 확인
+	private String member_alarm_check;
+	private String seller_alarm_check;
+	
 //	판매자 견적서 관리
 	private int seller_custom_order_no;
 	private int seller_no; 

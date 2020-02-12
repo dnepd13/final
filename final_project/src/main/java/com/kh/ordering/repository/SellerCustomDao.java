@@ -43,7 +43,7 @@ public interface SellerCustomDao {
 	int customReqCount(int seller_no);
 	
 	//내가 보낸 견적서 보기
-	List<CustomOrderVO> getListResp(PagingVO paging);	//목록
+	List<CustomOrderDto> getListResp(PagingVO paging);	//목록
 	CustomOrderVO customOrderVO2(int seller_custom_order_no); // 상세보기
 	int customRespCount(int seller_no); // 내가 보낸 견적서 총 개수
 }

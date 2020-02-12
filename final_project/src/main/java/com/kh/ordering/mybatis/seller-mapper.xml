@@ -83,9 +83,8 @@
 
 	<!-- 견적서 관리 테이블 -->
 	<insert id="customInsert" parameterType="sellerCustomDto">
-		insert into
-		seller_custom_order
-		values(seller_custom_order_seq.nextval,#{custom_order_no},#{seller_no})
+		insert into seller_custom_order
+					values(seller_custom_order_seq.nextval,#{custom_order_no},#{seller_no})
 	</insert>
 	<!-- 견적서 관리테이블 현재 시퀀스번호 -->
 	<select id="customOrderSeq" resultType="int">
@@ -95,10 +94,10 @@
 	<!-- 요청서 도착 알람 -->
 	<insert id="insertAlarm" parameterType="sellerAlarmDto">
 		insert into seller_alarm(seller_alarm_no, seller_no,
-		member_custom_order_no,
-		seller_alarm_check, seller_alarm_delete)
-		values(seller_alarm_seq.nextval, #{seller_no}, #{member_custom_order_no},
-		'N', 'N')
+													member_custom_order_no,
+													seller_alarm_check, seller_alarm_delete)
+							values(seller_alarm_seq.nextval, #{seller_no}, #{member_custom_order_no},
+										N', 'N')
 	</insert>
 
 	<!-- 전체 요청서 보기(카테고리 미구현) -->
@@ -106,7 +105,7 @@
 <!-- 		select *from member_custom_view -->
 <!-- 	</select> -->
 		
-	<!-- 판매자가 받은 요청서 총 개수 -->
+	<!-- 판매자가 받은 요청서 총 개수(목적: 페이징) -->
 	<select id="customCountTest" parameterType="int" resultType="int">
 		select count(*) from seller_alarm where seller_no = #{seller_no}
 	</select>
@@ -117,7 +116,8 @@
 		        select A.*, B.member_id from
 		            member_custom_view A inner join member B
 		                on A.member_no = B.member_no
-		    )RN where seller_no = #{seller_no} order by custom_order_date desc 
+		        where seller_no = #{seller_no} order by custom_order_date desc
+		    )RN 
  		)where rn between #{start} and #{finish} 
 	</select>	
 	
@@ -149,7 +149,7 @@
 		select count(*) from seller_alarm where seller_alarm_check='N'
 	</select>
 
-	<!-- 판매자가 보낸 견적서 총 개수 -->
+	<!-- 판매자가 보낸 견적서 총 개수(목적:페이징) -->
 	<select id="customRespCount" parameterType="int" resultType="int">
 		select count(*) from seller_custom_order where seller_no=#{seller_no}
 	</select>
@@ -160,11 +160,15 @@
 		        select A.*, B.seller_no, b.seller_custom_order_no from
 		            custom_order A inner join seller_custom_order B
 		                on a.custom_order_no = b.custom_order_no 
-		    )RN where seller_no = #{seller_no} order by custom_order_date desc 
+		        	where seller_no = #{seller_no} order by custom_order_date desc
+		    )RN
 		)where rn between #{start} and #{finish}
 	</select>
 	<select id="getListInfoResp" parameterType="int" resultType="customOrderVO">
-		select *from seller_custom_view where seller_custom_order_no=#{seller_custom_order_no}
+		select A.*, B.seller_no, b.seller_custom_order_no from
+		    custom_order A inner join seller_custom_order B
+		        on a.custom_order_no = b.custom_order_no
+		where b.seller_custom_order_no =#{seller_custom_order_no}
 	</select>
 
  </mapper>
