@@ -46,9 +46,9 @@ public class MemberCustomController {
 															@RequestParam int seller_no,
 															Model model) {
 		
-		//로그인을 가정한 세션설정. 로그인 유지기능 완료 후 수정하기
-//		String member_id = "member";
-//		session.setAttribute("member_id", member_id);
+//		로그인을 가정한 세션설정. 로그인 유지기능 완료 후 수정하기
+		String member_id = "member";
+		session.setAttribute("member_id", member_id);
 
 		model.addAttribute("seller_no", seller_no);
 		
@@ -61,7 +61,7 @@ public class MemberCustomController {
 												@ModelAttribute FilesVO files,
 												@ModelAttribute CustomOrderDto customOrderDto,
 												@ModelAttribute SellerCustomAlarmDto sellerCustomAlarmDto) throws IllegalStateException, IOException {
-		
+
 		// 구매자 요청서 보내기
 		// 요청서 작성 --> 주문제작 테이블 데이터 입력 --> 관리테이블 데이터 등록 --> 판매자 알람 테이블 등록
 		memberCustomService.MemberCustom(session, seller_no,files, customOrderDto, sellerCustomAlarmDto);
@@ -69,15 +69,18 @@ public class MemberCustomController {
 		return "redirect:/member/customList";
 	}
 	
-	// 구매자가 받은 견적서 및 보낸 요청서 목록 페이지
-	@GetMapping("/customList")
-	public String memberCustomList(Model model, HttpSession session) {
-		// 나중에 세션 ID 수정하기
+	// 구매자가 받은 견적서 목록 페이지
+	@GetMapping("/customListResp")
+	public String getListCustomResp(Model model, HttpSession session) {
+//		 나중에 세션 ID 수정하기
 		String id = "member";
 		session.setAttribute("member_id", id);
 		
 		String member_id=(String)session.getAttribute("member_id");
 		int member_no = memberCustomDao.getNo(member_id);
+		
+		// 알람 check N count 개수		
+		model.addAttribute("customAlarm", memberCustomDao.customAlarm());
 		
 		// 1:1 받은 견적서
 		model.addAttribute("getListResp", memberCustomDao.getListResp(member_no));		
@@ -85,7 +88,7 @@ public class MemberCustomController {
 		// 내가 보낸 요청서		
 		model.addAttribute("getListReq", memberCustomDao.getListReq(member_no));
 		
-		return "member/customList";
+		return "member/customListResp";
 	}
 // 받은 견적서 상세 페이지
 	@GetMapping("/customInfoResp")
@@ -97,20 +100,43 @@ public class MemberCustomController {
 		
 		memberCustomDao.UpdateAlarm(member_no, seller_custom_order_no);
 		
-		CustomOrderVO content = memberCustomDao.customOrderVO(seller_custom_order_no);
+		CustomOrderVO content = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("getListInfoResp", content);
-		
-		session.removeAttribute("member_id");
-		
+			
 		return "member/customInfoResp";
+	}
+
+	// 구매자가 보낸 요청서 목록 페이지
+	@GetMapping("/customListReq")
+	public String getListCustomReq(Model model, HttpSession session) {
+//		 나중에 세션 ID 수정하기
+		String id = "member";
+		session.setAttribute("member_id", id);
+		
+		String member_id=(String)session.getAttribute("member_id");
+		int member_no = memberCustomDao.getNo(member_id);
+		
+		// 알람 check N count 개수		
+		model.addAttribute("customAlarm", memberCustomDao.customAlarm());
+		
+		// 내가 보낸 요청서		
+		model.addAttribute("getListReq", memberCustomDao.getListReq(member_no));
+		
+		return "member/customListReq";
 	}
 //	보낸 요청서 상세페이지
 	@GetMapping("/customInfoReq")
-	public String memberCustomReq(int custom_order_no, Model model) {
+	public String memberCustomReq(int member_custom_order_no, Model model) {
 		
-		CustomOrderVO content = sellerCustomDao.customOrderVO(custom_order_no);
+		CustomOrderVO content = memberCustomDao.customOrderVO2(member_custom_order_no);
 		model.addAttribute("getListInfoReq", content);
 		
 		return "member/customInfoReq";
+	}
+// 임시 세션 remove
+	@GetMapping("/remove")
+	public String remove(HttpSession session) {
+		session.removeAttribute("member_no");
+		return "member/customList";
 	}
 }

@@ -71,11 +71,11 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	@Override // 판매자가 보낸 견적서 전체보기
 	public List<CustomOrderDto> getListResp(int member_no) {
 		
-		return sqlSession.selectList("member.getListCustom", member_no);
+		return sqlSession.selectList("member.getListResp", member_no);
 	}	
 	@Override // 판매자 견적서 상세보기. 주문제작번호 단일조회
-	public CustomOrderVO customOrderVO(int seller_custom_order_no) {
-		return sqlSession.selectOne("member.getListInfo", seller_custom_order_no);
+	public CustomOrderVO customOrderVO1(int seller_custom_order_no) {
+		return sqlSession.selectOne("member.getListInfoResp", seller_custom_order_no);
 	}
 	@Override // 견적서 상세페이지 확인하면 구매자 알람테이블 업데이트
 	public void UpdateAlarm(int member_no, int seller_custom_order_no) {
@@ -85,13 +85,20 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 																																.build();
 		sqlSession.update("member.updateAlarm", updateAlarm);
 	}
-
-	@Override // 내가 보낸 요청서 보기
-	public List<CustomOrderDto> getListReq(int member_no) {
-		
-		return sqlSession.selectList("member.getListReq", member_no);
-	}	
+	@Override // 판매자 알람테이블 check N count
+	public int customAlarm() {
+		return sqlSession.selectOne("member.customCheck");
+	}
 	
-
-
+	// 내가 보낸 요청서 보기
+	@Override // 목록
+	public List<CustomOrderDto> getListReq(int member_no) {	
+		return sqlSession.selectList("member.getListReq", member_no);
+	}
+	@Override // 상세보기
+	public CustomOrderVO customOrderVO2(int member_custom_order_no) {
+		return sqlSession.selectOne("member.getListInfoReq", member_custom_order_no);
+	}
+	
+	
 }

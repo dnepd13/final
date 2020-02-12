@@ -1,6 +1,7 @@
 package com.kh.ordering.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -10,6 +11,8 @@ import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.vo.CustomOrderVO;
+import com.kh.ordering.vo.FilesVO;
+import com.kh.ordering.vo.PagingVO;
 
 public interface SellerCustomDao {
 // 판매자 주문제작 Dao
@@ -27,12 +30,20 @@ public interface SellerCustomDao {
 	void CustomFilesInsert(CustomOrderFilesDto customOrderFilesDto); // 주문제작-파일테이블
 	
 	//구매자 1:1 요청서 보기
-	List<CustomOrderVO> getListReq(int seller_no);
+	List<CustomOrderVO> getListReq(PagingVO paging); // 목록
 	//구매자 요청서 단일조회, 상세내용
-	CustomOrderVO customOrderVO(int member_custom_order_no);
+	CustomOrderVO customOrderVO1(int member_custom_order_no);
+	List<FilesDto> filesDto (int member_custom_order_no);
 	//요청서 누르면 판매자 알림테이블 업데이트
 	void UpdateAlarm(int seller_no, int member_custom_order_no);
+	//판매자 알람테이블 check N
+	int customAlarm();
+	
+	//판매자가 받은 요청서 count
+	int customReqCount(int seller_no);
+	
 	//내가 보낸 견적서 보기
-	List<CustomOrderDto> getListResp(int seller_no);
-
+	List<CustomOrderVO> getListResp(PagingVO paging);	//목록
+	CustomOrderVO customOrderVO2(int seller_custom_order_no); // 상세보기
+	int customRespCount(int seller_no); // 내가 보낸 견적서 총 개수
 }

@@ -29,9 +29,12 @@ public interface MemberCustomDao {
 	//판매자 1:1 견적서 보기
 	List<CustomOrderDto> getListResp(int member_no);
 	//판매자 견적서 단일조회, 상세조회
-	CustomOrderVO customOrderVO(int seller_custom_order_no);
+	CustomOrderVO customOrderVO1(int seller_custom_order_no);
 	//견적서 누르면 구매자 알림테이블 업데이트
 	void UpdateAlarm(int member_no, int seller_custom_order_no);
+	//구매 알람테이블 check N
+	int customAlarm();
 	//내가 보낸 요청서 보기
-	List<CustomOrderDto> getListReq(int member_no);
+	List<CustomOrderDto> getListReq(int member_no); // 목록
+	CustomOrderVO customOrderVO2(int member_custom_order_no);
 }

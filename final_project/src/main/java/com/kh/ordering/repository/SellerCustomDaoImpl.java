@@ -1,10 +1,12 @@
 package com.kh.ordering.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.CustomOrderFilesDto;
@@ -12,8 +14,13 @@ import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.vo.CustomOrderVO;
+import com.kh.ordering.vo.FilesVO;
+import com.kh.ordering.vo.PagingVO;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Repository
+@Slf4j
 public class SellerCustomDaoImpl implements SellerCustomDao {
 
 	@Autowired
@@ -66,13 +73,13 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	}
 	
 	@Override // 구매자 1:1 요청서 보기(카테고리 조건 미구현)
-	public List<CustomOrderVO> getListReq(int seller_no) {
+	public List<CustomOrderVO> getListReq(PagingVO paging) {
+		return sqlSession.selectList("seller.getListReq", paging);
 		
-		return sqlSession.selectList("seller.getListCustom", seller_no);
 	}	
 	@Override // 구매자 요청서 상세보기. 주문제작 번호 단일조회
-	public CustomOrderVO customOrderVO(int member_custom_order_no) {		
-		return sqlSession.selectOne("seller.getListInfo", member_custom_order_no);
+	public CustomOrderVO customOrderVO1(int member_custom_order_no) {		
+		return sqlSession.selectOne("seller.getListInfoReq", member_custom_order_no);
 	}	
 	@Override // 요청서 상세페이지 접속하면 판매자 알람테이블 업데이트
 	public void UpdateAlarm(int seller_no, int member_custom_order_no) {
@@ -81,13 +88,36 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 																														.member_custom_order_no(member_custom_order_no)
 																														.build();
 		sqlSession.update("seller.updateAlarm", updateAlarm);
+	}	
+	@Override // 판매자 알람테이블 check N count
+	public int customAlarm() {
+		return sqlSession.selectOne("seller.customCheck");
+	}	
+
+	@Override // 판매자가 받은 요청서 count
+	public int customReqCount(int seller_no) {
+			int a =	sqlSession.selectOne("seller.customCountTest", seller_no);
+			return a;
 	}
 	
 	// 내가 보낸 견적서 보기
-	@Override
-	public List<CustomOrderDto> getListResp(int seller_no) {
+	@Override	// 목록
+	public List<CustomOrderVO> getListResp(PagingVO paging) {
+		return sqlSession.selectList("seller.getListResp", paging);
+	}
+	@Override // 상세보기
+	public CustomOrderVO customOrderVO2(int seller_custom_order_no) {
+		return sqlSession.selectOne("seller.getListInfoResp", seller_custom_order_no);
+	}	
+	@Override // 보낸 견적서 count
+	public int customRespCount(int seller_no) {
+		return sqlSession.selectOne("seller.customRespCount", seller_no);
+	}
+
+	@Override // 아마도 파일. ....
+	public List<FilesDto> filesDto (int member_custom_order_no) {
 		
-		return sqlSession.selectList("seller.getListResp", seller_no);
+		return sqlSession.selectList("seller.getListReqFiles", member_custom_order_no);
 	}
 
 }

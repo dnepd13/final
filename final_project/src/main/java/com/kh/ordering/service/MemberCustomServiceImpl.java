@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.multi.MultiFileChooserUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,13 +69,16 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 			for(MultipartFile multiFile : files.getFiles()) {
 				// 파일의 다음 시퀀스 번호 미리 가져오기
 				files_no =  memberCustomDao.FileSeq();
+				// savename+파일 형식 저장
+				String fileType=multiFile.getContentType().substring(6, multiFile.getContentType().length());
+
 				filesList.add(FilesDto.builder()
 														.files_no(files_no)
 														.files_size(multiFile.getSize())
-														.files_savename(Integer.toString(files_no))
+														.files_savename(Integer.toString(files_no)+"."+fileType)
 														.files_uploadname(multiFile.getOriginalFilename())
 														.build());
-			}			
+			}
 			// 위의 filesList에 셋팅된 데이터를 filesList 길이만큼 반복하여 저장
 			for(int i=0 ; i<filesList.size();i++) {
 				MultipartFile multiFile = files.getFiles().get(i); // 실제 저장

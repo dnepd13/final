@@ -5,7 +5,9 @@
 
 <h3>member Custom List.jsp</h3>
 
-<h4>받은 견적서 전부 보여주기</h4>
+<h4>받은 견적서 보여주기</h4>
+<a href="remove">임시 세션지우기</a>
+<h4>확인 안 한 견적서 몇 개냐: <span>${customAlarm } 개</span></h4>	
 <div>
 <c:forEach var="sellerResp" items="${getListResp }">
 	보낸사람: ${sellerResp.seller_id } <br>
@@ -20,8 +22,8 @@
 <h4>보낸 요청서</h4>
 <c:forEach var="memberCustom" items="${getListReq }">
 <div>
-	<p style="textalign:right"><a href="#">삭제</a></p>
-	<a href="customInfoReq?custom_order_no=${memberCustom.custom_order_no }">
+	<p><a href="#">삭제</a></p>
+	<a href="customInfoReq?member_custom_order_no=${memberCustom.member_custom_order_no }">
 		제목: ${memberCustom.custom_order_title }
 	</a> <br>
 	작성일: ${memberCustom.custom_order_date }

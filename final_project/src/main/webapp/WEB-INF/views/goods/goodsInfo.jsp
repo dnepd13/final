@@ -87,13 +87,11 @@
 <hr>
 <br>
 
-<<<<<<< HEAD
-=======
 <p>상품 옵션 (goodsOptionList)</p>
 <p>${goodsVO.goodsOptionList}</p>
 
 <p><a href="${pageContext.request.contextPath}/member/customOrder?seller_no=93">1:1 요청서</a></p>
->>>>>>> refs/remotes/origin/master
+
 <hr>
 <form>
 <!-- 옵션 선택하는 부분--------------------------------------- -->
