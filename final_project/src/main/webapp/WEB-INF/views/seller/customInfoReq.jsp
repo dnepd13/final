@@ -13,6 +13,11 @@
 	${getListInfoReq.custom_order_content } <br>
 	희망가격: ${getListInfoReq.custom_order_price } <br>
 	희망날짜: ${getListInfoReq.custom_order_hopedate } <br>
+	첨부파일<br>
+	<c:forEach var="filesVO" items="${filesVO }">
+		<img src="http://localhost:8080/ordering/member/download?files_no=${filesVO.files_no }" width=100px; height=100px;>
+	</c:forEach>
+	<br>
 	<a href="customOrder?member_no=${getListInfoReq.member_no }">견적서 보내기</a>	
 	<hr>
 	</div>

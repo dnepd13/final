@@ -60,7 +60,7 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 		sellerCustomDao.SellerCustom(sellerCustomDto);
 
 		//		- 파일이 있으면 파일테이블에 등록
-			File dir = new File("D:/upload");
+			File dir = new File("D:/upload/kh2d");
 			dir.mkdirs();
 			
 			// MultipartFile 객체인 FileVO를 DB에 저장하기 위한 List 형태로 변환
@@ -72,13 +72,10 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 				// 파일 시퀀스번호 미리 가져오기
 				files_no= sellerCustomDao.FilesSeq();
 				
-				// savename+파일 형식 저장
-				String fileType=multiFile.getContentType().substring(6, multiFile.getContentType().length());
-				
 				filesList.add(FilesDto.builder()
 														.files_no(files_no)
 														.files_size(multiFile.getSize())
-														.files_savename(Integer.toString(files_no)+"."+fileType)
+														.files_savename(Integer.toString(files_no))
 														.files_uploadname(multiFile.getOriginalFilename())
 														.build());
 			}
@@ -117,6 +114,15 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 																																.build();
 		memberCustomDao.CustomAlarmInsert(memberCustomAlarmDto);
 		return null;
+	}
+
+//	견적서 파일 no 가져오기
+	@Override
+	public List<FilesVO> filesList(int seller_custom_order_no){
+		
+		List<FilesVO> filesVO = sellerCustomDao.getFilesNo(seller_custom_order_no);
+		
+		return filesVO;
 	}
 
 //	받은 요청서 목록 페이징

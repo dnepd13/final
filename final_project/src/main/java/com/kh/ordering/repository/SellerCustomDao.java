@@ -26,18 +26,20 @@ public interface SellerCustomDao {
 	int CustomOrderSeq(); // 견적서 관리테이블.currval 시퀀스
 	void CustomAlarmInsert(SellerCustomAlarmDto sellerCustomAlarmDto); 	//요청서 도착 알람 테이블
 	int FilesSeq(); // 파일 .nextval 시퀀스번호
-	void FilesInsert(FilesDto filesDto);
+	void FilesInsert(FilesDto filesDto); // 파일 저장
 	void CustomFilesInsert(CustomOrderFilesDto customOrderFilesDto); // 주문제작-파일테이블
 	
 	//구매자 1:1 요청서 보기
 	List<CustomOrderVO> getListReq(PagingVO paging); // 목록
 	//구매자 요청서 단일조회, 상세내용
 	CustomOrderVO customOrderVO1(int member_custom_order_no);
-	List<FilesDto> filesDto (int member_custom_order_no);
 	//요청서 누르면 판매자 알림테이블 업데이트
 	void UpdateAlarm(int seller_no, int member_custom_order_no);
 	//판매자 알람테이블 check N
 	int customAlarm(int seller_no);
+	
+	// 파일 출력용
+	List<FilesVO> getFilesNo(int seller_custom_order_no);
 	
 	//판매자가 받은 요청서 count
 	int customReqCount(int seller_no);
