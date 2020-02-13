@@ -41,4 +41,14 @@ public class SellerDaoImpl implements SellerDao{
 		sqlSession.delete("admin.sellerDelete", sellerDto);
 	}
 
+	@Override
+	public int sellerIdCount(String seller_id) {
+		return sqlSession.selectOne("admin.sellerIdCount", seller_id);
+	}
+
+	@Override
+	public int sellerGradeCount(String seller_grade) {
+		return sqlSession.selectOne("admin.sellerGradeCount", seller_grade);
+	}
+
 }

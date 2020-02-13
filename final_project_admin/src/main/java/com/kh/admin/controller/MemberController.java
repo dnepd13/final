@@ -15,6 +15,7 @@ import com.kh.admin.entity.MemberDto;
 import com.kh.admin.repository.MemberDao;
 import com.kh.admin.service.BoardService;
 import com.kh.admin.vo.BlockMemberVO;
+import com.kh.admin.vo.BlockSellerVO;
 import com.kh.admin.vo.MemberPointVO;
 import com.kh.admin.vo.PagingVO;
 
@@ -37,15 +38,68 @@ public class MemberController {
 	@GetMapping("/manage")
 	public String manage(
 			Model model,
-			@RequestParam(value="pno1", required = false) String pno1
+			@RequestParam(value="pno1", required = false) String pno1,
+			@ModelAttribute PagingVO paging
 			) {
 		
-		PagingVO vo = boardService.memberPagination(pno1);
-		model.addAttribute("paging", vo);
-		List<BlockMemberVO> list = memberDao.memberGetList(vo);
-		log.info("list={}", list);
-		model.addAttribute("list", list);
-		return "member/manage";
+		int count;
+		if(paging.getKey()==null) {
+			count = memberDao.memberCount();
+			PagingVO vo = boardService.allPaging(pno1, count);
+			model.addAttribute("paging", vo);
+			vo.setKey(paging.getKey());
+			vo.setSearch(paging.getSearch());
+			
+			List<BlockMemberVO> list = memberDao.memberGetList(vo);
+			model.addAttribute("list", list);
+			return "member/manage";
+
+		}
+		else if(paging.getKey().equalsIgnoreCase("member_id")) {
+			String member_id = paging.getSearch();
+			count = memberDao.memberIdCount(member_id);
+			
+			PagingVO vo = boardService.allPaging(pno1, count);
+			model.addAttribute("paging", vo);
+			vo.setKey(paging.getKey());
+			vo.setSearch(paging.getSearch());
+			
+			List<BlockMemberVO> list = memberDao.memberGetList(vo);
+			model.addAttribute("list", list);
+			return "member/manage";
+		}
+		//이름
+		else if(paging.getKey().equalsIgnoreCase("member_name")) {
+			String member_name = paging.getSearch();
+			count = memberDao.memberNameCount(member_name);
+			
+			PagingVO vo = boardService.allPaging(pno1, count);
+			model.addAttribute("paging", vo);
+			vo.setKey(paging.getKey());
+			vo.setSearch(paging.getSearch());
+			
+			List<BlockMemberVO> list = memberDao.memberGetList(vo);
+			model.addAttribute("list", list);
+			return "member/manage";
+		}
+		//등급
+		else if(paging.getKey().equalsIgnoreCase("member_grade")) {
+			String member_grade = paging.getSearch();
+			count = memberDao.memberGradeCount(member_grade);
+			
+			PagingVO vo = boardService.allPaging(pno1, count);
+			model.addAttribute("paging", vo);
+			vo.setKey(paging.getKey());
+			vo.setSearch(paging.getSearch());
+			
+			List<BlockMemberVO> list = memberDao.memberGetList(vo);
+			model.addAttribute("list", list);
+			return "member/manage";
+		}
+		else {
+			
+			return "member/manage";
+		}
 	}
 	
 	//멤버 상세보기

@@ -9,6 +9,7 @@ import com.kh.admin.vo.PagingVO;
 
 public interface MemberDao {
 	public int memberCount();
+	public int memberIdCount(String member_id);
 	public List<BlockMemberVO> memberGetList(PagingVO vo);
 	public void memberDelete(MemberDto memberDto);
 	public MemberDto memberGetOne(MemberDto memberDto);
@@ -18,4 +19,7 @@ public interface MemberDao {
 	public List<MemberPointVO> pointGetOneMemberList(PagingVO paging);
 	public void poingDelete(int member_point_no);
 	public void pointRegist(MemberPointVO memberPointVO);
+	public int memberNameCount(String member_name);
+	public int memberGradeCount(String member_grade);
+	
 }

@@ -16,4 +16,6 @@ public interface AdminDao {
 	int blockCount();
 	List<BlockDto> blockList(PagingVO paging);
 	void blockDelete(BlockDto blockDto);
+	public int blockGroupCount(String block_group);
+	public int blockIdCount(String block_id);
 }
