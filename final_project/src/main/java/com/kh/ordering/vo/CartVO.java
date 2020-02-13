@@ -2,6 +2,7 @@ package com.kh.ordering.vo;
 
 import java.util.List;
 
+import com.kh.ordering.entity.DeliveryDto;
 import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.entity.GoodsOptionDto;
 
@@ -14,9 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CartVO {
+public class CartVO { 
 	private GoodsDto goodsDto;
 	private List<GoodsOptionDto> option_list;
 	private int price;
 	private int quantity;
+	private DeliveryDto deliveryDto;
 }

@@ -56,7 +56,7 @@ public class GoodsController {
 		int goods_no = goodsService.insert(goodsVO);
 		deliveryVO.setGoods_no(goods_no);
 		deliveryService.insert(deliveryVO);
-		return "redirect:get?goods_no=" + goods_no;
+		return "redirect:goodsInfo?goods_no=" + goods_no;
 	}
 	
 	@GetMapping("/get")
