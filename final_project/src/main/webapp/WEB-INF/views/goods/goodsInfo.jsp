@@ -7,6 +7,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <%-- <script src="${pageContext.request.contextPath}/resources/js/goodsInfo.js"></script> --%>
 <script>
+
 $(function(){
 	var goodsOptionVOList = JSON.parse('${jsonGoodsOptionVOList}');
 	var goodsVO = JSON.parse('${jsonGoodsVO}');
@@ -168,7 +169,17 @@ $(function(){
 <hr>
 <br>
 
-<p><a href="${pageContext.request.contextPath}/member/customOrder?seller_no=93">1:1 요청서</a></p>
+<span>
+	<c:choose>
+		<c:when test="${member_id !=null }">
+			<a href="${pageContext.request.contextPath}/member/customOrder?seller_no=93">1:1 요청서</a>
+		</c:when>
+		<c:otherwise>
+			<a href="${pageContext.request.contextPath}/member/login">1:1 요청서</a>
+		</c:otherwise>
+	</c:choose>
+</span>
+
 <hr>
 <form action="../order/order" method="POST">
 <!-- 옵션 선택하는 부분----------------------------------------->

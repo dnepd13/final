@@ -4,20 +4,23 @@
 
 <h1>홈</h1>
 
+	<span><a href="${pageContext.request.contextPath }/seller/login">판매자로그인</a></span>
+	<span> &#124; </span>
+	<span><a href="${pageContext.request.contextPath }/goods/insert">상품등록</a></span>
 <!-- 바뀐 session의 member_no에서 memeber_id를 구해서 확인  -->
 
 <!-- 로그인 내용  -->
 <c:if test="${member_id == null}">
 <form role="form" method="post" autocomplete="off" action="/member/login">
-
-	<p><a href="/ordering/member/login">로그인</a></p>
+	<p><a href="/ordering/member/login">일반회원 로그인</a></p>
 	<p><a href="/ordering/member/regist">회원가입</a></p>
 
 </form>
 </c:if>
 
-
 <c:if test="${member_id != null}">
 <p>${member_id}님 환영합니다.</p>
 <h1><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></h1><br>
 </c:if>
+<span><a href="${pageContext.request.contextPath }/goods/getList">상품List</a></span>
+

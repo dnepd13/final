@@ -13,9 +13,13 @@
  		<setting name="defaultStatementTimeout" value="10000"/>
  	</settings>
  	<typeAliases>
+ 		
+ 		<!-- 페이징 -->
+ 		<typeAlias type="com.kh.ordering.vo.PagingVO" alias="pagingVO"/>
 
 		<!-- 판매자 Dto Alias--> 		
  		<typeAlias type="com.kh.ordering.entity.SellerDto" alias="seller"/>	
+ 		
  		<!-- 주문제작 Dto Alias -->
  		<typeAlias type="com.kh.ordering.entity.MemberDto" alias="member"/>
 		<typeAlias type="com.kh.ordering.entity.Member_PointDto" alias="member_PointDto"/>
@@ -24,8 +28,11 @@
 		<typeAlias type="com.kh.ordering.entity.CustomOrderDto" alias="customOrderDto"/>
 		<typeAlias type="com.kh.ordering.entity.MemberCustomOrderDto" alias="memberCustomDto"/>
 		<typeAlias type="com.kh.ordering.entity.SellerCustomOrderDto" alias="sellerCustomDto"/>
+		<typeAlias type="com.kh.ordering.entity.SellerCustomAlarmDto" alias="sellerAlarmDto"/>
+		<typeAlias type="com.kh.ordering.entity.MemberCustomAlarmDto" alias="memberAlarmDto"/>
 		<typeAlias type="com.kh.ordering.vo.CustomOrderVO" alias="customOrderVO"/>
-
+		
+		<!-- 상품+옵션 Alias -->
  		<typeAlias type="com.kh.ordering.entity.GoodsDto" alias="goodsDto"/>
  		<typeAlias type="com.kh.ordering.entity.GoodsOptionDto" alias="goodsOptionDto"/>
  		<typeAlias type="com.kh.ordering.entity.CategoryDto" alias="categoryDto"/>
