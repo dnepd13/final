@@ -135,32 +135,37 @@
 	</select>
 	<br>
 	묶음 배송 조건 금액 : 
-	<input type="text" name="delivery_set_op_price">
+	<input required type="text" name="delivery_set_op_price">
 	<br>
 	택배 회사 : 
 	<select name="delivery_company">
+		<option>선택</option>
 		<option value="우체국">우체국</option>
 		<option value="한진">한진</option>
 		<option value="로젠">로젠</option>
 	</select>
 	<br>
-	배송비 : 
-	<input type="text" name="delivery_price">
-	<br>
 	상품별 배송비 : 
-	<select name="delivery_option">
+	<select class="delivery_option" name="delivery_option">
+		<option>선택</option>
 		<option value="무료">무료</option>
 		<option value="유료">유료</option>
 		<option value="조건부무료">조건부무료</option>
 	</select>
 	<br>
+	<div class="delivery_price">
+	배송비 : 
+	<input required type="text" name="delivery_price" value="0">
+	</div>
+	<div class="delivery_op_price" >
 	조건부 무료 금액 : 
-	<input type="text" name="delivery_op_price">
-	<br>
+	<input required type="text" name="delivery_op_price" value="0">
+	</div>
 	반품 배송비 :
-	<input type="text" name="delivery_return_price">
+	<input required type="text" name="delivery_return_price">
 	<br>	
-	<input type="submit" value="등록">
+	<h5 class="submit_comment" style="color:red">기본옵션을 추가해주세요</h5>
+	<input class="submit_btn" type="submit" value="등록" disabled="true">
 </form>
 
 </body>

@@ -14,6 +14,7 @@ $(function(){
 	var VOindex = 0;
 	var final_price = 0;
 	var final_qtt = 0;
+	var count = 0;
 	
 	// 옵션 선택 이벤트
 	$(".options").change(function(){
@@ -27,6 +28,9 @@ $(function(){
 		
 		// 옵션 전체 선택했을 때
 		if(selectedAll){
+			count++;
+			$(".submit_ordering").attr("disabled",false);
+			
 			var price = goodsVO.goods_price;
 			var title;
 			var content;
@@ -125,6 +129,9 @@ $(function(){
 				$(this).parent(".total_price_area").remove();
 				VOindex--;
 				setFinalArea();
+				
+				count--;
+				if(count < 1) $(".submit_ordering").attr("disabled",true);
 			});
 			
 			// 리셋
@@ -146,9 +153,6 @@ $(function(){
 			fQuantity += parseInt($(this).children(".quantity").val());
 			fPrice += $(this).children(".hPrice").val() * parseInt($(this).children(".quantity").val());
 		});
-		
-		console.log(fPrice);
-		console.log(fQuantity);
 		
 		$(".final_price").html(addComma(fPrice) + "원");
 		$(".final_qtt").html(" ("+fQuantity+")개");
@@ -202,7 +206,7 @@ $(function(){
 	<h1>상품+옵션 선택 내용</h1>
 </div>
 
-<input class="submit" type="submit" value="주문하기">
+<input class="submit_ordering" type="submit" value="주문하기" disabled="true">
 </form>
 <hr>
 <div class="total_area">

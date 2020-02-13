@@ -10,4 +10,5 @@ public interface DeliveryDao {
 	void delete(int delivery_no);
 	DeliveryDto get(int delivery_no);
 	List<DeliveryDto> getList();
+	DeliveryDto get2(int goods_no);
 }

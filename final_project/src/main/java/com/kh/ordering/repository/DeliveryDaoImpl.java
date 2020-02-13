@@ -29,6 +29,11 @@ public class DeliveryDaoImpl implements DeliveryDao{
 	}
 	
 	@Override
+	public DeliveryDto get2(int goods_no) {
+		return sqlSession.selectOne("delivery.get2", goods_no);
+	}
+	
+	@Override
 	public List<DeliveryDto> getList() {
 		return sqlSession.selectList("delivery.getList");
 	}
