@@ -2,12 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<h1>결제이력</h1>
+<h1>오더링 결제이력</h1>
 
 <c:forEach var="pay" items="${list }"> 
 	<div>
 		${pay}
-		<a href="revoke?no=${pay.no }">취소</a>
+		<a href="revoke?no=${pay.ordering_no }">취소</a>
 	</div>
-	
 </c:forEach>

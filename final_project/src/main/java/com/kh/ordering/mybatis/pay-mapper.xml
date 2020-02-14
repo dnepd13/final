@@ -38,7 +38,43 @@
  				#{quantity}, #{total_amount}, '준비', '1', '0', '0', '0', '0'
  			)
  	</insert>
-
+	
+	<insert id="success" parameterType="payDto">
+		insert into ordering(ordering_no, tid, cid, process_time, item_name,
+ 							partner_order_id, partner_user_id, quantity, total_amount,
+ 							ordering_status,aid,install_month, used_point, tax_free_amount,
+ 							vat_amount
+ 							)
+ 			values(
+ 				ordering_seq.nextval,
+ 				#{tid}, #{cid}, to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
+ 				#{item_name}, #{partner_order_id}, #{partner_user_id},
+ 				#{quantity}, #{total_amount}, '완료', #{aid}, '0', '0', '0', '0'
+ 			)
+	</insert>
+	
+	<select id="list" resultType="payDto">
+		select * from ordering order by ordering_no 
+	</select>
+	
+	<select id="get" resultType="payDto" parameterType="int">
+		select * from ordering where ordering_no = #{ordering_no}
+	</select>
+	
+	<insert id="revoke" parameterType="payDto">
+		insert into ordering(ordering_no, tid, cid, process_time, item_name,
+ 							partner_order_id, partner_user_id, quantity, total_amount,
+ 							ordering_status,aid,install_month, used_point, tax_free_amount,
+ 							vat_amount
+ 							)
+ 			values(
+ 				ordering_seq.nextval,
+ 				#{tid}, #{cid}, to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
+ 				#{item_name}, #{partner_order_id}, #{partner_user_id},
+ 				#{quantity}, #{total_amount}, '취소', #{aid}, '0', '0', '0', '0'
+ 			)
+	</insert>
+	
  </mapper> 
 
 

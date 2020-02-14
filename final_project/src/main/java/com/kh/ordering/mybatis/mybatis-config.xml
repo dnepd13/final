@@ -46,6 +46,9 @@
 		
 		<!-- pay -->
 		<typeAlias type="com.kh.ordering.entity.PayDto" alias="payDto"/>
+	
+		<!-- visitcount -->
+		<typeAlias type="com.kh.ordering.vo.VisitCountVO" alias="visitCount"/>
 	</typeAliases>
  </configuration>
 
