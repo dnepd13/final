@@ -20,10 +20,8 @@
 		-$의 경우 SQL Injection 이라는 해킹 공격에 매우 취약하므로 사용에 주의
 		
 		##이건 안쓰는 테스트용입니다
- -->
-
- 
- <mapper namespace="member">
+ --> 
+  <mapper namespace="member">
  <!-- session id로 회원 번호 구하기 -->
  	<select id="getNo" parameterType="String" resultType="int">
  		select member_no from member where member_id = #{member_id}
@@ -176,9 +174,8 @@
 	
 	<!-- 로그인 -->
 	<select id="login" parameterType="member" resultType="member">
-		select * from member
-		where
-			member_id=#{member_id}
+		select * from member where member_id=#{member_id}
+			
 	</select>
 	
 <!-- 	<select id="getNo" parameterType="String" resultType="member">
@@ -192,17 +189,38 @@
 		update member set member_last_login = sysdate where member_id= #{member_id}
 	</update>
 	
+	<!-- 회원 상세보기 리스트 -->
+	<select id="memberGetOne" parameterType="member" resultType="member">
+		select * from member where member_no = #{member_no}
+	</select>
+	
+		<!-- 회원 수정 -->
+	<update id="memberedit" parameterType="member">
+	  update member
+	  set
+	  	member_email = #{member_email},
+	  	member_phone = #{member_phone}
+	  where
+	  	member_no = #{member_no}	
+	</update>
+	
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="memberdelete" parameterType="member">
+		delete from member where member_no = #{member_no}
+	</delete>
+	
+	
+
+	
+	
+	
+	
 	<!-- 배송지 테이블에서 id로 멤버 no 찾기  -->
 	<select id="findno" parameterType="member" resultType="int">
 		select member_no from member where member_id = #{member_id}
 	</select>
 	
-	
-	
-	<!-- 회원삭제 -->
-	<delete id="delete" parameterType="int">
-		delete member where member_no = #{member_no}
-	</delete>
 
 
  </mapper> 

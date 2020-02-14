@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.ordering.entity.MemberDto;
@@ -53,12 +54,14 @@ public class MemberController {
 	private SqlSession sqlSession;
 	
 	
-
+		
 	
-	@GetMapping("/regist")
-	public String regist() {
+		//회원 가입하기
+	
+		@GetMapping("/regist")
+		public String regist() {
 		return "member/regist";
-	}
+		}
 	
 		
 		@PostMapping("/regist")
@@ -93,7 +96,7 @@ public class MemberController {
 			//시퀀스를 넣은 포인트에 데이터를 넣고 입력
 			sqlSession.insert("member_PointDto.pointregist", member_PointDto);
 			
-			return "member/login"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
+			return "redirect:/member/login"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
 		}
 	
 
@@ -114,10 +117,14 @@ public class MemberController {
 //	}	
 	
 	
+		
+	// 회원 로그인	
+		
 	@GetMapping("/login")
 	public String login() {
 		return "member/login"; 
 	}
+	
 	
 	@PostMapping("/login")
 	public String login(@ModelAttribute MemberDto member, HttpSession session) {
@@ -126,17 +133,17 @@ public class MemberController {
 		
 		
 		if(find == null) {//아이디가 없으면
-			
-			return "redirect:/member/login";
+
+			return "redirect:/member/login?error";
 		}
 		
 		
 		else {//아이디가 있으면 비밀번호 매칭 검사
 		
 			
-			boolean correct = encoder.matches(member.getMember_pw(), find.getMember_pw());
+		boolean correct = encoder.matches(member.getMember_pw(), find.getMember_pw());
 			log.info("correct={}",correct);
-			if(correct = true) {//비밀번호 일치
+			if(correct == true) {//비밀번호 일치
 				
 			
 			log.info("로그인 성공");
@@ -166,14 +173,15 @@ public class MemberController {
 			
 			
 			log.info("로그인 실패");
-			return "member/login";
+			return "redirect:/member/login?error";
 		}
 			
 	}
 }
 	
 
-	//로그아웃
+	//회원 로그아웃
+	
 	@GetMapping("/logout")
 	public String logout(HttpSession session ) {
 		
@@ -185,16 +193,85 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
+
+	
+	//회원 상세 정보
+	@GetMapping("/memberinfo")
+		public String memberinfo(@ModelAttribute MemberDto member,
+								Model model,HttpSession session) {
+		
+		String member_id = (String)session.getAttribute("member_id");
+		int member_no = memberDao.getNo(member_id);			
+		log.info("q= {}", member_no);
+		
+		member = MemberDto.builder()
+							.member_no(member_no)
+							.build();
+		log.info("q= {}",member);
+		
+//		List<MemberDto> memberlist = memberDao.memberGetOne(member_no);
+//		log.info("q= {}", memberlist);		
+	  
+	model.addAttribute("memberGetOne",memberDao.memberGetOne(member));
+	log.info("q= {}", member);
+//		model.addAttribute("memberGetOne",memberlist);
+		
+		return "member/memberinfo";
+	}
 	
 	
 	
+	
+	//회원 정보 수정
+	@PostMapping("memberedit")
+	public String memberedit(@RequestParam int member_no,String member_email,String member_phone) {
+		
+		MemberDto member = MemberDto.builder()
+					.member_no(member_no)
+					.member_email(member_email)
+					.member_phone(member_phone)
+					.build();
+		
+		memberDao.memberedit(member);
+		
+		return "redirect:/member/memberinfo";
+	}
+	
+	
+//	//회원 탈퇴
+//	
+//	@PostMapping("/memberdelete")
+//	public String memberdelete(@ModelAttribute MemberDto member,
+//								Model model, HttpSession session) {
+//		
+//		String member_id = (String)session.getAttribute("member_id");
+//		int member_no = memberDao.getNo(member_id);
+//		
+//		sqlSession.delete("member.memberdelete", member);
+//		
+//		
+//		return "redirect:/memberdeletesuccess";
+//	}
+	
+	
+	
+	
+	
+	
+	
+	//회원 문의,신고 게시판
+	
+	
+	
+	
+	
+	// 배송지  테이블 리스트
 	
 	@GetMapping("/addrinfo")
 	public String addrinfo (HttpSession session,Model model ) {
 		String member_id = (String)session.getAttribute("member_id");
 		int member_no = memberDao.getNo(member_id);
-		
-//		int member_no = (int) session.getAttribute("member_no");
+		//	session에서 no를 저장했을때 사용	int member_no = (int) session.getAttribute("member_no");
 		
 		List<Member_AddrDto> list = member_AddrDao.getListAddr(member_no);
 		log.info("list={}",list);
@@ -204,21 +281,77 @@ public class MemberController {
 		
 		return "member/addrinfo";
 	}
-	
-//	@PostMapping("addrinfo")
-//	public String addrinfo(HttpSession session, Model model) {
-//		//번호를 구하고
-//		int member_no = (int) session.getAttribute("member_no");	
-//		
-//	
-////		model.addAllAttributes("getListAddr" ,member_AddrDao.getListAddr(member_no));
-//		model.addAllAttributes(member_AddrDao.getListAddr(member_no));
-//		
-//		log.info("model= {}",model);
-//		
-//		return "redirect:/member/addrinfo";
-//	}
 
+	
+	
+	//배송지 1/1보기
+//	@GetMapping("/addrpage")
+//	public String addrpage() {
+//		
+//		return "member/addrpage";
+//	}
+	
+	// 배송지 한개 테이블 리스트
+	
+	@GetMapping("/addrpage")
+	public String addrpage(@ModelAttribute Member_AddrDto member_AddrDto, Model model) {
+		
+		model.addAttribute("addrone", member_AddrDao.addrGetOne(member_AddrDto));
+		
+		
+		
+		return "member/addrpage";
+	}
+	
+	// 배송지 한개 테이블 삭제
+	
+	@PostMapping("/addrdelete")
+	public String addrdelete(@ModelAttribute Member_AddrDto member_AddrDto, Model model,HttpSession session) {
+		
+		sqlSession.delete("member_AddrDto.addrdelete", member_AddrDto);
+		
+		String member_id = (String)session.getAttribute("member_id");
+		int member_no = memberDao.getNo(member_id);
+		
+		return "redirect:/member/addrinfo";
+	}
+	
+	
+	// 배송지 한개 테이블 수정
+	
+	@PostMapping("/addrpage")
+	public String addredit(@RequestParam int member_addr_no,
+							@RequestParam String member_name_extra,
+							@RequestParam String member_addr_post,
+							@RequestParam String member_addr_basic,
+							@RequestParam String member_addr_extra,
+							@RequestParam String member_addr_status
+								) {
+		log.info("view={}",member_addr_no);
+		log.info("view={}",member_name_extra);
+		log.info("view={}",member_addr_post);
+		log.info("view={}",member_addr_basic);
+		log.info("view={}",member_addr_extra);
+		log.info("view={}",member_addr_status);
+		
+		Member_AddrDto member_AddrDto = Member_AddrDto.builder()
+										.member_addr_no(member_addr_no)
+									    .member_name_extra(member_name_extra)
+										.member_addr_post(member_addr_post)
+										.member_addr_basic(member_addr_basic)
+										.member_addr_extra(member_addr_extra)
+										.member_addr_status(member_addr_status)
+									    .build();
+	
+		member_AddrDao.addredit(member_AddrDto);
+		
+		return "redirect:/member/addrinfo";
+	}
+	
+	
+	
+	
+	//배송지 추가 테이블
 	
 	@GetMapping("/insertaddr")
 	public String registaddr() {
@@ -271,6 +404,8 @@ public class MemberController {
 	}
 		
 	
+	//포인트를 확인 할 수 있는 게시판
+	
 		@GetMapping("/pointinfo")
 		public String pointinfo (HttpSession session, Model model ) {
 			String member_id = (String)session.getAttribute("member_id");
@@ -285,8 +420,13 @@ public class MemberController {
 		}
 		
 	
-	
-	
+		//회원 로그인후 마이페이지
+		
+		@GetMapping("/membermyinfo")
+		public String membermyinfo() {
+			
+			return "member/membermyinfo";
+		}
 	
 	
 	
