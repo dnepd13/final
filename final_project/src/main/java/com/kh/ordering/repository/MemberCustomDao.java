@@ -10,13 +10,14 @@ import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.MemberCustomAlarmDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
 import com.kh.ordering.vo.CustomOrderVO;
+import com.kh.ordering.vo.FilesVO;
 import com.kh.ordering.vo.PagingVO;
 
 public interface MemberCustomDao {
 
 	//회원 아이디로 번호 가져오기
 	int getNo(@RequestParam String member_id);
-	
+
 	//회원 요청서 작성
 	void CustomOrderInsert(CustomOrderDto customOrderDto); // 요청서 저장 테이블
 	int CustomSeq();// 주문제작 .currval 시퀀스 번호
@@ -35,6 +36,9 @@ public interface MemberCustomDao {
 	void UpdateAlarm(int member_no, int seller_custom_order_no);
 	//구매 알람테이블 견적서 총 개수 check N
 	int customAlarm(int member_no);
+	
+	// 파일 출력용
+	List<FilesVO> getFilesNo(int member_custom_order_no); // 요청서의 파일 No 가져오기
 	
 	//구매자가 받은 견적서 count
 	int customRespCount(int member_no);

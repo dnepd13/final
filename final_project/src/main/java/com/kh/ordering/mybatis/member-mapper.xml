@@ -109,7 +109,7 @@
 		select count(*) from member_custom_order where member_no=#{member_no}
 	</select>
 	
-	<!-- 내가 보낸 요청서 목록 -->
+	<!-- 내가 보낸 요청서 목록 / 상세보기 -->
 	<select id="getListReq" parameterType="int" resultType="customOrderVO">
 		select *from(
 			select rownum rn, RN.*from(
@@ -120,15 +120,21 @@
 			)RN
 		)where rn between #{start} and #{finish}
 	</select>
-
 	<select id="getListInfoReq" parameterType="int" resultType="customOrderVO">
 		select A.*, B.member_no, b.member_custom_order_no from
 		    custom_order A inner join member_custom_order B
 		        on a.custom_order_no = b.custom_order_no
 		where b.member_custom_order_no =#{member_custom_order_no}
 	</select>
-
-	
+	<!-- 내가 보낸 요청서에 대한 파일 no 가져오기 -->
+	<select id="getReqFilesNo" parameterType="int" resultType="FilesVO">
+		select b.* from
+		    files A inner join files_custom_order B
+		        on a.files_no = b.files_no
+		    inner join member_custom_order C
+		        on b.custom_order_no = c.custom_order_no
+		where c.member_custom_order_no= #{member_custom_order_no}
+	</select>
 	
 	<!-- 멤버를 생성하기위한 시퀀스 생성 -->
 	 	<select id="MemberSeq" resultType="int">

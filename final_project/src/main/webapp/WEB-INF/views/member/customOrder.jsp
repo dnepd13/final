@@ -33,7 +33,7 @@
 		<input type="number" name="custom_order_price" placeholder="원" required>
 		<h5>희망 기한은 언제인가요? (00월 00일까지, 다음주 수요일 등)</h5>
 		<input type="text" name="custom_order_hopedate" required>
-		<h5>원하는 디자인 등이 있다면 업로드해주세요.</h5>
+		<h5>원하는 디자인 등이 있다면 함께 보내주세요.</h5>
 		<input type="file" name="files" multiple>
 		<br><br>
 		<input type="submit" value="요청서 보내기">

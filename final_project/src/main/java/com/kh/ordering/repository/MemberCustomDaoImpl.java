@@ -105,10 +105,13 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	public CustomOrderVO customOrderVO2(int member_custom_order_no) {
 		return sqlSession.selectOne("member.getListInfoReq", member_custom_order_no);
 	}
-	@Override // 보낸 요청서 count
+	@Override // 요청서의 파일번호
+	public List<FilesVO> getFilesNo(int member_custom_order_no) {
+		return sqlSession.selectList("member.getReqFilesNo", member_custom_order_no);
+	}
+	@Override // 보낸 요청서 count (페이징 용도)
 	public int customReqCount(int member_no) {
 		return sqlSession.selectOne("member.customReqCount", member_no);
 	}
-
 	
 }

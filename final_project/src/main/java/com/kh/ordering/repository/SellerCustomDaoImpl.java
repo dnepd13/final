@@ -109,15 +109,13 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	public CustomOrderVO customOrderVO2(int seller_custom_order_no) {
 		return sqlSession.selectOne("seller.getListInfoResp", seller_custom_order_no);
 	}	
-	@Override // 보낸 견적서 count
+	@Override // 견적서의 파일번호
+	public List<FilesVO> getFilesNo (int member_custom_order_no) {
+		return sqlSession.selectList("seller.getRespFilesNo", member_custom_order_no);
+	}
+	@Override // 보낸 견적서 count (페이징 용도)
 	public int customRespCount(int seller_no) {
 		return sqlSession.selectOne("seller.customRespCount", seller_no);
 	}
-
-	@Override // 아마도 파일. ....
-	public List<FilesDto> filesDto (int member_custom_order_no) {
-		
-		return sqlSession.selectList("seller.getListReqFiles", member_custom_order_no);
-	}
-
+	
 }
