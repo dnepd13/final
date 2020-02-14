@@ -17,7 +17,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
+import com.kh.ordering.service.DeliveryService;
 import com.kh.ordering.service.GoodsService;
+import com.kh.ordering.vo.DeliveryVO;
 import com.kh.ordering.vo.GoodsVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,9 @@ public class GoodsController {
 	private GoodsService goodsService;
 	
 	@Autowired
+	private DeliveryService deliveryService;
+	
+	@Autowired
 	private GoodsDao goodsDao;
 	
 	@Autowired
@@ -39,6 +44,7 @@ public class GoodsController {
 	@Autowired
 	private CategoryDao categoryDao;
 	
+	
 	@GetMapping("/insert")
 	public String insert(Model model) {
 		model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
@@ -46,8 +52,11 @@ public class GoodsController {
 	}
 	
 	@PostMapping("/insert")
-	public String insert(@ModelAttribute GoodsVO goodsVO) {
-		return "redirect:get?goods_no=" + goodsService.insert(goodsVO);
+	public String insert(@ModelAttribute GoodsVO goodsVO, @ModelAttribute DeliveryVO deliveryVO) {
+		int goods_no = goodsService.insert(goodsVO);
+		deliveryVO.setGoods_no(goods_no);
+		deliveryService.insert(deliveryVO);
+		return "redirect:goodsInfo?goods_no=" + goods_no;
 	}
 	
 	@GetMapping("/get")

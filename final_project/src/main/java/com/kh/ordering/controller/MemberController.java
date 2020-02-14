@@ -133,6 +133,7 @@ public class MemberController {
 		
 		
 		if(find == null) {//아이디가 없으면
+
 			return "redirect:/member/login?error";
 		}
 		
@@ -166,7 +167,7 @@ public class MemberController {
 			
 			log.info("member={}",member);
 			
-			return "redirect:/home";
+			return "redirect:/";
 		}
 			else {//로그인이 실패 했을 경우 확인을 위한 구문
 			
@@ -190,7 +191,7 @@ public class MemberController {
 		
 //		session.removeAttribute("member_no");
 		
-		return "redirect:/home";
+		return "redirect:/";
 	}
 
 	

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.multi.MultiFileChooserUI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import com.kh.ordering.entity.SellerCustomAlarmDto;
 import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.vo.FilesVO;
+import com.kh.ordering.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,8 +59,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 		
 		// 파일이 있다면 파일 테이블에 파일 등록하고
 		// 주문제작-파일 중개테이블에 파일 번호, 저장테이블 시퀀스 등록
-		if(files!=null) {
-			File dir  = new File("D:/upload");
+			File dir  = new File("D:/upload/kh2d");
 			dir.mkdirs();
 			
 			// MultipartFile을 List형태로 변환하여 파일 데이터 셋팅.
@@ -68,30 +69,35 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 			for(MultipartFile multiFile : files.getFiles()) {
 				// 파일의 다음 시퀀스 번호 미리 가져오기
 				files_no =  memberCustomDao.FileSeq();
+				
+				// savename+파일 형식 저장
+				String fileType=multiFile.getContentType().substring(6, multiFile.getContentType().length());
+
 				filesList.add(FilesDto.builder()
 														.files_no(files_no)
 														.files_size(multiFile.getSize())
-														.files_savename(Integer.toString(files_no))
+														.files_savename(Integer.toString(files_no)+"."+fileType)
 														.files_uploadname(multiFile.getOriginalFilename())
 														.build());
-			}			
+			}
 			// 위의 filesList에 셋팅된 데이터를 filesList 길이만큼 반복하여 저장
 			for(int i=0 ; i<filesList.size();i++) {
 				MultipartFile multiFile = files.getFiles().get(i); // 실제 저장
 				FilesDto filesDto = filesList.get(i); // DB 저장
 				
-				File target = new File(dir, filesDto.getFiles_savename());
-				multiFile.transferTo(target);
-				memberCustomDao.FilesInsert(filesDto);
-				
-				// 주문제작-파일 중개테이블
-				files_no = filesList.get(i).getFiles_no(); // 1번 for문의 filesList 길이만큼 files_no를 꺼내서 변수에 저장
-				
-				CustomOrderFilesDto customOrderFilesDto = CustomOrderFilesDto.builder()
-																																			.files_no(files_no)
-																																			.custom_order_no(custom_order_no)
-																																			.build();
-				memberCustomDao.CustomFilesInsert(customOrderFilesDto);
+				if(filesDto.getFiles_size()!=0) {
+					File target = new File(dir, filesDto.getFiles_savename());
+					multiFile.transferTo(target);
+					memberCustomDao.FilesInsert(filesDto);
+					
+					// 주문제작-파일 중개테이블
+					files_no = filesList.get(i).getFiles_no(); // 1번 for문의 filesList 길이만큼 files_no를 꺼내서 변수에 저장
+					
+					CustomOrderFilesDto customOrderFilesDto = CustomOrderFilesDto.builder()
+																																				.files_no(files_no)
+																																				.custom_order_no(custom_order_no)
+																																				.build();
+					memberCustomDao.CustomFilesInsert(customOrderFilesDto);
 			}
 		}
 				
@@ -105,11 +111,111 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 		
 		// 요청서 관리테이블 현재 시퀀스번호
 		int member_custom_order_no = memberCustomDao.CustomOrderSeq();
+		
+		// 판매자 요청서 도착 알람 생성
 		sellerCustomAlarmDto = SellerCustomAlarmDto.builder()
 																					.seller_no(seller_no)
 																					.member_custom_order_no(member_custom_order_no)
 																					.build();
 		sellerCustomDao.CustomAlarmInsert(sellerCustomAlarmDto);
 		return null;
+	}
+
+// 요청서 파일 no 가져오기
+	@Override
+	public List<FilesVO> FilesList(int member_custom_order_no){
+	
+		List<FilesVO> filesVO = memberCustomDao.getFilesNo(member_custom_order_no);
+		
+		return filesVO;
+	}
+	
+//	보낸 요청서 목록 페이징
+	@Override
+	public PagingVO customReqPaging(String pageNo, int member_no) {
+		// 주소로 받은 pageNo를 int 형태로 변환
+			int pno;
+			try {
+				pno = Integer.parseInt(pageNo);
+				if(pno<=0) throw new Exception();
+			}
+			catch(Exception e){
+				pno = 1;
+			}
+			int pageSize= 4;
+			int finish= pno*pageSize;
+			int start= finish-(pageSize-1);
+				
+				// 하단 네비게이터
+			int totalCount = memberCustomDao.customReqCount(member_no);
+			int navSize= 10;
+			int pageCount= (totalCount+pageSize-1)/pageSize;
+				
+			int startBlock= (pno-1)/navSize * navSize +1 ;
+			int finishBlock= startBlock+(navSize-1);
+				
+			if(finishBlock>pageCount) {
+				finishBlock=pageCount;
+			}
+				
+			PagingVO pagingVO = PagingVO.builder()
+																	.pno(pno)
+																	.navsize(navSize)
+																	.count(pageCount)
+																	.pagecount(pageCount)
+																	.pagesize(pageSize)
+																	.startBlock(startBlock)
+																	.finishBlock(finishBlock)
+																	.start(start)
+																	.finish(finish)
+																	.member_no(member_no)
+																	.build();
+				
+			return pagingVO;
+	}
+
+//	받은 견적서 목록 페이징
+	@Override
+	public PagingVO customRespPaging(String pageNo, int member_no) {
+		// 주소로 받은 pageNo를 int 형태로 변환
+			int pno;
+			try {
+				pno = Integer.parseInt(pageNo);
+				if(pno<=0) throw new Exception();
+			}
+			catch(Exception e){
+				pno = 1;
+			}
+				
+			int pageSize= 4;
+			int finish= pno*pageSize;
+			int start= finish-(pageSize-1);
+				
+			// 하단 네비게이터
+			int totalCount = memberCustomDao.customRespCount(member_no);
+			int navSize= 10;
+			int pageCount= (totalCount+pageSize-1)/pageSize;
+				
+			int startBlock= (pno-1)/navSize * navSize +1 ;
+			int finishBlock= startBlock+(navSize-1);
+				
+			if(finishBlock>pageCount) {
+				finishBlock=pageCount;
+			}
+			
+			PagingVO pagingVO = PagingVO.builder()
+																	.pno(pno)
+																	.navsize(navSize)
+																	.count(pageCount)
+																	.pagecount(pageCount)
+																	.pagesize(pageSize)
+																	.startBlock(startBlock)
+																	.finishBlock(finishBlock)
+																	.start(start)
+																	.finish(finish)
+																	.member_no(member_no)
+																	.build();
+				
+			return pagingVO;
 	}
 }

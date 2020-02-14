@@ -15,6 +15,7 @@ import com.kh.ordering.entity.MemberCustomAlarmDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
 import com.kh.ordering.vo.CustomOrderVO;
 import com.kh.ordering.vo.FilesVO;
+import com.kh.ordering.vo.PagingVO;
 import com.kh.ordering.entity.MemberDto;
 
 @Repository
@@ -31,7 +32,7 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 		return member_no;
 	}
 	
-	//	Member 요청서 작성
+//	Member 요청서 작성
 	@Override // 요청서 저장
 	public void CustomOrderInsert(CustomOrderDto customOrderDto) {
 		sqlSession.insert("member.customReq", customOrderDto);
@@ -50,6 +51,11 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 		return sqlSession.selectOne("member.customSeq");
 	}
 	
+	@Override // 견적서 도착 알람 테이블 입력
+	public void CustomAlarmInsert(MemberCustomAlarmDto memberCustomAlarmDto) {
+		sqlSession.insert("member.insertAlarm", memberCustomAlarmDto);
+	}
+	
 	@Override // 파일 .nextval 시퀀스번호
 	public int FileSeq() {
 		return sqlSession.selectOne("files.getSeq");
@@ -64,25 +70,48 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	}
 
 	@Override // 판매자가 보낸 견적서 전체보기
-	public List<CustomOrderDto> getListCustom(int member_no) {
+	public List<CustomOrderVO> getListResp(PagingVO paging) {
 		
-		return sqlSession.selectList("member.getListCustom", member_no);
+		return sqlSession.selectList("member.getListResp", paging);
 	}	
 	@Override // 판매자 견적서 상세보기. 주문제작번호 단일조회
-	public CustomOrderVO customOrderVO(int custom_order_no) {
-		return sqlSession.selectOne("member.getListInfo", custom_order_no);
+	public CustomOrderVO customOrderVO1(int seller_custom_order_no) {
+		return sqlSession.selectOne("member.getListInfoResp", seller_custom_order_no);
+	}
+	@Override // 견적서 상세페이지 확인하면 구매자 알람테이블 업데이트
+	public void UpdateAlarm(int member_no, int seller_custom_order_no) {
+		MemberCustomAlarmDto updateAlarm = MemberCustomAlarmDto.builder()
+																																.member_no(member_no)
+																																.seller_custom_order_no(seller_custom_order_no)
+																																.build();
+		sqlSession.update("member.updateAlarm", updateAlarm);
+	}
+	@Override // 구매자 알람테이블 check N count
+	public int customAlarm(int member_no) {
+		return sqlSession.selectOne("member.customCheck", member_no);
 	}
 
-	@Override // 내가 보낸 요청서 보기
-	public List<CustomOrderDto> getListReq(int member_no) {
-		
-		return sqlSession.selectList("member.getListReq", member_no);
-	}	
+	@Override // 구매자가 받은 견적서 count
+	public int customRespCount(int member_no) {
+		return sqlSession.selectOne("member.customRespTest", member_no);
+	}
 	
-// 견적서 도착 알람 테이블 입력
-	@Override
-	public void CustomAlarmInsert(MemberCustomAlarmDto memberCustomAlarmDto) {
-		sqlSession.insert("member.insertAlarm", memberCustomAlarmDto);
+	// 내가 보낸 요청서 보기
+	@Override // 목록
+	public List<CustomOrderVO> getListReq(PagingVO paging) {	
+		return sqlSession.selectList("member.getListReq", paging);
 	}
-
+	@Override // 상세보기
+	public CustomOrderVO customOrderVO2(int member_custom_order_no) {
+		return sqlSession.selectOne("member.getListInfoReq", member_custom_order_no);
+	}
+	@Override // 요청서의 파일번호
+	public List<FilesVO> getFilesNo(int member_custom_order_no) {
+		return sqlSession.selectList("member.getReqFilesNo", member_custom_order_no);
+	}
+	@Override // 보낸 요청서 count (페이징 용도)
+	public int customReqCount(int member_no) {
+		return sqlSession.selectOne("member.customReqCount", member_no);
+	}
+	
 }
