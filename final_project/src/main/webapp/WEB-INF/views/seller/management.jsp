@@ -12,5 +12,8 @@
 <a href="?">취소/반품/교환 관리</a><br><br>
 <h3>판매자 정보 관리</h3>
 <a href="info">판매자 정보 조회/수정</a><br><br>
-<a href="password">비밀번호 변경</a>
+<a href="check_pw">비밀번호 변경</a><br><br>
+<a href="delete">탈퇴하기</a><br><br><br>
+<a href="main">홈으로가기</a>
+
 
