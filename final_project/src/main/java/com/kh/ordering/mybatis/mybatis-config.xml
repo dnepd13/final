@@ -14,8 +14,10 @@
  	</settings>
  	<typeAliases>
  		
- 		<!-- 페이징 -->
+ 		<!-- 페이징, 파일 -->
  		<typeAlias type="com.kh.ordering.vo.PagingVO" alias="pagingVO"/>
+ 		<typeAlias type="com.kh.ordering.entity.FilesDto" alias="FilesDto"/>
+ 		<typeAlias type="com.kh.ordering.vo.FilesVO" alias="FilesVO"/>
 
 		<!-- 판매자 Dto Alias--> 		
  		<typeAlias type="com.kh.ordering.entity.SellerDto" alias="seller"/>	

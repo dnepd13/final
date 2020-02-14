@@ -9,8 +9,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// 다수의 파일이 업로드 될 때를 위한 클래스
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
 public class FilesVO {
+	// 파일 업로드용 List
 	private List<MultipartFile> files;
+	
+	// 파일 출력용 
+	private int files_no;
 }

@@ -154,7 +154,8 @@
 	<select id="customRespCount" parameterType="int" resultType="int">
 		select count(*) from seller_custom_order where seller_no=#{seller_no}
 	</select>
-	<!-- 내가 보낸 견적서 목록 -->
+	
+	<!-- 내가 보낸 견적서 목록 / 상세보기 -->
 	<select id="getListResp" parameterType="pagingVO" resultType="CustomOrderVO">
 		select *from(
 		    select rownum rn, RN.*from(
@@ -170,6 +171,15 @@
 		    custom_order A inner join seller_custom_order B
 		        on a.custom_order_no = b.custom_order_no
 		where b.seller_custom_order_no =#{seller_custom_order_no}
+	</select>
+	<!-- 내가 보낸 견적서에 대한 파일 no -->
+	<select id="getRespFilesNo" parameterType="int" resultType="FilesVO">
+		select b.* from
+		    files A inner join files_custom_order B
+		        on a.files_no = b.files_no
+		    inner join seller_custom_order C
+		        on b.custom_order_no = c.custom_order_no
+		where c.seller_custom_order_no=#{seller_custom_order_no}
 	</select>
 
  </mapper>

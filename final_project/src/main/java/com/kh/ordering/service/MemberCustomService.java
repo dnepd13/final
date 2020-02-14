@@ -1,6 +1,7 @@
 package com.kh.ordering.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,6 +18,9 @@ public interface MemberCustomService {
 																CustomOrderDto customOrderDto,
 																SellerCustomAlarmDto sellerCustomAlarmDto)
 																throws IllegalStateException, IOException;
+	// 요청서 파일 no 가져오기
+	List<FilesVO> FilesList(int member_custom_order_no);
+	
 	// 보낸 요청서 목록 내비게이터
 	PagingVO customReqPaging(String pageNo, int member_no);
 	// 받은 견적서 목록 내비게이터

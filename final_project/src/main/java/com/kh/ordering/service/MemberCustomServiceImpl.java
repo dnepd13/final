@@ -59,7 +59,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 		
 		// 파일이 있다면 파일 테이블에 파일 등록하고
 		// 주문제작-파일 중개테이블에 파일 번호, 저장테이블 시퀀스 등록
-			File dir  = new File("D:/upload");
+			File dir  = new File("D:/upload/kh2d");
 			dir.mkdirs();
 			
 			// MultipartFile을 List형태로 변환하여 파일 데이터 셋팅.
@@ -121,6 +121,15 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 		return null;
 	}
 
+// 요청서 파일 no 가져오기
+	@Override
+	public List<FilesVO> FilesList(int member_custom_order_no){
+	
+		List<FilesVO> filesVO = memberCustomDao.getFilesNo(member_custom_order_no);
+		
+		return filesVO;
+	}
+	
 //	보낸 요청서 목록 페이징
 	@Override
 	public PagingVO customReqPaging(String pageNo, int member_no) {

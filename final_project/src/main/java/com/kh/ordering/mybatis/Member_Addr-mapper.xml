@@ -32,4 +32,27 @@
    		select * from member_addr where member_no = #{member_no} order by member_addr_no asc
    </select>  
    
+   <!-- 선택된 배송지 조회 (1개)-->
+   <select id="addrGetOne" parameterType="member_AddrDto" resultType="member_AddrDto">
+   	 select * from member_addr where  member_addr_no = #{member_addr_no}
+   </select>
+   
+   <!-- 선택된 배송지 삭제(1개) -->
+   <delete id="addrdelete" parameterType="member_AddrDto">
+   	delete from member_addr where member_addr_no =#{member_addr_no}
+   </delete>
+   
+   <!-- 선택된 배송지 수정(1개) -->
+   <update id="addredit" parameterType="member_AddrDto">
+   		update member_addr
+   		set
+   			member_name_extra = #{member_name_extra},
+			member_addr_post = #{member_addr_post},
+			member_addr_basic = #{member_addr_basic},
+			member_addr_extra = #{member_addr_extra},
+			member_addr_status = #{member_addr_status}
+		where
+			member_addr_no = #{member_addr_no}
+   </update>
+   
   </mapper>
