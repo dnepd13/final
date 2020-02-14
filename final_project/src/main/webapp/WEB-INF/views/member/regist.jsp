@@ -8,7 +8,7 @@
 	    
 	    <input type="text" name="member_id" placeholder="아이디를 입력하세요">
 	    <br><br>
-    	<input type="text" name="member_pw" placeholder="비밀번호를 입력하세요">
+    	<input type="password" name="member_pw" placeholder="비밀번호를 입력하세요">
     	<br><br>
     	<input type="text" name="member_name" placeholder="이름을 입력하세요">
     	<br><br>

@@ -1,5 +1,10 @@
 package com.kh.ordering.vo;
 
+import com.kh.ordering.entity.CustomOrderFilesDto;
+import com.kh.ordering.entity.FilesDto;
+import com.kh.ordering.entity.MemberCustomAlarmDto;
+import com.kh.ordering.entity.SellerCustomAlarmDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,14 +23,22 @@ public class CustomOrderVO {
 	private String custom_order_hopedate;	// 희망날짜
 	private String custom_order_status;	// 진행상황: 진행 중, 채택완료
 	private String custom_order_type;	// 구분: 요청서, 견적서
+	private int custom_order_category;
+	
+// 파일
+	private FilesDto filesDto;
+	private CustomOrderFilesDto customOrderFilesDto;
+	
+// 알람 확인
+	private String member_alarm_check;
+	private String seller_alarm_check;
 	
 //	판매자 견적서 관리
 	private int seller_custom_order_no;
 	private int seller_no; 
-	
 //	회원 견적서 관리
-	private int member_custom_order_no; // 요청서관리 고유번호
-	private int member_no; // 회원번호
+	private int member_custom_order_no;
+	private int member_no;
 
 // 회원 정보
 	private String member_id;

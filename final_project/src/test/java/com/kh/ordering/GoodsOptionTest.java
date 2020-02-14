@@ -1,8 +1,5 @@
 package com.kh.ordering;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +8,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.kh.ordering.entity.GoodsOptionDto;
 import com.kh.ordering.repository.GoodsOptionDao;
 
 import lombok.extern.slf4j.Slf4j;
@@ -32,24 +28,21 @@ public class GoodsOptionTest {
 	private SqlSession sqlSession;
 	
 //	 상품 옵션 등록 테스트 [완료]
-	@Test
-	public void insertTest() {
-		List<GoodsOptionDto> list = new ArrayList<>();
-		for(int i=0; i < 10; i++) {
-			GoodsOptionDto goodsOptionDto = GoodsOptionDto.builder()
-					.goods_no(33)
-					.goods_option_title("초록")
-					.goods_option_content("초록입니다.")
-					.goods_option_price(1500)
-					.goods_option_stock(10)
-					.goods_option_status("Y")
-			.build();
-			sqlSession.insert("goods_option.insert", goodsOptionDto);
-//			list.add(goodsOptionDto);
-		}
-		
-//		sqlSession.insert("goods_option.insertAll", list);
-	}
+//	@Test
+//	public void insertTest() {
+//		List<GoodsOptionDto> list = new ArrayList<>();
+//		for(int i=0; i < 10; i++) {
+//			GoodsOptionDto goodsOptionDto = GoodsOptionDto.builder()
+//					.goods_no(33)
+//					.goods_option_title("초록")
+//					.goods_option_content("초록입니다.")
+//					.goods_option_price(1500)
+//					.goods_option_stock(10)
+//					.goods_option_status("Y")
+//			.build();
+//			sqlSession.insert("goods_option.insert", goodsOptionDto);
+//		}
+//	}
 	
 //	상품 옵션 삭제 테스트 [완료]
 //	@Test
@@ -68,5 +61,11 @@ public class GoodsOptionTest {
 //	public void getListTest() {
 //		log.info("{}", goodsOptionDao.getList());
 //	}
+	
+//	옵션 이름 별 목록 불러오기 [완료]
+	@Test
+	public void getGoodsOptionListTest() {
+		log.info("{}", goodsOptionDao.getGoodsOptionVOList(21));
+	}
 	
 }

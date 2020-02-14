@@ -1,5 +1,7 @@
 package com.kh.ordering;
 
+import java.io.IOException;
+
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +12,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
-import com.kh.ordering.entity.SellerAlarmDto;
+import com.kh.ordering.repository.SellerCustomDao;
 
 import lombok.extern.slf4j.Slf4j;
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -54,10 +56,14 @@ public class MemberCustomTest {
 																													.custom_order_no(custom_order_no)
 																													.member_no(member_no)
 																													.build();
-		sqlSession.insert("member.customInsert", memberCustom);
+		sqlSession.insert("member.customInsert", memberCustom);	
 		
+		// 파일이 있다면 파일 테이블에 파일 등록하고
+		// 주문제작-파일 중개테이블에 파일 번호, 저장테이블 시퀀스 등록
+
+/*			
 		// 판매자 요청서 도착 알람 생성
-		SellerAlarmDto sellerAlarmDto = SellerAlarmDto.builder()
+		SellerCustomAlarmDto sellerCustomAlarmDto = SellerCustomAlarmDto.builder()
 																						.seller_alarm_no(1) //테이블 고유번호
 																						.seller_no(2) //판매자 번호
 																						.member_custom_order_no(1)	 //요청서 번호
@@ -65,6 +71,14 @@ public class MemberCustomTest {
 																						.seller_alarm_check("N") //알람확인여부
 																						.seller_alarm_delete("N") //알람삭제
 																						.build();
-		sqlSession.insert("seller.insertAlarm", sellerAlarmDto);
+		sqlSession.insert("seller.insertAlarm", sellerCustomAlarmDto);
+*/
+	}
+	@Autowired
+	private SellerCustomDao sellerCustomDao;
+	
+	@Test
+	public void fileTest() throws IOException {
+//		memberCustomDao.getCustomFile()
 	}
 }

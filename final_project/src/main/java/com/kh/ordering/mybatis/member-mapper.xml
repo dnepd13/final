@@ -20,18 +20,14 @@
 		-$의 경우 SQL Injection 이라는 해킹 공격에 매우 취약하므로 사용에 주의
 		
 		##이건 안쓰는 테스트용입니다
- -->
-
- 
- <mapper namespace="member">
- <!-- session id로 회원 번호 구하기-->
+ --> 
+  <mapper namespace="member">
+ <!-- session id로 회원 번호 구하기 -->
  	<select id="getNo" parameterType="String" resultType="int">
  		select member_no from member where member_id = #{member_id}
- 	</select>
+	</select>
  	
- 	 			<select id="MemberSeq" resultType="int">
-			Select member_seq.nextval from dual
-		</select>
+
  	
  <!-- 회원 요청서 sql -->
  	<!-- 요청서 작성 -->
@@ -56,6 +52,10 @@
 	<insert id="customInsert" parameterType="memberCustomDto">
 		insert into member_custom_order	values(member_custom_order_seq.nextval, #{member_no}, #{custom_order_no})
 	</insert>
+	<!-- 요청서 관리테이블 현재 시퀀스번호 -->
+	<select id="customOrderSeq" resultType="int">
+		select member_custom_order_seq.currval from dual
+	</select>
 	
 	<!-- 견적서 도착 알람 -->
 	<insert id="insertAlarm">
@@ -65,13 +65,83 @@
 											'N', 'N')
 	</insert>
 
+	<!-- 전체 견적서 보기(카테고리 미구현) -->
+	<select id="getListAll" resultType="customOrderVO">
+		select *from seller_custom_view
+	</select>
 	
+	<!-- 구매자가 받은 견적서 총 개수(목적: 페이징) -->
+	<select id="customRespTest" parameterType="int" resultType="int">
+		select count(*) from member_alarm where member_no=#{member_no}
+	</select>
+	<!-- 나에게 온 견적서만 보기 -->
+	<select id="getListResp" parameterType="int" resultType="customOrderVO">
+		select *from(
+			select rownum rn, RN.*from(
+				select A.*, B.seller_id from
+			    	seller_custom_view A inner join seller B
+			        	on A.seller_no = B.seller_no
+				where member_no = #{member_no} order by custom_order_date desc
+			)RN
+		)where rn between #{start} and #{finish}
+	</select>
+	<!-- 견적서 상세내용 보기. 단일조회 -->
+	<select id="getListInfoResp" resultType="customOrderVO">
+		select A.*, B.seller_id from
+		    seller_custom_view A inner join seller B
+		        on A.seller_no = B.seller_no
+		where seller_custom_order_no = #{seller_custom_order_no}
+	</select>
+	<!-- 견적서 상세내용 확인하면 구매자 알람 업데이트 -->
+	<update id="updateAlarm" parameterType="memberAlarmDto">
+		update member_alarm set member_alarm_date=sysdate, member_alarm_check='Y'
+    		where member_no=#{member_no} and seller_custom_order_no=#{seller_custom_order_no}
+	</update>
+	<!-- 구매자 알람테이블 check N 상태 count (새 요청서 개수에 활용) -->
+	<select id="customCheck" parameterType="int" resultType="int">
+		select count(*) from member_alarm where member_alarm_check='N' and member_no=#{member_no}
+	</select>
 	
+	<!-- 구매자가 보낸 요청서 총 개수(목적:페이징) -->
+	<select id="customReqCount" parameterType="int" resultType="int">
+		select count(*) from member_custom_order where member_no=#{member_no}
+	</select>
 	
+	<!-- 내가 보낸 요청서 목록 / 상세보기 -->
+	<select id="getListReq" parameterType="int" resultType="customOrderVO">
+		select *from(
+			select rownum rn, RN.*from(
+				select A.*, B.member_no, B.member_custom_order_no from
+				    custom_order A inner join member_custom_order B
+				        on a.custom_order_no = b.custom_order_no
+				    where member_no =#{member_no } order by custom_order_date desc
+			)RN
+		)where rn between #{start} and #{finish}
+	</select>
+	<select id="getListInfoReq" parameterType="int" resultType="customOrderVO">
+		select A.*, B.member_no, b.member_custom_order_no from
+		    custom_order A inner join member_custom_order B
+		        on a.custom_order_no = b.custom_order_no
+		where b.member_custom_order_no =#{member_custom_order_no}
+	</select>
+	<!-- 내가 보낸 요청서에 대한 파일 no 가져오기 -->
+	<select id="getReqFilesNo" parameterType="int" resultType="FilesVO">
+		select b.* from
+		    files A inner join files_custom_order B
+		        on a.files_no = b.files_no
+		    inner join member_custom_order C
+		        on b.custom_order_no = c.custom_order_no
+		where c.member_custom_order_no= #{member_custom_order_no}
+	</select>
 	
+	<!-- 멤버를 생성하기위한 시퀀스 생성 -->
+	 	<select id="MemberSeq" resultType="int">
+			Select member_seq.nextval from dual
+		</select>
+		
 	
-	
-	 <insert id="regist" parameterType="memberDto">
+	<!-- 회원가입  -->
+	 <insert id="regist" parameterType="member">
 
  		insert 
  		into member(
@@ -102,29 +172,56 @@
  		)
 	</insert> 
 	
-	<delete id="delete" parameterType="int">
-		delete member where member_no = #{member_no}
-	</delete>
-
-
-
-
-
-
-
-	<!-- 전체 견적서 보기(카테고리 미구현) -->
-	<select id="getListCustom" resultType="customOrderVO">
-		select *from seller_custom_view
-	</select>	
-	<!-- 내가 보낸 요청서만 보기 -->
-	<select id="getListReq" parameterType="int" resultType="customOrderVO">
-		select *from member_custom_view where member_no =#{member_no}
+	<!-- 로그인 -->
+	<select id="login" parameterType="member" resultType="member">
+		select * from member where member_id=#{member_id}
+			
 	</select>
 	
-	<!-- 요청서 삭제 -->
-	<delete id="deleteCustom" parameterType="int">
-		delete member_custom_order where member no=#{member_no} 
+<!-- 	<select id="getNo" parameterType="String" resultType="member">
+		select member_no from member
+		where
+			member_id=#{member_id}
+	</select> -->
+	
+	<!-- 최종 로그인 변경  -->
+	<update id="lastLogin" parameterType="member">
+		update member set member_last_login = sysdate where member_id= #{member_id}
+	</update>
+	
+	<!-- 회원 상세보기 리스트 -->
+	<select id="memberGetOne" parameterType="member" resultType="member">
+		select * from member where member_no = #{member_no}
+	</select>
+	
+		<!-- 회원 수정 -->
+	<update id="memberedit" parameterType="member">
+	  update member
+	  set
+	  	member_email = #{member_email},
+	  	member_phone = #{member_phone}
+	  where
+	  	member_no = #{member_no}	
+	</update>
+	
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="memberdelete" parameterType="member">
+		delete from member where member_no = #{member_no}
 	</delete>
+	
+	
+
+	
+	
+	
+	
+	<!-- 배송지 테이블에서 id로 멤버 no 찾기  -->
+	<select id="findno" parameterType="member" resultType="int">
+		select member_no from member where member_id = #{member_id}
+	</select>
+	
+
 
  </mapper> 
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
+import com.kh.ordering.vo.GoodsOptionVO;
 import com.kh.ordering.vo.GoodsVO;
 
 public class GoodsService {
@@ -37,5 +38,9 @@ public class GoodsService {
 
 	public GoodsVO getGoodsVO(int goods_no) {
 		return goodsDao.getGoodsVO(goods_no);
+	}
+
+	public List<GoodsOptionVO> getGoodsOptionVOList(int goods_no) {
+		return goodsOptionDao.getGoodsOptionVOList(goods_no);
 	}
 }

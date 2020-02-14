@@ -24,7 +24,11 @@
  <!-- 이건 꼭 있어야한다 -->
  
 <mapper namespace="member_PointDto">
-<insert id="registsuccess" parameterType="int">
+		<select id="MemberGetSeq" resultType="int">
+			select member_seq.currval from dual
+		</select>
+
+<insert id="pointregist" parameterType="member_PointDto">
 
 		insert into member_point(
  		member_point_no,
@@ -44,5 +48,10 @@
  		#{member_no}
 		)
 	</insert>
+	
+	<!-- 회원 포인트 조회 -->
+	<select id="getListPoint" parameterType="int" resultType="member_PointDto">
+		select * from member_point where member_no = #{member_no} order by member_point_no asc
+	</select>
 	
  </mapper> 

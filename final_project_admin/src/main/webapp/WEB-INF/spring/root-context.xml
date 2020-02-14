@@ -92,9 +92,11 @@
 		- @Repository 등
 	 -->
 	 <context:component-scan base-package="com.kh.admin" use-default-filters="false">
-	 	<context:include-filter type="regex" expression="com.kh.admin.*"/>
-	 	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+<!-- 	 	<context:include-filter type="regex" expression="com.kh.admin.*"/> -->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
 	 </context:component-scan>
+	 
  <!-- 이메일 전송객체 등록 -->
 	 <bean id="emailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com"></property>

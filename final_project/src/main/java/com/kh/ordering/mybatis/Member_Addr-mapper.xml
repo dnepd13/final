@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+  <mapper namespace="member_AddrDto">
+  
+  <!-- 회원 배송지 추가 구문  -->
+   <insert id="insertaddr" parameterType="member_AddrDto">
+   	insert into member_addr(
+   	member_addr_no,
+   	member_name_extra,
+   	member_addr_post,
+   	member_addr_basic,
+   	member_addr_extra,
+   	member_addr_status,
+   	member_no
+   	)
+	values(
+	member_addr_seq.nextval,
+	#{member_name_extra},
+	#{member_addr_post},
+	#{member_addr_basic},
+	#{member_addr_extra},
+	'기본주소',
+	#{member_no}
+	)
+   </insert>
+   
+   <!-- 회원 배송지 조회 -->
+   <select id="getListAddr" parameterType="int" resultType="member_AddrDto">
+   		select * from member_addr where member_no = #{member_no} order by member_addr_no asc
+   </select>  
+   
+   <!-- 선택된 배송지 조회 (1개)-->
+   <select id="addrGetOne" parameterType="member_AddrDto" resultType="member_AddrDto">
+   	 select * from member_addr where  member_addr_no = #{member_addr_no}
+   </select>
+   
+   <!-- 선택된 배송지 삭제(1개) -->
+   <delete id="addrdelete" parameterType="member_AddrDto">
+   	delete from member_addr where member_addr_no =#{member_addr_no}
+   </delete>
+   
+   <!-- 선택된 배송지 수정(1개) -->
+   <update id="addredit" parameterType="member_AddrDto">
+   		update member_addr
+   		set
+   			member_name_extra = #{member_name_extra},
+			member_addr_post = #{member_addr_post},
+			member_addr_basic = #{member_addr_basic},
+			member_addr_extra = #{member_addr_extra},
+			member_addr_status = #{member_addr_status}
+		where
+			member_addr_no = #{member_addr_no}
+   </update>
+   
+  </mapper>
