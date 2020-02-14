@@ -19,5 +19,6 @@
 
 <c:if test="${member_id != null}">
 <p>${member_id}님 환영합니다.</p>
+<h1><a href="/ordering/member/membermyinfo">마이페이지</a></h1>
 <h1><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></h1><br>
 </c:if>

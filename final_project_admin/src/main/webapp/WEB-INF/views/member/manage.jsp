@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
+
 <h1>회원 관리창 입니다</h1>
 <h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
 
@@ -21,7 +22,7 @@
   </thead>
   <tbody>
     <c:forEach var="list" items="${list}">
-    <tr class="table-light"">
+    <tr class="table-light">
       <th scope="row">${list.member_id}</th>
       <td>${list.member_name}</td>
       <td>${list.member_email}</td>

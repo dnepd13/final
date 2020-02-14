@@ -88,6 +88,8 @@ public class MemberCustomController {
 		
 		return "member/customList";
 	}
+	
+	
 // 받은 견적서 상세 페이지
 	@GetMapping("/customInfoResp")
 	public String memberCustomResp(int custom_order_no, Model model) {
