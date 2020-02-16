@@ -67,6 +67,16 @@ public class AdminDaoImpl implements AdminDao{
 		sqlSession.delete("admin.blockDelete", blockDto);
 	}
 
+	@Override
+	public int blockGroupCount(String block_group) {
+		return sqlSession.selectOne("admin.blockGroupCount",block_group);
+	}
+
+	@Override
+	public int blockIdCount(String block_id) {
+		return sqlSession.selectOne("admin.blockIdCount", block_id);
+	}
+
 	
 	
 	

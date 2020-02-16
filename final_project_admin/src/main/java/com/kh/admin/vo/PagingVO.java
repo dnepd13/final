@@ -17,5 +17,7 @@ public class PagingVO {
 		public int start;
 		public int finish;
 		public int member_no;
+		public String key,
+							search;
 		
 }

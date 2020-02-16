@@ -74,4 +74,19 @@ public class MemberDaoImpl implements MemberDao{
 		sqlSession.insert("admin.pointRegist", memberPointVO);
 	}
 
+	@Override
+	public int memberIdCount(String member_id) {
+		return sqlSession.selectOne("admin.memberIdCount", member_id);
+	}
+
+	@Override
+	public int memberNameCount(String member_name) {
+		return sqlSession.selectOne("admin.memberNameCount", member_name);
+	}
+
+	@Override
+	public int memberGradeCount(String member_grade) {
+		return sqlSession.selectOne("admin.memberGradeCount", member_grade );
+	}
+
 }

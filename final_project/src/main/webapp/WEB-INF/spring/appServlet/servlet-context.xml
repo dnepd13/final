@@ -36,6 +36,14 @@
 		<beans:property name="maxUploadSize" value="10000000"></beans:property>
 		<beans:property name="maxUploadSizePerFile" value="1000000"></beans:property>
 	</beans:bean>
+	
+	<!-- 인터셉터 등록 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"/>
+			<beans:bean class="com.kh.ordering.action.VisitCounter"></beans:bean>
+		</interceptor>
+	</interceptors>
 
 <!-- 웹 소캣 서버 등록 -->
 <!-- 	<beans:bean id="server" class="com.kh.sts25.websocket.WebSocketServer"></beans:bean> -->

@@ -75,7 +75,7 @@ $(function(){
 
 <!-- c --> -->
 <div class="ordering_area">
-	<form>
+	<form action="" method="post">
 	<h2>선택한 상품 목록</h2>
 	<c:forEach items="${cartVOList}" var="cartVO">
 	<div class="items_area">

@@ -46,7 +46,11 @@
 		<typeAlias type="com.kh.ordering.vo.DeliveryVO" alias="deliveryVO"/>
 		<typeAlias type="com.kh.ordering.entity.DeliveryDto" alias="deliveryDto"/>
 		
-		
+		<!-- pay -->
+		<typeAlias type="com.kh.ordering.entity.PayDto" alias="payDto"/>
+	
+		<!-- visitcount -->
+		<typeAlias type="com.kh.ordering.vo.VisitCountVO" alias="visitCount"/>
 	</typeAliases>
  </configuration>
 

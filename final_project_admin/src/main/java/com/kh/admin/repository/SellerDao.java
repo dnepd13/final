@@ -11,4 +11,6 @@ public interface SellerDao {
 	public List<BlockSellerVO> sellerGetList(PagingVO vo);
 	public SellerDto sellerGetOne(SellerDto sellerDto);
 	public void sellerDelete(SellerDto sellerDto);
+	public int sellerIdCount(String seller_id);
+	public int sellerGradeCount(String seller_grade);
 }
