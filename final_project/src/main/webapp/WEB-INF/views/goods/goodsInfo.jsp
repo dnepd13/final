@@ -194,7 +194,7 @@ $(function(){
     		method: method,
     		data: data,
     		success: function(resp){
-    			 alert("문의 등록 완료");
+//     			 alert("문의 등록 완료");
     		}
     	});
     	
@@ -206,7 +206,7 @@ $(function(){
 	$(".qna_seller").hide();
 
     var btn_a = document.querySelector(".btn_a");
-	// 답변완료 시 버튼 숨김
+    
     var qna_head= document.querySelector(".qna_head");
     if($(qna_head).text()=="답변완료"){
         btn_a.style.display="none";
@@ -223,24 +223,24 @@ $(function(){
         }
     });
     
-    $(".qna_seller").find("form").submit(function(e){
-    	e.preventDefault();
+    $(".qna_seller").find("form").submit(function(){
+//     	e.preventDefault();
     	
-    	var url=$(this).attr("action");
-    	var method=$(this).attr("method");
-    	var data = $(this).serialize();
+//     	var url=$(this).attr("action");
+//     	var method=$(this).attr("method");
+//     	var data = $(this).serialize();
     	
-    	$.ajax({
-    		url: url,
-    		method: method,
-    		data: data,
-    		success: function(resp){
-    	        alert("답변 등록 완료");
-    		}
-    	});
+//     	$.ajax({
+//     		url: url,
+//     		method: method,
+//     		data: data,
+//     		success: function(resp){
+// //     	        alert("답변 등록 완료");
+//     		}
+//     	});
     	
     	$(this).parents(".qna_seller").hide();
-    	$(this).parents().prev().find(".btn_a").remove();
+    	$(this).parents().prev().find(".btn_a").text("답변완료").attr("disabled", true);
     });
     
 });
@@ -314,7 +314,15 @@ $(function(){
 <section>
 <p>상품 문의</p>
 	<div class="qna">
-        <button class="btn_q">문의하기</button>
+		<c:choose>
+        <c:when test="${member_id !=null }">
+        		<button class="btn_q">문의하기 </button>
+        </c:when>
+        <c:otherwise>
+        	<a href="${pageContext.request.contextPath}/member/login"><button>문의하기</button></a>	        
+        </c:otherwise>
+        </c:choose>
+        
 		<div class="qna_member" style="display:none;"> <!-- 회원 입력 -->
 			<form action="insertQ" method="post">
 				<input type="hidden" name="seller_no" value="${goodsVO.seller_no }">
@@ -346,7 +354,7 @@ $(function(){
 				<c:forEach var="qna" items="${goodsQna }">
 				<c:set var="qna_head" value="${qna.goods_qna_head }"/>
 				<c:choose>
-				<c:when test="${functions:contains(qna_head,'답변완료') }">
+				<c:when test="${functions:contains(qna_head,'답변') }">
 					<tr>
 						<td class="qna_head"></td>
 						<td>[${qna.goods_qna_head }] ${qna.goods_qna_content }</td>

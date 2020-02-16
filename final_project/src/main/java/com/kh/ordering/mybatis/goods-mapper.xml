@@ -107,7 +107,7 @@
 							                    goods_qna_content, goods_qna_writer, goods_qna_date,goods_qna_head,
 							                    goods_qna_groupno,goods_qna_superno)
 			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no},
-				                 #{goods_qna_content}, #{goods_qna_writer}, sysdate, '답변완료',
+				                 #{goods_qna_content}, #{goods_qna_writer}, sysdate, '답변',
 				                #{goods_qna_groupno}, #{goods_qna_superno})
 	</insert>
 </mapper>
