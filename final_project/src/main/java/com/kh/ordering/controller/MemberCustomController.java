@@ -111,7 +111,7 @@ public class MemberCustomController {
 		String member_id=(String)session.getAttribute("member_id");
 		int member_no = memberCustomDao.getNo(member_id);
 		
-		memberCustomDao.UpdateAlarm(member_no, seller_custom_order_no);
+		memberCustomDao.updateAlarm(member_no, seller_custom_order_no);
 		
 		CustomOrderVO content = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("getListInfoResp", content);

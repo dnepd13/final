@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -46,7 +47,7 @@ $(function(){
 			$(".options").each(function(i){
 				var no = $(this).val();
 				var arr = goodsOptionVOList[i].goodsOptionList;
-				var index = arr.findIndex(dto => dto.goods_option_no == no);
+				var index = arr.findIndex(dto >= dto.goods_option_no == no);
 				price += arr[index].goods_option_price;
 				title = goodsOptionVOList[i].goods_option_title;
 				content = arr[index].goods_option_content;
@@ -164,8 +165,103 @@ $(function(){
 	}
 	
 }); 
+
+// 문의게시판 영역
+$(function(){
+	// '문의하기' 보여주기
+            var qna_member = document.querySelector(".qna_member");
+            
+            $(".btn_q").click(function(){
+                if($(this).text()=="문의하기"){
+                    qna_member.style.display="block";
+                    $(this).text("취소");
+                }
+                else{
+                    qna_member.style.display="none";
+                    $(this).text("문의하기");
+                }
+            });
+            
+	$(".qna_member").find("form").submit(function(){
+		e.preventDfault();
+		
+		var url=$(this).attr("action");
+    	var method=$(this).attr("method");
+    	var data = $(this).serialize();
+		
+    	$.ajax({
+    		url: url,
+    		method: method,
+    		data: data,
+    		success: function(resp){
+    	        alert("문의 등록 완료");
+    		}
+    	});
+    	
+    	$(this).parents(".qna_member").hide();
+    	
+	});
+	
+	// '답변하기' 숨김, 보여주기
+	$(".qna_seller").hide();
+
+    var btn_a = document.querySelector(".btn_a");
+	// 답변완료 시 버튼 숨김
+    var qna_head= document.querySelector(".qna_head");
+    if($(qna_head).text()=="답변완료"){
+        btn_a.style.display="none";
+    }
+    
+    $(".btn_a").click(function(){
+        if($(btn_a).text()=="답변하기"){
+            $(this).parents().next(".qna_seller").show();
+            $(this).text("취소");
+        }
+        else{
+            $(".qna_seller").hide();
+            $(this).text("답변하기");
+        }
+    });
+    
+    $(".qna_seller").find("form").submit(function(){
+    	e.preventDefault();
+    	
+    	var url=$(this).attr("action");
+    	var method=$(this).attr("method");
+    	var data = $(this).serialize();
+    	
+    	$.ajax({
+    		url: url,
+    		method: method,
+    		data: data,
+    		success: function(resp){
+    	        alert("답변 등록 완료");
+    		}
+    	});
+    	
+    	$(this).parents(".qna_seller").hide();
+    	qna_a.style.display="none";
+    });
+    
+});
+
 </script>
 
+<style>
+/*	qna style */
+	.qna {
+		width: 80%
+	}
+	.qna_member textarea {
+		width: 100%;
+		resize: none;
+	}
+	.qna_seller textarea {
+		resize: none;
+		width: 100%;
+	}
+</style>
+<article>
 <h1>상품 상세 페이지</h1>
 
 <p>상품 상세 내용(goods_content)</p>
@@ -214,8 +310,113 @@ $(function(){
 <span class="final_price">0원 </span><span class="final_qtt">(0개)</span>
 </div>
 <hr>
+<!-- --------------------------------------------------- -->
+<section>
 <p>상품 문의</p>
-<hr>
+	<div class="qna">
+        <button class="btn_q">문의하기</button>
+		<div class="qna_member" style="display:none;"> <!-- 회원 입력 -->
+			<form action="insertQ" method="post">
+				<input type="hidden" name="seller_no" value="${goodsVO.seller_no }">
+				<input type="hidden" name="goods_no" value="${goodsVO.goods_no }">
+				<select name="goods_qna_head" required>
+					<option value="상품문의">상품문의</option>
+					<option value="배송문의">배송문의</option>
+				</select>
+				<br>
+				글내용<br>
+				<textarea name="goods_qna_content" required></textarea><br>
+				<input type="submit" value="문의하기">
+			</form>
+				<p> &middot; 개인정보(주민번호, 연락처, 주소, 계좌번호, 카드번호 등)가 타인에게 노출되지 않도록 주의해 주시기 바랍니다.</p>
+				<p> &middot; 문의와 관련없는 비방, 광고, 불건전한 내용 등이 포함될 경우 사전동의 없이 삭제될 수 있습니다.</p>
+		</div>
+	
+		<table> <!-- 문의 목록 -->
+			<tr>
+				<th></th>
+				<th>문의내용</th>
+				<th>작성자</th>
+				<th>작성일</th>
+				<th></th>
+			</tr>
+			<c:forEach var="qna" items="${goodsQna }">
+			<c:set var="qna_head" value="${qna.goods_qna_head }"/>
+			<c:choose>
+				<c:when test="${functions:contains(qna_head,'답변완료') }">
+				<tr>
+					<td class="qna_head"></td>
+					<td>[${qna.goods_qna_head }] ${qna.goods_qna_content }</td>
+					<td>${qna.goods_qna_writer }</td>
+					<td>${qna.goods_qna_date }</td>
+					<td></td>
+				</tr>
+				</c:when>
+				<c:otherwise>
+			<tr>
+					<td class="qna_head">${qna.goods_qna_head }</td>
+					<td>${qna.goods_qna_content }</td>
+					<td>${qna.goods_qna_writer }</td>
+					<td>${qna.goods_qna_date }</td>
+					<%-- 상품의 seller_no와 로그인한 seller_no가 같을 때 --%>
+	<%-- 		<c:if test="${seller_no }==${goodsVO.seller_no }"> --%>
+					<td><button class="btn_a">답변하기</button></td>
+	<%-- 		</c:if> --%>
+				</tr>
+				</c:otherwise>
+			</c:choose>	
+			<tr class="qna_seller"> <!-- 판매자 답변 -->
+				<td colspan="5">
+					<form action="insertA" method="post">
+						<input type="hidden" name="seller_no" value="${goodsVO.seller_no }">
+						<input type="hidden" name="goods_no" value="${goodsVO.goods_no }">
+						<input type="hidden" name="goods_qna_groupno" value="${qna.goods_qna_groupno }">
+						<input type="hidden" name="goods_qna_no" value="${qna.goods_qna_no }">
+						<br>
+						<textarea name="goods_qna_content" required></textarea><br>
+						<input type="submit" value="답변하기">
+					</form>
+				</td>
+			</tr>
+			<tr class="qna_more">
+			</tr>
+			</c:forEach>
+		</table>
 
+		<!-- 내비게이터 -->
+		<div>
+			<ul class="pagination">
+				<c:if test="${paging.startBlock > 1 }">
+					<li class="page-item">
+		     			 <a class="page-link" href="${pageContext.request.contextPath}/goods/goodsInfo?goods_no=${goodsVO.goods_no}&pageNo=${paging.startBlock-1}">&laquo;</a>
+		   			 </li>
+				</c:if>
+				<c:forEach begin="${paging.startBlock }" end="${paging.finishBlock }" var="p">
+					<c:choose>
+						<c:when test="${p == paging.pno }">
+							<li class="page-item active">
+		   					   <a class="page-link" >${p }</a>
+		   					 </li>
+						</c:when>
+						<c:when test="${p != paging.pno }">
+							<li class="page-item active">
+		      					<a class="page-link" href="${pageContext.request.contextPath}/goods/goodsInfo?goods_no=${goodsVO.goods_no}&pageNo=${p}">${p }</a>
+		   					 </li>
+						</c:when>
+					</c:choose>
+				</c:forEach>
+				<c:if test="${paging.finishBlock < paging.pagecount}">
+					<li class="page-item">
+		     			 <a class="page-link" href="${pageContext.request.contextPath}/goods/goodsInfo?goods_no=${goodsVO.goods_no}&pageNo=${paging.finishBlock+1}">&raquo;</a>
+		    		</li>
+				</c:if>
+			</ul>	
+		</div>
+    </div>
+<hr>
+</section>	
+<section>
 <p>리뷰</p>
 <hr>
+</section>
+</article>
