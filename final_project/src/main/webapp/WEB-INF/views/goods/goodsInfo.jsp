@@ -182,7 +182,7 @@ $(function(){
                 }
             });
             
-	$(".qna_member").find("form").submit(function(){
+	$(".qna_member").find("form").submit(function(e){
 		e.preventDfault();
 		
 		var url=$(this).attr("action");
@@ -194,7 +194,7 @@ $(function(){
     		method: method,
     		data: data,
     		success: function(resp){
-    	        alert("문의 등록 완료");
+    			 alert("문의 등록 완료");
     		}
     	});
     	
@@ -213,7 +213,7 @@ $(function(){
     }
     
     $(".btn_a").click(function(){
-        if($(btn_a).text()=="답변하기"){
+        if($(this).text()=="답변하기"){
             $(this).parents().next(".qna_seller").show();
             $(this).text("취소");
         }
@@ -223,7 +223,7 @@ $(function(){
         }
     });
     
-    $(".qna_seller").find("form").submit(function(){
+    $(".qna_seller").find("form").submit(function(e){
     	e.preventDefault();
     	
     	var url=$(this).attr("action");
@@ -240,7 +240,7 @@ $(function(){
     	});
     	
     	$(this).parents(".qna_seller").hide();
-    	qna_a.style.display="none";
+    	$(this).parents().prev().find(".btn_a").remove();
     });
     
 });
@@ -333,54 +333,58 @@ $(function(){
 		</div>
 	
 		<table> <!-- 문의 목록 -->
-			<tr>
-				<th></th>
-				<th>문의내용</th>
-				<th>작성자</th>
-				<th>작성일</th>
-				<th></th>
-			</tr>
-			<c:forEach var="qna" items="${goodsQna }">
-			<c:set var="qna_head" value="${qna.goods_qna_head }"/>
-			<c:choose>
-				<c:when test="${functions:contains(qna_head,'답변완료') }">
+			<thead>
 				<tr>
-					<td class="qna_head"></td>
-					<td>[${qna.goods_qna_head }] ${qna.goods_qna_content }</td>
-					<td>${qna.goods_qna_writer }</td>
-					<td>${qna.goods_qna_date }</td>
-					<td></td>
+					<th></th>
+					<th>문의내용</th>
+					<th>작성자</th>
+					<th>작성일</th>
+					<th></th>
 				</tr>
-				</c:when>
-				<c:otherwise>
-			<tr>
-					<td class="qna_head">${qna.goods_qna_head }</td>
-					<td>${qna.goods_qna_content }</td>
-					<td>${qna.goods_qna_writer }</td>
-					<td>${qna.goods_qna_date }</td>
-					<%-- 상품의 seller_no와 로그인한 seller_no가 같을 때 --%>
-	<%-- 		<c:if test="${seller_no }==${goodsVO.seller_no }"> --%>
-					<td><button class="btn_a">답변하기</button></td>
-	<%-- 		</c:if> --%>
+			</thead>
+			<tbody>
+				<c:forEach var="qna" items="${goodsQna }">
+				<c:set var="qna_head" value="${qna.goods_qna_head }"/>
+				<c:choose>
+				<c:when test="${functions:contains(qna_head,'답변완료') }">
+					<tr>
+						<td class="qna_head"></td>
+						<td>[${qna.goods_qna_head }] ${qna.goods_qna_content }</td>
+						<td>${qna.goods_qna_writer }</td>
+						<td>${qna.goods_qna_date }</td>
+						<td></td>
+					</tr>
+					</c:when>
+					<c:otherwise>
+					<tr>
+						<td class="qna_head">${qna.goods_qna_head }</td>
+						<td>${qna.goods_qna_content }</td>
+						<td>${qna.goods_qna_writer }</td>
+						<td>${qna.goods_qna_date }</td>
+						<%-- 상품의 seller_no와 로그인한 seller_no가 같을 때 --%>
+		<%-- 		<c:if test="${seller_no }==${goodsVO.seller_no }"> --%>
+						<td><button class="btn_a">답변하기</button></td>
+		<%-- 		</c:if> --%>
+					</tr>
+					</c:otherwise>
+				</c:choose>	
+				<tr class="qna_seller"> <!-- 판매자 답변 -->
+					<td colspan="5">
+						<form action="insertA" method="post">
+							<input type="hidden" name="seller_no" value="${goodsVO.seller_no }">
+							<input type="hidden" name="goods_no" value="${goodsVO.goods_no }">
+							<input type="hidden" name="goods_qna_groupno" value="${qna.goods_qna_groupno }">
+							<input type="hidden" name="goods_qna_no" value="${qna.goods_qna_no }">
+							<br>
+							<textarea name="goods_qna_content" required></textarea><br>
+							<input type="submit" value="답변하기">
+						</form>
+					</td>
 				</tr>
-				</c:otherwise>
-			</c:choose>	
-			<tr class="qna_seller"> <!-- 판매자 답변 -->
-				<td colspan="5">
-					<form action="insertA" method="post">
-						<input type="hidden" name="seller_no" value="${goodsVO.seller_no }">
-						<input type="hidden" name="goods_no" value="${goodsVO.goods_no }">
-						<input type="hidden" name="goods_qna_groupno" value="${qna.goods_qna_groupno }">
-						<input type="hidden" name="goods_qna_no" value="${qna.goods_qna_no }">
-						<br>
-						<textarea name="goods_qna_content" required></textarea><br>
-						<input type="submit" value="답변하기">
-					</form>
-				</td>
-			</tr>
-			<tr class="qna_more">
-			</tr>
-			</c:forEach>
+				<tr class="qna_more">
+				</tr>
+				</c:forEach>
+			</tbody>
 		</table>
 
 		<!-- 내비게이터 -->
