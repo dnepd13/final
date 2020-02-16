@@ -135,7 +135,8 @@ public class GoodsController {
 	public int small(@RequestParam String category_name) {
 		return categoryDao.get(category_name).getCategory_no();
 	}
-	
+
+//	상품 문의 게시판
 	@PostMapping("/insertQ")
 	public String insertQ(HttpSession session, 
 											@ModelAttribute GoodsQnaDto goodsQnaDto) {
