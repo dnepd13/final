@@ -6,12 +6,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.repository.DeliveryDao;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.vo.CartVO;
 import com.kh.ordering.vo.ItemVO;
 
 public class GoodsOptionService {
+
+	@Autowired
+	private DeliveryDao deliveryDao;
 	
 	@Autowired
 	private GoodsOptionDao goodsOptionDao;
@@ -47,6 +51,7 @@ public class GoodsOptionService {
 			cartVO.setOption_list(goodsOptionDao.getList(itemVO.getOption_no_list()));
 			cartVO.setPrice(itemVO.getPrice());
 			cartVO.setQuantity(itemVO.getQuantity());
+			cartVO.setDeliveryDto(deliveryDao.get2(itemVO.getGoods_no()));
 			cartVOList.add(cartVO);
 		}
 		
