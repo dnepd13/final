@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
+import com.kh.ordering.repository.GoodsQnaDao;
 import com.kh.ordering.vo.GoodsOptionVO;
 import com.kh.ordering.vo.GoodsVO;
+import com.kh.ordering.vo.PagingVO;
 
 public class GoodsService {
 	
@@ -17,6 +19,9 @@ public class GoodsService {
 	
 	@Autowired
 	private GoodsOptionDao goodsOptionDao;
+	
+	@Autowired
+	private GoodsQnaDao goodsQnaDao;
 	
 	
 	public int insert(GoodsVO goodsVO) {
@@ -42,5 +47,50 @@ public class GoodsService {
 
 	public List<GoodsOptionVO> getGoodsOptionVOList(int goods_no) {
 		return goodsOptionDao.getGoodsOptionVOList(goods_no);
+	}
+	
+	// 문의 게시판 내비게이터
+	public PagingVO goodsQnaPaging(String pageNo, int goods_no) {
+		int pno;
+		try {
+			pno=Integer.parseInt(pageNo);
+			if(pno<=0) throw new Exception();
+		}
+		catch(Exception e){
+			pno=1;
+		}
+		
+		int pageSize=10;
+		int finish= pno*pageSize;
+		int start= finish-(pageSize-1);
+		
+		// 하단 내비
+		int totalCount = goodsQnaDao.goodsQnaCount(goods_no);
+		int navSize= 10;
+		int pageCount= (totalCount+pageSize-1)/pageSize;
+		
+		int startBlock=(pno-1)/navSize * navSize +1;
+		int finishBlock= startBlock + (navSize-1);
+		
+		if(finishBlock>pageCount) {
+			finishBlock=pageCount;
+		}
+		
+		int seller_no= goodsQnaDao.getSeller(goods_no);
+		
+		PagingVO pagingVO = PagingVO.builder()
+				.pno(pno)
+				.navsize(navSize)
+				.count(pageCount)
+				.pagecount(pageCount)
+				.pagesize(pageSize)
+				.startBlock(startBlock)
+				.finishBlock(finishBlock)
+				.start(start)
+				.finish(finish)
+				.seller_no(seller_no)
+				.goods_no(goods_no)
+				.build();
+		return pagingVO;
 	}
 }

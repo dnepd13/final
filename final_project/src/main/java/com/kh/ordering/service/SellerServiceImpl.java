@@ -15,6 +15,8 @@ public class SellerServiceImpl  implements SellerService{
 @Autowired
 private SellerDao sellerDao;
 
+
+
 	@Override
 	public void regist(SellerDto sellerDto) {
 		//등록을 위한 정보 생성
@@ -44,21 +46,21 @@ private SellerDao sellerDao;
 
 
 
-	@Override
-	public SellerDto info(SellerDto sellerDto) {
-			sellerDto.getSeller_id();
-			
-		return sellerDao.info(sellerDto);
-	}
+
+
+
+
 
 
 
 //	@Override
-//	public SellerDto info_edit(SellerDto sellerDto) {
-//					sellerDto.getSeller_id();
-//					
-//		return sellerDao.info_edit(sellerDto);
+//	public SellerDto info(SellerDto sellerDto) {
+//	
+//			
+//		return sellerDao.info(sellerDto);
 //	}
+
+
 
 
 	}

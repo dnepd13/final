@@ -46,11 +46,15 @@
 		<typeAlias type="com.kh.ordering.vo.DeliveryVO" alias="deliveryVO"/>
 		<typeAlias type="com.kh.ordering.entity.DeliveryDto" alias="deliveryDto"/>
 		
+		<!-- 상품 문의/리뷰게시판 -->
+		<typeAlias type="com.kh.ordering.entity.GoodsQnaDto" alias="goodsQnaDto"/>
+		
 		<!-- pay -->
 		<typeAlias type="com.kh.ordering.entity.PayDto" alias="payDto"/>
 	
 		<!-- visitcount -->
 		<typeAlias type="com.kh.ordering.vo.VisitCountVO" alias="visitCount"/>
+
 	</typeAliases>
  </configuration>
 
