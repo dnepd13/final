@@ -157,6 +157,7 @@ public class SellerController {
 		sellerDto.setSeller_name(seller_name);
 		sellerDto.setSeller_email(seller_email);
 		SellerDto result = sellerDao.info(sellerDto);
+//		if(result=)
 		
 	//	sellerDto.getSeller_name(),info.getSeller_name();
 		
