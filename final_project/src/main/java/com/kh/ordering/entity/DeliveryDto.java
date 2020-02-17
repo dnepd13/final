@@ -20,5 +20,5 @@ public class DeliveryDto {
 	private int delivery_return_price;
 	private int goods_no;
 	private int seller_no;
-	private int delevery_op_price;
+	private int delivery_op_price;
 }
