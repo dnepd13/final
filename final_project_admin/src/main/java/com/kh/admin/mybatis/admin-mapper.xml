@@ -554,6 +554,10 @@
 		delete block where block_no = #{block_no}
 	</delete>
 	
+	<!-- 일일 접속자 차트 목록 구해오기 -->
+	<select id="userDaily" resultType="connectList">
+		select * from connecting
+	</select>
  </mapper> 
 	
  

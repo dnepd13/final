@@ -125,6 +125,7 @@ public class Kakaoservice implements payService {
 		//저장되어야할 것들 
 		//상품정보 개별(정보, 옵션, 상품+옵션 가격 및 수량, 상품 배송정보
 		
+		
 		return returnVO;
 	}
 
@@ -170,6 +171,8 @@ public class Kakaoservice implements payService {
 									.build();
 		
 		payDao.insertRevoke(payDto2);
+		//취소 되면 포인트 돌려주고, 
+		
 		return null;
 	}
 
