@@ -13,4 +13,6 @@ public interface BoardDao {
 	public void qnaBoardInsertSecond(AdminQnaBoardDto adminQnaBoardDto);
 	public void qnaBoardUpdate(AdminQnaBoardDto adminQnaBoardDto);
 	public void qnaBoardDelete(AdminQnaBoardDto adminQnaBoardDto);
+	public int qnaBoardTitleCount(String admin_qna_title);
+	public int qnaBoardHeadCount(String admin_qna_head);
 }

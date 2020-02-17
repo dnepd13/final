@@ -1,9 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+  </script>
+  <script>  
+      $(function() {
+      $(".test").click(function() {
+    		console.log("되는건가");
+            var seller_id = $("input[name=seller_id]").val();
+            console.log(seller_id);
+                     $.ajax({
+                              url : "id_check",
+                              type : "get",
+                              contentType: "application/x-www-form-urlencoded; charset=UTF-8",  
+                              data : {
+                                 'seller_id' : seller_id
+                              },
+                              success : function(resp) { //resp = 위코드가 성공적으로 컨트롤러에 다녀왔을때 가져온 값
+                                    window.alert(resp);
+                                 }
+                                 
+                        
+                              });
+    });
+   });
+</script>
+
 <h1>regist.jsp</h1>
 <h1>회원가입 페이지</h1>
 <form action="regist" method="post">
 판매자 아이디 <input type="text" name="seller_id"><br><br>
+  <!--  name = 값 controller에있는파라미터값변수명하고 일치해야함 -->
+                     <input class="test" type="button" id="id_check" value="중복확인"><br>
+
 판매자 비밀번호 <input type="text" name="seller_pw"><br><br>
 판매자 대표자 이름 <input type="text" name="seller_name"><br><br>
 판매자 이메일 <input type="text" name="seller_email"><br><br>
