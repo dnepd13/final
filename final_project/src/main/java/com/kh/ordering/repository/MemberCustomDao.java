@@ -19,21 +19,21 @@ public interface MemberCustomDao {
 	int getNo(@RequestParam String member_id);
 
 	//회원 요청서 작성
-	void CustomOrderInsert(CustomOrderDto customOrderDto); // 요청서 저장 테이블
-	int CustomSeq();// 주문제작 .currval 시퀀스 번호
-	void MemberCustom(MemberCustomOrderDto memberCustomDto); // 요청서 관리 테이블
-	int CustomOrderSeq(); // 요청서 관리테이블 .currval 시퀀스
-	void CustomAlarmInsert(MemberCustomAlarmDto memberCustomAlarmDto); //견적서 도착 알람 테이블 생성
-	int FileSeq(); // 파일 .nextval 시퀀스번호
-	void FilesInsert(FilesDto filesDto); // 파일 저장
-	void CustomFilesInsert(CustomOrderFilesDto customOrderFilesDto); // 주문제작-파일 테이블
+	void customOrderInsert(CustomOrderDto customOrderDto); // 요청서 저장 테이블
+	int customSeq();// 주문제작 .currval 시퀀스 번호
+	void memberCustom(MemberCustomOrderDto memberCustomDto); // 요청서 관리 테이블
+	int customOrderSeq(); // 요청서 관리테이블 .currval 시퀀스
+	void customAlarmInsert(MemberCustomAlarmDto memberCustomAlarmDto); //견적서 도착 알람 테이블 생성
+	int fileSeq(); // 파일 .nextval 시퀀스번호
+	void filesInsert(FilesDto filesDto); // 파일 저장
+	void customFilesInsert(CustomOrderFilesDto customOrderFilesDto); // 주문제작-파일 테이블
 	
 	//판매자 1:1 견적서 보기
 	List<CustomOrderVO> getListResp(PagingVO paging);
 	//판매자 견적서 단일조회, 상세조회
 	CustomOrderVO customOrderVO1(int seller_custom_order_no);
 	//견적서 누르면 구매자 알림테이블 업데이트
-	void UpdateAlarm(int member_no, int seller_custom_order_no);
+	void updateAlarm(int member_no, int seller_custom_order_no);
 	//구매 알람테이블 견적서 총 개수 check N
 	int customAlarm(int member_no);
 	

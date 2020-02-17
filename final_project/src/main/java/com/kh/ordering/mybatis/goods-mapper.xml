@@ -75,6 +75,46 @@
 	<select id="getGoodsOption" parameterType="int" resultType="goodsOptionDto">
 		select * from goods_option where goods_no = #{goods_no}
 	</select>
+	
+<!-- 상품 문의게시판 -->
+	<!-- 상품에 대한 seller_no 뽑기 -->
+	<select id="getSeller" parameterType="int" resultType="int">
+		select seller_no from goods where goods_no=#{goods_no}
+	</select>
+	
+	<!-- 구매자 문의 입력 -->
+	<insert id="insertQ" parameterType="goodsQnaDto">
+		insert into goods_qna(goods_qna_no, goods_no, seller_no,
+							                    goods_qna_content, goods_qna_writer, goods_qna_date,goods_qna_head,
+							                    goods_qna_groupno,goods_qna_superno)
+			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no},
+			                    #{goods_qna_content}, #{goods_qna_writer}, sysdate, #{goods_qna_head},
+			                    goods_qna_seq.currval, null)
+	</insert>
+	
+	<!-- 목록 -->
+	<select id="getQnaCount" parameterType="int" resultType="int">
+		select count(*) from goods_qna where goods_no=#{goods_no}
+	</select>
+	<select id="getQna" parameterType="int" resultType="goodsQnaDto">
+		select *from(
+			select rownum rn, RN.* from(
+			    select *from goods_qna where goods_no=#{goods_no}
+			    connect by prior goods_qna_no=goods_qna_superno start with goods_qna_superno is null
+			    order SIBLINGS by goods_qna_groupno desc, goods_qna_no asc
+			)RN
+		)where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 판매자 문의 답변 -->
+	<insert id="insertA">
+		insert into goods_qna(goods_qna_no, goods_no, seller_no,
+							                    goods_qna_content, goods_qna_writer, goods_qna_date,goods_qna_head,
+							                    goods_qna_groupno,goods_qna_superno)
+			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no},
+				                 #{goods_qna_content}, #{goods_qna_writer}, sysdate, '답변',
+				                #{goods_qna_groupno}, #{goods_qna_superno})
+	</insert>
 </mapper>
 
 
