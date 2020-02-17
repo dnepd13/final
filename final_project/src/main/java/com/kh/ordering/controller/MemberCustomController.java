@@ -2,11 +2,16 @@ package com.kh.ordering.controller;
 
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.ordering.entity.CustomOrderDto;
+import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
+import com.kh.ordering.repository.CategoryDao;
+import com.kh.ordering.repository.FilesDao;
+import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.MemberCustomDao;
-import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.service.MemberCustomService;
 import com.kh.ordering.vo.CustomOrderVO;
 import com.kh.ordering.vo.FilesVO;
@@ -38,8 +46,21 @@ public class MemberCustomController {
 	private MemberCustomDao memberCustomDao;
 	
 	@Autowired
-	private SellerCustomDao sellerCustomDao;
+	private FilesDao filesDao;
+	
+	@Autowired
+	private FilesPhysicalDao filesPhysicalDao;
+	
+	@Autowired
+	private CategoryDao categoryDao;
 
+//	멤버 카테고리 주문제작 요청서 -메인에서 접속가능
+	@GetMapping("/customCate")
+	public String customCate(Model model) {
+		model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
+		return "member/customCate";
+	}
+	
 // 멤버 주문제작 1:1 요청서 작성 페이지
 //	- goodsInfo 페이지에서 접속 가능.
 	@GetMapping("/customOrder")
@@ -101,7 +122,7 @@ public class MemberCustomController {
 		String member_id=(String)session.getAttribute("member_id");
 		int member_no = memberCustomDao.getNo(member_id);
 		
-		memberCustomDao.UpdateAlarm(member_no, seller_custom_order_no);
+		memberCustomDao.updateAlarm(member_no, seller_custom_order_no);
 		
 		CustomOrderVO content = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("getListInfoResp", content);
@@ -130,23 +151,42 @@ public class MemberCustomController {
 		List<CustomOrderVO> list = memberCustomDao.getListReq(result);
 		model.addAttribute("getListReq", list);
 		
-		log.info("getListReq={}", list );
-		
 		return "member/customListReq";
 	}
+	
 //	보낸 요청서 상세페이지
 	@GetMapping("/customInfoReq")
-	public String memberCustomReq(int member_custom_order_no, Model model) {
+	public String memberCustomReq(@RequestParam int member_custom_order_no, Model model) {
 		
 		CustomOrderVO content = memberCustomDao.customOrderVO2(member_custom_order_no);
 		model.addAttribute("getListInfoReq", content);
 		
+		List<FilesVO>  filesVO = memberCustomService.FilesList(member_custom_order_no);
+		model.addAttribute("filesVO", filesVO);
+		
 		return "member/customInfoReq";
 	}
-// 임시 세션 remove
-	@GetMapping("/remove")
-	public String remove(HttpSession session) {
-		session.removeAttribute("member_no");
-		return "redirect:/";
+// 파일 이미지 다운로드
+	@GetMapping("/download")
+	public ResponseEntity<ByteArrayResource> CustomReqFile(@RequestParam int files_no) throws IOException{
+
+		// 파일 no로 파일 정보 가져오기
+		FilesDto filesDto = filesDao.getFiles(files_no);
+
+		// 파일 이름 가져오기
+		byte[] data = filesPhysicalDao.get(files_no);
+		if(data==null) { // data 없으면 404처리
+			return ResponseEntity.notFound().build();
+		}
+		
+		ByteArrayResource resource = new ByteArrayResource(data);
+
+		return ResponseEntity.ok()
+												.contentType(MediaType.APPLICATION_OCTET_STREAM)
+												.contentLength(filesDto.getFiles_size())
+												.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+URLEncoder.encode(filesDto.getFiles_savename(),"UTF-8")+"\"")
+												.body(resource);
+		
 	}
+
 }

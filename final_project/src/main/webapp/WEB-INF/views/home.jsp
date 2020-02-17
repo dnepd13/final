@@ -10,17 +10,24 @@
 <!-- 바뀐 session의 member_no에서 memeber_id를 구해서 확인  -->
 
 <!-- 로그인 내용  -->
-<c:if test="${member_id == null}">
-<form role="form" method="post" autocomplete="off" action="/member/login">
-	<p><a href="/ordering/member/login">일반회원 로그인</a></p>
-	<p><a href="/ordering/member/regist">회원가입</a></p>
+<c:choose>
+	<c:when test="${member_id == null}">
+		<form role="form" method="post" autocomplete="off" action="/member/login">
+			<p><a href="/ordering/member/login">일반회원 로그인</a></p>
+			<p><a href="/ordering/member/regist">회원가입</a></p>
+		</form>
+		<span><a href="${pageContext.request.contextPath }/goods/getList">상품List</a></span>
+		<p><a href="/ordering/member/login">요청서 보내기</a>
+	</c:when>
 
-</form>
-</c:if>
+	<c:otherwise>
+		<p>${member_id}님 환영합니다.</p>
+    <h1><a href="/ordering/member/membermyinfo">마이페이지</a></h1>
+		<h1><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></h1>
+		<span><a href="${pageContext.request.contextPath }/goods/getList">상품List</a></span>
+		<span>&verbar;</span>
+		<span><a href="${pageContext.request.contextPath }/member/customCate">요청서 보내기</a></span>
+	</c:otherwise>
+</c:choose>
 
-<c:if test="${member_id != null}">
-<p>${member_id}님 환영합니다.</p>
-<h1><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></h1><br>
-</c:if>
-<span><a href="${pageContext.request.contextPath }/goods/getList">상품List</a></span>
 

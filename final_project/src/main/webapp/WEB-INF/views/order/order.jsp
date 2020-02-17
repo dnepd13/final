@@ -266,7 +266,6 @@ function inputOrderInfo(){
 		상세주소 : <input class="addr_extra" type="text" name="addr_extra"> <br>
 		주소상태 : <input class="addr_status" type="text" name="addr_status"> <br>
 	</div>
-	
 	<hr>
 	<h2>선택한 상품 목록</h2>
 	<c:forEach items="${cartVOList}" var="cartVO" varStatus="status">

@@ -34,15 +34,66 @@ public class SellerController {
 	@GetMapping("/manage")
 	public String manage(
 			Model model,
-			@RequestParam(value="pno1", required = false) String pno1
+			@RequestParam(value="pno1", required = false) String pno1,
+			@ModelAttribute PagingVO paging
 			) {
-		PagingVO vo = boardService.sellerPagination(pno1);
+		log.info("paging={}",paging);
+		
+		//검색을 위의 정보가 담긴 paging으로 해야한다
+		//카운트를 구해서 같이 보내야한다
+		//1번 검색어가 없을 경우
+		int count;
+		if(paging.getKey() == null) {
+			log.info("1번입니다");
+		count = sellerDao.sellerCount();
+		PagingVO vo = boardService.allPaging(pno1, count);
+		
 		model.addAttribute("paging", vo);
+		
 		//판매자 리스트 불러오기
 		List<BlockSellerVO> list = sellerDao.sellerGetList(vo);
-		log.info("list={}", list);
 		model.addAttribute("list", list);
 		return "seller/manage";
+		}
+		
+		//2번 검색어가 id일경우
+		else if(paging.getKey().equalsIgnoreCase("seller_id")) {
+			log.info("2번입니다");
+			String seller_id = paging.getSearch();
+			count = sellerDao.sellerIdCount(seller_id);
+			PagingVO vo = boardService.allPaging(pno1, count);
+			
+			model.addAttribute("paging", vo);
+			vo.setKey(paging.getKey());
+			vo.setSearch(paging.getSearch());
+			
+			//판매자 리스트 불러오기
+			List<BlockSellerVO> list = sellerDao.sellerGetList(vo);
+			model.addAttribute("list", list);
+			return "seller/manage";
+			
+		}
+		
+		else if(paging.getKey().equalsIgnoreCase("seller_grade")) {
+			log.info("3번입니다");
+			String seller_grade = paging.getSearch();
+			count = sellerDao.sellerGradeCount(seller_grade);
+			PagingVO vo = boardService.allPaging(pno1, count);
+			
+			model.addAttribute("paging", vo);
+			vo.setKey(paging.getKey());
+			vo.setSearch(paging.getSearch());
+			
+			//판매자 리스트 불러오기
+			List<BlockSellerVO> list = sellerDao.sellerGetList(vo);
+			log.info("list={}", list);
+			model.addAttribute("list", list);
+			return "seller/manage";
+		}
+		else {
+			
+			return "seller/manage";
+		}
 	}
 	
 	@PostMapping("/sellerpage")

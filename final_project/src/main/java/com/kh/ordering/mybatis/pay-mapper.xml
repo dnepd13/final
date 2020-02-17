@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <!-- 
+ 	명령을 전달하기 위한 파일 
+ 	namespace : 영역을 부르는 별칭
+ 	parameterType : 이 명령을 실행하기 위해 필요한 데이터의 형태
+ 	resultType : 기대되는 결과물의 형태 (목록이든 아니든 dto 형태로 표기)
+ 	
+ 	부등호(<,>,=)를 쓰고 싶다면 
+ 	<![CDATA[
+ 	이곳에 명령어를 넣는다
+ 	]]> 
+	
+	형태에 따라 파라미터를 다르게 설정할 수 있다
+	- #은 형태를 추론해 자동으로 따옴표 설정 및 인코딩 처리를 수행
+	- $는 값을 있는 그대로 출력하는 명령이므로 주로 "항목"에 사용
+		-$의 경우 SQL Injection 이라는 해킹 공격에 매우 취약하므로 사용에 주의
+		
+		##이건 안쓰는 테스트용입니다
+ -->
+
+ 
+ <mapper namespace="pay">
+ 	<!-- 결제 준비 등록 -->
+ 	<insert id="ready" parameterType="payDto">
+ 		insert into ordering(ordering_no, tid, cid, process_time, item_name,
+ 							partner_order_id, partner_user_id, quantity, total_amount,
+ 							ordering_status,aid,install_month, used_point, tax_free_amount,
+ 							vat_amount
+ 							)
+ 			values(
+ 				ordering_seq.nextval,
+ 				#{tid}, #{cid}, to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
+ 				#{item_name}, #{partner_order_id}, #{partner_user_id},
+ 				#{quantity}, #{total_amount}, '준비', '1', '0', '0', '0', '0'
+ 			)
+ 	</insert>
+	
+	<insert id="success" parameterType="payDto">
+		insert into ordering(ordering_no, tid, cid, process_time, item_name,
+ 							partner_order_id, partner_user_id, quantity, total_amount,
+ 							ordering_status,aid,install_month, used_point, tax_free_amount,
+ 							vat_amount
+ 							)
+ 			values(
+ 				ordering_seq.nextval,
+ 				#{tid}, #{cid}, to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
+ 				#{item_name}, #{partner_order_id}, #{partner_user_id},
+ 				#{quantity}, #{total_amount}, '완료', #{aid}, '0', '0', '0', '0'
+ 			)
+	</insert>
+	
+	<select id="list" resultType="payDto">
+		select * from ordering order by ordering_no 
+	</select>
+	
+	<select id="get" resultType="payDto" parameterType="int">
+		select * from ordering where ordering_no = #{ordering_no}
+	</select>
+	
+	<insert id="revoke" parameterType="payDto">
+		insert into ordering(ordering_no, tid, cid, process_time, item_name,
+ 							partner_order_id, partner_user_id, quantity, total_amount,
+ 							ordering_status,aid,install_month, used_point, tax_free_amount,
+ 							vat_amount
+ 							)
+ 			values(
+ 				ordering_seq.nextval,
+ 				#{tid}, #{cid}, to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
+ 				#{item_name}, #{partner_order_id}, #{partner_user_id},
+ 				#{quantity}, #{total_amount}, '취소', #{aid}, '0', '0', '0', '0'
+ 			)
+	</insert>
+	
+ </mapper> 
+
+
+
+

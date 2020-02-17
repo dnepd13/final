@@ -14,8 +14,10 @@
  	</settings>
  	<typeAliases>
  		
- 		<!-- 페이징 -->
+ 		<!-- 페이징, 파일 -->
  		<typeAlias type="com.kh.ordering.vo.PagingVO" alias="pagingVO"/>
+ 		<typeAlias type="com.kh.ordering.entity.FilesDto" alias="FilesDto"/>
+ 		<typeAlias type="com.kh.ordering.vo.FilesVO" alias="FilesVO"/>
 
 		<!-- 판매자 Dto Alias--> 		
  		<typeAlias type="com.kh.ordering.entity.SellerDto" alias="seller"/>	
@@ -44,7 +46,15 @@
 		<typeAlias type="com.kh.ordering.vo.DeliveryVO" alias="deliveryVO"/>
 		<typeAlias type="com.kh.ordering.entity.DeliveryDto" alias="deliveryDto"/>
 		
+		<!-- 상품 문의/리뷰게시판 -->
+		<typeAlias type="com.kh.ordering.entity.GoodsQnaDto" alias="goodsQnaDto"/>
 		
+		<!-- pay -->
+		<typeAlias type="com.kh.ordering.entity.PayDto" alias="payDto"/>
+	
+		<!-- visitcount -->
+		<typeAlias type="com.kh.ordering.vo.VisitCountVO" alias="visitCount"/>
+
 	</typeAliases>
  </configuration>
 

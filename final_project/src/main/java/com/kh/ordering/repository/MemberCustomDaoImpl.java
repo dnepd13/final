@@ -34,38 +34,38 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	
 //	Member 요청서 작성
 	@Override // 요청서 저장
-	public void CustomOrderInsert(CustomOrderDto customOrderDto) {
+	public void customOrderInsert(CustomOrderDto customOrderDto) {
 		sqlSession.insert("member.customReq", customOrderDto);
 	}	
 	@Override // 요청서 관리 저장
-	public void MemberCustom(MemberCustomOrderDto memberCustomDto) {	
+	public void memberCustom(MemberCustomOrderDto memberCustomDto) {	
 		sqlSession.insert("member.customInsert", memberCustomDto);
 	}
 	@Override // 요청서 관리테이블 .currval 시퀀스번호
-	public int CustomOrderSeq() {
+	public int customOrderSeq() {
 		return sqlSession.selectOne("member.customOrderSeq");
 	}
 
 	@Override //요청서 .currval 시퀀스
-	public int CustomSeq() {		
+	public int customSeq() {		
 		return sqlSession.selectOne("member.customSeq");
 	}
 	
 	@Override // 견적서 도착 알람 테이블 입력
-	public void CustomAlarmInsert(MemberCustomAlarmDto memberCustomAlarmDto) {
+	public void customAlarmInsert(MemberCustomAlarmDto memberCustomAlarmDto) {
 		sqlSession.insert("member.insertAlarm", memberCustomAlarmDto);
 	}
 	
 	@Override // 파일 .nextval 시퀀스번호
-	public int FileSeq() {
+	public int fileSeq() {
 		return sqlSession.selectOne("files.getSeq");
 	}	
 	@Override // 파일테이블 저장
-	public void FilesInsert(FilesDto filesDto) {
+	public void filesInsert(FilesDto filesDto) {
 		sqlSession.insert("files.insert", filesDto);
 	}
 	@Override // 주문제작-파일 테이블 입력
-	public void CustomFilesInsert(CustomOrderFilesDto customOrderFilesDto) {
+	public void customFilesInsert(CustomOrderFilesDto customOrderFilesDto) {
 		sqlSession.insert("files.customInsert", customOrderFilesDto);
 	}
 
@@ -79,7 +79,7 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 		return sqlSession.selectOne("member.getListInfoResp", seller_custom_order_no);
 	}
 	@Override // 견적서 상세페이지 확인하면 구매자 알람테이블 업데이트
-	public void UpdateAlarm(int member_no, int seller_custom_order_no) {
+	public void updateAlarm(int member_no, int seller_custom_order_no) {
 		MemberCustomAlarmDto updateAlarm = MemberCustomAlarmDto.builder()
 																																.member_no(member_no)
 																																.seller_custom_order_no(seller_custom_order_no)
@@ -105,10 +105,13 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	public CustomOrderVO customOrderVO2(int member_custom_order_no) {
 		return sqlSession.selectOne("member.getListInfoReq", member_custom_order_no);
 	}
-	@Override // 보낸 요청서 count
+	@Override // 요청서의 파일번호
+	public List<FilesVO> getFilesNo(int member_custom_order_no) {
+		return sqlSession.selectList("member.getReqFilesNo", member_custom_order_no);
+	}
+	@Override // 보낸 요청서 count (페이징 용도)
 	public int customReqCount(int member_no) {
 		return sqlSession.selectOne("member.customReqCount", member_no);
 	}
-
 	
 }

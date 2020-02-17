@@ -83,11 +83,20 @@
 	<select id="sellerGetList" parameterType="paging" resultType="blockSellerDto">
 		select * from(
 			select rownum rn, A.* from(
-				select a.seller_no, a.seller_id, a.seller_name, a.seller_email, a.seller_phone, a.seller_birth, a.seller_addr_post, a.seller_addr_basic,
-				 a.seller_addr_extra, a.seller_store_name, a.seller_store_phone, a.seller_store_fax, seller_join_date, seller_last_login, a.seller_agree_date, a.seller_cid, a.seller_bank_code,
-				  a.seller_bank_account, a.seller_bank_username, a.seller_bank_birth, a.seller_grade, b.block_no
+				select 
+					a.seller_no, a.seller_id, a.seller_name, a.seller_email, a.seller_phone, a.seller_birth, a.seller_addr_post, a.seller_addr_basic,
+					a.seller_addr_extra, a.seller_store_name, a.seller_store_phone, a.seller_store_fax, seller_join_date, seller_last_login, a.seller_agree_date, a.seller_cid, a.seller_bank_code,
+					a.seller_bank_account, a.seller_bank_username, a.seller_bank_birth, a.seller_grade, b.block_no
 				from seller a left outer join block b on a.seller_no = b.seller_no 
-				order by seller_no desc
+				<choose>
+					<when test='key == "seller_id"'>
+						where seller_id like '%'||#{search}||'%' 
+					</when>
+					<when test='key == "seller_grade"'>
+						where seller_grade like '%'||#{search}||'%' 
+					</when>
+				</choose>
+				order by seller_no desc 
 			)A
 		)where rn between #{start} and #{finish}
 	</select>
@@ -106,6 +115,16 @@
 	<select id="sellerCount" resultType="int">
 		select count(*) from seller 
 	</select>	
+	
+	<!-- 판매자 아이디 검색 카운트 -->
+	<select id="sellerIdCount" parameterType="String" resultType="int">
+		select count(*) from seller where seller_id like '%'||#{seller_id}||'%'
+	</select>
+	
+	<!-- 판매자 등급 검색 카운트 -->
+	<select id="sellerGradeCount" parameterType="String" resultType="int">
+		select count(*) from seller where seller_grade like '%'||#{seller_grade}||'%'
+	</select>
 	
 	<!-- 카테고리 리스트 불러오기 -->
 	<select id="sellerGetCategoryList" parameterType="paging" resultType="categoryDto">
@@ -152,6 +171,17 @@
 				select a.member_no, a.member_id, a.member_name, a.member_email, a.member_phone, a.member_birth, a.member_join_date, a.member_last_login,
 				    a.member_agree_date, a.member_grade, b.block_no
 				from member a left outer join block b on a.member_no = b.member_no
+				<choose>
+					<when test='key == "member_id"'>
+						where member_id like '%'||#{search}||'%' 
+					</when>
+					<when test='key == "member_grade"'>
+						where member_grade like '%'||#{search}||'%' 
+					</when>
+					<when test='key == "member_name"'>
+						where member_name like '%'||#{search}||'%' 
+					</when>
+				</choose>
 				order by a.member_no desc
 			)A
 		)where rn between #{start} and #{finish}
@@ -170,6 +200,21 @@
 	<!-- 회원 총 갯수 -->
 	<select id="memberCount" resultType="int">
 		select count(*) from member
+	</select>
+	
+	<!-- 회원 아이디 총 갯수 -->
+	<select id="memberIdCount" parameterType="String" resultType="int">
+		select count(*) from member where member_id like'%'||#{member_id}||'%'
+	</select>
+	
+	<!-- 회원 이름 총 갯수 -->
+	<select id="memberNameCount" parameterType="String" resultType="int">
+		select count(*) from member where member_name like'%'||#{member_name}||'%'
+	</select>
+	
+	<!-- 회원 등급 총 갯수 -->
+	<select id="memberGradeCount" parameterType="String" resultType="int">
+		select count(*) from member where member_grade like'%'||#{member_grade}||'%'
 	</select>
 	
 	<!-- 수수료 리스트 -->
@@ -202,6 +247,14 @@
 		select * from(
 			select rownum rn, A.* from (
 				select * from admin_qna 
+				<choose>
+					<when test='key == "admin_qna_title"'>
+						where admin_qna_title like '%'||#{search}||'%' 
+					</when>
+					<when test='key == "admin_qna_head"'>
+						where admin_qna_head like '%'||#{search}||'%' 
+					</when>
+				</choose>
 				connect by prior admin_qna_no=super_no 
 				start with super_no is null 
 				order siblings by group_no desc, admin_qna_no asc
@@ -212,6 +265,16 @@
 	<!-- 관리문의게시판 총 갯수 구하기 -->
 	<select id="adminQnaCount" resultType="int">
 		select count(*) from admin_qna
+	</select>
+	
+	<!--  관리문의게시판 타이틀로 총 갯수 구하기 -->
+	<select id="adminQnaTitleCount" parameterType="String" resultType="int">
+		select count(*) from admin_qna where admin_qna_title like '%'||#{admin_qna_title}||'%'
+	</select>
+	
+	<!--  관리문의게시판 헤드로 총 갯수 구하기 -->
+	<select id="adminQnaHeadCount" parameterType="String" resultType="int">
+		select count(*) from admin_qna where admin_qna_head like '%'||#{admin_qna_head}||'%'
 	</select>
 	
 	<!-- 관리문의게시판 글 상세보기 1개 뽑기 -->
@@ -353,14 +416,65 @@
 	</resultMap>
 	
 		<!-- 그냥 상품 불러오기 -->
-		<select id="goodsList" resultType="sellerGoodsVO">
-			select S.seller_id, S.seller_name, S.seller_grade, G.* from seller S 
-   				 left outer join goods G on S.seller_no = G.seller_no
+		<select id="goodsList" parameterType="paging" resultType="goodsCategoryVO">
+		select * from(
+			select rownum rn, A.* from(
+				select d.*, c.seller_id, c.seller_name, c.seller_email, c.seller_phone, 
+				c.seller_birth, c.seller_addr_post, c.seller_addr_basic, c.seller_addr_extra, c.seller_store_name
+				, c.seller_store_phone, c.seller_store_fax, c.seller_grade
+				from seller c right outer join 
+				(select a.*, b.category_large, b.category_middle, 
+				b.category_small from goods a left outer join category b on a.category_no = b.category_no) 
+				d on c.seller_no = d.seller_no
+				<choose>
+					<when test='key == "goods_name"'>
+						where goods_name like '%'||#{search}||'%' 
+					</when>
+					<when test='key == "seller_id"'>
+						where seller_id like '%'||#{search}||'%' 
+					</when>
+				</choose>
+				order by d.goods_no
+			)A
+		)where rn between #{start} and #{finish}
+		
+		
 		</select>
-	
+		
+		<!-- 그냥 상품 카운트 구하기 -->
+		<select id="goodsCount" resultType="int">
+		select count(*)
+			from seller c right outer join 
+				(select * from goods a left outer join category b on a.category_no = b.category_no) 
+				d on c.seller_no = d.seller_no
+		</select>
+		
+		<!-- 상품 이름으로 카운트 구하기 -->
+		<select id="goodsNameCount" parameterType="String" resultType="int">
+		select count(*)
+			from seller c right outer join 
+				(select * from goods a left outer join category b on a.category_no = b.category_no) 
+				d on c.seller_no = d.seller_no 
+			where goods_name like '%'||#{goods_name}||'%'
+		</select>
+		<!-- 판매자 아이디로 카운트 구하기 -->
+			<select id="goodsIdCount" parameterType="String" resultType="int">
+		select count(*)
+			from seller c right outer join 
+				(select * from goods a left outer join category b on a.category_no = b.category_no) 
+				d on c.seller_no = d.seller_no 
+			where seller_id like '%'||#{seller_id}||'%'
+		</select>
+		
+		
+		<!-- 상품 삭제 -->
+		<delete id="goodsDelete" parameterType="goodsVO">
+			delete goods where goods_no = #{goods_no}
+		</delete>
+		
 	<!-- resultMap사용해 상품 불러오기 -->
 		<select id="getGoodsVO" parameterType="int"  resultMap="getGoodsVO">
-			select * from goods
+			select * from goods where goods_no = #{goods_no}
 		</select>
 	
 		<select id="getGoodsOption" parameterType="int" resultType="goodsOptionDto">
@@ -408,6 +522,14 @@
 		select * from(
 			select rownum rn, A.* from(
 				select * from block
+				<choose>
+					<when test='key == "block_group"'>
+						where block_group like '%'||#{search}||'%' 
+					</when>
+					<when test='key == "block_id"'>
+						where block_id like '%'||#{search}||'%' 
+					</when>
+				</choose>
 				order by block_no desc
 			)A
 		)where rn between #{start} and #{finish}
@@ -416,6 +538,15 @@
 	<!-- 차단 회원 목록 총 수 -->
 	<select id="blockCount" resultType="int">
 		select count(*) from block
+	</select>
+	
+	<!-- 차단 회원 블록 그룹으로 계산 -->
+	<select id="blockGroupCount" parameterType="String" resultType="int">
+		select count(*) from block where block_group like '%'||#{block_group}||'%'
+	</select>
+	<!-- 차단 회원 블록 아이디로 계산 -->
+	<select id="blockIdCount" parameterType="String" resultType="int">
+		select count(*) from block where block_id like '%'||#{block_id}||'%'
 	</select>
 	
 	<!-- 차단 해제 -->

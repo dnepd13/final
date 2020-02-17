@@ -43,7 +43,6 @@
 <h4>보낸 견적서</h4>
 <c:forEach var="sellerCustom" items="${getListResp }">
 	<div>
-	글번호: ${sellerCustom.custom_order_no }
 	제목: <a href="customInfoResp?seller_custom_order_no=${sellerCustom.seller_custom_order_no }">
 						${sellerCustom.custom_order_title }
 			</a> <br>	

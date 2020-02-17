@@ -11,7 +11,7 @@
 
 <c:forEach var="memberCustom" items="${getListReq }">
 <div>
-	<a href="customInfoReq?member_custom_order_no=${member.Custom.member_custom_order_no }">
+	<a href="customInfoReq?member_custom_order_no=${memberCustom.member_custom_order_no }">
 		제목: ${memberCustom.custom_order_title }
 	</a> 
 	<span><a href="#"> &timesb;</a></span>

@@ -29,6 +29,12 @@
 		'브론즈'
 		)
 	</insert>
+	<!-- 아이디 중복검사 -->
+	<select id="id_check"  parameterType="string" resultType="seller">
+		select *from seller where seller_id =#{seller_id}
+		</select>
+	
+	
 	<!-- seller_no 시퀀스 주기 -->
 	<select id="sequence" resultType="int">
 		select seller_seq.nextval from dual
@@ -48,6 +54,33 @@
 		select * from seller where seller_id=#{seller_id}
 	</select>
 	<!-- 판매자 정보 수정 -->
+
+	<update id="info_edit" parameterType="seller">
+		update seller set seller_email=#{seller_email},seller_phone=#{seller_phone}, 
+		 						   seller_store_phone=#{seller_store_phone},
+		 						   seller_store_fax=#{seller_store_fax},
+		 						   seller_bank_code=#{seller_bank_code}, 
+								   seller_bank_account=#{seller_bank_account},
+								   seller_bank_username=#{seller_bank_username},
+								   seller_bank_birth=#{seller_bank_birth}
+								   where seller_id =#{seller_id}
+		</update>
+		<!-- 비밀번호 수정 -->
+		<update id="change_pw" parameterType="seller">
+				update seller set seller_pw=#{seller_pw} where seller_id=#{seller_id}
+		
+		</update>
+		
+			<!-- 판매자 회원탈퇴 -->
+			<delete id="delete" parameterType="seller">
+			delete seller where seller_id=#{seller_id} 
+			</delete>
+		
+
+
+
+  
+
 <!-- 	<update id="info_edit" parameterMap="seller"> -->
 <!-- 		update seller set #{seller_email}, #{seller_phone}, #{seller_store_phone}, -->
 <!-- 		#{seller_store_fax}, 'cid', #{seller_bank_code}, -->
@@ -61,6 +94,7 @@
  		select seller_no from seller where seller_id = #{seller_id}
  	</select>
  	
+
  <!-- 판매자 견적서 sql -->
  
  	<!-- 견적서 작성 -->
@@ -154,7 +188,8 @@
 	<select id="customRespCount" parameterType="int" resultType="int">
 		select count(*) from seller_custom_order where seller_no=#{seller_no}
 	</select>
-	<!-- 내가 보낸 견적서 목록 -->
+	
+	<!-- 내가 보낸 견적서 목록 / 상세보기 -->
 	<select id="getListResp" parameterType="pagingVO" resultType="CustomOrderVO">
 		select *from(
 		    select rownum rn, RN.*from(
@@ -170,6 +205,15 @@
 		    custom_order A inner join seller_custom_order B
 		        on a.custom_order_no = b.custom_order_no
 		where b.seller_custom_order_no =#{seller_custom_order_no}
+	</select>
+	<!-- 내가 보낸 견적서에 대한 파일 no -->
+	<select id="getRespFilesNo" parameterType="int" resultType="FilesVO">
+		select b.* from
+		    files A inner join files_custom_order B
+		        on a.files_no = b.files_no
+		    inner join seller_custom_order C
+		        on b.custom_order_no = c.custom_order_no
+		where c.seller_custom_order_no=#{seller_custom_order_no}
 	</select>
 
  </mapper>

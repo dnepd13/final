@@ -45,21 +45,21 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 		int member_no = memberCustomDao.getNo(member_id);
 		
 		// 요청서를 저장 테이블에 저장한 뒤
-		memberCustomDao.CustomOrderInsert(customOrderDto);	
+		memberCustomDao.customOrderInsert(customOrderDto);	
 		
 		// 요청서 저장 테이블 시퀀스 가져오기
-		int custom_order_no = memberCustomDao.CustomSeq();
+		int custom_order_no = memberCustomDao.customSeq();
 		
 		// 요청서 관리 테이블에 회원번호, 요청서 번호 등록
 		MemberCustomOrderDto memberCustomDto = MemberCustomOrderDto.builder()
 																																			.custom_order_no(custom_order_no) // 요청서 번호
 																																			.member_no(member_no) // 회원번호
 																																			.build();
-		memberCustomDao.MemberCustom(memberCustomDto);
+		memberCustomDao.memberCustom(memberCustomDto);
 		
 		// 파일이 있다면 파일 테이블에 파일 등록하고
 		// 주문제작-파일 중개테이블에 파일 번호, 저장테이블 시퀀스 등록
-			File dir  = new File("D:/upload");
+			File dir  = new File("D:/upload/kh2d");
 			dir.mkdirs();
 			
 			// MultipartFile을 List형태로 변환하여 파일 데이터 셋팅.
@@ -68,7 +68,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 			int files_no;
 			for(MultipartFile multiFile : files.getFiles()) {
 				// 파일의 다음 시퀀스 번호 미리 가져오기
-				files_no =  memberCustomDao.FileSeq();
+				files_no =  memberCustomDao.fileSeq();
 				
 				// savename+파일 형식 저장
 				String fileType=multiFile.getContentType().substring(6, multiFile.getContentType().length());
@@ -88,7 +88,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 				if(filesDto.getFiles_size()!=0) {
 					File target = new File(dir, filesDto.getFiles_savename());
 					multiFile.transferTo(target);
-					memberCustomDao.FilesInsert(filesDto);
+					memberCustomDao.filesInsert(filesDto);
 					
 					// 주문제작-파일 중개테이블
 					files_no = filesList.get(i).getFiles_no(); // 1번 for문의 filesList 길이만큼 files_no를 꺼내서 변수에 저장
@@ -97,7 +97,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 																																				.files_no(files_no)
 																																				.custom_order_no(custom_order_no)
 																																				.build();
-					memberCustomDao.CustomFilesInsert(customOrderFilesDto);
+					memberCustomDao.customFilesInsert(customOrderFilesDto);
 			}
 		}
 				
@@ -110,7 +110,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 //		seller_no = sellerCustomDao.getNo(seller_id);
 		
 		// 요청서 관리테이블 현재 시퀀스번호
-		int member_custom_order_no = memberCustomDao.CustomOrderSeq();
+		int member_custom_order_no = memberCustomDao.customOrderSeq();
 		
 		// 판매자 요청서 도착 알람 생성
 		sellerCustomAlarmDto = SellerCustomAlarmDto.builder()
@@ -121,6 +121,15 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 		return null;
 	}
 
+// 요청서 파일 no 가져오기
+	@Override
+	public List<FilesVO> FilesList(int member_custom_order_no){
+	
+		List<FilesVO> filesVO = memberCustomDao.getFilesNo(member_custom_order_no);
+		
+		return filesVO;
+	}
+	
 //	보낸 요청서 목록 페이징
 	@Override
 	public PagingVO customReqPaging(String pageNo, int member_no) {

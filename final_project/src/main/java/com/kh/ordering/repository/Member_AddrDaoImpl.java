@@ -26,6 +26,18 @@ public class Member_AddrDaoImpl implements Member_AddrDao{
 		return sqlSession.selectList("member_AddrDto.getListAddr", member_no);
 	}
 
+	@Override
+	public Member_AddrDto addrGetOne(Member_AddrDto member_AddrDto) {
+		Member_AddrDto result = sqlSession.selectOne("member_AddrDto.addrGetOne", member_AddrDto);
+		return result;
+	}
+
+	@Override
+	public void addredit(Member_AddrDto member_AddrDto) {
+		sqlSession.update("member_AddrDto.addredit", member_AddrDto);
+		
+	}
+
 //	@Override
 //	public Member_AddrDto addrinfo(Member_AddrDto member_AddrDto) {
 //		Member_AddrDto addrinfo = sqlSession.selectOne("member_AddrDto.addrinfo", member_AddrDto);

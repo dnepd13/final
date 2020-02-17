@@ -39,15 +39,51 @@ public class BoardController {
 	@GetMapping("/manageqna")
 	public String manage(
 			Model model,
-			@RequestParam(value="pno1", required = false) String pno1
+			@RequestParam(value="pno1", required = false) String pno1,
+			@ModelAttribute PagingVO paging
 			) {
-		
-		PagingVO vo = boardService.adminQnaPagination(pno1);
-		List<AdminQnaBoardDto> list = boardDao.qnaBoardGetList(vo);
-		
-		model.addAttribute("paging", vo);
-		model.addAttribute("list", list);
-		return "board/manageqna";
+		int count;
+		if(paging.getKey() == null) {
+			
+			count = boardDao.adminQnaCount();
+			PagingVO vo = boardService.allPaging(pno1, count);
+			List<AdminQnaBoardDto> list = boardDao.qnaBoardGetList(vo);
+			
+			model.addAttribute("paging", vo);
+			model.addAttribute("list", list);
+			
+			return "board/manageqna";
+		}
+		else if(paging.getKey().equalsIgnoreCase("admin_qna_title")) {
+			String admin_qna_title = paging.getSearch();
+			count = boardDao.qnaBoardTitleCount(admin_qna_title);
+			PagingVO vo = boardService.allPaging(pno1, count);
+			
+			model.addAttribute("paging", vo);
+			vo.setKey(paging.getKey());
+			vo.setSearch(paging.getSearch());
+			
+			List<AdminQnaBoardDto> list = boardDao.qnaBoardGetList(vo);
+			model.addAttribute("list", list);
+			return "board/manageqna";
+		}
+		else if(paging.getKey().equalsIgnoreCase("admin_qna_head")) {
+			String admin_qna_head = paging.getSearch();
+			count = boardDao.qnaBoardHeadCount(admin_qna_head);
+			PagingVO vo = boardService.allPaging(pno1, count);
+			
+			model.addAttribute("paging", vo);
+			vo.setKey(paging.getKey());
+			vo.setSearch(paging.getSearch());
+			
+			List<AdminQnaBoardDto> list = boardDao.qnaBoardGetList(vo);
+			model.addAttribute("list", list);
+			return "board/manageqna";
+		}
+		else {
+			
+			return "board/manageqna";
+		}
 	}
 	
 	//관리문의 게시판 글 하나 보기
@@ -134,6 +170,13 @@ public class BoardController {
 		boardDao.qnaBoardDelete(adminQnaBoardDto);
 		
 		return "redirect:/board/manageqna";
+	}
+	
+	//-------------------리뷰게시판------------------------------------------------
+	@GetMapping("/review")
+	public String review() {
+		
+		return "board/review";
 	}
 	
 }

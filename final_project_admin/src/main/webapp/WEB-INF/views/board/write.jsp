@@ -14,7 +14,7 @@
     <div class="form-group row">
       <label for="staticEmail" class="col-sm-2 col-form-label">글제목</label>
       <div class="col-sm-10">
-        <input type="text" name="admin_qna_title" class="form-control-plaintext" id="staticEmail" placeholder="글 제목을 입력하세요">
+        <input type="text" name="admin_qna_title" class="form-control-plaintext" id="staticEmail" placeholder="글 제목을 입력하세요" required="required">
       </div>
     </div>
     <div class="form-group row">
