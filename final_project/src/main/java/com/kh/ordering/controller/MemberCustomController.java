@@ -23,8 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
-import com.kh.ordering.repository.FilesPhysicalDao;
+import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
+import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.service.MemberCustomService;
 import com.kh.ordering.vo.CustomOrderVO;
@@ -49,7 +50,17 @@ public class MemberCustomController {
 	
 	@Autowired
 	private FilesPhysicalDao filesPhysicalDao;
+	
+	@Autowired
+	private CategoryDao categoryDao;
 
+//	멤버 카테고리 주문제작 요청서 -메인에서 접속가능
+	@GetMapping("/customCate")
+	public String customCate(Model model) {
+		model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
+		return "member/customCate";
+	}
+	
 // 멤버 주문제작 1:1 요청서 작성 페이지
 //	- goodsInfo 페이지에서 접속 가능.
 	@GetMapping("/customOrder")
@@ -111,7 +122,7 @@ public class MemberCustomController {
 		String member_id=(String)session.getAttribute("member_id");
 		int member_no = memberCustomDao.getNo(member_id);
 		
-		memberCustomDao.UpdateAlarm(member_no, seller_custom_order_no);
+		memberCustomDao.updateAlarm(member_no, seller_custom_order_no);
 		
 		CustomOrderVO content = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("getListInfoResp", content);

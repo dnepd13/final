@@ -7,6 +7,7 @@
 	
 	$(function(){
 		$(".btn-modify").click(function(){
+			console.log("ddd");
 			if($(this).text()=="수정"){
 				var largeCell = $(this).parent().prev().prev().prev();
 				var middleCell = $(this).parent().prev().prev();

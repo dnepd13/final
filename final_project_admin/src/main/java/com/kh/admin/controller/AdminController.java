@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.admin.entity.AdminDto;
+import com.kh.admin.entity.AdminQnaBoardDto;
 import com.kh.admin.entity.BlockDto;
 import com.kh.admin.entity.CategoryDto;
 import com.kh.admin.entity.MemberDto;
@@ -30,6 +31,7 @@ import com.kh.admin.repository.MemberDao;
 import com.kh.admin.repository.PremiumDao;
 import com.kh.admin.repository.SellerDao;
 import com.kh.admin.service.BoardService;
+import com.kh.admin.vo.GoodsCategoryVO;
 import com.kh.admin.vo.GoodsVO;
 import com.kh.admin.vo.MemberPointVO;
 import com.kh.admin.vo.PagingVO;
@@ -120,13 +122,7 @@ public class AdminController {
 	public String regist(@ModelAttribute AdminDto adminDto) {
 		adminDto.setAdmin_pw(passwordEncoder.encode(adminDto.getAdmin_pw()));
 		
-		log.info(adminDto.getAdmin_id());
-		log.info(adminDto.getAdmin_grade());
-		log.info(adminDto.getAdmin_email());
-		log.info(adminDto.getAdmin_join_date());
-		log.info(adminDto.getAdmin_last_login());
-		log.info(adminDto.getAdmin_name());
-		log.info(adminDto.getAdmin_pw());
+		
 		adminDao.regist(adminDto);
 
 		return "/regist";
@@ -243,15 +239,7 @@ public class AdminController {
 		return "redirect:/premium";
 	}
 	
-	//---------------------------상품 리스트 뽑기----------------------------------
-
-	@GetMapping("/goods")
-	public String goods(Model model) {
-		List<SellerGoodsVO> list = goodsDao.listGoods();
-		log.info("list={}",list);
-		model.addAttribute("list", list);
-		return "/goods";
-	}
+	
 	
 	//resultmap을 써서 부른것
 	//	@GetMapping("/goods")
@@ -311,16 +299,51 @@ public class AdminController {
 	@GetMapping("/blocklist")
 	public String blocklist(
 			Model model,
-			@RequestParam(value="pno1", required = false) String pno1
+			@RequestParam(value="pno1", required = false) String pno1,
+			@ModelAttribute PagingVO paging
 			) {
-		
-			PagingVO vo = boardService.blockPagination(pno1);
-			model.addAttribute("paging",vo);
-			
-			List<BlockDto> list = adminDao.blockList(vo);
-			model.addAttribute("list", list);
+			int count;
+			if(paging.getKey()==null) {
+				count = adminDao.blockCount();
 				
-		return "/blocklist";
+				PagingVO vo = boardService.allPaging(pno1, count);
+				model.addAttribute("paging",vo);
+				
+				List<BlockDto> list = adminDao.blockList(vo);
+				model.addAttribute("list", list);
+				return "/blocklist";
+			}
+			
+			else if(paging.getKey().equalsIgnoreCase("block_group")) {
+				String block_group = paging.getSearch();
+				count = adminDao.blockGroupCount(block_group);
+				
+				PagingVO vo = boardService.allPaging(pno1, count);
+				model.addAttribute("paging",vo);
+				vo.setKey(paging.getKey());
+				vo.setSearch(paging.getSearch());
+				
+				List<BlockDto> list = adminDao.blockList(vo);
+				model.addAttribute("list", list);
+				return "/blocklist";
+			}
+			else if(paging.getKey().equalsIgnoreCase("block_id")) {
+				String block_id = paging.getSearch();
+				count = adminDao.blockIdCount(block_id);
+				
+				PagingVO vo = boardService.allPaging(pno1, count);
+				model.addAttribute("paging",vo);
+				vo.setKey(paging.getKey());
+				vo.setSearch(paging.getSearch());
+				
+				List<BlockDto> list = adminDao.blockList(vo);
+				model.addAttribute("list", list);
+				return "/blocklist";
+			}
+			else {
+				
+				return "/blocklist";
+			}
 	}
 	
 	@PostMapping("blocklist")

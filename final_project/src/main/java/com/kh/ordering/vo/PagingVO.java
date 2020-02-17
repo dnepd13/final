@@ -19,4 +19,6 @@ public class PagingVO {
 
 		private int seller_no;
 		private int member_no;
+		
+		private int goods_no;
 }

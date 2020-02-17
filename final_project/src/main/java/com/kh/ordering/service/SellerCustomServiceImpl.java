@@ -112,7 +112,7 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 																																.member_no(member_no)
 																																.seller_custom_order_no(seller_custom_order_no)
 																																.build();
-		memberCustomDao.CustomAlarmInsert(memberCustomAlarmDto);
+		memberCustomDao.customAlarmInsert(memberCustomAlarmDto);
 		return null;
 	}
 

@@ -55,5 +55,15 @@ public class BoardDaoImpl implements BoardDao{
 		sqlSession.delete("admin.qnaBoardDelete", adminQnaBoardDto);
 	}
 
+	@Override
+	public int qnaBoardTitleCount(String admin_qna_title) {
+		return sqlSession.selectOne("admin.adminQnaTitleCount", admin_qna_title);
+	}
+
+	@Override
+	public int qnaBoardHeadCount(String admin_qna_head) {
+		return sqlSession.selectOne("admin.adminQnaHeadCount", admin_qna_head);
+	}
+
 	
 }
