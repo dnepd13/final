@@ -77,6 +77,15 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.selectOne("admin.blockIdCount", block_id);
 	}
 
+	@Override
+	public int registToday() {
+		int member = sqlSession.selectOne("admin.registTodayMember");
+		log.info("member={}", member);
+		int seller = sqlSession.selectOne("admin.registTodaySeller");
+		log.info("seller={}", seller);
+		return member+seller;
+	}
+
 	
 	
 	

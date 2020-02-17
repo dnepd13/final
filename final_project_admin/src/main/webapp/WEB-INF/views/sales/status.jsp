@@ -8,17 +8,10 @@
 <h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
 
     <script type="text/javascript">
-    
-    
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 		
       function drawChart() {
-//     	  var jsonData = $.ajax({
-//     		  url:"data",
-//     		  type:"get",
-//     		  dataType:"json"
-//     	  }).responseText;
 
       var jsonData = $.ajax({
           url: "data",
@@ -26,18 +19,12 @@
           dataType: "json",
           async: false
           }).responseText;
-      	
-			console.log(jsonData);
-		
+      
 		var data = new google.visualization.DataTable(jsonData);
-// 		  var jsonData =${data};
-// 		var jsConnetcList = JSON.parse('${jsonConnectList}');
-// 		console.log(jsConnetcList);
-// 		var data = google.visualization.arrayToDataTable([jsonData]);
 
         var options = {
           title: 'Company Performance',
-          hAxis: {title: 'example',  titleTextStyle: {color: '#333'}},
+          hAxis: {title: '일일접속자',  titleTextStyle: {color: '#333'}},
           vAxis: {minValue: 0}
         };
 

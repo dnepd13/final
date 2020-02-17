@@ -18,4 +18,6 @@ public interface AdminDao {
 	void blockDelete(BlockDto blockDto);
 	public int blockGroupCount(String block_group);
 	public int blockIdCount(String block_id);
+	
+	public int registToday();
 }

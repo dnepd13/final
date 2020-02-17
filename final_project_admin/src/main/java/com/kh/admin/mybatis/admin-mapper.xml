@@ -202,6 +202,16 @@
 		select count(*) from member
 	</select>
 	
+	<!-- 오늘 가입한 회원 -->
+	<select id="registTodayMember" resultType="int">
+		select count(*) from member where member_join_date like '%'||to_date(sysdate, 'YYYY-MM-DD')||'%'
+	</select>
+	
+	<!-- 오늘 가입한 판매자 -->
+	<select id="registTodaySeller" resultType="int">
+		select count(*) from seller where seller_join_date like '%'||to_date(sysdate, 'YYYY-MM-DD')||'%'
+	</select>
+	
 	<!-- 회원 아이디 총 갯수 -->
 	<select id="memberIdCount" parameterType="String" resultType="int">
 		select count(*) from member where member_id like'%'||#{member_id}||'%'
@@ -558,6 +568,16 @@
 	<select id="userDaily" resultType="connectList">
 		select * from connecting
 	</select>
+	
+	<!-- 상품 review 불러오기 상품별 -->
+	<select id="reviewList" parameterType="int" resultType="review">
+		select 
+				a.*, b.goods_review_reply_writer, b.goods_review_reply_content, b.goods_review_reply_date, b.goods_review_reply_no 
+			from goods_review a 
+        		left outer join goods_review_reply b 
+       			 on a.goods_review_no = b.goods_review_no where a.goods_no = #{goods_no}
+	</select>
+	
  </mapper> 
 	
  

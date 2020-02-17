@@ -18,3 +18,6 @@
 <h1><a href="${pageContext.request.contextPath}/category">카테고리 관리</a></h1><br>
 <h1><a href="${pageContext.request.contextPath}/goods/list">전체 상품 관리</a></h1><br>
 <h1><a href="${pageContext.request.contextPath}/blocklist">차단된 회원 목록</a></h1><br>
+
+<div><h1>회원 ${memberCount } 명   판매자 ${sellerCount } 명  오늘 가입자 ${todayRegist } 명</h1></div>
+

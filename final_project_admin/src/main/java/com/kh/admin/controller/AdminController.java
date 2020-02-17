@@ -109,7 +109,13 @@ public class AdminController {
 	}
 	//---------------------------홈창----------------------------------
 	@GetMapping("/home")
-	public String home() {
+	public String home(Model model) {
+		int memberCount = memberDao.memberCount();
+		int sellerCount = sellerDao.sellerCount();
+		int registTodayCount = adminDao.registToday();
+		model.addAttribute("memberCount", memberCount);
+		model.addAttribute("sellerCount", sellerCount);
+		model.addAttribute("todayRegist", registTodayCount);
 		return "/home";
 	}
 	//---------------------------관리자가입창----------------------------------
@@ -352,6 +358,23 @@ public class AdminController {
 			) {
 		adminDao.blockDelete(blockDto);
 		return "redirect:/blocklist";
+	}
+	
+	
+	
+	
+	
+	
+	//------------------------연습용 별
+	@GetMapping("/star")
+	public String star() {
+		return "star";
+	}
+	
+	@PostMapping("/star")
+	public String star(@RequestParam int goods_review_star) {
+		log.info("star={}", goods_review_star);
+		return "star";
 	}
 	
 }

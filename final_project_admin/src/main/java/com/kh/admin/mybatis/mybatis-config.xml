@@ -32,5 +32,7 @@
  		<typeAlias type="com.kh.admin.vo.GoodsCategoryVO" alias="goodsCategoryVO"/>
  		<typeAlias type="com.kh.admin.vo.ConnectListVO" alias="connectList"/>
  		<typeAlias type="com.kh.admin.vo.ConnectVO" alias="connect"/>
+ 		<typeAlias type="com.kh.admin.entity.GoodsReviewDto" alias="goodsReviewDto"/>
+ 		<typeAlias type="com.kh.admin.vo.ReviewVO" alias="review"/>
  	</typeAliases>
  </configuration>
