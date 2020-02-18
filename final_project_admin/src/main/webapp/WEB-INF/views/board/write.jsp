@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 글작성
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
 <form action="" method="post">
@@ -7,7 +8,6 @@
     <div class="form-group">
       <label for="exampleSelect1">말머리</label>
       <select class="form-control" name="admin_qna_head" id="exampleSelect1">
-        <option>공지</option>
         <option>답변</option>
       </select>
     </div>
@@ -28,6 +28,8 @@
       <textarea name="admin_qna_content" class="form-control" id="exampleTextarea" rows="5"></textarea>
     </div>
     <input type="hidden" name="admin_qna_no1" value="${admin_qna_no }">
+    <input type="hidden" name="member_no" value="${param.member_no }">
+    <input type="hidden" name="seller_no" value="${param.seller_no }">
     <div class="btn-group-vertical">
   		<button type="submit" class="btn btn-primary">등록</button>
 	</div>

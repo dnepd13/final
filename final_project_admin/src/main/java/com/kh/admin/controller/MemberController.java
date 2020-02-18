@@ -1,6 +1,11 @@
 package com.kh.admin.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.admin.entity.MemberDto;
 import com.kh.admin.repository.MemberDao;
@@ -52,6 +58,14 @@ public class MemberController {
 			
 			List<BlockMemberVO> list = memberDao.memberGetList(vo);
 			model.addAttribute("list", list);
+			//현재 년도, 월, 일
+			
+			Date date1 = new Date();
+			log.info("date={}",date1);
+			
+			SimpleDateFormat date2 = new SimpleDateFormat("yyyy-MM-dd");
+			log.info("date2={}",date2.format(date1));
+			model.addAttribute("today", date2.format(date1));
 			return "member/manage";
 
 		}
@@ -96,6 +110,7 @@ public class MemberController {
 			model.addAttribute("list", list);
 			return "member/manage";
 		}
+		//생년월일로 구하기
 		else {
 			
 			return "member/manage";
@@ -165,6 +180,10 @@ public class MemberController {
 		MemberDto memberDto = MemberDto.builder().member_no(member_no).build();
 		MemberDto result = memberDao.memberGetOne(memberDto);
 		model.addAttribute("member", result);
+		
+		
+		 
+		
 		return "member/pointregist";
 	}
 	
@@ -182,4 +201,37 @@ public class MemberController {
 		return "redirect:point?member_id="+result.getMember_id()+"&member_no="+result.getMember_no();
 	}
 	
+	
+	//---------------------선택해서 포인트 주기 ------------------------------
+	@GetMapping(value="/providepoint", produces = "application/text; charset=utf-8")
+	public String providepoint() {
+		return "member/providepoint";
+	}
+	
+	@PostMapping(value = "/pointAllRegist", produces = "application/text; charset=utf-8")
+	@ResponseBody
+	public String pointAllRegist(
+			@RequestParam(value = "valueArrTest[]") List<String> valueArr,
+			@RequestParam int point,
+			@RequestParam String reason,
+			@RequestParam String lastdate
+			) {
+		log.info("vlaie={}", valueArr.get(0));
+		log.info("point={}", point);
+		log.info("reason={}", reason);
+		log.info("lastdate={}", lastdate);
+		List<MemberPointVO> list = new ArrayList<>();
+		for(int i = 0; i < valueArr.size(); i++) {
+			MemberPointVO memberPointVO = new MemberPointVO();
+			memberPointVO.setMember_no(Integer.parseInt(valueArr.get(i)));
+			memberPointVO.setMember_point_change(point);
+			memberPointVO.setMember_point_limit(lastdate);
+			memberPointVO.setMember_point_content(reason);
+			list.add(memberPointVO);
+		}
+		log.info("list={}",list);
+		memberDao.memberPointMulti(list);
+		String a = "포인트 적립을 완료했습니다";
+		return a;
+	}
 }

@@ -2,6 +2,47 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" ></script>
+<script>
+	function checkAll(){
+		if($("#th_checkAll").is(':checked')){
+			$("input[name=checkRow]").prop("checked",true);
+		}
+		else{
+			$("input[name=checkRow]").prop("checked", false);
+		}
+	}
+	$(function(){
+		$(".btn-regist").click(function(){
+			var checkRow =[];
+			$("input[name='checkRow']:checked").each(function(){
+				checkRow.push($(this).val());
+			});
+			
+			var point = $(this).prev().prev().prev().val();
+			var reason =$(this).prev().prev().val();
+			var lastdate = $(this).prev().val();
+			$.ajax({
+				url:"pointAllRegist",
+				type:"post",
+				dataType:'text',
+				data:{
+					valueArrTest: checkRow,
+					'point':point,
+					'reason':reason,
+					'lastdate':lastdate
+					
+				},
+				success:function(resp){
+					window.alert(resp);
+						$("input[name='checkRow']:checked").each(function(){
+							$("input[name=checkRow]").prop("checked", false);
+						});
+				}
+			});
+		});
+	});
+</script>
 
 <h1>회원 관리창 입니다</h1>
 <h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
@@ -10,20 +51,22 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th width="15%">아이디</th>
-      <th width="15%">이름</th>
-      <th width="1%">이메일</th>
+      <th width="9%"><input type="checkbox" name="checkAll" id="th_checkAll" onclick="checkAll();"></th>
+      <th width="10%">아이디</th>
+      <th width="10%">이름</th>
+      <th width="10%">이메일</th>
       <th width="10%">연락처</th>
-      <th width="1%">등급</th>
+      <th width="10%">등급</th>
       <th width="10%">가입일</th>
-      <th width="10%">마지막 접속일시</th>
-      <th width = "10%">상세보기</th>
-      <th width = "10%">차단</th>
+      <th width="15%">마지막 접속일시</th>
+      <th width = "8%">상세보기</th>
+      <th width = "8%">차단</th>
     </tr>
   </thead>
   <tbody>
     <c:forEach var="list" items="${list}">
     <tr class="table-light">
+    	<th class="center"><input type="checkbox" id="checkRow" name="checkRow" value="${list.member_no }"  style="width:20px;height:20px;"></th>
       <th scope="row">${list.member_id}</th>
       <td>${list.member_name}</td>
       <td>${list.member_email}</td>
@@ -51,6 +94,12 @@
 	</c:forEach>
   </tbody>
 </table>
+<form>
+	<input type="number" placeholder="포인트" required="required">
+	<input type="text" name="member_point_content"  class="form-control-plaintext" id="staticEmail1" placeholder="축하드립니다" value="축하드립니다">
+	<input type="date" min="${today }" max="2099-12-31" name="member_point_limit" class="form-control-plaintext" id="staticEmail2" >
+	<button type="button" class="btn btn-primary btn-regist" >포인트등록</button><br>
+</form>
 
 <form action="manage" method="get">
   <fieldset>
@@ -69,9 +118,8 @@
       </div>
     </div>
   </fieldset>
-  <button type="submit" class="btn btn-primary btn-delete" >검색</button>
+  <button type="submit" class="btn btn-primary" >검색</button>
 </form>
-
 <div>
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">

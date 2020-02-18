@@ -21,12 +21,14 @@ import com.kh.admin.entity.AdminDto;
 import com.kh.admin.entity.AdminQnaBoardDto;
 import com.kh.admin.entity.BlockDto;
 import com.kh.admin.entity.CategoryDto;
+import com.kh.admin.entity.GradeBenefitDto;
 import com.kh.admin.entity.MemberDto;
 import com.kh.admin.entity.PremiumDto;
 import com.kh.admin.entity.SellerDto;
 import com.kh.admin.repository.AdminDao;
 import com.kh.admin.repository.CategoryDao;
 import com.kh.admin.repository.GoodsDao;
+import com.kh.admin.repository.GradeBenefitDao;
 import com.kh.admin.repository.MemberDao;
 import com.kh.admin.repository.PremiumDao;
 import com.kh.admin.repository.SellerDao;
@@ -65,6 +67,9 @@ public class AdminController {
 	
 	@Autowired
 	private SellerDao sellerDao;
+	
+	@Autowired
+	private GradeBenefitDao gradeBenefitDao;
 	
 	//---------------------------로그인창----------------------------------
 	@GetMapping("/")
@@ -153,6 +158,12 @@ public class AdminController {
 		
 		List<CategoryDto> list= categoryDao.categoryGetList(vo);
 		model.addAttribute("list", list);
+		
+		//카테고리 대 중 소 따로 따로 보내기
+		model.addAttribute("big", categoryDao.categoryBig());
+		model.addAttribute("middle", categoryDao.categoryMiddle());
+		model.addAttribute("small", categoryDao.categorySmall());
+		log.info("small={}", categoryDao.categorySmall());
 		return "/category";
 	
 	}
@@ -302,6 +313,7 @@ public class AdminController {
 		}
 	}
 	
+	// ----------------------------차단 리스트 -----------------------------------
 	@GetMapping("/blocklist")
 	public String blocklist(
 			Model model,
@@ -352,7 +364,7 @@ public class AdminController {
 			}
 	}
 	
-	@PostMapping("blocklist")
+	@PostMapping("/blocklist")
 	public String blocklist(
 			@ModelAttribute BlockDto blockDto
 			) {
@@ -360,22 +372,50 @@ public class AdminController {
 		return "redirect:/blocklist";
 	}
 	
+	//--------------------등급 혜택 --------------------------------------
+	@GetMapping("/gradebenefit")
+	public String benefit(Model model) {
+		model.addAttribute("list", gradeBenefitDao.gradeBenefitList());
+		return "gradebenefit";
+	}
 	
+	@PostMapping("/gradebenefit")
+	public String benefit(@ModelAttribute GradeBenefitDto gradeBenefitDto) {
+		gradeBenefitDao.gradeBenefitRegist(gradeBenefitDto);
+		
+		return "redirect:gradebenefit";
+	}
 	
+	//------------------등급혜택 수정-----------------------------------
+	@PostMapping("/gradebenefitupdate")
+	public void gradebenefitupdate(@ModelAttribute GradeBenefitDto gradeBenefitDto) {
+		log.info("bene={}", gradeBenefitDto);
+		gradeBenefitDao.gradeBenefitUpdate(gradeBenefitDto);
+	}
 	
+	//--------------등급혜택 삭제------------------------------------------
+	@PostMapping("gradebenefitdelete")
+	public void gradebenefitdelete(@ModelAttribute GradeBenefitDto gradeBenefitDto) {
+		gradeBenefitDao.gradeBenefitDelete(gradeBenefitDto);
+	}
 	
+	//---------------------사이트 기본정보 설정--------------------------
+	@GetMapping("/basicpagesetting")
+	public String basicpagesetting() {
+		return "basicpagesetting";
+	}
 	
 	//------------------------연습용 별
-	@GetMapping("/star")
-	public String star() {
-		return "star";
-	}
-	
-	@PostMapping("/star")
-	public String star(@RequestParam int goods_review_star) {
-		log.info("star={}", goods_review_star);
-		return "star";
-	}
+//	@GetMapping("/star")
+//	public String star() {
+//		return "star";
+//	}
+//	
+//	@PostMapping("/star")
+//	public String star(@RequestParam int goods_review_star) {
+//		log.info("star={}", goods_review_star);
+//		return "star";
+//	}
 	
 }
 

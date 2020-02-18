@@ -137,6 +137,20 @@
 			)A
 		)where rn between #{start} and #{finish}
 	</select>
+	
+	<!-- 카테고리 대 불러오기 -->
+	<select id="categoryItemBig" resultType="categoryDto">
+		select category_large from category group by category_large
+	</select>
+	<!-- 카테고리 중 불러오기 -->
+	<select id="categoryItemMiddle" resultType="categoryDto">
+		select category_middle from category group by category_middle
+	</select>
+	<!-- 카테고리 소 불러오기 -->
+	<select id="categoryItemSmall" resultType="categoryDto">
+		select category_small from category group by category_small
+	</select>
+	
 	<!-- 카테고리 목록 총 갯수 가져오기 -->
 	<select id="categoryCount" resultType="int">
 		select count(*) from category 
@@ -321,6 +335,14 @@
 	<insert id="adminQnaSecondWrite" parameterType="adminQnaDto">
 		insert into admin_qna(
 			admin_qna_no,
+			<choose>
+				<when test="member_no != 0">
+					member_no,
+				</when>
+				<when test="seller_no != 0">
+					seller_no
+				</when>
+			</choose>
 			admin_no,
 			admin_qna_content,
 			admin_qna_title,
@@ -332,6 +354,14 @@
 			admin_qna_usertype
 		) values(
 			admin_qna_seq.nextval, 
+			<choose>
+				<when test="member_no != 0">
+					#{member_no},
+				</when>
+				<when test="seller_no != 0">
+					#{seller_no},
+				</when>
+			</choose>
 			#{admin_no},
 			#{admin_qna_content},
 			#{admin_qna_title},
@@ -401,6 +431,36 @@
 				#{member_point_content},
 				#{member_no}
 				)
+	</insert>
+	
+	<!-- 회원 포인트 다중 -->
+	<insert id="insertAll" parameterType="list">
+		<foreach collection="list" item="point" index="index" open="insert all" close="select * from dual">
+		 into member_point(
+			member_point_no, member_point_status,
+				member_point_date,
+				member_point_limit,
+				member_point_change,
+				member_point_content,
+				member_no
+			 )
+		  values(
+		 	get_point_seq,
+		 	'적립',
+		 	sysdate,
+		 	<choose>
+		 		<when test="point.member_point_limit != ''">
+				 	#{point.member_point_limit},
+		 		</when>
+		 		<otherwise>
+		 			to_date(sysdate+30,'YYYY-MM-DD'),
+		 		</otherwise>
+		 	</choose>
+		 	#{point.member_point_change},
+		 	#{point.member_point_content},
+		 	#{point.member_no}
+		 )
+		</foreach>
 	</insert>
 	
 	<!-- resultMap을 써보자... -->
@@ -577,6 +637,30 @@
         		left outer join goods_review_reply b 
        			 on a.goods_review_no = b.goods_review_no where a.goods_no = #{goods_no}
 	</select>
+	
+	<!-- 회원 등급 혜택 -->
+	<insert id="gradeBenefitRegist"  parameterType="gradeBenefitDto"   >
+		insert into grade_benefit values(grade_benefit_seq.nextval, #{grade_benefit_grade}, #{grade_benefit_rate})
+	</insert>
+	
+	<!-- 회원 등급 혜택 리스트  -->
+	<select id="gradeBenefitList" resultType="gradeBenefitDto">
+		select * from grade_benefit
+	</select>
+	
+	<!-- 회원 등급 혜택 수정 -->
+	<update id="gradeBenefitUpdate" parameterType="gradeBenefitDto">
+		update grade_benefit 
+			set 
+				grade_benefit_grade = #{grade_benefit_grade}, 
+				grade_benefit_rate = #{grade_benefit_rate}
+			where grade_benefit_no = #{grade_benefit_no}
+	</update>
+	
+	<!-- 회원 등급 혜택 삭제 -->
+	<delete id="gradeBenefitDelete" parameterType="gradeBenefitDto">
+		delete grade_benefit where grade_benefit_no = #{grade_benefit_no}
+	</delete>
 	
  </mapper> 
 	
