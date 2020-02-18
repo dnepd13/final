@@ -104,7 +104,7 @@ $(function(){
 			minus.click(function(e){
 				e.preventDefault();
 				var qtt = $(this).siblings(".quantity").val();
-				if(qtt>0) {
+				if(qtt>1) {
 					price = total_price * (parseInt(qtt)-1);
 					$(this).siblings(".quantity").val(parseInt(qtt)-1);
 					span.html(addComma(price) + "원");
@@ -115,10 +115,17 @@ $(function(){
 			// 수량 수정
 			quantity.blur(function(){ 
 				var qtt = $(this).val();
-				if(qtt>=0) {
+				if(qtt>=1) {
 					qtty = parseInt(qtt);
 					price = total_price * (parseInt(qtt));
-					$(this).siblings(".quantity").val(parseInt(qtt));
+					$(this).val(parseInt(qtt));
+					span.html(addComma(price) + "원");
+					setFinalArea();
+				} else {
+					$(this).val(1);
+					qtt = 1;
+					qtty = 1;
+					price = total_price * (parseInt(qtt));
 					span.html(addComma(price) + "원");
 					setFinalArea();
 				}
