@@ -29,6 +29,7 @@ import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.service.MemberCustomService;
+import com.kh.ordering.service.SellerCustomService;
 import com.kh.ordering.vo.CustomOrderVO;
 import com.kh.ordering.vo.FilesVO;
 import com.kh.ordering.vo.PagingVO;
@@ -54,6 +55,9 @@ public class MemberCustomController {
 	
 	@Autowired
 	private CategoryDao categoryDao;
+	
+	@Autowired
+	private SellerCustomService sellerCustomService;
 
 //	주문제작 요청서 작성
 	@GetMapping("/customCate") // 카테고리
@@ -144,7 +148,11 @@ public class MemberCustomController {
 		
 		CustomOrderVO content = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("getListInfoResp", content);
-			
+		
+//		List<FilesVO>  filesVO = memberCustomService.FilesList(seller_custom_order_no);
+		List<FilesVO>  filesVO = sellerCustomService.filesList(seller_custom_order_no);
+		model.addAttribute("filesVO", filesVO);
+		
 		return "member/customInfoResp";
 	}
 

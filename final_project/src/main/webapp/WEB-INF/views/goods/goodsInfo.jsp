@@ -279,7 +279,7 @@ $(function(){
 <span>
 	<c:choose>
 		<c:when test="${member_id !=null }">
-			<a href="${pageContext.request.contextPath}/member/customOrder?seller_no=93">1:1 요청서</a>
+			<a href="${pageContext.request.contextPath}/member/customOrder?seller_no=${goodsVO.seller_no }">1:1 요청서</a>
 		</c:when>
 		<c:otherwise>
 			<a href="${pageContext.request.contextPath}/member/login">1:1 요청서</a>
