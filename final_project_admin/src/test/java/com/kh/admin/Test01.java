@@ -11,8 +11,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.kh.admin.entity.AdminDto;
+import com.kh.admin.entity.GradeBenefitDto;
 import com.kh.admin.entity.SellerDto;
 import com.kh.admin.repository.AdminDao;
+import com.kh.admin.repository.GradeBenefitDao;
 import com.kh.admin.repository.SellerDao;
 import com.kh.admin.vo.PagingVO;
 
@@ -27,12 +29,20 @@ import java.text.*;
 @WebAppConfiguration
 @Slf4j
 public class Test01 {
-
+	@Autowired
+	GradeBenefitDao gradeBenefitDao;
+	
 	@Autowired
 	AdminDao loginDao;
 	
 	@Autowired
 	private SellerDao sellerDao;
+	
+	@Test
+	public void test() {
+		GradeBenefitDto dto = GradeBenefitDto.builder().grade_benefit_grade("브론즈").grade_benefit_rate(1).build();
+		gradeBenefitDao.gradeBenefitRegist(dto);
+	}
 	
 //	@Test
 //	public void test1() {

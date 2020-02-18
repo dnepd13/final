@@ -11,4 +11,7 @@ public interface CategoryDao {
 	void insertCategory(CategoryDto categoryDto);
 	void updateCategory(CategoryDto categoryDto);
 	void deleteCategory(int category_no);
+	public List<CategoryDto> categoryBig();
+	public List<CategoryDto> categoryMiddle();
+	public List<CategoryDto> categorySmall();
 }

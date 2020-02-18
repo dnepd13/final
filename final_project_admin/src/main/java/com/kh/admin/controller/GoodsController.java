@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.admin.repository.GoodsDao;
+import com.kh.admin.repository.GoodsReviewDao;
 import com.kh.admin.service.BoardService;
 import com.kh.admin.vo.GoodsCategoryVO;
 import com.kh.admin.vo.GoodsVO;
@@ -28,6 +29,9 @@ public class GoodsController {
 	
 	@Autowired
 	private GoodsDao goodsDao;
+	
+	@Autowired
+	private GoodsReviewDao goodsReviewDao;
 	//---------------------------상품 리스트 뽑기----------------------------------
 
 		@GetMapping("/list")
@@ -98,8 +102,12 @@ public class GoodsController {
 			return "redirect:/goods/list";
 		}
 		
-		
-		
+		//---------------------------상품 별 리뷰목록----------------------------------
+		@GetMapping("/review")
+		public String review(@RequestParam int goods_no, Model model) {
+			model.addAttribute("list", goodsReviewDao.reviewList(goods_no));
+			return "goods/review";
+		}
 		
 		//resultmap을 써서 부른것
 		//	@GetMapping("/goods")

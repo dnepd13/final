@@ -169,6 +169,7 @@ public class Kakaoservice implements payService {
 //		memberDao.resgistOrderPoint( , );
 		
 		
+		
 		return returnVO;
 	}
 
@@ -214,6 +215,8 @@ public class Kakaoservice implements payService {
 									.build();
 		
 		payDao.insertRevoke(payDto2);
+		//취소 되면 포인트 돌려주고, 
+		
 		return null;
 	}
 
