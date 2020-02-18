@@ -37,7 +37,6 @@
 
 <h3>판매자가 받은 요청서 customListReq.jsp</h3>
 
-<a href="remove">임시 세션지우기</a> &#124; 
 <a href="customListResp">보낸 견적서</a>
 <h4>확인 안 한 요청서 몇 개냐: <span class="alarm">${customAlarm } 개</span></h4>	
 

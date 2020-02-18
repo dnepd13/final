@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kh.ordering.entity.CategoryDto;
+import com.kh.ordering.entity.SellerCategoryDto;
+import com.kh.ordering.entity.SellerDto;
 
 public class CategoryDaoImpl implements CategoryDao{
 	
@@ -48,5 +50,10 @@ public class CategoryDaoImpl implements CategoryDao{
 			return null;
 		}
 		
+	}
+
+	@Override // 카테고리 번호로 판매자 List 검색
+	public List<SellerCategoryDto> getSellerNo(int category_no) {
+		return sqlSession.selectList("category.getSellerNo", category_no);
 	}
 }

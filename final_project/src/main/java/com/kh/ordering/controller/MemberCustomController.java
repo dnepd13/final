@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
@@ -54,29 +55,44 @@ public class MemberCustomController {
 	@Autowired
 	private CategoryDao categoryDao;
 
-//	멤버 카테고리 주문제작 요청서 -메인에서 접속가능
-	@GetMapping("/customCate")
-	public String customCate(Model model) {
+//	주문제작 요청서 작성
+	@GetMapping("/customCate") // 카테고리
+	public String customCate(Model model, HttpSession session) {
 		model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
+		
+		String member_id = (String)session.getAttribute("member_id");
+		int member_no = memberCustomDao.getNo(member_id);
+		
+		model.addAttribute("member_no", member_no);
+		
 		return "member/customCate";
 	}
+	@PostMapping("/customCate")
+	public String customCate(HttpSession session, String category_name,
+													@ModelAttribute CustomOrderDto customOrderDto,
+													@ModelAttribute FilesVO files) throws IllegalStateException, IOException {
+		
+		//	small 이름으로 카테고리 번호 가져오기
+		CategoryDto categoryDto = categoryDao.get(category_name); 
+		int category_no = categoryDto.getCategory_no();
+		
+		customOrderDto.setCustom_order_category(category_no);
+		log.info("category No={}", category_no);
+		log.info("cate포함한 customOrderDto={}", customOrderDto);
+		memberCustomService.customCate(category_no, session, customOrderDto, files);
+		
+		return "redirect:/member/customSuccess";
+	}
 	
-// 멤버 주문제작 1:1 요청서 작성 페이지
-//	- goodsInfo 페이지에서 접속 가능.
-	@GetMapping("/customOrder")
+	@GetMapping("/customOrder") // 1:1 요청서. goodsInfo 페이지에서 접속가능
 	public String memberCustom(HttpSession session,
 															@RequestParam int seller_no,
 															Model model) {
 		
-//		로그인을 가정한 세션설정. 로그인 유지기능 완료 후 수정하기
-//		String member_id = "member";
-//		session.setAttribute("member_id", member_id);
-
 		model.addAttribute("seller_no", seller_no);
 		
 		return "member/customOrder";
-	}
-	
+	}	
 	@PostMapping("/customOrder")
 	public String memberCustom(HttpSession session, 
 												@RequestParam int seller_no,
@@ -88,16 +104,19 @@ public class MemberCustomController {
 		// 요청서 작성 --> 주문제작 테이블 데이터 입력 --> 관리테이블 데이터 등록 --> 판매자 알람 테이블 등록
 		memberCustomService.MemberCustom(session, seller_no,files, customOrderDto, sellerCustomAlarmDto);
 		
-		return "redirect:/member/customListReq";
+		return "redirect:/member/customSuccess";
 	}
-	
-	// 구매자가 받은 견적서 목록 페이지
-	@GetMapping("/customListResp")
+
+//	작성 완료시 안내 페이지
+	@GetMapping("/customSuccess")
+	public String getSuccess() {
+		return "member/customSuccess";
+	}
+
+//	목록 조회
+	@GetMapping("/customListResp") // 받은 견적서 목록
 	public String getListCustomResp(Model model, HttpSession session,
 																@RequestParam(value="pageNo", required=false, defaultValue="0") String pageNo) {
-//		 나중에 세션 ID 수정하기
-//		String id = "member";
-//		session.setAttribute("member_id", id);
 		
 		String member_id=(String)session.getAttribute("member_id");
 		int member_no = memberCustomDao.getNo(member_id);
@@ -114,8 +133,7 @@ public class MemberCustomController {
 		
 		return "member/customListResp";
 	}
-// 받은 견적서 상세 페이지
-	@GetMapping("/customInfoResp")
+	@GetMapping("/customInfoResp") // 받은 견적서 상세
 	public String memberCustomResp(HttpSession session,
 																	@RequestParam int seller_custom_order_no, Model model) {
 		// 상세페이지 이동하면 구매자 알람테이블의 '알람체크','알람 확인시간' update
@@ -130,13 +148,9 @@ public class MemberCustomController {
 		return "member/customInfoResp";
 	}
 
-// 구매자가 보낸 요청서 목록 페이지
-	@GetMapping("/customListReq")
+	@GetMapping("/customListReq") // 보낸 요청서 목록
 	public String getListCustomReq(Model model, HttpSession session,
 															@RequestParam(value="pageNo", required=false, defaultValue="0") String pageNo) {
-//		 나중에 세션 ID 수정하기
-		String id = "member";
-		session.setAttribute("member_id", id);
 		
 		String member_id=(String)session.getAttribute("member_id");
 		int member_no = memberCustomDao.getNo(member_id);
@@ -154,8 +168,7 @@ public class MemberCustomController {
 		return "member/customListReq";
 	}
 	
-//	보낸 요청서 상세페이지
-	@GetMapping("/customInfoReq")
+	@GetMapping("/customInfoReq") // 보낸 요청서 상세
 	public String memberCustomReq(@RequestParam int member_custom_order_no, Model model) {
 		
 		CustomOrderVO content = memberCustomDao.customOrderVO2(member_custom_order_no);
@@ -166,6 +179,7 @@ public class MemberCustomController {
 		
 		return "member/customInfoReq";
 	}
+	
 // 파일 이미지 다운로드
 	@GetMapping("/download")
 	public ResponseEntity<ByteArrayResource> CustomReqFile(@RequestParam int files_no) throws IOException{

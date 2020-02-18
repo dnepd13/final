@@ -8,6 +8,7 @@
 	
 	<div>
 	보낸사람: ${getListInfoReq.member_id } <br>
+	카테고리: ${category.category_large } / ${category.category_middle } / ${category.category_small } <br>
 	제목: ${getListInfoReq.custom_order_title } <br>
 	상세내용 <br>
 	${getListInfoReq.custom_order_content } <br>

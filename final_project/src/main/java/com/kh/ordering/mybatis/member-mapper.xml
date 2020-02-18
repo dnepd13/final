@@ -26,9 +26,7 @@
  	<select id="getNo" parameterType="String" resultType="int">
  		select member_no from member where member_id = #{member_id}
 	</select>
- 	
-
- 	
+ 		
  <!-- 회원 요청서 sql -->
  	<!-- 요청서 작성 -->
 	<insert id="customReq" parameterType="customOrderDto">
@@ -36,11 +34,11 @@
 						(custom_order_no,
 						custom_order_title, custom_order_content, custom_order_date,
 						custom_order_price, custom_order_hopedate,
-						custom_order_status, custom_order_type)
+						custom_order_status, custom_order_type, custom_order_category)
 			values(custom_order_seq.nextval,
 						#{custom_order_title}, #{custom_order_content}, sysdate,
 						#{custom_order_price}, #{custom_order_hopedate},
-						'진행 중', '요청서')
+						'진행 중', '요청서', #{custom_order_category})
 	</insert>
 	
 	<!-- 요청서 시퀀스번호 -->

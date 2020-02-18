@@ -86,11 +86,17 @@
 	<insert id="insertQ" parameterType="goodsQnaDto">
 		insert into goods_qna(goods_qna_no, goods_no, seller_no,
 							                    goods_qna_content, goods_qna_writer, goods_qna_date,goods_qna_head,
-							                    goods_qna_groupno,goods_qna_superno)
+							                    goods_qna_groupno,goods_qna_superno,goods_qna_status)
 			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no},
 			                    #{goods_qna_content}, #{goods_qna_writer}, sysdate, #{goods_qna_head},
-			                    goods_qna_seq.currval, null)
+			                    goods_qna_seq.currval, null, null)
 	</insert>
+	<update id="updateQ" parameterType="goodsQnaDto">
+		update goods_qna 
+			set goods_qna_content= #{goods_qna_content}, goods_qna_date= sysdate
+		where goods_qna_no= #{goods_qna_no}
+				and goods_qna_writer= #{goods_qna_writer} and goods_qna_status is null
+	</update>
 	
 	<!-- 목록 -->
 	<select id="getQnaCount" parameterType="int" resultType="int">
@@ -107,14 +113,20 @@
 	</select>
 	
 	<!-- 판매자 문의 답변 -->
-	<insert id="insertA">
+	<insert id="insertA" parameterType="goodsQnaDto">
 		insert into goods_qna(goods_qna_no, goods_no, seller_no,
 							                    goods_qna_content, goods_qna_writer, goods_qna_date,goods_qna_head,
-							                    goods_qna_groupno,goods_qna_superno)
+							                    goods_qna_groupno,goods_qna_superno,goods_qna_status)
 			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no},
 				                 #{goods_qna_content}, #{goods_qna_writer}, sysdate, '답변',
-				                #{goods_qna_groupno}, #{goods_qna_superno})
+				                #{goods_qna_groupno}, #{goods_qna_superno},'답변완료')
 	</insert>
+
+	<!-- 상품 문의 답변완료 처리 -->
+	<update id="getIsQna" parameterType="int">
+		update goods_qna set goods_qna_status='답변완료'
+			where goods_qna_groupno=#{goods_qna_groupno} and goods_qna_status is null
+	</update>
 </mapper>
 
 

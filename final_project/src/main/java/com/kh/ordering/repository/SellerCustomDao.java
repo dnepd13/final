@@ -29,10 +29,10 @@ public interface SellerCustomDao {
 	void FilesInsert(FilesDto filesDto); // 파일 저장
 	void CustomFilesInsert(CustomOrderFilesDto customOrderFilesDto); // 주문제작-파일테이블
 	
-	//구매자 1:1 요청서 보기
+	//받은 요청서 보기
 	List<CustomOrderVO> getListReq(PagingVO paging); // 목록
-	//구매자 요청서 단일조회, 상세내용
-	CustomOrderVO customOrderVO1(int member_custom_order_no);
+	//받은 요청서 단일조회, 상세내용
+	CustomOrderVO customOrderVO1(int member_custom_order_no, int seller_no);
 	//요청서 누르면 판매자 알림테이블 업데이트
 	void UpdateAlarm(int seller_no, int member_custom_order_no);
 	//판매자 알람테이블 check N

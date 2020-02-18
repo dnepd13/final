@@ -30,6 +30,7 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	@Override
 	public int getNo(String seller_id) {
 		// seller_id 나중에 세션에서 가져와서 바꾸기
+		
 		int seller_no = sqlSession.selectOne("seller.getNo", seller_id);
 
 		return seller_no;
@@ -78,8 +79,12 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 		
 	}	
 	@Override // 구매자 요청서 상세보기. 주문제작 번호 단일조회
-	public CustomOrderVO customOrderVO1(int member_custom_order_no) {		
-		return sqlSession.selectOne("seller.getListInfoReq", member_custom_order_no);
+	public CustomOrderVO customOrderVO1(int member_custom_order_no, int seller_no) {
+		CustomOrderVO customOrderVO1 = CustomOrderVO.builder()
+																										.member_custom_order_no(member_custom_order_no)
+																										.seller_no(seller_no)
+																										.build();
+		return sqlSession.selectOne("seller.getListInfoReq", customOrderVO1);
 	}	
 	@Override // 요청서 상세페이지 접속하면 판매자 알람테이블 업데이트
 	public void UpdateAlarm(int seller_no, int member_custom_order_no) {

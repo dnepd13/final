@@ -27,7 +27,7 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	//	회원id로 회원번호 구하기
 	@Override
 	public int getNo(String member_id) {
-		// member_id 나중에 HttpSession의 session.getAttribute로 바꾸기
+		
 		int member_no = sqlSession.selectOne("member.getNo", member_id);
 		return member_no;
 	}

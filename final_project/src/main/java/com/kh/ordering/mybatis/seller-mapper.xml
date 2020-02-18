@@ -103,11 +103,11 @@
 		(custom_order_no,
 		custom_order_title, custom_order_content, custom_order_date,
 		custom_order_price, custom_order_hopedate,
-		custom_order_status, custom_order_type)
+		custom_order_status, custom_order_type,custom_order_category)
 		values(custom_order_seq.nextval,
 		#{custom_order_title}, #{custom_order_content}, sysdate,
 		#{custom_order_price}, #{custom_order_hopedate},
-		'진행 중', '견적서')
+		'진행 중', '견적서',#{custom_order_category})
 	</insert>	
 	<!-- 주문제작 테이블 현재 시퀀스번호 -->
 	<select id="customSeq" resultType="int">
@@ -161,7 +161,7 @@
 		select A.*, B.member_id from
 		    member_custom_view A inner join member B
 		        on a.member_no = B.member_no
-		where A.member_custom_order_no = #{member_custom_order_no}
+		where A.member_custom_order_no = #{member_custom_order_no} and A.seller_no=#{seller_no}
 	</select>
 	<!-- 요청서 파일 데이터 출력 -->
 	<select id="getListReqFiles" parameterType="int" resultType="com.kh.ordering.entity.FilesDto">

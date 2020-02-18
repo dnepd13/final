@@ -17,4 +17,5 @@ public class CustomOrderDto {
 	private String custom_order_hopedate;	// 희망날짜
 	private String custom_order_status;	// 진행상황: 진행 중, 채택완료
 	private String custom_order_type;	// 구분: 요청서, 견적서
+	private int custom_order_category; // 카테고리 번호
 }

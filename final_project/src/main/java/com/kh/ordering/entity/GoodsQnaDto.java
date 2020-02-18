@@ -15,6 +15,7 @@ public class GoodsQnaDto {
 	private String goods_qna_writer;
 	private String goods_qna_date;
 	private String goods_qna_head;
+	private String goods_qna_status;
 	
 	private int goods_qna_groupno;
 	private int goods_qna_superno;

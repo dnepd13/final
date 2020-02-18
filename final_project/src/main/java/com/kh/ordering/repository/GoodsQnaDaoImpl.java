@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.ordering.entity.GoodsQnaDto;
 import com.kh.ordering.vo.PagingVO;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class GoodsQnaDaoImpl implements GoodsQnaDao {
 
@@ -25,6 +29,10 @@ public class GoodsQnaDaoImpl implements GoodsQnaDao {
 
 		sqlSession.insert("goods.insertQ", goodsQnaDto);
 	}
+	@Override // 회원 문의 수정
+	public void updateQ(GoodsQnaDto goodsQnaDto) {
+		sqlSession.update("goods.updateQ", goodsQnaDto);
+	}
 
 	@Override // 상품 문의게시판 목록
 	public List<GoodsQnaDto> getQna(PagingVO pagingVO) {
@@ -40,6 +48,12 @@ public class GoodsQnaDaoImpl implements GoodsQnaDao {
 	@Override // QnA 글 총 개수
 	public int goodsQnaCount(int goods_no) {
 		return sqlSession.selectOne("goods.getQnaCount", goods_no);
+	}
+
+	@Override // 답변이 있는지 없는지 계산하는 로직
+	public void getIsQna(int goods_qna_groupno) {
+		
+		sqlSession.update("goods.getIsQna", goods_qna_groupno);
 	}
 
 }

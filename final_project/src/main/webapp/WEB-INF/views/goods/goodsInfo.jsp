@@ -166,7 +166,7 @@ $(function(){
 	
 }); 
 
-// 문의게시판 영역
+//////////////////// 문의게시판 영역///////////////
 $(function(){
 	// '문의하기' 보여주기
             var qna_member = document.querySelector(".qna_member");
@@ -194,7 +194,7 @@ $(function(){
     		method: method,
     		data: data,
     		success: function(resp){
-//     			 alert("문의 등록 완료");
+    			 alert("문의 등록 완료");
     		}
     	});
     	
@@ -240,9 +240,8 @@ $(function(){
 //     	});
     	
     	$(this).parents(".qna_seller").hide();
-    	$(this).parents().prev().find(".btn_a").text("답변완료").attr("disabled", true);
     });
-    
+        
 });
 
 </script>
@@ -253,10 +252,11 @@ $(function(){
 		width: 80%
 	}
 	.qna_member textarea {
-		width: 100%;
 		resize: none;
+		width: 100%;
 	}
-	.qna_seller textarea {
+	.qna_seller textarea,
+	.updateQ textarea {
 		resize: none;
 		width: 100%;
 	}
@@ -352,11 +352,10 @@ $(function(){
 			</thead>
 			<tbody>
 				<c:forEach var="qna" items="${goodsQna }">
-				<c:set var="qna_head" value="${qna.goods_qna_head }"/>
 				<c:choose>
-				<c:when test="${functions:contains(qna_head,'답변') }">
-					<tr>
-						<td class="qna_head"></td>
+					<c:when test="${qna.goods_qna_superno != 0 }">
+					<tr> <!-- 판매자 답변 목록 -->
+						<td></td>
 						<td>[${qna.goods_qna_head }] ${qna.goods_qna_content }</td>
 						<td>${qna.goods_qna_writer }</td>
 						<td>${qna.goods_qna_date }</td>
@@ -364,19 +363,28 @@ $(function(){
 					</tr>
 					</c:when>
 					<c:otherwise>
-					<tr>
+					<tr>	<!-- 구매자 문의 목록 -->
 						<td class="qna_head">${qna.goods_qna_head }</td>
-						<td>${qna.goods_qna_content }</td>
+						<td class="qna_content">${qna.goods_qna_content }</td>
 						<td>${qna.goods_qna_writer }</td>
 						<td>${qna.goods_qna_date }</td>
+						<%-- 문의 작성자와 로그인한 member_id가 같을 때 --%>
+						<c:if test="${qna.goods_qna_writer == member_id}">
+							<td><button class="btn_update">수정</button>
+									<button class="btn_delete">삭제</button>
+							</td>
+						</c:if>
 						<%-- 상품의 seller_no와 로그인한 seller_no가 같을 때 --%>
-		<%-- 		<c:if test="${seller_no }==${goodsVO.seller_no }"> --%>
-						<td><button class="btn_a">답변하기</button></td>
-		<%-- 		</c:if> --%>
+						<c:if test="${seller_no ==goodsVO.seller_no }">
+							<c:if test="${empty qna.goods_qna_status }">
+								<td><button class="btn_a">답변하기</button></td>
+							</c:if>
+						</c:if>						
 					</tr>
 					</c:otherwise>
-				</c:choose>	
-				<tr class="qna_seller"> <!-- 판매자 답변 -->
+				</c:choose>
+					
+				<tr class="qna_seller"> <!-- 판매자 입력 -->
 					<td colspan="5">
 						<form action="insertA" method="post">
 							<input type="hidden" name="seller_no" value="${goodsVO.seller_no }">
@@ -389,8 +397,7 @@ $(function(){
 						</form>
 					</td>
 				</tr>
-				<tr class="qna_more">
-				</tr>
+				
 				</c:forEach>
 			</tbody>
 		</table>

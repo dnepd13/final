@@ -1,6 +1,5 @@
 package com.kh.ordering.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
+import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.SellerCustomDao;
@@ -52,7 +52,10 @@ public class SellerCustomController {
 	@Autowired
 	private FilesPhysicalDao filesPhysicalDao;
 	
-// 판매자 주문제작 견적서 작성 페이지
+	@Autowired
+	private CategoryDao categoryDao;
+	
+// 주문제작 견적서 작성
 	@GetMapping("/customOrder")
 	public String memberCustom(HttpSession session,
 															@RequestParam int member_no,
@@ -75,13 +78,10 @@ public class SellerCustomController {
 		return "redirect:/seller/customListResp";
 	}
 	
-// 판매자가 받은 요청서 목록
-	@GetMapping("/customListReq")
+//	목록 조회
+	@GetMapping("/customListReq") // 받은 요청서 목록
 	public String getListCustomReq(Model model, HttpSession session,
 														@RequestParam(value="pageNo", required=false, defaultValue = "0") String pageNo) {
-		//로그인을 가정한 세션설정. 로그인 유지기능 완료 후 수정하기
-		String id = "seller";
-		session.setAttribute("seller_id", id);
 		
 		// 나중에 세션 ID 수정하기
 		String seller_id = (String)session.getAttribute("seller_id");
@@ -100,8 +100,7 @@ public class SellerCustomController {
 	
 		return "seller/customListReq";
 	}
-// 받은 요청서 상세 페이지
-	@GetMapping("/customInfoReq")
+	@GetMapping("/customInfoReq") // 받은 요청서 상세
 	public String memberCustomContent(HttpSession session, int member_custom_order_no, Model model) {
 		
 		String seller_id = (String)session.getAttribute("seller_id");
@@ -110,24 +109,24 @@ public class SellerCustomController {
 		// 판매자 알람 업데이트 후
 		sellerCustomDao.UpdateAlarm(seller_no, member_custom_order_no);
 		// 상세페이지 보기
-		CustomOrderVO content = sellerCustomDao.customOrderVO1(member_custom_order_no);
+		CustomOrderVO content = sellerCustomDao.customOrderVO1(member_custom_order_no, seller_no);
+
 		model.addAttribute("getListInfoReq", content);
-		
+				// 카테고리 표시를 위한 model정보
+		int category_no = content.getCustom_order_category();
+		model.addAttribute("category", categoryDao.get(category_no));
+
 		// 파일 번호 보내기
 		List<FilesVO>  filesVO = memberCustomService.FilesList(member_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
 		
 		return "seller/customInfoReq";
 	}
-// 보낸 견적서 목록 
-	@GetMapping("/customListResp")
+
+	@GetMapping("/customListResp") // 보낸 견적서 목록
 	public String getListCustomMine(Model model, HttpSession session,
 														@RequestParam(value="pageNo", required=false, defaultValue = "0") String pageNo) {
-		//로그인을 가정한 세션설정. 로그인 유지기능 완료 후 수정하기
-//		String id = "seller";
-//		session.setAttribute("seller_id", id);
-		
-		// 나중에 세션 ID 수정하기
+
 		String seller_id = (String)session.getAttribute("seller_id");
 		int seller_no = sellerCustomDao.getNo(seller_id);
 		
@@ -145,8 +144,8 @@ public class SellerCustomController {
 	
 		return "seller/customListResp";
 	}	
-//	보낸 견적서 상세페이지
-	@GetMapping("/customInfoResp")
+
+	@GetMapping("/customInfoResp") // 보낸 견적서 상세
 	public String CustomMineInfo(int seller_custom_order_no, Model model) {
 		
 		CustomOrderVO content = sellerCustomDao.customOrderVO2(seller_custom_order_no);
@@ -181,10 +180,4 @@ public class SellerCustomController {
 												.body(resource);
 	}
 	
-// 임시 세션 remove
-	@GetMapping("/remove")
-	public String remove(HttpSession session) {
-		session.removeAttribute("seller_no");
-		return "redirect:/";
-	}
 }
