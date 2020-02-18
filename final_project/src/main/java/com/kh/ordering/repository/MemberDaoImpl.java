@@ -1,19 +1,11 @@
 package com.kh.ordering.repository;
 
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.kh.ordering.entity.CustomOrderDto;
-import com.kh.ordering.entity.MemberCustomAlarmDto;
-import com.kh.ordering.entity.MemberCustomOrderDto;
-import com.kh.ordering.vo.CustomOrderVO;
-
 import com.kh.ordering.entity.MemberDto;
+import com.kh.ordering.vo.MemberPointVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +15,77 @@ public class MemberDaoImpl implements MemberDao{
 
 	@Autowired
 	private SqlSession sqlSession;
+	
+	@Autowired
+	private MemberDao memberDao;
 
+//	!지우지마세요, 포인트 관련  (월용) //////////////////////////
+	
+	// 회원 포인트 조회
+	@Override
+	public int getPoint(int member_no) {
+		return sqlSession.selectOne("member.getPoint", member_no);
+	}
+	
+	@Override
+	public int getPoint(String member_id) {
+		return this.getPoint(memberDao.getNo(member_id));
+	}
+	
+	
+	// 포인트 추가,차감
+	@Override
+	public void registPoint(MemberPointVO memberPointVO) {
+		sqlSession.insert("member.registPoint", memberPointVO);
+	}
+	
+	// 포인트 검사
+	
+	
+	// 구매시 포인트 적용(상품가격 + 회원번호)
+	@Override
+	public void resgistOrderPoint(int member_no, int price) {
+		
+		String member_grade = this.getMemberGrade(member_no);
+		int point = getOrderPoint(member_grade, price);
+		
+		MemberPointVO memberPointVO = MemberPointVO.builder()
+					.member_point_status("적립")
+					.member_point_change(point)
+					.member_point_content("상품 구매")
+					.member_no(member_no)
+				.build();
+		this.registPoint(memberPointVO);
+	}
+	
+	@Override
+	public int getOrderPoint(String member_grade, int price) {
+		int rate = this.getGradeBenefitRate(member_grade);
+		return price / 100 * rate;
+	}
+	
+	@Override
+	public int getGradeBenefitRate(String member_grade) {
+		return sqlSession.selectOne("member.getGradeBenefitRate", member_grade);
+	}
+	
+	@Override
+	public String getMemberGrade(int member_no) {
+		return sqlSession.selectOne("member.getMemberGrade", member_no);
+	}
+	
+	@Override
+	public MemberDto getMember(int member_no) {
+		return sqlSession.selectOne("member.getMember", member_no);
+	}
+	
+	@Override
+	public MemberDto getMember(String member_id) {
+		return this.getMember(this.getNo(member_id));
+	}
+//	!지우지마세요, 포인트 관련  (월용) //////////////////////////
+//////////////////////////////////////	
+	
 	
 //회원 번호 구하기 (영락)
 	

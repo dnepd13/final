@@ -35,7 +35,7 @@
  				ordering_seq.nextval,
  				#{tid}, #{cid}, to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
  				#{item_name}, #{partner_order_id}, #{partner_user_id},
- 				#{quantity}, #{total_amount}, '준비', '1', '0', '0', '0', '0'
+ 				#{quantity}, #{total_amount}, '결제준비완료', '1', '0', '0', '0', '0'
  			)
  	</insert>
 	
@@ -49,7 +49,7 @@
  				ordering_seq.nextval,
  				#{tid}, #{cid}, to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
  				#{item_name}, #{partner_order_id}, #{partner_user_id},
- 				#{quantity}, #{total_amount}, '완료', #{aid}, '0', '0', '0', '0'
+ 				#{quantity}, #{total_amount}, '결제완료', #{aid}, '0', #{used_point}, '0', #{vat_amount}
  			)
 	</insert>
 	
@@ -71,9 +71,69 @@
  				ordering_seq.nextval,
  				#{tid}, #{cid}, to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
  				#{item_name}, #{partner_order_id}, #{partner_user_id},
- 				#{quantity}, #{total_amount}, '취소', #{aid}, '0', '0', '0', '0'
+ 				#{quantity}, #{total_amount}, '결제취소', #{aid}, '0', '0', '0', '0'
  			)
 	</insert>
+	
+	<select id="getSequenceOrdering" resultType="int">
+		select ordering_seq.currval from dual
+	</select>
+	
+	<select id="getSequenceCartInfo" resultType="int">
+		select cart_info_seq.nextval from dual
+	</select>
+	
+	<select id="getSequenceGoods" resultType="int">
+		select cart_info_goods_seq.nextval from dual
+	</select>
+	
+	<insert id="insertCartInfo" parameterType="cartInfoDto">
+		insert into cart_info values(
+			#{cart_info_no},
+			#{member_no},
+			null,
+			#{cart_info_addr_post},
+			#{cart_info_addr_basic},
+			#{cart_info_addr_extra},
+			#{cart_info_addr_status},
+			#{total_price},
+			#{total_quantity},
+			#{total_delivery_price},
+			#{used_point},
+			#{cart_info_status},
+			#{partner_order_id},
+			#{delivery_name}
+		)		
+	</insert>
+	<insert id="insertCartInfoGoods" parameterType="list">
+		<foreach collection="list" item="cartInfoGoodsDto" open="insert all" close="select * from dual">
+			into cart_info_goods values(
+				#{cartInfoGoodsDto.cart_info_goods_no},
+				#{cartInfoGoodsDto.cart_info_no},
+				#{cartInfoGoodsDto.goods_no},
+				#{cartInfoGoodsDto.cart_info_goods_quantity},
+				#{cartInfoGoodsDto.cart_info_goods_price}		
+			)
+		</foreach>
+	</insert>
+	
+	<insert id="insertCartInfoOp" parameterType="list">
+		<foreach collection="list" item="cartInfoOpDto" index="index" open="insert all" close="select * from dual">
+			into cart_info_op values(
+				get_cart_info_op_seq,
+				#{cartInfoOpDto.cart_info_goods_no},
+				#{cartInfoOpDto.goods_option_no}
+			)
+		</foreach>
+	</insert>
+	
+	<select id="getPartnerOrderId" resultType="int">
+		select partner_order_id_seq.nextval from dual
+	</select>
+	
+	<update id="updateStatus"  parameterType="String">
+		update cart_info set cart_info_status = '결제완료' where partner_order_id = #{partner_order_id}
+	</update>
 	
  </mapper> 
 

@@ -54,7 +54,17 @@
 	
 		<!-- visitcount -->
 		<typeAlias type="com.kh.ordering.vo.VisitCountVO" alias="visitCount"/>
-
+		
+		<!-- 주문, 결제 정보 -->
+		<typeAlias type="com.kh.ordering.vo.OrderVO" alias="orderVO"/>
+		<typeAlias type="com.kh.ordering.vo.CartVO" alias="cartVO"/>
+		<typeAlias type="com.kh.ordering.entity.CartInfoDto" alias="cartInfoDto"/>
+		<typeAlias type="com.kh.ordering.entity.CartInfoGoodsDto" alias="cartInfoGoodsDto"/>
+		<typeAlias type="com.kh.ordering.entity.CartInfoOpDto" alias="cartInfoOpDto"/>
+		
+		<!-- 포인트 -->
+		<typeAlias type="com.kh.ordering.vo.MemberPointVO" alias="memberPointVO"/>
+		
 	</typeAliases>
  </configuration>
 

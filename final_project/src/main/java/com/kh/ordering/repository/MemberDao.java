@@ -1,18 +1,27 @@
 package com.kh.ordering.repository;
 
-import com.kh.ordering.entity.MemberDto;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.kh.ordering.entity.CustomOrderDto;
-import com.kh.ordering.entity.MemberCustomAlarmDto;
-import com.kh.ordering.entity.MemberCustomOrderDto;
-import com.kh.ordering.vo.CustomOrderVO;
+import com.kh.ordering.entity.MemberDto;
+import com.kh.ordering.vo.MemberPointVO;
 
 public interface MemberDao {
 
+//	포인트 관련  //////////////////////////
+
+	int getPoint(int member_no);
+	int getPoint(String member_id);
+	public void memberedit(MemberDto member);
+	void registPoint(MemberPointVO memberPointVO);	
+	int getOrderPoint(String member_grade, int price);
+	void resgistOrderPoint(int member_no, int price);
+	MemberDto getMember(int member_no);
+	MemberDto getMember(String member_id);
+	String getMemberGrade(int member_no);
+	int getGradeBenefitRate(String member_grade);
+//////////////////////////////////////
+	
+	
 // 회원 주문제작 Dao
 
 	
@@ -41,9 +50,13 @@ public interface MemberDao {
 
 
 		public MemberDto memberGetOne(MemberDto member);
+		
 
 
-		public void memberedit(MemberDto member);
+
+
+
+		
 
 
 //		List<MemberDto> memberGetOne(int member_no);
