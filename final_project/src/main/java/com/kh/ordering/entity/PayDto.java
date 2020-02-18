@@ -12,7 +12,7 @@ public class PayDto {
 	total_amount,
 	member,
 	non,
-	userd_point,
+	used_point,
 	tax_free_amount,
 	vat_amount,
 	install_month;

@@ -10,5 +10,5 @@
 
 </form>
 <form action="find" method="get">
-<input type="submit" value="아이디/비밀번호 찾기" >
+<input type="submit" value="아이디" ><input type="submit" value="비밀번호 찾기" >
 </form>
