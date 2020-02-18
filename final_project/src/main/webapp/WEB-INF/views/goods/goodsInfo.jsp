@@ -47,7 +47,8 @@ $(function(){
 			$(".options").each(function(i){
 				var no = $(this).val();
 				var arr = goodsOptionVOList[i].goodsOptionList;
-				var index = arr.findIndex(dto >= dto.goods_option_no == no);
+				console.log(arr);
+				var index = arr.findIndex(dto => dto.goods_option_no == no);
 				price += arr[index].goods_option_price;
 				title = goodsOptionVOList[i].goods_option_title;
 				content = arr[index].goods_option_content;
@@ -171,23 +172,23 @@ $(function(){
 		return num.toString().replace(regexp, ',');
 	}
 	
-}); 
-
-// 문의게시판 영역
-$(function(){
+	
+	
+	
+	// 문의게시판 영역
 	// '문의하기' 보여주기
-            var qna_member = document.querySelector(".qna_member");
-            
-            $(".btn_q").click(function(){
-                if($(this).text()=="문의하기"){
-                    qna_member.style.display="block";
-                    $(this).text("취소");
-                }
-                else{
-                    qna_member.style.display="none";
-                    $(this).text("문의하기");
-                }
-            });
+    var qna_member = document.querySelector(".qna_member");
+    
+    $(".btn_q").click(function(){
+        if($(this).text()=="문의하기"){
+            qna_member.style.display="block";
+            $(this).text("취소");
+        }
+        else{
+            qna_member.style.display="none";
+            $(this).text("문의하기");
+        }
+    });
             
 	$(".qna_member").find("form").submit(function(e){
 		e.preventDfault();
@@ -249,8 +250,7 @@ $(function(){
     	$(this).parents(".qna_seller").hide();
     	$(this).parents().prev().find(".btn_a").text("답변완료").attr("disabled", true);
     });
-    
-});
+}); 
 
 </script>
 
