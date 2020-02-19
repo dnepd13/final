@@ -103,9 +103,24 @@
 <div>
 	<form  action="category" method="post">
 		<div>
-			<input type="text" name="category_large" placeholder="대분류" required="required">
-			<input type="text" name="category_middle" placeholder="중분류" required="required">
-			<input type="text" name="category_small" placeholder="소분류" required="required">
+			<input type="text" name="category_large" placeholder="대분류" required="required" list="itemListBig">
+			<datalist id="itemListBig">
+				<c:forEach var="big" items="${big }">
+					<option>${big.category_large }</option> 
+				</c:forEach>
+			</datalist>
+			<input type="text" name="category_middle" placeholder="중분류" required="required" list="itemListMiddle">
+			<datalist id="itemListMiddle">
+				<c:forEach var="middle" items="${middle }">
+					<option>${middle.category_middle }</option>
+				</c:forEach>
+			</datalist>
+			<input type="text" name="category_small" placeholder="소분류" required="required" list="itemListSmall">
+			<datalist id="itemListSmall">
+				<c:forEach var="small" items="${small }">
+					<option>${small.category_small }</option>
+				</c:forEach>
+			</datalist>
 			<input type="submit" value="등록">
 		</div>
 	</form>

@@ -11,7 +11,7 @@
 <h3>${one.admin_qna_content}</h3>
 <hr>
 <div class="btn-group-vertical">
-	<a href="${pageContext.request.contextPath}/board/write?admin_qna_no1=${one.admin_qna_no}"><button type="button" class="btn btn-primary">답글쓰기</button></a>
+	<a href="${pageContext.request.contextPath}/board/write?admin_qna_no1=${one.admin_qna_no}&member_no=${one.member_no}&seller_no=${one.seller_no}"><button type="button" class="btn btn-primary">답글쓰기</button></a>
 </div>
 <c:if test="${one.admin_qna_writer == admin_id }">
 <div class="btn-group-vertical">

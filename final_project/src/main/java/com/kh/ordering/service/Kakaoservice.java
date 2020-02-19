@@ -173,6 +173,7 @@ public class Kakaoservice implements payService {
 		// 주문번호로 결제내역 가져오기
 		
 		
+		
 		return returnVO;
 	}
 
@@ -218,6 +219,8 @@ public class Kakaoservice implements payService {
 									.build();
 		
 		payDao.insertRevoke(payDto2);
+		//취소 되면 포인트 돌려주고, 
+		
 		return null;
 	}
 
