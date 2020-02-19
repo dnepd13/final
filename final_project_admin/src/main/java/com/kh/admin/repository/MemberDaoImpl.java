@@ -89,4 +89,9 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.selectOne("admin.memberGradeCount", member_grade );
 	}
 
+	@Override
+	public void memberPointMulti(List<MemberPointVO> list) {
+		sqlSession.insert("admin.insertAll", list);
+	}
+
 }

@@ -5,7 +5,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
 
 
-
 <h1>회원가입</h1>
 
     <form action="regist" method="post">

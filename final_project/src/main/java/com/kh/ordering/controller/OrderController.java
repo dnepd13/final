@@ -38,8 +38,8 @@ public class OrderController {
 		List<CartVO> cartVOList = goodsOptionService.getCartVOList(itemVOList.getItemVOList());
 		// 상품 1개 배송 정보
 		// 배송 정보 리스트로 보내야 함
-//		model.addAttribute("deliveryDto", deliveryDao.get2(cartVOList.get(0).getGoodsDto().getGoods_no()));
-//		model.addAttribute("cartVOList", cartVOList);
+		model.addAttribute("deliveryDto", deliveryDao.get2(cartVOList.get(0).getGoodsDto().getGoods_no()));
+		model.addAttribute("cartVOList", cartVOList);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		model.addAttribute("jsonCartVOList", mapper.writeValueAsString(cartVOList));

@@ -245,6 +245,38 @@
 	
 
 
+	<!-- ## 포인트 관련 ############################ -->
+	<!-- 포인트 조회 -->
+	<select id="getPoint" parameterType="int" resultType="int">
+		select sum(member_point_change) from member_point where member_no = #{member_no}
+	</select>
+	
+	<!-- 회원 포인트 추가 -->
+	<insert id="registPoint" parameterType="memberPointVO">
+		insert into member_point 
+			values(
+				member_point_seq.nextval, 
+				#{member_point_status},
+				sysdate,
+				sysdate+30,
+				#{member_point_change},
+				#{member_point_content},
+				#{member_no}
+				)
+	</insert>	
+	
+	<select id="getMember" parameterType="int" resultType="member">
+		select * from member where member_no = #{member_no}
+	</select>
+	
+	<select id="getMemberGrade" parameterType="int" resultType="String">
+		select member_grade from member where member_no = #{member_no}
+	</select>
+	
+	<select id="getGradeBenefitRate" parameterType="String" resultType="int">
+		select grade_benefit_rate from grade_benefit where grade_benefit_grade = #{member_grade}
+	</select>
+	
  </mapper> 
 
 

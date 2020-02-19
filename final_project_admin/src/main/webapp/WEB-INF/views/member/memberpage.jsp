@@ -20,3 +20,5 @@
 <h1>회원 최종 로그인 ${one.member_last_login }</h1>
 <h1>회원 동의 날짜 ${one.member_agree_date }</h1>
 <h1>회원 등급 ${one.member_grade }</h1>
+<h1>구매금액</h1>
+<h1>구매건수</h1>

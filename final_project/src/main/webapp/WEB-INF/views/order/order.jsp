@@ -204,9 +204,9 @@ function deliveryPriceTagUpdate(delivery_price){
 }
 
 /////// 전송 시 데이터 업데이트
-$("#ordering_btn").click(function(){
-	var orderVO = inputOrderInfo();
-	$("<input type='hidden' name='orderVO' value='"+orderVO+"'").appendTO(".send");
+$(".form_send").submit(function(e){
+	var jsonOrderVO = inputOrderInfo();
+	$(".form_send").append($("<input type='hidden' name='jsonOrderVO' value='"+jsonOrderVO+"'>"));
 });
 
 // 결제 정보 담기
@@ -226,11 +226,11 @@ function inputOrderInfo(){
 	var addr_status = $(".order_addr_area").children(".addr_status").val();
 	
 	orderDeliveryVO = {
-		name : name,
-		addr_post : addr_post,
-		addr_basic : addr_basic,
-		addr_extra : addr_extra,
-		addr_status : addr_status
+		delivery_name : name,
+		cart_info_addr_post : addr_post,
+		cart_info_addr_basic : addr_basic,
+		cart_info_addr_extra : addr_extra,
+		cart_info_addr_status : addr_status
 	};
 	
 	
@@ -241,16 +241,17 @@ function inputOrderInfo(){
 		}
 	});
 	
-	orderVO = {
+	jsonOrderVO = {
 		cartVOList : cartVOList,
 		orderDeliveryVO : orderDeliveryVO,
 		used_point : used_point,
 		total_quantity : total_quantity,
-		total_price : total_price,
-		total_delivery_price : total_delivery_price
+		total_price : total_price - used_point,
+		total_delivery_price : total_delivery_price,
+		partner_user_id : "${member_id}" 
 	};
 	
-	return JSON.stringify(orderVO);
+	return JSON.stringify(jsonOrderVO);
 }
 
 });
@@ -314,7 +315,7 @@ function inputOrderInfo(){
 	배송비 : <span class="delivery_price">1 원</span>
 	주문 총 가격 : <span class="ordering_price"> 원</span>
 	<hr>
-	<form class="send" action="" method="POST">
+	<form class="form_send" action="${pageContext.request.contextPath}/pay/kakao/confirm" method="POST">
 	<button id="ordering_btn">결제하기</button>
 	</form>
 	

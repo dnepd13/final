@@ -47,7 +47,8 @@ $(function(){
 			$(".options").each(function(i){
 				var no = $(this).val();
 				var arr = goodsOptionVOList[i].goodsOptionList;
-				var index = arr.findIndex(dto >= dto.goods_option_no == no);
+				console.log(arr);
+				var index = arr.findIndex(dto <= dto.goods_option_no == no);
 				price += arr[index].goods_option_price;
 				title = goodsOptionVOList[i].goods_option_title;
 				content = arr[index].goods_option_content;

@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
 <h1>상품 상세보기</h1>
+<h1><a href="${pageContext.request.contextPath}/goods/review?goods_no=${list.goods_no}&goods_name=${list.goods_name}"><button type="button" class="btn btn-primary">리뷰목록</button></a></h1>
 	<c:if test="${admin_grade == '총괄관리자' }">
 		<div class="btn-group-vertical">
 			<a href="${pageContext.request.contextPath}/goods/delete?goods_no=${list.goods_no}"><button type="button" class="btn btn-primary">삭제</button></a>

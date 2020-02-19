@@ -36,4 +36,16 @@ public class CategoryDaoImpl implements CategoryDao{
 	public void deleteCategory(int category_no) {
 		sqlSession.delete("admin.categoryDelete", category_no);
 	}
+	@Override
+	public List<CategoryDto> categoryBig() {
+		return sqlSession.selectList("admin.categoryItemBig");
+	}
+	@Override
+	public List<CategoryDto> categoryMiddle() {
+		return sqlSession.selectList("admin.categoryItemMiddle");
+	}
+	@Override
+	public List<CategoryDto> categorySmall() {
+		return sqlSession.selectList("admin.categoryItemSmall");
+	}
 }

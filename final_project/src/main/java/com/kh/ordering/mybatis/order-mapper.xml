@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="order">
+	<select id="getCartInfo" parameterType="String" resultType="cartInfoDto">
+		select * from cart_info where partner_order_id = #{partner_order_id}
+	</select>
+	
+	<select id="getCartInfoGoods" parameterType="int" resultType="cartInfoGoodsDto">
+		select * from cart_info_goods where cart_info_no = #{cart_info_no}
+	</select>
+	
+	<select id="getCartInfoOp" parameterType="int" resultType="cartInfoOpDto">
+		select * from cart_info_op where cart_info_goods_no = #{cart_info_goods_no}
+	</select>
+</mapper>

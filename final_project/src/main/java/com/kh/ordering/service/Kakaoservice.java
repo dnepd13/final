@@ -3,6 +3,9 @@ package com.kh.ordering.service;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.servlet.http.HttpSession;
+
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,12 +16,19 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.ordering.entity.PayDto;
+import com.kh.ordering.repository.MemberDao;
+import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.repository.PayDao;
 import com.kh.ordering.vo.KakaoPayReadyReturnVO;
+import com.kh.ordering.vo.KakaoPayReadyVO;
 import com.kh.ordering.vo.KakaoPayRevokeReturnVO;
 import com.kh.ordering.vo.KakaoPaySuccessReadyVO;
 import com.kh.ordering.vo.KakaoPaySuccessReturnVO;
+import com.kh.ordering.vo.OrderVO;
 import com.kh.ordering.vo.PayReadyReturnVO;
 import com.kh.ordering.vo.PayReadyVO;
 
@@ -29,10 +39,21 @@ import lombok.extern.slf4j.Slf4j;
 public class Kakaoservice implements payService {
 	
 	@Autowired
+	private MemberDao memberDao;
+	
+	@Autowired
 	private PayDao payDao;
 	
+	@Autowired
+	private OrderDao orderDao;
+	
+	@Autowired
+	private SqlSession sqlSession;
+	
+	
 	@Override
-	public PayReadyReturnVO ready(PayReadyVO vo) throws URISyntaxException {
+	public PayReadyReturnVO ready(PayReadyVO vo, String jsonOrderVO, HttpSession session) throws URISyntaxException, JsonMappingException, JsonProcessingException {
+		
 		RestTemplate template = new RestTemplate();
 		
 		HttpHeaders headers = new HttpHeaders();
@@ -42,7 +63,7 @@ public class Kakaoservice implements payService {
 		
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 		body.add("cid", "TC0ONETIME");
-		body.add("partner_order_id", vo.getPartner_order_id());
+		body.add("partner_order_id", vo.getPartner_order_id()); // 주문번호 랜덤생성해야함
 		body.add("partner_user_id", vo.getPartner_user_id());
 		body.add("item_name", vo.getItem_name());
 		body.add("quantity", String.valueOf(vo.getQuantity())); //인트로 안됨
@@ -67,18 +88,28 @@ public class Kakaoservice implements payService {
 		KakaoPayReadyReturnVO returnVO = 
 				template.postForObject(uri, entity, KakaoPayReadyReturnVO.class);
 		
+		int member_no = sqlSession.selectOne("member.getNo", session.getAttribute("member_id"));
+
+		ObjectMapper mapper = new ObjectMapper();
+		OrderVO orderVO = mapper.readValue(jsonOrderVO, OrderVO.class);
+		
 		PayDto payDto = PayDto.builder()
 										.cid("TC0ONETIME")
 										.tid(returnVO.getTid())
+										.member(member_no)
 										.partner_order_id(vo.getPartner_order_id())
 										.partner_user_id(vo.getPartner_user_id())
 										.item_name(vo.getItem_name())
 										.process_time(returnVO.getCreated_at())
 										.quantity(vo.getQuantity())
 										.total_amount(vo.getTotal_amount())
+										.used_point(orderVO.getUsed_point())
+										.vat_amount(vo.getTotal_amount()/10)
 										.build();
-								
-		payDao.insertReady(payDto);
+		
+		
+		payDao.insertReady(payDto, orderVO);
+		
 		return returnVO;
 	}
 
@@ -97,17 +128,18 @@ public class Kakaoservice implements payService {
 		body.add("partner_order_id", data.getPartner_order_id());
 		body.add("partner_user_id", data.getPartner_user_id());
 		body.add("pg_token", data.getPg_token());
-		log.info("cid={}", data.getCid());
+//		log.info("cid={}", data.getCid());
 		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
 		
 		URI uri = new URI("https://kapi.kakao.com/v1/payment/approve");
 		
-		log.info("1번");
-		log.info("uri={}", uri);
-		log.info("entity={}",entity);
+//		log.info("1번");
+//		log.info("uri={}", uri);
+//		log.info("entity={}",entity);
+		// 결제 완료 요청
 		KakaoPaySuccessReturnVO returnVO = template.postForObject(uri, entity, KakaoPaySuccessReturnVO.class);
-		
-		log.info("2번");
+		 
+//		log.info("2번");
 		PayDto payDto = PayDto.builder()
 													.cid(returnVO.getCid())
 													.tid(returnVO.getTid())
@@ -118,12 +150,29 @@ public class Kakaoservice implements payService {
 													.quantity(returnVO.getQuantity())
 													.total_amount(returnVO.getAmount().getTotal())
 													.aid(returnVO.getAid())
+													.used_point(returnVO.getAmount().getPoint())
+													.vat_amount(returnVO.getAmount().getVat())
 													.build();
 		
 		payDao.insertSuccess(payDto);
-		//이곳에 다른 정보들도 저장되어야한다
-		//저장되어야할 것들 
-		//상품정보 개별(정보, 옵션, 상품+옵션 가격 및 수량, 상품 배송정보
+		// partner_order_id로 검색해서 업데이트 처리 (상품수량, 포인트)
+		
+		// 처리 실패시 취소로 보내버리기
+		// ### 처리할것들
+		//  - 주문번호로 member_no 검색해서 포인트 차감 (차감안되면 취소로 보내기)
+		//  - 주문번호로 상품검색해서 상품 수량 차감 (차감안되면 취소로 보내기)
+		//  - 상품번호로 검색해서 옵션 수량 차감 (차감안되면 취소로 보내기)
+		
+		// 맴버번호, 총가격, 상품번호, 옵션번호,
+		// orderVO 필요
+//		memberDao.resgistOrderPoint( , );
+		
+		// 주문번호 저장
+		String partner_order_id = payDto.getPartner_order_id();
+		
+		// 주문번호로 결제내역 가져오기
+		
+		
 		
 		return returnVO;
 	}
@@ -170,7 +219,27 @@ public class Kakaoservice implements payService {
 									.build();
 		
 		payDao.insertRevoke(payDto2);
+		//취소 되면 포인트 돌려주고, 
+		
 		return null;
 	}
 
+	
+	@Override
+	public KakaoPayReadyVO setReadyVO(String jsonOrderVO) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		OrderVO orderVO = mapper.readValue(jsonOrderVO, OrderVO.class);
+		
+		KakaoPayReadyVO kakaoPayReadyVO = KakaoPayReadyVO.builder()
+										.partner_order_id(payDao.getPartnerOrderId())
+										.partner_user_id(orderVO.getPartner_user_id())
+										.item_name(payDao.getItem_name(orderVO))
+										.quantity(orderVO.getTotal_quantity())
+										.total_amount(orderVO.getTotal_price())
+										.vat_amount(orderVO.getTotal_price()/10)
+										.tax_free_amount(0)
+									.build();
+		
+		return kakaoPayReadyVO;
+	}
 }

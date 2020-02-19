@@ -21,5 +21,5 @@ public interface MemberDao {
 	public void pointRegist(MemberPointVO memberPointVO);
 	public int memberNameCount(String member_name);
 	public int memberGradeCount(String member_grade);
-	
+	public void memberPointMulti(List<MemberPointVO> list);
 }
