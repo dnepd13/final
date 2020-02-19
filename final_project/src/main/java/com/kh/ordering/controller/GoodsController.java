@@ -108,28 +108,27 @@ public class GoodsController {
 		if(member_id!=null) { // 판매자 로그인 상태일 때 세션에서 seller_id 가져와서 비교		
 			int member_no = memberDao.getNo(member_id);
 			model.addAttribute("member_no",member_no);
-		}
-		else {
+			
 			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
 			model.addAttribute("paging", result);			
 			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
 			model.addAttribute("goodsQna", goodsQna);
 		}
-		if(seller_id!=null) {
+		else if(seller_id!=null){
 			int seller_no = sellerCustomDao.getNo(seller_id);
-			model.addAttribute("seller_no", seller_no);		
+			model.addAttribute("seller_no", seller_no);	
+			
+			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
+			model.addAttribute("paging", result);			
+			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
+			model.addAttribute("goodsQna", goodsQna);
 		}
 		else {
 			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
 			model.addAttribute("paging", result);			
 			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
 			model.addAttribute("goodsQna", goodsQna);
-		}			
-		PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
-		model.addAttribute("paging", result);
-		
-		List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
-		model.addAttribute("goodsQna", goodsQna);
+		}	
 		
 		return "goods/goodsInfo";
 	}

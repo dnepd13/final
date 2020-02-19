@@ -205,6 +205,9 @@
 				                    	where A.custom_order_no = B.custom_order_no
 				                    	and B.custom_order_no=#{custom_order_no})
 	</delete>
+	<delete id="deleteAlarm">
+		delete member_alarm where seller_custom_order_no= #{seller_custom_order_no}
+	</delete>
 	
 	<!-- 내가 보낸 견적서 목록 / 상세보기 -->
 	<select id="getListResp" parameterType="pagingVO" resultType="CustomOrderVO">

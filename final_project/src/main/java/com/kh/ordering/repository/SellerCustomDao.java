@@ -43,6 +43,8 @@ public interface SellerCustomDao {
 	//보낸 견적서 삭제
 	int getCustomNo(int seller_custom_order_no);
 	void deleteCustomResp(int custom_order_no);
+	//구매자의 견적서 알람테이블 삭제
+	void deleteAlarm(int seller_custom_order_no);
 	
 	// 파일 출력용
 	List<FilesVO> getFilesNo(int seller_custom_order_no);

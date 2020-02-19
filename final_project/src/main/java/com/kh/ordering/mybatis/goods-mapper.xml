@@ -93,7 +93,7 @@
 							                    goods_qna_groupno,goods_qna_superno,goods_qna_status)
 			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no}, #{member_no},
 			                    #{goods_qna_content}, #{goods_qna_writer}, sysdate, #{goods_qna_head},
-			                    goods_qna_seq.currval, null, null)
+			                    goods_qna_seq.currval, 0, null)
 	</insert>
 	<update id="updateQ" parameterType="goodsQnaDto">
 		update goods_qna 
@@ -114,7 +114,7 @@
 		select *from(
 			select rownum rn, RN.* from(
 			    select *from goods_qna where goods_no=#{goods_no}
-			    connect by prior goods_qna_no=goods_qna_superno start with goods_qna_superno is null
+			    connect by prior goods_qna_no=goods_qna_superno start with goods_qna_superno=0
 			    order SIBLINGS by goods_qna_groupno desc, goods_qna_no asc
 			)RN
 		)where rn between #{start} and #{finish}

@@ -116,10 +116,10 @@
 				                    	where A.custom_order_no = B.custom_order_no
 				                    				and B.custom_order_no=#{custom_order_no})
 	</delete>
-	<!-- 보낸 카테고리 요청서 삭제 -->
 	<delete id="deleteAlarm">
 		delete seller_alarm where member_custom_order_no= #{member_custom_order_no}
 	</delete>
+	<!-- 보낸 카테고리 요청서 삭제 -->
 	<delete id="deleteCustom">
 		delete from custom_order A
     		where a.custom_order_no

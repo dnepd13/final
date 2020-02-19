@@ -453,6 +453,10 @@ $(function(){
 								<td><button class="btn_a">답변하기</button></td>
 							</c:if>
 						</c:if>
+						<c:set var="status" value="${qna.goods_qna_status}"></c:set>
+						<c:if test="${functions : contains(status, '답변완료') }">
+								<td>답변완료</td>
+						</c:if>
 					</tr>
 					</c:otherwise>
 				</c:choose>

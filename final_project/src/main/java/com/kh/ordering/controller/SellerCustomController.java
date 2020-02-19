@@ -186,7 +186,8 @@ public class SellerCustomController {
 		int custom_order_no = sellerCustomDao.getCustomNo(seller_custom_order_no);
 		// 해당 주문제작 테이블 데이터 삭제
 		sellerCustomDao.deleteCustomResp(custom_order_no);
-				
+		// 구매자 알람테이블 정보 삭제
+		sellerCustomDao.deleteAlarm(seller_custom_order_no);
 		return "seller/customListResp";
 	}
 

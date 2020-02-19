@@ -137,5 +137,9 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	public void deleteCustomResp(int custom_order_no) {
 		sqlSession.delete("seller.deleteResp", custom_order_no);
 	}
+	@Override // 구매자 알람테이블 정보 삭제
+	public void deleteAlarm(int seller_custom_order_no) {
+		sqlSession.delete("seller.deleteAlarm", seller_custom_order_no);
+	}
 	
 }
