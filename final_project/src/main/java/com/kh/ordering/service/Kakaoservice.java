@@ -156,7 +156,6 @@ public class Kakaoservice implements payService {
 		
 		payDao.insertSuccess(payDto);
 		// partner_order_id로 검색해서 업데이트 처리 (상품수량, 포인트)
-		String partner_order_id = payDto.getPartner_order_id();
 		
 		// 처리 실패시 취소로 보내버리기
 		// ### 처리할것들
@@ -167,6 +166,11 @@ public class Kakaoservice implements payService {
 		// 맴버번호, 총가격, 상품번호, 옵션번호,
 		// orderVO 필요
 //		memberDao.resgistOrderPoint( , );
+		
+		// 주문번호 저장
+		String partner_order_id = payDto.getPartner_order_id();
+		
+		// 주문번호로 결제내역 가져오기
 		
 		
 		return returnVO;
