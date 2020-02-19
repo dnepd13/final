@@ -20,7 +20,7 @@ public interface MemberCustomService {
 																SellerCustomAlarmDto sellerCustomAlarmDto)
 																throws IllegalStateException, IOException;
 	// 요청서 파일 no 가져오기
-	List<FilesVO> FilesList(int member_custom_order_no);
+	List<FilesVO> filesList(int member_custom_order_no);
 	
 	// 카테고리로 요청서 작성하기
 	CustomOrderDto customCate(int category_no, HttpSession session,

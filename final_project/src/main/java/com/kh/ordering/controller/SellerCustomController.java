@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
+import com.kh.ordering.entity.SellerCustomAlarmDto;
+import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
@@ -59,9 +61,11 @@ public class SellerCustomController {
 	@GetMapping("/customOrder")
 	public String memberCustom(HttpSession session,
 															@RequestParam int member_no,
+															@RequestParam(value="category_no", required=false, defaultValue="0") int category_no,
 															Model model) {
-		
+
 		model.addAttribute("member_no", member_no);
+		model.addAttribute("category_no", category_no);
 		
 		return "seller/customOrder";
 	}
@@ -69,12 +73,13 @@ public class SellerCustomController {
 	@PostMapping("/customOrder")
 	public String memberCustom(HttpSession session,
 														@RequestParam int member_no,
+														@RequestParam int category_no,
 														@ModelAttribute FilesVO files,
 														@ModelAttribute CustomOrderDto customOrderDto) throws IllegalStateException, IOException {
 
 		//판매자 견적서 보내기
 		//견적서 작성 --> 주문제작 테이블 데이터 입력 --> 관리테이블 데이터 등록 --> 구매자 알람 테이블 등록
-		sellerCustomService.SellerCustom(session, member_no, files, customOrderDto);
+		sellerCustomService.SellerCustom(session, member_no, category_no, files, customOrderDto);
 		return "redirect:/seller/customListResp";
 	}
 	
@@ -107,7 +112,7 @@ public class SellerCustomController {
 		int seller_no = sellerCustomDao.getNo(seller_id);
 		
 		// 판매자 알람 업데이트 후
-		sellerCustomDao.UpdateAlarm(seller_no, member_custom_order_no);
+		sellerCustomDao.updateAlarm(seller_no, member_custom_order_no);
 		// 상세페이지 보기
 		CustomOrderVO content = sellerCustomDao.customOrderVO1(member_custom_order_no, seller_no);
 
@@ -117,7 +122,7 @@ public class SellerCustomController {
 		model.addAttribute("category", categoryDao.get(category_no));
 
 		// 파일 번호 보내기
-		List<FilesVO>  filesVO = memberCustomService.FilesList(member_custom_order_no);
+		List<FilesVO>  filesVO = memberCustomService.filesList(member_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
 		
 		return "seller/customInfoReq";
@@ -156,7 +161,34 @@ public class SellerCustomController {
 		model.addAttribute("filesVO", filesVO);
 		
 		return "seller/customInfoResp";
-	}	
+	}
+
+//	삭제
+	@GetMapping("/deleteReq") // 받은 요청서 삭제
+	public String CustomReqDelete(int member_custom_order_no,
+																HttpSession session, Model model) {
+		String seller_id = (String)session.getAttribute("seller_id");
+		int seller_no = sellerCustomDao.getNo(seller_id); 
+		
+		model.addAttribute("seller_no", seller_no);
+		// 판매자 알람 delete 컬럼 Y로 업데이트
+		SellerCustomAlarmDto sellerCustomAlarmDto 
+				= 	SellerCustomAlarmDto.builder()
+															.member_custom_order_no(member_custom_order_no)
+															.seller_no(seller_no)
+															.build();
+		sellerCustomDao.deleteCustomReq(sellerCustomAlarmDto);
+		return "seller/customListReq";
+	}
+	@GetMapping("/deleteResp")	 // 보낸 견적서 삭제
+	public String CustomDeleteResp(int seller_custom_order_no) {
+		// seller_custom_order_no를 이용하여 custom_order_no를 가져오자
+		int custom_order_no = sellerCustomDao.getCustomNo(seller_custom_order_no);
+		// 해당 주문제작 테이블 데이터 삭제
+		sellerCustomDao.deleteCustomResp(custom_order_no);
+				
+		return "seller/customListResp";
+	}
 
 //	파일 이미지 다운로드
 	@GetMapping("/download")

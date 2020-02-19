@@ -49,7 +49,7 @@
 	
 	<!-- 카테고리 번호로 판매자 검색 -->
 	<select id="getSellerNo" parameterType="int" resultType="com.kh.ordering.entity.SellerCategoryDto">
-		select seller from seller_category where category=#{category_no}
+		select seller_no from seller_category where category_no=#{category_no}
 	</select>
 	
  </mapper>

@@ -81,8 +81,7 @@ public class MemberCustomController {
 		int category_no = categoryDto.getCategory_no();
 		
 		customOrderDto.setCustom_order_category(category_no);
-		log.info("category No={}", category_no);
-		log.info("cate포함한 customOrderDto={}", customOrderDto);
+
 		memberCustomService.customCate(category_no, session, customOrderDto, files);
 		
 		return "redirect:/member/customSuccess";
@@ -149,7 +148,6 @@ public class MemberCustomController {
 		CustomOrderVO content = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("getListInfoResp", content);
 		
-//		List<FilesVO>  filesVO = memberCustomService.FilesList(seller_custom_order_no);
 		List<FilesVO>  filesVO = sellerCustomService.filesList(seller_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
 		
@@ -182,9 +180,32 @@ public class MemberCustomController {
 		CustomOrderVO content = memberCustomDao.customOrderVO2(member_custom_order_no);
 		model.addAttribute("getListInfoReq", content);
 		
-		List<FilesVO>  filesVO = memberCustomService.FilesList(member_custom_order_no);
+			// 카테고리 표시를 위한 model정보
+		int category_no = content.getCustom_order_category();
+		model.addAttribute("category", categoryDao.get(category_no));
+		
+		List<FilesVO>  filesVO = memberCustomService.filesList(member_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
 		
+		return "member/customInfoReq";
+	}
+
+//	삭제
+	@GetMapping("/deleteReq") // 보낸 요청서 삭제(1:1)
+	public String CustomDeleteReq(int member_custom_order_no) {
+
+		// member_custom_order_no를 이용하여 custom_order_no 가져오기
+		int custom_order_no = memberCustomDao.getCustomNo(member_custom_order_no);
+
+//		 해당 주문제작 테이블 데이터 삭제
+		memberCustomDao.deleteCustomReq(custom_order_no);
+		
+		return "member/customInfoReq";
+	}
+	@GetMapping("/deleteCustom")
+	public String CustomDeleteCate(int member_custom_order_no) {		
+		memberCustomDao.deleteAlarm(member_custom_order_no); // 판매자의 요청서 알람테이블 삭제
+		memberCustomDao.deleteCustom(member_custom_order_no); // 주문제작 테이블 삭제
 		return "member/customInfoReq";
 	}
 	

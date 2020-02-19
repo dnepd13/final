@@ -81,13 +81,17 @@
 	<select id="getSeller" parameterType="int" resultType="int">
 		select seller_no from goods where goods_no=#{goods_no}
 	</select>
+	<!-- 단일조회 -->
+	<select id="getQna" parameterType="int" resultType="goodsQnaDto"> 
+		select *from goods_qna where goods_qna_no=#{goods_qna_no}
+	</select>
 	
 	<!-- 구매자 문의 입력 -->
 	<insert id="insertQ" parameterType="goodsQnaDto">
-		insert into goods_qna(goods_qna_no, goods_no, seller_no,
+		insert into goods_qna(goods_qna_no, goods_no, seller_no, member_no,
 							                    goods_qna_content, goods_qna_writer, goods_qna_date,goods_qna_head,
 							                    goods_qna_groupno,goods_qna_superno,goods_qna_status)
-			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no},
+			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no}, #{member_no},
 			                    #{goods_qna_content}, #{goods_qna_writer}, sysdate, #{goods_qna_head},
 			                    goods_qna_seq.currval, null, null)
 	</insert>
@@ -95,14 +99,18 @@
 		update goods_qna 
 			set goods_qna_content= #{goods_qna_content}, goods_qna_date= sysdate
 		where goods_qna_no= #{goods_qna_no}
-				and goods_qna_writer= #{goods_qna_writer} and goods_qna_status is null
+				and member_no= #{member_no} and goods_qna_status is null
 	</update>
+	<delete id="deleteQ" parameterType="goodsQnaDto">
+		delete goods_qna
+			where member_no=#{member_no} and goods_qna_no=#{goods_qna_no}
+	</delete>
 	
 	<!-- 목록 -->
 	<select id="getQnaCount" parameterType="int" resultType="int">
 		select count(*) from goods_qna where goods_no=#{goods_no}
 	</select>
-	<select id="getQna" parameterType="int" resultType="goodsQnaDto">
+	<select id="getListQna" parameterType="int" resultType="goodsQnaDto">
 		select *from(
 			select rownum rn, RN.* from(
 			    select *from goods_qna where goods_no=#{goods_no}

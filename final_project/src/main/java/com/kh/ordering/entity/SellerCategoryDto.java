@@ -7,6 +7,6 @@ import lombok.Data;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class SellerCategoryDto {
-	private int seller;
-	private int category;
+	private int seller_no;
+	private int category_no;
 }

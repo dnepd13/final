@@ -91,7 +91,8 @@
 <!-- 카테고리 선택페이지 -->
 <div class="customCate" style="display:block;">
 	<h5>요청서를 보낼 기본 카테고리를 선택해주세요.</h5>
-	<form action="customCate" method="post" enctype="multipart/form-data">
+	<form action="customCate" method="post" enctype="multipart/form-data"
+				onsubmit="return confirm('추후 판매자가 확인하지 않은 요청서만 삭제할 수 있습니다. 요청서를 보내시겠습니까?');">
 		<div class="insert_cate">
 			<select class="category_large" name="category_large">
 				<option class="largeChild">선택</option>

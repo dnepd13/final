@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+
 <h3>seller Custom Info Req.jsp</h3>
 	
 <h4>받은 요청서 상세내용</h4>
@@ -21,7 +24,9 @@
 	</c:forEach>
 	</c:if>
 	<br>
-	<a href="customOrder?member_no=${getListInfoReq.member_no }">견적서 보내기</a>	
+	<a href="${pageContext.request.contextPath}/seller/customOrder?member_no=${getListInfoReq.member_no}&category_no=${category.category_no }">
+		견적서 보내기
+	</a>
 	<hr>
 	</div>
 

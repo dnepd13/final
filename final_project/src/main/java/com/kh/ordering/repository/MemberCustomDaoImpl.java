@@ -113,5 +113,24 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	public int customReqCount(int member_no) {
 		return sqlSession.selectOne("member.customReqCount", member_no);
 	}
+
+//	보낸 요청서 삭제
+	@Override // 1:1 삭제를 위한 custom_order_no 조회
+	public int getCustomNo(int member_custom_order_no) {
+		return sqlSession.selectOne("member.getCustomNo", member_custom_order_no);
+	}
+	@Override // 1:1 요청서 삭제
+	public void deleteCustomReq(int custom_order_no) {
+		sqlSession.delete("member.deleteReq", custom_order_no);
+	}
+	@Override // 카테고리. 판매자 알람테이블 삭제
+	public void deleteAlarm(int member_custom_order_no) {
+		sqlSession.delete("member.deleteAlarm", member_custom_order_no);
+	}
+
+	@Override // 카테고리. 요청서 정보 삭제
+	public void deleteCustom(int member_custom_order_no) {
+		sqlSession.delete("member.deleteCustom", member_custom_order_no);	
+	}
 	
 }

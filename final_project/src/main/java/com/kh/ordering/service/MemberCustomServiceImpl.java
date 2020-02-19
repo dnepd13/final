@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.ordering.entity.CategoryDto;
@@ -37,6 +38,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 	@Autowired
 	private CategoryDao categoryDao;
 
+	@Transactional
 	@Override // 메인에서의 카테고리 요청서
 	public CustomOrderDto customCate(int category_no, HttpSession session,
 																	CustomOrderDto customOrderDto,
@@ -49,20 +51,38 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 			String member_id = (String)session.getAttribute("member_id");
 			int member_no = memberCustomDao.getNo(member_id);
 			
-			// 요청서를 저장 테이블에 저장한 뒤
-			log.info("category_no={}", category_no);
-			log.info("customOrderDto={}", customOrderDto);
+			// 요청서를 주문제작 테이블에 저장한 뒤
 			memberCustomDao.customOrderInsert(customOrderDto);	
 
-			// 요청서 저장 테이블 시퀀스 가져오기
+			// 요청서 주문제작 테이블 시퀀스 가져오기
 			int custom_order_no = memberCustomDao.customSeq();
 			
-			// 요청서 관리 테이블에 회원번호, 요청서 번호 등록
-			MemberCustomOrderDto memberCustomDto = MemberCustomOrderDto.builder()
-																																				.custom_order_no(custom_order_no) // 요청서 번호
-																																				.member_no(member_no) // 회원번호
-																																				.build();
+			// 요청서 관리 테이블에 회원번호, 주문제작 번호 등록
+			MemberCustomOrderDto memberCustomDto 
+													= MemberCustomOrderDto.builder()
+																									.custom_order_no(custom_order_no) // 주문제작 번호
+																									.member_no(member_no) // 회원번호
+																									.build();
 			memberCustomDao.memberCustom(memberCustomDto);
+			
+			// 요청서 관리테이블 현재 시퀀스번호
+			int member_custom_order_no = memberCustomDao.customOrderSeq();
+			
+			// 판매자 요청서 도착 알람 생성
+			// - seller_no리스트 만큼 판매자 알람 테이블 데이터 입력
+			List<SellerCustomAlarmDto> sellerAlarm = new ArrayList<>();
+			
+			for(SellerCategoryDto sellerList : getSellerNo) {
+				
+				sellerAlarm.add(SellerCustomAlarmDto.builder()
+																					.seller_no(sellerList.getSeller_no())
+																					.member_custom_order_no(member_custom_order_no)
+																					.build());
+			}
+			for(int i=0; i<sellerAlarm.size();i++) {
+				SellerCustomAlarmDto sellerCustomAlarmDto = sellerAlarm.get(i);
+				sellerCustomDao.customAlarmInsert(sellerCustomAlarmDto);
+			}
 			
 			// 파일이 있다면 파일 테이블에 파일 등록하고
 			// 주문제작-파일 중개테이블에 파일 번호, 저장테이블 시퀀스 등록
@@ -108,27 +128,10 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 				}
 			}
 			
-			// 요청서 관리테이블 현재 시퀀스번호
-			int member_custom_order_no = memberCustomDao.customOrderSeq();
-			
-			// 판매자 요청서 도착 알람 생성
-			// - seller_no리스트 만큼 판매자 알람 입력
-			List<SellerCustomAlarmDto> sellerAlarm = new ArrayList<>();
-			
-			for(SellerCategoryDto sellerList : getSellerNo) {
-
-				sellerAlarm.add(SellerCustomAlarmDto.builder()
-																						.seller_no(sellerList.getSeller())
-																						.member_custom_order_no(member_custom_order_no)
-																						.build());
-			}
-			for(int i=0; i<sellerAlarm.size();i++) {
-				SellerCustomAlarmDto sellerCustomAlarmDto = sellerAlarm.get(i);
-				sellerCustomDao.CustomAlarmInsert(sellerCustomAlarmDto);
-			}
 			return null;
 	}
 	
+	@Transactional
 	@Override // 상품 상세페이지에서의 1:1 요청서
 	public CustomOrderDto MemberCustom(HttpSession session, int seller_no,
 																				FilesVO files,
@@ -213,13 +216,13 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 																					.seller_no(seller_no)
 																					.member_custom_order_no(member_custom_order_no)
 																					.build();
-		sellerCustomDao.CustomAlarmInsert(sellerCustomAlarmDto);
+		sellerCustomDao.customAlarmInsert(sellerCustomAlarmDto);
 		return null;
 	}
 
 // 요청서 파일 no 가져오기
 	@Override
-	public List<FilesVO> FilesList(int member_custom_order_no){
+	public List<FilesVO> filesList(int member_custom_order_no){
 	
 		List<FilesVO> filesVO = memberCustomDao.getFilesNo(member_custom_order_no);
 		

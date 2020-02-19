@@ -37,6 +37,13 @@ public interface MemberCustomDao {
 	//구매 알람테이블 견적서 총 개수 check N
 	int customAlarm(int member_no);
 	
+	//보낸 요청서 삭제 (1:1)
+	int getCustomNo(int member_custom_order_no);
+	void deleteCustomReq(int custom_order_no);
+	//                        (카테고리)
+	void deleteAlarm(int member_custom_order_no);
+	void deleteCustom(int member_custom_order_no);
+	
 	// 파일 출력용
 	List<FilesVO> getFilesNo(int member_custom_order_no); // 요청서의 파일 No 가져오기
 	

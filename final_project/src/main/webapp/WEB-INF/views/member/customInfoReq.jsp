@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
- <h4>보낸 요청서 상세내용 member Custom Info Req.jsp</h4>   
+ <h4>보낸 요청서 상세내용 member Custom Info Req.jsp</h4>
+ 	카테고리: ${category.category_large } / ${category.category_middle } / ${category.category_small } <br>   
 	제목: ${getListInfoReq.custom_order_title } <br>
 	상세내용 <br>
 	${getListInfoReq.custom_order_content } <br>

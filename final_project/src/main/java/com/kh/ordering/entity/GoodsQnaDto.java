@@ -10,6 +10,7 @@ public class GoodsQnaDto {
 	private int goods_qna_no;
 	private int goods_no;
 	private int seller_no;
+	private int member_no;
 	
 	private String goods_qna_content;
 	private String goods_qna_writer;

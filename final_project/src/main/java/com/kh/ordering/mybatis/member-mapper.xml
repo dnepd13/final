@@ -105,6 +105,29 @@
 		select count(*) from member_custom_order where member_no=#{member_no}
 	</select>
 	
+	<!-- 보낸 1:1 요청서 삭제 -->
+	<select id="getCustomNo" parameterType="int" resultType="int">
+		select custom_order_no from member_custom_view
+				where seller_alarm_check='N' and member_custom_order_no=#{member_custom_order_no}
+	</select>
+	<delete id="deleteReq" parameterType="int">
+		delete from custom_order A
+		    where exists( select 1 from member_custom_order B
+				                    	where A.custom_order_no = B.custom_order_no
+				                    				and B.custom_order_no=#{custom_order_no})
+	</delete>
+	<!-- 보낸 카테고리 요청서 삭제 -->
+	<delete id="deleteAlarm">
+		delete seller_alarm where member_custom_order_no= #{member_custom_order_no}
+	</delete>
+	<delete id="deleteCustom">
+		delete from custom_order A
+    		where a.custom_order_no
+    			IN (select custom_order_no from member_custom_order
+							where member_custom_order_no= #{member_custom_order_no})
+	</delete>
+	
+	
 	<!-- 내가 보낸 요청서 목록 / 상세보기 -->
 	<select id="getListReq" parameterType="int" resultType="customOrderVO">
 		select *from(
@@ -112,7 +135,7 @@
 				select A.*, B.member_no, B.member_custom_order_no from
 				    custom_order A inner join member_custom_order B
 				        on a.custom_order_no = b.custom_order_no
-				    where member_no =#{member_no } order by custom_order_date desc
+				    where member_no =232 order by custom_order_date desc
 			)RN
 		)where rn between #{start} and #{finish}
 	</select>
@@ -131,6 +154,7 @@
 		        on b.custom_order_no = c.custom_order_no
 		where c.member_custom_order_no= #{member_custom_order_no}
 	</select>
+	
 	
 	<!-- 멤버를 생성하기위한 시퀀스 생성 -->
 	 	<select id="MemberSeq" resultType="int">
