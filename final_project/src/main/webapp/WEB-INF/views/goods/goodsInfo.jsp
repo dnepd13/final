@@ -48,7 +48,7 @@ $(function(){
 				var no = $(this).val();
 				var arr = goodsOptionVOList[i].goodsOptionList;
 				console.log(arr);
-				var index = arr.findIndex(dto => dto.goods_option_no == no);
+				var index = arr.findIndex(dto <= dto.goods_option_no == no);
 				price += arr[index].goods_option_price;
 				title = goodsOptionVOList[i].goods_option_title;
 				content = arr[index].goods_option_content;
@@ -172,85 +172,147 @@ $(function(){
 		return num.toString().replace(regexp, ',');
 	}
 	
-	
-	
-	
-	// 문의게시판 영역
-	// '문의하기' 보여주기
-    var qna_member = document.querySelector(".qna_member");
-    
-    $(".btn_q").click(function(){
-        if($(this).text()=="문의하기"){
-            qna_member.style.display="block";
-            $(this).text("취소");
-        }
-        else{
-            qna_member.style.display="none";
-            $(this).text("문의하기");
-        }
-    });
-            
-	$(".qna_member").find("form").submit(function(e){
-		e.preventDfault();
-		
-		var url=$(this).attr("action");
-    	var method=$(this).attr("method");
-    	var data = $(this).serialize();
-		
-    	$.ajax({
-    		url: url,
-    		method: method,
-    		data: data,
-    		success: function(resp){
-//     			 alert("문의 등록 완료");
-    		}
-    	});
-    	
-    	$(this).parents(".qna_member").hide();
-    	
-	});
-	
-	// '답변하기' 숨김, 보여주기
-	$(".qna_seller").hide();
-
-    var btn_a = document.querySelector(".btn_a");
-    
-    var qna_head= document.querySelector(".qna_head");
-    if($(qna_head).text()=="답변완료"){
-        btn_a.style.display="none";
-    }
-    
-    $(".btn_a").click(function(){
-        if($(this).text()=="답변하기"){
-            $(this).parents().next(".qna_seller").show();
-            $(this).text("취소");
-        }
-        else{
-            $(".qna_seller").hide();
-            $(this).text("답변하기");
-        }
-    });
-    
-    $(".qna_seller").find("form").submit(function(){
-//     	e.preventDefault();
-    	
-//     	var url=$(this).attr("action");
-//     	var method=$(this).attr("method");
-//     	var data = $(this).serialize();
-    	
-//     	$.ajax({
-//     		url: url,
-//     		method: method,
-//     		data: data,
-//     		success: function(resp){
-// //     	        alert("답변 등록 완료");
-//     		}
-//     	});
-    	
-    	$(this).parents(".qna_seller").hide();
-    	$(this).parents().prev().find(".btn_a").text("답변완료").attr("disabled", true);
-    });
 }); 
+
+////////////////////문의게시판 영역///////////////
+$(function(){
+// '문의하기' 보여주기
+            var qna_member = document.querySelector(".qna_member");
+            
+            $(".btn_q").click(function(){
+                if($(this).text()=="문의하기"){
+                    qna_member.style.display="block";
+                    $(this).text("취소");
+                }
+                else{
+                    qna_member.style.display="none";
+                    $(this).text("문의하기");
+                }
+            });
+	// 문의 작성
+			$(".qna_member").find("form").submit(function(e){
+				e.preventDfault();
+		
+		    	var data = $(this).serialize();
+				
+		    	$.ajax({
+		    		url: "insertQ",
+		    		method: "post",
+		    		data: data,
+		    		success: function(resp){
+		    			location.reload(true);
+		    		}
+		    	});
+		    	
+		    	$(this).parents(".qna_member").hide();
+		    	
+			});
+	// 문의 수정 및 삭제
+			$(".btn_update").click(function(){
+				// 수정하기 버튼을 누르면 수정모드로 전환
+				if($(this).text()=="수정"){
+					var contentCell = $(this).parent().prev().prev().prev();					
+					var content = contentCell.text();
+
+					contentCell.empty();
+					
+					$("<input>").val(content).appendTo(contentCell);
+					
+					$(this).text("완료");
+				} // 위의 완료버튼 누르면 수정내용 비동기로 등록하기
+				else{
+					var contentCell = $(this).parent().prev().prev().prev();						
+					var content = contentCell.children().val();
+					
+					contentCell.empty();
+					contentCell.text(content);
+					
+					var goods_qna_content = contentCell.text();					
+					var goods_qna_no =$(this).parent().data("goods_qna_no");
+					var goods_no=$(this).parent().data("goods_no");
+					var member_no=$(this).parent().data("member_no");
+					
+					console.log(goods_qna_content);
+					
+					$(this).text("수정");
+					
+					$.ajax({
+			    		url: "updateQ",
+			    		method: "POST",
+			    		data: {"goods_no": goods_no,
+			    					"goods_qna_no":goods_qna_no,
+			    					"goods_qna_content": goods_qna_content,
+			    					"member_no" : member_no,
+			    				},
+			    		success: function(resp){
+			    			location.reload(true);
+			    		}
+			    	});				
+				}
+				
+			});
+		    $(".btn_delete").click(function(){
+		    	var td = $(this).parent();
+		    	var goods_qna_no= td.data("goods_qna_no");
+		    	var goods_no = td.data("goods_no");
+		    	
+		    	if(confirm("문의를 삭제하시겠습니까?")){
+		    		$.ajax({
+			    		url: "deleteQ",
+			    		method: "GET",
+			    		data: {"goods_qna_no" : goods_qna_no,
+			    					"goods_no" : goods_no
+			    					},
+			    		success: function(resp){
+			    			location.reload(true);
+			    		},
+			    		error: function(erro){
+			    			alert("알 수 없는 에러 발생");
+			    		}
+			    	});
+		    	}
+		    });
+    
+// '답변하기' 숨김, 보여주기
+		$(".qna_seller").hide();
+	
+	    var btn_a = document.querySelector(".btn_a");
+	    
+	    var qna_head= document.querySelector(".qna_head");
+	    if($(qna_head).text()=="답변완료"){
+	        btn_a.style.display="none";
+	    }
+	    
+	    $(".btn_a").click(function(){
+	    	
+	        if($(this).text()=="답변하기"){
+	            $(this).parents().next(".qna_seller").show();
+	            $(this).text("취소");
+	        }
+	        else{
+	            $(".qna_seller").hide();
+	            $(this).text("답변하기");
+	        }
+	    });
+	    
+	    $(".qna_seller").find("form").submit(function(){
+	    	e.preventDefault();
+	
+	    	var data = $(this).serialize();
+	    	
+	    	$.ajax({
+	    		url: "insertA",
+	    		method: "POST",
+	    		data: data,
+	    		success: function(resp){
+	    	        location.reload(true);
+	    		}
+	    	});
+	    	
+	    	$(this).parents(".qna_seller").hide();
+	    });
+        
+});
 
 </script>
 
@@ -260,10 +322,11 @@ $(function(){
 		width: 80%
 	}
 	.qna_member textarea {
-		width: 100%;
 		resize: none;
+		width: 100%;
 	}
-	.qna_seller textarea {
+	.qna_seller textarea,
+	.updateQ textarea {
 		resize: none;
 		width: 100%;
 	}
@@ -279,7 +342,7 @@ $(function(){
 <span>
 	<c:choose>
 		<c:when test="${member_id !=null }">
-			<a href="${pageContext.request.contextPath}/member/customOrder?seller_no=93">1:1 요청서</a>
+			<a href="${pageContext.request.contextPath}/member/customOrder?seller_no=${goodsVO.seller_no }">1:1 요청서</a>
 		</c:when>
 		<c:otherwise>
 			<a href="${pageContext.request.contextPath}/member/login">1:1 요청서</a>
@@ -359,11 +422,10 @@ $(function(){
 			</thead>
 			<tbody>
 				<c:forEach var="qna" items="${goodsQna }">
-				<c:set var="qna_head" value="${qna.goods_qna_head }"/>
 				<c:choose>
-				<c:when test="${functions:contains(qna_head,'답변') }">
-					<tr>
-						<td class="qna_head"></td>
+					<c:when test="${qna.goods_qna_superno != 0 }">
+					<tr> <!-- 판매자 답변 목록 -->
+						<td></td>
 						<td>[${qna.goods_qna_head }] ${qna.goods_qna_content }</td>
 						<td>${qna.goods_qna_writer }</td>
 						<td>${qna.goods_qna_date }</td>
@@ -371,19 +433,35 @@ $(function(){
 					</tr>
 					</c:when>
 					<c:otherwise>
-					<tr>
-						<td class="qna_head">${qna.goods_qna_head }</td>
+					<tr>	<!-- 구매자 문의 목록 -->
+						<td>${qna.goods_qna_head }</td>
 						<td>${qna.goods_qna_content }</td>
 						<td>${qna.goods_qna_writer }</td>
 						<td>${qna.goods_qna_date }</td>
+						<%-- 문의 작성자와 로그인한 member_id가 같을 때 --%>
+						<c:if test="${qna.member_no == member_no && empty qna.goods_qna_status}">
+							<td data-goods_no = "${goodsVO.goods_no }"
+									data-goods_qna_no="${qna.goods_qna_no }"
+									data-member_no="${qna.member_no }">
+									<button class="btn_update">수정</button>
+									<button class="btn_delete">삭제</button>
+							</td>
+						</c:if>
 						<%-- 상품의 seller_no와 로그인한 seller_no가 같을 때 --%>
-		<%-- 		<c:if test="${seller_no }==${goodsVO.seller_no }"> --%>
-						<td><button class="btn_a">답변하기</button></td>
-		<%-- 		</c:if> --%>
+						<c:if test="${not empty seller_no && goodsVO.seller_no == seller_no }" >
+							<c:if test="${empty qna.goods_qna_status }">
+								<td><button class="btn_a">답변하기</button></td>
+							</c:if>
+						</c:if>
+						<c:set var="status" value="${qna.goods_qna_status}"></c:set>
+						<c:if test="${functions : contains(status, '답변완료') }">
+								<td>답변완료</td>
+						</c:if>
 					</tr>
 					</c:otherwise>
-				</c:choose>	
-				<tr class="qna_seller"> <!-- 판매자 답변 -->
+				</c:choose>
+					
+				<tr class="qna_seller"> <!-- 판매자 입력 -->
 					<td colspan="5">
 						<form action="insertA" method="post">
 							<input type="hidden" name="seller_no" value="${goodsVO.seller_no }">
@@ -396,8 +474,7 @@ $(function(){
 						</form>
 					</td>
 				</tr>
-				<tr class="qna_more">
-				</tr>
+				
 				</c:forEach>
 			</tbody>
 		</table>
@@ -434,6 +511,7 @@ $(function(){
     </div>
 <hr>
 </section>	
+<!-- ----------------------------------------------------------------------- -->
 <section>
 <p>리뷰</p>
 <hr>

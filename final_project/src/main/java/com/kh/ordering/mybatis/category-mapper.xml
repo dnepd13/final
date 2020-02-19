@@ -47,4 +47,9 @@
 		select distinct category_small from category where category_middle = #{category_name}
 	</select>
 	
+	<!-- 카테고리 번호로 판매자 검색 -->
+	<select id="getSellerNo" parameterType="int" resultType="com.kh.ordering.entity.SellerCategoryDto">
+		select seller_no from seller_category where category_no=#{category_no}
+	</select>
+	
  </mapper>

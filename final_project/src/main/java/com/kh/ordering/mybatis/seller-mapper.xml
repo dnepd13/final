@@ -103,11 +103,11 @@
 		(custom_order_no,
 		custom_order_title, custom_order_content, custom_order_date,
 		custom_order_price, custom_order_hopedate,
-		custom_order_status, custom_order_type)
+		custom_order_status, custom_order_type,custom_order_category)
 		values(custom_order_seq.nextval,
 		#{custom_order_title}, #{custom_order_content}, sysdate,
 		#{custom_order_price}, #{custom_order_hopedate},
-		'진행 중', '견적서')
+		'진행중', '견적서',#{custom_order_category})
 	</insert>	
 	<!-- 주문제작 테이블 현재 시퀀스번호 -->
 	<select id="customSeq" resultType="int">
@@ -151,7 +151,7 @@
 		        select A.*, B.member_id from
 		            member_custom_view A inner join member B
 		                on A.member_no = B.member_no
-		        where seller_no = #{seller_no} order by custom_order_date desc
+		        where seller_no = #{seller_no} and  seller_alarm_delete='N' order by custom_order_date desc
 		    )RN 
  		)where rn between #{start} and #{finish} 
 	</select>	
@@ -161,7 +161,7 @@
 		select A.*, B.member_id from
 		    member_custom_view A inner join member B
 		        on a.member_no = B.member_no
-		where A.member_custom_order_no = #{member_custom_order_no}
+		where A.member_custom_order_no = #{member_custom_order_no} and A.seller_no=#{seller_no}
 	</select>
 	<!-- 요청서 파일 데이터 출력 -->
 	<select id="getListReqFiles" parameterType="int" resultType="com.kh.ordering.entity.FilesDto">
@@ -188,6 +188,26 @@
 	<select id="customRespCount" parameterType="int" resultType="int">
 		select count(*) from seller_custom_order where seller_no=#{seller_no}
 	</select>
+	
+	<!-- 요청서 삭제 (알람테이블 상태 업데이트) -->
+	<delete id="deleteReq" parameterType="SellerAlarmDto">
+		update seller_alarm set seller_alarm_date=sysdate, seller_alarm_delete='Y'
+			where seller_no=#{seller_no} and member_custom_order_no=#{member_custom_order_no}
+	</delete>
+	<!-- 보낸 견적서 삭제 -->
+	<select id="getCustomNo" parameterType="int" resultType="int">
+		select custom_order_no from seller_custom_view
+			where member_alarm_check='N' and seller_custom_order_no=#{seller_custom_order_no}
+	</select>
+	<delete id="deleteResp" parameterType="int">
+		delete from custom_order A
+		    where exists( select 1 from seller_custom_order B
+				                    	where A.custom_order_no = B.custom_order_no
+				                    	and B.custom_order_no=#{custom_order_no})
+	</delete>
+	<delete id="deleteAlarm">
+		delete member_alarm where seller_custom_order_no= #{seller_custom_order_no}
+	</delete>
 	
 	<!-- 내가 보낸 견적서 목록 / 상세보기 -->
 	<select id="getListResp" parameterType="pagingVO" resultType="CustomOrderVO">

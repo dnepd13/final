@@ -20,23 +20,31 @@ public interface SellerCustomDao {
 	int getNo(@RequestParam String seller_id);
 	
 	//판매자 견적서 작성
-	void CustomOrderInsert(CustomOrderDto customOrderDto); // 견적서 저장 테이블
-	int CustomSeq();// 주문제작.currval 시퀀스 번호
-	void SellerCustom(SellerCustomOrderDto sellerCustomDto); // 견적서 관리 테이블
-	int CustomOrderSeq(); // 견적서 관리테이블.currval 시퀀스
-	void CustomAlarmInsert(SellerCustomAlarmDto sellerCustomAlarmDto); 	//요청서 도착 알람 테이블
-	int FilesSeq(); // 파일 .nextval 시퀀스번호
-	void FilesInsert(FilesDto filesDto); // 파일 저장
-	void CustomFilesInsert(CustomOrderFilesDto customOrderFilesDto); // 주문제작-파일테이블
+	void customOrderInsert(CustomOrderDto customOrderDto); // 견적서 저장 테이블
+	int customSeq();// 주문제작.currval 시퀀스 번호
+	void sellerCustom(SellerCustomOrderDto sellerCustomDto); // 견적서 관리 테이블
+	int customOrderSeq(); // 견적서 관리테이블.currval 시퀀스
+	void customAlarmInsert(SellerCustomAlarmDto sellerCustomAlarmDto); 	//요청서 도착 알람 테이블
+	int filesSeq(); // 파일 .nextval 시퀀스번호
+	void filesInsert(FilesDto filesDto); // 파일 저장
+	void customFilesInsert(CustomOrderFilesDto customOrderFilesDto); // 주문제작-파일테이블
 	
-	//구매자 1:1 요청서 보기
+	//받은 요청서 보기
 	List<CustomOrderVO> getListReq(PagingVO paging); // 목록
-	//구매자 요청서 단일조회, 상세내용
-	CustomOrderVO customOrderVO1(int member_custom_order_no);
+	//받은 요청서 단일조회, 상세내용
+	CustomOrderVO customOrderVO1(int member_custom_order_no, int seller_no);
 	//요청서 누르면 판매자 알림테이블 업데이트
-	void UpdateAlarm(int seller_no, int member_custom_order_no);
+	void updateAlarm(int seller_no, int member_custom_order_no);
 	//판매자 알람테이블 check N
 	int customAlarm(int seller_no);
+	
+	//받은 요청서 삭제
+	void deleteCustomReq(SellerCustomAlarmDto sellerAlarmDto);
+	//보낸 견적서 삭제
+	int getCustomNo(int seller_custom_order_no);
+	void deleteCustomResp(int custom_order_no);
+	//구매자의 견적서 알람테이블 삭제
+	void deleteAlarm(int seller_custom_order_no);
 	
 	// 파일 출력용
 	List<FilesVO> getFilesNo(int seller_custom_order_no);

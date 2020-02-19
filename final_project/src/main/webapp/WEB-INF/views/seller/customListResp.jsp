@@ -1,42 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
- 
- <script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/toast/hakademy-toast.min.js"></script>
-     <script>
-        Hakademy.util.toast.initializeOnLoad({
-            duration:2,//메시지 출력 시간(초)
-            position:"bottom-right",//출력 위치 : top, bottom, right, left 또는 혼합
-            positionStyle:"nonblock",//출력스타일(block/nonblock)
-            backgroundColor:"rgba(0,0,0,0.5)",//배경색(css style)
-            fontColor:"white",//글자색(css style)
-            fontSize:10,//글자크기(px)
-            fontFamily:null,//글꼴(css style)
-            isBorderRounded:true,//둥근 테두리
-            isFade:true,//페이드 인/아웃 적용여부
-        }); 
-    </script>
 
-    <script src="https://code.jquery.com/jquery-latest.js"></script>
-    <script>
-        $(function(){
-            $("button.toast").click(function(){
-                var option = {
-                    
-                };
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+<script>
+	function deleteResp(seller_custom_order_no){
 
-                var text = $("input[name=alarm]").val();
-                Hakademy.toast.set(option);
-                Hakademy.toast.push("알림알림");
-            });
-        });
-    </script> 
-    
-<button class="toast"></button>
+		if(confirm("견적서를 삭제하시겠습니까?")){
+			$.ajax({
+				url : "deleteResp",
+				data: {"seller_custom_order_no" : seller_custom_order_no},
+				method: "get",
+				success: function(resp){
+					location.reload(true);
+				},
+				error: function(error){
+					alert("읽음 처리된 견적서는 삭제할 수 없습니다.");
+				}
+			});
+		}	
+		else{
+			return false;
+		}
+		
+	}
+</script>
 
 <h3>판매자가 보낸 견적서 customListResp.jsp</h3>
 
-<a href="remove">임시 세션지우기</a> &#124; 
+<a href="main">판매자 홈으로</a> &verbar; 
 <a href="customListReq">받은 요청서</a>
 <h4>확인 안 한 요청서 몇 개냐: <span class="alarm">${customAlarm } 개</span></h4>	
 
@@ -45,7 +40,9 @@
 	<div>
 	제목: <a href="customInfoResp?seller_custom_order_no=${sellerCustom.seller_custom_order_no }">
 						${sellerCustom.custom_order_title }
-			</a> <br>	
+			</a>
+			<button onclick="deleteResp(${sellerCustom.seller_custom_order_no })">&Cross;</button>
+			<br>	
 	작성일: ${sellerCustom.custom_order_date } <br>
 	<hr>
 	</div>

@@ -18,43 +18,64 @@
         }); 
     </script>
 
-    <script src="https://code.jquery.com/jquery-latest.js"></script>
-    <script>
-        $(function(){
-            $("button.toast").click(function(){
-                var option = {
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+    
+<script>
+	$(function(){
+		$("button.toast").click(function(){
+			var option = {
                     
-                };
+		};
 
-                var text = $("input[name=alarm]").val();
-                Hakademy.toast.set(option);
-                Hakademy.toast.push("알림알림");
-            });
-        });
+			var text = $("input[name=alarm]").val();
+			Hakademy.toast.set(option);
+			Hakademy.toast.push("알림알림");
+		});
+            
+	});
+	
+	//요청서 삭제
+	function deleteReq(member_custom_order_no){
+		if(confirm('요청서를 삭제하시겠습니까?')){
+			$.ajax({
+				url : "deleteReq",
+				data : {"member_custom_order_no": member_custom_order_no},
+				method: "GET",
+				success: function(resp){
+					location.reload(true);
+				}
+			});
+			
+	    }
+	    else{
+	    	return false;
+		}
+	}
+			
     </script> 
     
 <button class="toast"></button>
 
 <h3>판매자가 받은 요청서 customListReq.jsp</h3>
-
-<a href="remove">임시 세션지우기</a> &#124; 
+<a href="main">판매자 홈으로</a> &verbar; 
 <a href="customListResp">보낸 견적서</a>
 <h4>확인 안 한 요청서 몇 개냐: <span class="alarm">${customAlarm } 개</span></h4>	
 
 <h4>요청서 목록</h4>
-<div class="customList">
+<div>
 <c:forEach var="memberReq" items="${getListReq }">
 	<div>
-	보낸사람: ${memberReq.member_id } <br>
-	제목: <a href="customInfoReq?member_custom_order_no=${memberReq.member_custom_order_no }">
+		보낸사람: ${memberReq.member_id }
+		<button onclick="deleteReq(${memberReq.member_custom_order_no })">&Cross;</button><br>
+		제목: <a href="customInfoReq?member_custom_order_no=${memberReq.member_custom_order_no }">
 						${memberReq.custom_order_title }
-			</a>
-			<span style="color: red">
+				</a>
+				<span style="color: red">
 				<c:set var="check" value="${memberReq.seller_alarm_check }"/> 
 				<c:if test="${functions : contains(check, 'N') }"> new </c:if>
-			</span>
-			<br>	
-	작성일: ${memberReq.custom_order_date } <br>
+				</span>
+		<br>	
+		작성일: ${memberReq.custom_order_date } <br>
 	<hr>
 	</div>
 </c:forEach>

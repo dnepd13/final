@@ -2,6 +2,33 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+  
+<script>
+	function deleteReq(member_custom_order_no){
+
+		if(confirm("요청서를 삭제하시겠습니까?")){
+			$.ajax({
+				url : "deleteReq",
+				data: {"member_custom_order_no" : member_custom_order_no},
+				method: "get",
+				success: function(resp){
+						location.reload(true);
+					},
+				error: function(error){
+						alert("읽음 처리된 요청서는 삭제할 수 없습니다.");
+					}
+			})		
+		}
+		else{
+			return false;
+		}
+		
+	}
+</script>
 
 <h3>구매자가 보낸 요청서. member customListReq.jsp</h3>
 
@@ -11,10 +38,11 @@
 
 <c:forEach var="memberCustom" items="${getListReq }">
 <div>
+	cateNo: <span>${memberCustom.custom_order_category }</span><br>
 	<a href="customInfoReq?member_custom_order_no=${memberCustom.member_custom_order_no }">
 		제목: ${memberCustom.custom_order_title }
 	</a> 
-	<span><a href="#"> &timesb;</a></span>
+	<button onclick="deleteReq(${memberCustom.member_custom_order_no })">&Cross;</button>
 	<br>
 	작성일: ${memberCustom.custom_order_date }
 	<hr>

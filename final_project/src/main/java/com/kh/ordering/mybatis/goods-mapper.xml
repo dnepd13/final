@@ -81,40 +81,60 @@
 	<select id="getSeller" parameterType="int" resultType="int">
 		select seller_no from goods where goods_no=#{goods_no}
 	</select>
+	<!-- 단일조회 -->
+	<select id="getQna" parameterType="int" resultType="goodsQnaDto"> 
+		select *from goods_qna where goods_qna_no=#{goods_qna_no}
+	</select>
 	
 	<!-- 구매자 문의 입력 -->
 	<insert id="insertQ" parameterType="goodsQnaDto">
-		insert into goods_qna(goods_qna_no, goods_no, seller_no,
+		insert into goods_qna(goods_qna_no, goods_no, seller_no, member_no,
 							                    goods_qna_content, goods_qna_writer, goods_qna_date,goods_qna_head,
-							                    goods_qna_groupno,goods_qna_superno)
-			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no},
+							                    goods_qna_groupno,goods_qna_superno,goods_qna_status)
+			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no}, #{member_no},
 			                    #{goods_qna_content}, #{goods_qna_writer}, sysdate, #{goods_qna_head},
-			                    goods_qna_seq.currval, null)
+			                    goods_qna_seq.currval, 0, null)
 	</insert>
+	<update id="updateQ" parameterType="goodsQnaDto">
+		update goods_qna 
+			set goods_qna_content= #{goods_qna_content}, goods_qna_date= sysdate
+		where goods_qna_no= #{goods_qna_no}
+				and member_no= #{member_no} and goods_qna_status is null
+	</update>
+	<delete id="deleteQ" parameterType="goodsQnaDto">
+		delete goods_qna
+			where member_no=#{member_no} and goods_qna_no=#{goods_qna_no}
+	</delete>
 	
 	<!-- 목록 -->
 	<select id="getQnaCount" parameterType="int" resultType="int">
 		select count(*) from goods_qna where goods_no=#{goods_no}
 	</select>
-	<select id="getQna" parameterType="int" resultType="goodsQnaDto">
+	<select id="getListQna" parameterType="int" resultType="goodsQnaDto">
 		select *from(
 			select rownum rn, RN.* from(
 			    select *from goods_qna where goods_no=#{goods_no}
-			    connect by prior goods_qna_no=goods_qna_superno start with goods_qna_superno is null
+			    connect by prior goods_qna_no=goods_qna_superno start with goods_qna_superno=0
 			    order SIBLINGS by goods_qna_groupno desc, goods_qna_no asc
 			)RN
 		)where rn between #{start} and #{finish}
 	</select>
 	
 	<!-- 판매자 문의 답변 -->
-	<insert id="insertA">
+	<insert id="insertA" parameterType="goodsQnaDto">
 		insert into goods_qna(goods_qna_no, goods_no, seller_no,
 							                    goods_qna_content, goods_qna_writer, goods_qna_date,goods_qna_head,
-							                    goods_qna_groupno,goods_qna_superno)
+							                    goods_qna_groupno,goods_qna_superno,goods_qna_status)
 			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no},
 				                 #{goods_qna_content}, #{goods_qna_writer}, sysdate, '답변',
-				                #{goods_qna_groupno}, #{goods_qna_superno})
+				                #{goods_qna_groupno}, #{goods_qna_superno},'답변완료')
 	</insert>
+
+	<!-- 상품 문의 답변완료 처리 -->
+	<update id="getIsQna" parameterType="int">
+		update goods_qna set goods_qna_status='답변완료'
+			where goods_qna_groupno=#{goods_qna_groupno} and goods_qna_status is null
+	</update>
 </mapper>
 
 

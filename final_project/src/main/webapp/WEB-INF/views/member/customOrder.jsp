@@ -13,7 +13,8 @@
 
 <!-- 요쳥서 작성페이지: hidden 값은 나중에 회원/판매자에서 정보 가져오기 -->
 <div>
-	<form action="customOrder" method="post" enctype="multipart/form-data">
+	<form action="customOrder" method="post" enctype="multipart/form-data"
+				onsubmit="return confirm('추후 판매자가 확인하지 않은 요청서만 삭제할 수 있습니다. 요청서를 보내시겠습니까?');">
 		<input type="hidden" name="seller_no" value="${seller_no }">
 		<input type="text" name="custom_order_title" placeholder="요청서 제목" required>
 		<h5>요청하는 상세내용을 작성해주세요.</h5>

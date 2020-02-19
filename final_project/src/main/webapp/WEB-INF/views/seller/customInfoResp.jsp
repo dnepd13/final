@@ -11,10 +11,12 @@
 	${getListInfoResp.custom_order_content } <br>
 	견적가격: ${getListInfoResp.custom_order_price } <br>
 	가능날짜: ${getListInfoResp.custom_order_hopedate } <br>
+	<c:if test="${ not empty filesVO }">
 	첨부파일<br>
 	<c:forEach var="filesVO" items="${filesVO }">
-		<img src="http://localhost:8080/ordering/member/download?files_no=${filesVO.files_no }" width=100px; height=100px;>
+		<img src="http://localhost:8080/ordering/seller/download?files_no=${filesVO.files_no }" width=100px; height=100px;>
 	</c:forEach>
+	</c:if>
 	<br>
 	현재상태: ${getListInfoResp.custom_order_status }	
 	<hr>

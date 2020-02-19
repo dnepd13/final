@@ -12,6 +12,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
+import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.SellerCustomDao;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,30 +34,30 @@ public class MemberCustomTest {
 		String member_id = "member";
 		int member_no = sqlSession.selectOne("member.getNo", member_id);
 		
-		// 요청서 등록 -> 테스트 완료
-		CustomOrderDto customOrderDto = CustomOrderDto.builder()
-																							.custom_order_no(1)
-																							.custom_order_title("제목")
-																							.custom_order_content("내용")
-																							.custom_order_date("20200205")
-																							.custom_order_price(10000)
-																							.custom_order_hopedate("내이띾지")
-																							.custom_order_status("진행중")
-																							.custom_order_type("요청서")
-																							.build();
-		
-		sqlSession.insert("member.customReq", customOrderDto);
-		
-		// 요청서 시퀀스번호 가져오기
-		int custom_order_no = sqlSession.selectOne("member.customSeq");
-		
-		// 요청서 관리테이블 등록
-		MemberCustomOrderDto memberCustom = MemberCustomOrderDto.builder()
-																													.member_custom_order_no(1)
-																													.custom_order_no(custom_order_no)
-																													.member_no(member_no)
-																													.build();
-		sqlSession.insert("member.customInsert", memberCustom);	
+//		// 요청서 등록 -> 테스트 완료
+//		CustomOrderDto customOrderDto = CustomOrderDto.builder()
+//																							.custom_order_no(1)
+//																							.custom_order_title("제목")
+//																							.custom_order_content("내용")
+//																							.custom_order_date("20200205")
+//																							.custom_order_price(10000)
+//																							.custom_order_hopedate("내이띾지")
+//																							.custom_order_status("진행중")
+//																							.custom_order_type("요청서")
+//																							.build();
+//		
+//		sqlSession.insert("member.customReq", customOrderDto);
+//		
+//		// 요청서 시퀀스번호 가져오기
+//		int custom_order_no = sqlSession.selectOne("member.customSeq");
+//		
+//		// 요청서 관리테이블 등록
+//		MemberCustomOrderDto memberCustom = MemberCustomOrderDto.builder()
+//																													.member_custom_order_no(1)
+//																													.custom_order_no(custom_order_no)
+//																													.member_no(member_no)
+//																													.build();
+//		sqlSession.insert("member.customInsert", memberCustom);	
 		
 		// 파일이 있다면 파일 테이블에 파일 등록하고
 		// 주문제작-파일 중개테이블에 파일 번호, 저장테이블 시퀀스 등록
@@ -75,10 +76,13 @@ public class MemberCustomTest {
 */
 	}
 	@Autowired
-	private SellerCustomDao sellerCustomDao;
+	private MemberCustomDao memberCustomDao;
 	
 	@Test
-	public void fileTest() throws IOException {
-//		memberCustomDao.getCustomFile()
+	public void deleteTest() throws IOException {
+		int member_custom_order_no = 9;
+		
+		memberCustomDao.deleteAlarm(member_custom_order_no);
+		memberCustomDao.deleteCustom(member_custom_order_no);
 	}
 }
