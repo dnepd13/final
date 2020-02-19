@@ -1,6 +1,7 @@
 package com.kh.ordering.controller;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,12 +15,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.repository.GoodsDao;
+import com.kh.ordering.repository.GoodsOptionDao;
+import com.kh.ordering.repository.MemberDao;
+import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.repository.PayDao;
 import com.kh.ordering.service.payService;
+import com.kh.ordering.vo.CartVO;
 import com.kh.ordering.vo.KakaoPayReadyVO;
 import com.kh.ordering.vo.KakaoPayRevokeReturnVO;
 import com.kh.ordering.vo.KakaoPaySuccessReadyVO;
 import com.kh.ordering.vo.KakaoPaySuccessReturnVO;
+import com.kh.ordering.vo.OrderVO;
 import com.kh.ordering.vo.PayReadyReturnVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +38,22 @@ import lombok.extern.slf4j.Slf4j;
 public class KakaoPayController {
 	
 	@Autowired
+	private GoodsOptionDao goodsOptionDao;
+	
+	@Autowired
+	private GoodsDao goodsDao;
+	
+	@Autowired
 	private payService payService;
 	
 	@Autowired
 	private PayDao payDao;
 	
+	@Autowired
+	private OrderDao orderDao;
+	
+	@Autowired
+	private MemberDao memberDao;
 	
 	@PostMapping("/test")
 	public String test(@RequestParam String orderVO, Model model) {
@@ -73,8 +92,7 @@ public class KakaoPayController {
 			@RequestParam String pg_token,
 			HttpSession session,
 			Model model
-			) {
-		try {
+			) throws Exception {
 		String tid = (String) session.getAttribute("tid");
 		KakaoPayReadyVO vo = (KakaoPayReadyVO) session.getAttribute("ready");
 		
@@ -93,13 +111,11 @@ public class KakaoPayController {
 												.pg_token(pg_token)
 											.build();
 
-			KakaoPaySuccessReturnVO result = payService.approve(data);
-			return "pay/success";
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-			return "redirect:/pay/confirm";
-
-		}
+		KakaoPaySuccessReturnVO result = payService.approve(data);
+		
+		 payService.transactionOrder(data.getPartner_order_id());
+		 
+		 return "redirect:/pay/success";
 	}
 	
 	@GetMapping("/list")
@@ -109,11 +125,11 @@ public class KakaoPayController {
 	}
 	
 	@GetMapping("/revoke")
-	public String revoke(@RequestParam int no) {
+	public String revoke(@RequestParam int ordering_no) {
 		
 		try {
-			KakaoPayRevokeReturnVO vo = payService.revoke(no);
-			return "redirect:/pay/kakao/list";
+			KakaoPayRevokeReturnVO vo = payService.revoke(ordering_no);
+			return "redirect:/pay/kakao/cancel";
 	
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -124,4 +140,8 @@ public class KakaoPayController {
 		
 	}
 	
+	@GetMapping("/cancel")
+	public String cancel() {
+		return "pay/cancel";
+	}
 }

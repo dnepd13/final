@@ -46,6 +46,9 @@
 		<typeAlias type="com.kh.ordering.vo.DeliveryVO" alias="deliveryVO"/>
 		<typeAlias type="com.kh.ordering.entity.DeliveryDto" alias="deliveryDto"/>
 		
+		<typeAlias type="com.kh.ordering.vo.GoodsStockVO" alias="goodsStockVO"/>
+		<typeAlias type="com.kh.ordering.vo.GoodsOptionStockVO" alias="goodsOptionStockVO"/>
+		
 		<!-- 상품 문의/리뷰게시판 -->
 		<typeAlias type="com.kh.ordering.entity.GoodsQnaDto" alias="goodsQnaDto"/>
 		

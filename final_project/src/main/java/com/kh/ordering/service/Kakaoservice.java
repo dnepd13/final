@@ -155,32 +155,20 @@ public class Kakaoservice implements payService {
 													.build();
 		
 		payDao.insertSuccess(payDto);
-		// partner_order_id로 검색해서 업데이트 처리 (상품수량, 포인트)
-		
-		// 처리 실패시 취소로 보내버리기
-		// ### 처리할것들
-		//  - 주문번호로 member_no 검색해서 포인트 차감 (차감안되면 취소로 보내기)
-		//  - 주문번호로 상품검색해서 상품 수량 차감 (차감안되면 취소로 보내기)
-		//  - 상품번호로 검색해서 옵션 수량 차감 (차감안되면 취소로 보내기)
-		
-		// 맴버번호, 총가격, 상품번호, 옵션번호,
-		// orderVO 필요
-//		memberDao.resgistOrderPoint( , );
-		
-		// 주문번호 저장
-		String partner_order_id = payDto.getPartner_order_id();
-		
-		// 주문번호로 결제내역 가져오기
-		
-		
 		
 		return returnVO;
 	}
-
+	
+	// 수량,포인트 검사
+	@Override
+	public boolean transactionOrder(String partner_order_id) throws Exception {
+		return orderDao.updatePointAndStock(partner_order_id);
+	}
+	
 	//취소
 	@Override
-	public KakaoPayRevokeReturnVO revoke(int no)  throws URISyntaxException {
-		PayDto payDto = payDao.get(no);
+	public KakaoPayRevokeReturnVO revoke(int ordering_no)  throws URISyntaxException {
+		PayDto payDto = payDao.get(ordering_no);
 		
 		RestTemplate template = new RestTemplate();
 		

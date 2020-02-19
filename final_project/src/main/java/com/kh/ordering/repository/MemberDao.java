@@ -14,11 +14,13 @@ public interface MemberDao {
 	public void memberedit(MemberDto member);
 	void registPoint(MemberPointVO memberPointVO);	
 	int getOrderPoint(String member_grade, int price);
-	void resgistOrderPoint(int member_no, int price);
+	void registOrderPoint(int member_no, int price);
 	MemberDto getMember(int member_no);
 	MemberDto getMember(String member_id);
 	String getMemberGrade(int member_no);
 	int getGradeBenefitRate(String member_grade);
+	boolean minusPointOrder(int member_no, int point);
+	boolean checkPoint(int member_no, int point);
 //////////////////////////////////////
 	
 	
@@ -50,6 +52,8 @@ public interface MemberDao {
 
 
 		public MemberDto memberGetOne(MemberDto member);
+		
+		
 		
 
 

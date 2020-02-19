@@ -154,8 +154,8 @@ public class GoodsController {
 											@ModelAttribute GoodsQnaDto goodsQnaDto,
 											@RequestParam int goods_no) {
 		
-//		String seller_id = (String)session.getAttribute("seller_id");
-		String seller_id="seller";
+		String seller_id = (String)session.getAttribute("seller_id");
+//		String seller_id="seller";
 		goodsQnaDto.setGoods_qna_groupno(goodsQnaDto.getGoods_qna_groupno());
 		goodsQnaDto.setGoods_qna_superno(goodsQnaDto.getGoods_qna_no());
 		goodsQnaDto.setGoods_qna_writer(seller_id);

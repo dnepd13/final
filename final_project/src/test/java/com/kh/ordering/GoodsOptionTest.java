@@ -63,9 +63,21 @@ public class GoodsOptionTest {
 //	}
 	
 //	옵션 이름 별 목록 불러오기 [완료]
-	@Test
-	public void getGoodsOptionListTest() {
-		log.info("{}", goodsOptionDao.getGoodsOptionVOList(21));
-	}
+//	@Test
+//	public void getGoodsOptionListTest() {
+//		log.info("{}", goodsOptionDao.getGoodsOptionVOList(21));
+//	}
 	
+	
+	// 수량 차감 테스트
+//	@Test
+//	public void minusStockTest() {
+//		log.info("{}",goodsOptionDao.minusStock(75, 1));
+//	}
+	
+	// 수량 증가 테스트
+	@Test
+	public void plusStockTest() {
+		goodsOptionDao.plusStock(75, 10);
+	}
 }

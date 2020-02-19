@@ -5,6 +5,22 @@
  
  
  <mapper namespace="goods_option">
+ 
+ 	<!-- 옵션 수량 조회 -->
+ 	<select id="getStock" parameterType="int" resultType="int">
+ 		select goods_option_stock from goods_option where goods_option_no = #{goods_option_no}
+ 	</select>
+ 
+ 	<!-- 옵션 수량 감소 -->
+ 	<update id="minusStock" parameterType="goodsOptionStockVO">
+ 		update goods_option set goods_option_stock = goods_option_stock - #{goods_option_stock} where goods_option_no = #{goods_option_no}
+ 	</update>
+ 	
+ 	<!-- 옵션 수량 증가 -->
+ 	<update id="plusStock" parameterType="goodsOptionStockVO">
+ 		update goods_option set goods_option_stock = goods_option_stock + #{goods_option_stock} where goods_option_no = #{goods_option_no}
+ 	</update>
+ 	
 	<!-- 상품 옵션 등록 -->
 	<insert id="insert" parameterType="goodsOptionDto">
 		insert into goods_option values(

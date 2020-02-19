@@ -40,11 +40,31 @@ public class MemberDaoImpl implements MemberDao{
 	}
 	
 	// 포인트 검사
-	
-	
-	// 구매시 포인트 적용(상품가격 + 회원번호)
 	@Override
-	public void resgistOrderPoint(int member_no, int price) {
+	public boolean checkPoint(int member_no, int point) {
+		return this.getPoint(member_no) >= point;
+	}
+	
+	// 구매시 사용한 포인트 차감
+	@Override
+	public boolean minusPointOrder(int member_no, int point) {
+		if(this.checkPoint(member_no, point)) {
+			MemberPointVO memberPointVO = MemberPointVO.builder()
+										.member_point_status("차감")
+										.member_point_change(-point)
+										.member_point_content("상품 구매에 사용")
+										.member_no(member_no)
+									.build();
+			this.registPoint(memberPointVO);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	// 구매시 포인트 추가 적용(상품가격 + 회원번호)
+	@Override
+	public void registOrderPoint(int member_no, int price) {
 		
 		String member_grade = this.getMemberGrade(member_no);
 		int point = getOrderPoint(member_grade, price);

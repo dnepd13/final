@@ -15,4 +15,7 @@ public interface OrderDao {
 	OrderVO getOrderVO(String partner_order_id);
 	List<GoodsOptionDto> getGoodsOptionDtoList(List<CartInfoOpDto> cartInfoOpDtoList);
 	OrderVO getOrderVO(int partner_order_id);
+	int getMember_no(String partner_order_id);
+	int getOrdering_no(String partner_order_id);
+	boolean updatePointAndStock(String partner_order_id) throws Exception;
 }
