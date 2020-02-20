@@ -1,9 +1,12 @@
 package com.kh.ordering.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.ordering.entity.CartInfoDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.vo.MemberPointVO;
 
@@ -190,7 +193,11 @@ public class MemberDaoImpl implements MemberDao{
 //		}
 
 
-		
+//// 주문내역
+		@Override
+		public List<CartInfoDto> getCartList(int member_no) {
+			return sqlSession.selectList("member.getCartList", member_no);
+		}
 	
 	
 }

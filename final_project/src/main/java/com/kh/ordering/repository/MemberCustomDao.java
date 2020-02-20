@@ -24,8 +24,6 @@ public interface MemberCustomDao {
 	void memberCustom(MemberCustomOrderDto memberCustomDto); // 요청서 관리 테이블
 	int customOrderSeq(); // 요청서 관리테이블 .currval 시퀀스
 	void customAlarmInsert(MemberCustomAlarmDto memberCustomAlarmDto); //견적서 도착 알람 테이블 생성
-	int fileSeq(); // 파일 .nextval 시퀀스번호
-	void filesInsert(FilesDto filesDto); // 파일 저장
 	void customFilesInsert(CustomOrderFilesDto customOrderFilesDto); // 주문제작-파일 테이블
 	
 	//판매자 1:1 견적서 보기

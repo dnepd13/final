@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="review">
+ 	<select id="getNoCurr" resultType="int">
+ 		select goods_review_seq.currval from dual
+ 	</select>
+ 	
+ 	<select id="getOrderingNo" parameterType="int" resultType="int">
+ 		select ordering_no from
+		    ordering A inner join cart_info B
+		        on A.member = B.member_no and A.partner_order_id=B.partner_order_id
+		    where A.ordering_status='결제완료' and cart_info_no=#{cart_info_no}
+ 	</select>
+ 	<select id="getGoodsNo" parameterType="int" resultType="int">
+ 		select goods_no from
+		    cart_info A inner join cart_info_goods B
+		        on a.cart_info_no = b.cart_info_no where a.cart_info_no=#{cart_info_no}
+ 	</select>
+ 	
+ 	<insert id="insertReview" parameterType="goodsReviewDto">
+ 		insert into goods_review(goods_review_no, goods_no, ordering_no, member_no, 
+ 													goods_review_writer, goods_review_content, goods_review_date,
+ 													goods_review_star)
+ 					values(goods_review_seq.nextval, #{goods_no}, #{ordering_no}, #{member_no}, 
+ 								#{goods_review_writer}, #{goods_review_content}, sysdate,
+ 								#{goods_review_star})
+ 	</insert>
+ 	<insert id="insertFiles" parameterType="com.kh.ordering.entity.GoodsReviewFilesDto">
+ 		insert into files_goods_review values(#{goods_review_no}, #{files_no})
+ 	</insert>
+ 	
+ 	<select id="getReview" parameterType="int" resultType="goodsReviewDto">
+ 		select A.*, b.seller_no from
+		    goods_review A inner join goods B
+		        on A.goods_no = B.goods_no where B.goods_no=#{goods_no}
+ 	</select>
+ </mapper>

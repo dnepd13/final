@@ -56,14 +56,6 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 		sqlSession.insert("member.insertAlarm", memberCustomAlarmDto);
 	}
 	
-	@Override // 파일 .nextval 시퀀스번호
-	public int fileSeq() {
-		return sqlSession.selectOne("files.getSeq");
-	}	
-	@Override // 파일테이블 저장
-	public void filesInsert(FilesDto filesDto) {
-		sqlSession.insert("files.insert", filesDto);
-	}
 	@Override // 주문제작-파일 테이블 입력
 	public void customFilesInsert(CustomOrderFilesDto customOrderFilesDto) {
 		sqlSession.insert("files.customInsert", customOrderFilesDto);

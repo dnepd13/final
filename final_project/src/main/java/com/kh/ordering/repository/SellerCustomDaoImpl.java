@@ -59,15 +59,7 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	public void customAlarmInsert(SellerCustomAlarmDto sellerAlramDto) {
 		sqlSession.insert("seller.insertAlarm", sellerAlramDto);
 	}
-	
-	@Override // 파일 .nextval 시퀀스
-	public int filesSeq() {
-		return sqlSession.selectOne("files.getSeq");
-	}	
-	@Override // 파일테이블 등록
-	public void filesInsert(FilesDto filesDto) {
-		sqlSession.insert("files.insert", filesDto);
-	}
+
 	@Override // 주문제작-파일테이블
 	public void customFilesInsert(CustomOrderFilesDto customOrderFilesDto) {
 		sqlSession.insert("files.customInsert", customOrderFilesDto);

@@ -277,6 +277,12 @@
 		select grade_benefit_rate from grade_benefit where grade_benefit_grade = #{member_grade}
 	</select>
 	
+<!-- 주문내역 -->
+	<!-- 회원번호로 전체 cartInfo 조회-->
+	<select id="getCartList" parameterType="int" resultType="cartInfoDto">
+		select *from cart_info where member_no=#{member_no}
+	</select>
+	
  </mapper> 
 
 

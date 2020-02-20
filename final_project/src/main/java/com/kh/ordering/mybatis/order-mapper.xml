@@ -15,4 +15,5 @@
 	<select id="getCartInfoOp" parameterType="int" resultType="cartInfoOpDto">
 		select * from cart_info_op where cart_info_goods_no = #{cart_info_goods_no}
 	</select>
+
 </mapper>

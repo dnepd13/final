@@ -200,7 +200,7 @@ $(function(){
 		    		method: "post",
 		    		data: data,
 		    		success: function(resp){
-		    			location.reload(true);
+		    			alert("문의가 등록되었습니다.");
 		    		}
 		    	});
 		    	
@@ -265,9 +265,6 @@ $(function(){
 			    					},
 			    		success: function(resp){
 			    			location.reload(true);
-			    		},
-			    		error: function(erro){
-			    			alert("알 수 없는 에러 발생");
 			    		}
 			    	});
 		    	}
@@ -514,6 +511,25 @@ $(function(){
 <!-- ----------------------------------------------------------------------- -->
 <section>
 <p>리뷰</p>
+	<table>
+		<tr>
+			<th>글번호</th>
+			<th>내용</th>
+			<th>작성자</th>
+			<th>작성시간</th>
+		</tr>
+<c:forEach var="review" items="${goodsReview }">
+		<tr>
+			<td colspan="4">별점위치</td>
+		</tr>
+		<tr>
+			<td>${review.goods_review_no }</td>
+			<td>${review.goods_review_content }</td>
+			<td>${review.goods_review_writer }</td>
+			<td>${review.goods_review_date }</td>
+		</tr>
+</c:forEach>
+	</table>
 <hr>
 </section>
 </article>

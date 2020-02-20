@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.ordering.entity.GoodsQnaDto;
+import com.kh.ordering.entity.GoodsReviewDto;
 import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.repository.GoodsQnaDao;
+import com.kh.ordering.repository.GoodsReviewDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.service.DeliveryService;
@@ -57,6 +59,8 @@ public class GoodsController {
 	private SellerCustomDao sellerCustomDao;
 	@Autowired
 	private MemberDao memberDao;
+	@Autowired
+	private GoodsReviewDao goodsReviewDao;
 	
 	@GetMapping("/insert")
 	public String insert(Model model) {
@@ -102,17 +106,22 @@ public class GoodsController {
 		model.addAttribute("jsonGoodsVO", jsonGoodsVO);
 		model.addAttribute("jsonGoodsOptionVOList", jsonGoodsOptionVOList);
 
-//	문의 게시판 ...... 세션아이디 없어도 들어갈 수 있게 ..........ㅎ....
+//	문의, 리뷰 게시판 ...... 세션아이디 없어도 들어갈 수 있게 ..........ㅎ....
 		String member_id=(String)session.getAttribute("member_id");
 		String seller_id = (String)session.getAttribute("seller_id");
 		if(member_id!=null) { // 판매자 로그인 상태일 때 세션에서 seller_id 가져와서 비교		
 			int member_no = memberDao.getNo(member_id);
 			model.addAttribute("member_no",member_no);
 			
+			// 문의
 			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
 			model.addAttribute("paging", result);			
 			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
 			model.addAttribute("goodsQna", goodsQna);
+			
+			// 리뷰
+			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
+			model.addAttribute("goodsReview", goodsReview);
 		}
 		else if(seller_id!=null){
 			int seller_no = sellerCustomDao.getNo(seller_id);
@@ -122,12 +131,18 @@ public class GoodsController {
 			model.addAttribute("paging", result);			
 			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
 			model.addAttribute("goodsQna", goodsQna);
+			
+			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
+			model.addAttribute("goodsReview", goodsReview);
 		}
 		else {
 			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
 			model.addAttribute("paging", result);			
 			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
 			model.addAttribute("goodsQna", goodsQna);
+			
+			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
+			model.addAttribute("goodsReview", goodsReview);
 		}	
 		
 		return "goods/goodsInfo";
