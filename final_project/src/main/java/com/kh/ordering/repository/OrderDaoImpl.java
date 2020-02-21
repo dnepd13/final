@@ -48,6 +48,10 @@ public class OrderDaoImpl implements OrderDao {
 	@Transactional
 	@Override
 	public boolean updatePointAndStock(String partner_order_id) throws Exception {
+		
+		
+		
+		
 		// 처리 실패시 취소로 보내버리기
 		// ### 처리할것들
 		// - 주문번호로 상품검색해서 상품 수량 차감 (차감안되면 취소로 보내기)
@@ -63,7 +67,9 @@ public class OrderDaoImpl implements OrderDao {
 		OrderVO orderVO = orderDao.getOrderVO(partner_order_id);
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
-
+		
+		
+		
 		// 상품+옵션 수량검사, 감소
 		List<CartVO> cartVOList = orderVO.getCartVOList();
 		for (CartVO cartVO : cartVOList) {
@@ -90,6 +96,9 @@ public class OrderDaoImpl implements OrderDao {
 			payService.revoke(orderDao.getOrdering_no(partner_order_id));
 			throw new Exception();
 		}
+		
+		// 상품 구매 포인트 적용
+		memberDao.registOrderPoint(member_no, orderVO.getTotal_price());
 		
 		return true;
 	}

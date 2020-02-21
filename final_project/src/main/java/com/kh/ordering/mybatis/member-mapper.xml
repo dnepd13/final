@@ -255,6 +255,31 @@
 		select grade_benefit_rate from grade_benefit where grade_benefit_grade = #{member_grade}
 	</select>
 	
+	
+	<!-- 장바구니  -->
+	
+	<insert id="insertGoodsCartList" parameterType="list">
+		<foreach collection="list" item="goodsCartDto" open="insert all" close="select * from dual">
+			into goods_cart values(
+				#{goodsCartDto.goods_cart_no},
+				#{goodsCartDto.member_no},
+				#{goodsCartDto.goods_no},
+				#{goodsCartDto.goods_cart_quantity},
+				#{goodsCartDto.goods_cart_price}
+			)
+		</foreach>
+	</insert>
+	
+	<insert id="insertOptionCartList" parameterType="list">
+		<foreach collection="list" item="optionCartDto" open="insert all" close="select * from dual">
+			into option_cart values(
+				#{optionCartDto.option_cart_no},
+				#{optionCartDto.goods_cart_no},
+				#{optionCartDto.goods_option_no}			
+			)
+		</foreach>
+	</insert>
+	
  </mapper> 
 
 

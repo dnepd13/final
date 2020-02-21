@@ -26,13 +26,13 @@
  <mapper namespace="pay">
  	<!-- 결제 준비 등록 -->
  	<insert id="ready" parameterType="payDto">
- 		insert into ordering(ordering_no, tid, cid, process_time, item_name,
+ 		insert into ordering(ordering_no, member,tid, cid, process_time, item_name,
  							partner_order_id, partner_user_id, quantity, total_amount,
  							ordering_status,aid,install_month, used_point, tax_free_amount,
  							vat_amount
  							)
  			values(
- 				ordering_seq.nextval,
+ 				ordering_seq.nextval, #{member}
  				#{tid}, #{cid}, to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
  				#{item_name}, #{partner_order_id}, #{partner_user_id},
  				#{quantity}, #{total_amount}, '결제준비완료', '1', '0', '0', '0', '0'
@@ -40,13 +40,13 @@
  	</insert>
 	
 	<insert id="success" parameterType="payDto">
-		insert into ordering(ordering_no, tid, cid, process_time, item_name,
+		insert into ordering(ordering_no, member, tid, cid, process_time, item_name,
  							partner_order_id, partner_user_id, quantity, total_amount,
  							ordering_status,aid,install_month, used_point, tax_free_amount,
  							vat_amount
  							)
  			values(
- 				ordering_seq.nextval,
+ 				ordering_seq.nextval, #{member}
  				#{tid}, #{cid}, to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
  				#{item_name}, #{partner_order_id}, #{partner_user_id},
  				#{quantity}, #{total_amount}, '결제완료', #{aid}, '0', #{used_point}, '0', #{vat_amount}

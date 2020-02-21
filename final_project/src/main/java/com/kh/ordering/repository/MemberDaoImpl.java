@@ -1,10 +1,14 @@
 package com.kh.ordering.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.ordering.entity.GoodsCartDto;
 import com.kh.ordering.entity.MemberDto;
+import com.kh.ordering.entity.OptionCartDto;
 import com.kh.ordering.vo.MemberPointVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +66,17 @@ public class MemberDaoImpl implements MemberDao{
 		}
 	}
 	
+	// 포인트 추가
+	public void plusPointCancel(int member_no, int point) {
+		MemberPointVO memberPointVO = MemberPointVO.builder()
+				.member_point_status("적립")
+				.member_point_change(point)
+				.member_point_content("결제 취소")
+				.member_no(member_no)
+			.build();
+		this.registPoint(memberPointVO);
+	}
+	
 	// 구매시 포인트 추가 적용(상품가격 + 회원번호)
 	@Override
 	public void registOrderPoint(int member_no, int price) {
@@ -104,6 +119,19 @@ public class MemberDaoImpl implements MemberDao{
 		return this.getMember(this.getNo(member_id));
 	}
 //	!지우지마세요, 포인트 관련  (월용) //////////////////////////
+	
+//	장바구니
+	
+	@Override
+	public void insertGoodsCartList(List<GoodsCartDto> goodsCartDtoList) {
+		sqlSession.insert("member.insertGoodsCartList", goodsCartDtoList);
+	}
+	
+	@Override
+	public void insertOptionCartList(List<OptionCartDto> optionCartDtoList) {
+		sqlSession.insert("member.insertOptionCartList", optionCartDtoList);
+	}
+	
 //////////////////////////////////////	
 	
 	

@@ -28,6 +28,7 @@ import com.kh.ordering.vo.KakaoPayReadyVO;
 import com.kh.ordering.vo.KakaoPayRevokeReturnVO;
 import com.kh.ordering.vo.KakaoPaySuccessReadyVO;
 import com.kh.ordering.vo.KakaoPaySuccessReturnVO;
+import com.kh.ordering.vo.MemberPointVO;
 import com.kh.ordering.vo.OrderVO;
 import com.kh.ordering.vo.PayReadyReturnVO;
 import com.kh.ordering.vo.PayReadyVO;
@@ -208,6 +209,15 @@ public class Kakaoservice implements payService {
 		
 		payDao.insertRevoke(payDto2);
 		//취소 되면 포인트 돌려주고, 
+		int used_point = orderDao.getCartInfo(payDto.getPartner_order_id()).getUsed_point();
+		MemberPointVO memberPointVO = MemberPointVO.builder()
+						.member_no(orderDao.getMember_no(payDto.getPartner_order_id()))
+						.member_point_change(used_point)
+						.member_point_status("적립")
+						.member_point_content("결제 취소")
+				.build();
+		
+		memberDao.registPoint(memberPointVO);
 		
 		return null;
 	}

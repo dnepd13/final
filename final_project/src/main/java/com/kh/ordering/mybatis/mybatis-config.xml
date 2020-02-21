@@ -68,6 +68,10 @@
 		<!-- 포인트 -->
 		<typeAlias type="com.kh.ordering.vo.MemberPointVO" alias="memberPointVO"/>
 		
+		<!-- 장바구니 -->
+		<typeAlias type="com.kh.ordering.entity.GoodsCartDto" alias="goodsCartDto"/>
+		<typeAlias type="com.kh.ordering.entity.OptionCartDto" alias="optionCartDto"/>
+		
 	</typeAliases>
  </configuration>
 

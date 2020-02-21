@@ -1,8 +1,12 @@
 package com.kh.ordering.repository;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.ordering.entity.GoodsCartDto;
 import com.kh.ordering.entity.MemberDto;
+import com.kh.ordering.entity.OptionCartDto;
 import com.kh.ordering.vo.MemberPointVO;
 
 public interface MemberDao {
@@ -52,6 +56,8 @@ public interface MemberDao {
 
 
 		public MemberDto memberGetOne(MemberDto member);
+		void insertGoodsCartList(List<GoodsCartDto> goodsCartDtoList);
+		void insertOptionCartList(List<OptionCartDto> optionCartDtoList);
 		
 		
 		
