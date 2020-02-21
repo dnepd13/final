@@ -232,8 +232,6 @@ $(function(){
 					var goods_no=$(this).parent().data("goods_no");
 					var member_no=$(this).parent().data("member_no");
 					
-					console.log(goods_qna_content);
-					
 					$(this).text("수정");
 					
 					$.ajax({
@@ -310,6 +308,11 @@ $(function(){
 	    });
         
 });
+
+	function star(){
+		var star = document.querySelector(".star");
+		console.log(staro);
+	}
 
 </script>
 
@@ -520,11 +523,13 @@ $(function(){
 		</tr>
 <c:forEach var="review" items="${goodsReview }">
 		<tr>
-			<td colspan="4">별점위치</td>
+			<td class="star" colspan="4">별점 .. ${review.goods_review_star }</td>
 		</tr>
 		<tr>
 			<td>${review.goods_review_no }</td>
-			<td>${review.goods_review_content }</td>
+			<td>
+					<img src="http://localhost:8080/ordering/member/reviewFile?files_no=${files_no } ">
+					${review.goods_review_content }</td>
 			<td>${review.goods_review_writer }</td>
 			<td>${review.goods_review_date }</td>
 		</tr>

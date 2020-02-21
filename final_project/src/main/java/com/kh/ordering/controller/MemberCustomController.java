@@ -28,6 +28,7 @@ import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.MemberCustomDao;
+import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.service.MemberCustomService;
 import com.kh.ordering.service.SellerCustomService;
 import com.kh.ordering.vo.CustomOrderVO;
@@ -42,14 +43,12 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberCustomController {
 	
 	@Autowired
-	private MemberCustomService memberCustomService;
-	
+	private MemberCustomService memberCustomService;	
 	@Autowired
 	private MemberCustomDao memberCustomDao;
 	
 	@Autowired
 	private FilesDao filesDao;
-	
 	@Autowired
 	private FilesPhysicalDao filesPhysicalDao;
 	
@@ -58,6 +57,8 @@ public class MemberCustomController {
 	
 	@Autowired
 	private SellerCustomService sellerCustomService;
+	@Autowired
+	private SellerCustomDao sellerCustomDao;
 
 //	주문제작 요청서 작성
 	@GetMapping("/customCate") // 카테고리
@@ -179,7 +180,7 @@ public class MemberCustomController {
 		
 		CustomOrderVO content = memberCustomDao.customOrderVO2(member_custom_order_no);
 		model.addAttribute("getListInfoReq", content);
-		
+
 			// 카테고리 표시를 위한 model정보
 		int category_no = content.getCustom_order_category();
 		model.addAttribute("category", categoryDao.get(category_no));
@@ -187,7 +188,29 @@ public class MemberCustomController {
 		List<FilesVO>  filesVO = memberCustomService.filesList(member_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
 		
+		model.addAttribute("alarm", sellerCustomDao.getsellerAlarm(member_custom_order_no));
+		
 		return "member/customInfoReq";
+	}
+
+//	수정
+
+	@PostMapping("/updateCustom")
+	public String updateCustom(CustomOrderVO customOrderVO) {
+		int member_custom_order_no = customOrderVO.getMember_custom_order_no();
+		int custom_order_no = memberCustomDao.getCustomNo(member_custom_order_no);
+
+		CustomOrderDto customOrderDto
+				= CustomOrderDto.builder()
+												.custom_order_no(custom_order_no)
+												.custom_order_title(customOrderVO.getCustom_order_title())
+												.custom_order_content(customOrderVO.getCustom_order_content())
+												.custom_order_price(customOrderVO.getCustom_order_price())
+												.custom_order_hopedate(customOrderVO.getCustom_order_hopedate())
+												.build();
+		memberCustomDao.updateCustom(customOrderDto);
+		
+		return "redirect:/member/customInfoReq?member_custom_order_no="+member_custom_order_no;
 	}
 
 //	삭제

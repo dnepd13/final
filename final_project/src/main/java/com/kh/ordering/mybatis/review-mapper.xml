@@ -37,4 +37,12 @@
 		    goods_review A inner join goods B
 		        on A.goods_no = B.goods_no where B.goods_no=#{goods_no}
  	</select>
+ 	<select id="getReqFilesNo" parameterType="int" resultType="FilesVO">
+		select b.* from
+		    files A inner join files_goods_review B
+		        on a.files_no = b.files_no
+		    inner join goods_review C
+		        on b.godos_review_no = c.godos_review_no
+		where c.godos_review_no= #{godos_review_no}
+	</select>
  </mapper>

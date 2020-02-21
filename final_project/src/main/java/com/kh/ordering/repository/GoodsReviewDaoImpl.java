@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.ordering.entity.GoodsReviewDto;
 import com.kh.ordering.entity.GoodsReviewFilesDto;
+import com.kh.ordering.vo.FilesVO;
 
 @Repository
 public class GoodsReviewDaoImpl implements GoodsReviewDao{
@@ -42,5 +43,9 @@ public class GoodsReviewDaoImpl implements GoodsReviewDao{
 	@Override // 리뷰 목록
 	public List<GoodsReviewDto> getReview(int goods_no) {
 		return sqlSession.selectList("review.getReview", goods_no);
+	}
+	@Override // 파일 출력
+	public List<FilesVO> getFilesNo(int goods_review_no) {
+		return sqlSession.selectList("review.getReqFilesNo", goods_review_no);
 	}
 }

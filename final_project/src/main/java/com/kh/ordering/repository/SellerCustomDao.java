@@ -35,6 +35,7 @@ public interface SellerCustomDao {
 	void updateAlarm(int seller_no, int member_custom_order_no);
 	//판매자 알람테이블 check N
 	int customAlarm(int seller_no);
+	SellerCustomAlarmDto getsellerAlarm(int member_custom_order_no);
 	
 	//받은 요청서 삭제
 	void deleteCustomReq(SellerCustomAlarmDto sellerAlarmDto);

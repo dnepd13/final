@@ -89,7 +89,11 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	@Override // 판매자 알람테이블 check N count
 	public int customAlarm(int seller_no) {
 		return sqlSession.selectOne("seller.customCheck", seller_no);
-	}	
+	}
+	@Override // 알람테이블 조회
+	public SellerCustomAlarmDto getsellerAlarm(int member_custom_order_no) {
+		return sqlSession.selectOne("seller.getAlarm", member_custom_order_no);
+	}
 
 	@Override // 판매자가 받은 요청서 count
 	public int customReqCount(int seller_no) {

@@ -35,6 +35,9 @@ public interface MemberCustomDao {
 	//구매 알람테이블 견적서 총 개수 check N
 	int customAlarm(int member_no);
 	
+	// 수정
+	void updateCustom(CustomOrderDto customOrderDto);
+	
 	//보낸 요청서 삭제 (1:1)
 	int getCustomNo(int member_custom_order_no);
 	void deleteCustomReq(int custom_order_no);

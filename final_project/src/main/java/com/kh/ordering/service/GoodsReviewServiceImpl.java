@@ -108,4 +108,13 @@ public class GoodsReviewServiceImpl implements GoodsReviewService {
 		return null;
 	}
 
+	// 리뷰 파일 no 가져오기(출력)
+	@Override
+	public List<FilesVO> filesList(int goods_review_no){
+	
+		List<FilesVO> filesVO = goodsReviewDao.getFilesNo(goods_review_no);
+		
+		return filesVO;
+	}	
+
 }

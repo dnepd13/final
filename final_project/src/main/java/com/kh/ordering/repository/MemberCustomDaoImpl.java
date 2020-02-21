@@ -107,9 +107,13 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	}
 
 //	보낸 요청서 삭제
-	@Override // 1:1 삭제를 위한 custom_order_no 조회
+	@Override // 1:1 삭제,수정을 위한 custom_order_no 조회
 	public int getCustomNo(int member_custom_order_no) {
 		return sqlSession.selectOne("member.getCustomNo", member_custom_order_no);
+	}
+	@Override // 수정
+	public void updateCustom(CustomOrderDto customOrderDto) {
+		sqlSession.update("member.updateCustom", customOrderDto);
 	}
 	@Override // 1:1 요청서 삭제
 	public void deleteCustomReq(int custom_order_no) {

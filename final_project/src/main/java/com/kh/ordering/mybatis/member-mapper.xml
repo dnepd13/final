@@ -110,6 +110,14 @@
 		select custom_order_no from member_custom_view
 				where seller_alarm_check='N' and member_custom_order_no=#{member_custom_order_no}
 	</select>
+	<update id="updateCustom" parameterType="customOrderDto">
+		update custom_order set custom_order_title=#{custom_order_title},
+							                        custom_order_content=#{custom_order_content},
+							                        custom_order_price=#{custom_order_price},
+							                        custom_order_hopedate=#{custom_order_hopedate},
+							                        custom_order_date=sysdate
+                where custom_order_no=#{custom_order_no}
+	</update>
 	<delete id="deleteReq" parameterType="int">
 		delete from custom_order A
 		    where exists( select 1 from member_custom_order B

@@ -134,6 +134,10 @@
 										#{member_custom_order_no},
 										'N', 'N')
 	</insert>
+	
+	<select id="getAlarm" parameterType="int" resultType="SellerAlarmDto">
+		select *from seller_alarm where member_custom_order_no=#{member_custom_order_no}
+	</select>
 
 	<!-- 전체 요청서 보기(카테고리 미구현) -->
 <!-- 	<select id="getListAll" resultType="customOrderVO"> -->
