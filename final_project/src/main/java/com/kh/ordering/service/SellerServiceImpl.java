@@ -46,6 +46,14 @@ private SellerDao sellerDao;
 
 
 
+//	@Override
+//	public int check_id(String seller_id) {
+//		int count =sellerDao.check_id(seller_id);
+//		return count;
+//	}
+
+
+
 
 
 
