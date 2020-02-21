@@ -35,5 +35,10 @@
  		<typeAlias type="com.kh.admin.entity.GoodsReviewDto" alias="goodsReviewDto"/>
  		<typeAlias type="com.kh.admin.vo.ReviewVO" alias="review"/>
  		<typeAlias type="com.kh.admin.entity.GradeBenefitDto" alias="gradeBenefitDto"/>
+ 		<typeAlias type="com.kh.admin.entity.OrderingDto" alias="orderingDto"/>
+ 		<typeAlias type="com.kh.admin.vo.MonthlySalePriceVO" alias="monthlySalePriceVO"/>
+ 		<typeAlias type="com.kh.admin.vo.CalculateVO" alias="calculateVO"/>
+ 		<typeAlias type="com.kh.admin.vo.ResultVO" alias="result"/>
+ 		<typeAlias type="com.kh.admin.vo.TopTenChartVO" alias="topTen"/>
  	</typeAliases>
  </configuration>

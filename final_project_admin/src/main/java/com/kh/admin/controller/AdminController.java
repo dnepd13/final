@@ -372,6 +372,29 @@ public class AdminController {
 		return "redirect:/blocklist";
 	}
 	
+	//----------------차단 해제------------------------------
+	@GetMapping("/unlock")
+	public String unlock(
+			@RequestParam(value="seller_no", required = false, defaultValue = "0") int seller_no,
+			@RequestParam(value="member_no", required = false, defaultValue = "0") int member_no
+			) {
+				BlockDto blockDto = new BlockDto();
+				if(seller_no != 0) {
+					blockDto.setSeller_no(seller_no);
+					adminDao.blockUnlockSeller(blockDto);
+					return "redirect:/seller/manage";
+				}
+				else if(member_no !=0) {
+					blockDto.setMember_no(member_no);
+					adminDao.blockUnlockMember(blockDto);
+					return "redirect:/member/manage";
+				}
+				else {
+					return "redirect:/blocklist";
+				}
+	}
+	
+	
 	//--------------------등급 혜택 --------------------------------------
 	@GetMapping("/gradebenefit")
 	public String benefit(Model model) {

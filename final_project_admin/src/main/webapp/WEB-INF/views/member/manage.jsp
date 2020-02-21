@@ -82,7 +82,9 @@
       </td>
       <c:choose>
       	<c:when test="${list.block_no > 0 }">
-      		<td>차단된 회원</td>
+      		<td>
+      		<a href="${pageContext.request.contextPath}/unlock?member_no=${list.member_no}"><button type="button" class="btn btn-danger">차단해제</button></a>
+			</td>      
       	</c:when>
       	<c:otherwise>
 		      <td>

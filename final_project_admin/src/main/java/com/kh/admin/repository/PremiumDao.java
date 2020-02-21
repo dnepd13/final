@@ -9,4 +9,6 @@ public interface PremiumDao {
 	public void premiumInsert(PremiumDto premiumDto);
 	public void premiumUpdate(PremiumDto premiumDto);
 	public void premiumDelete(PremiumDto premiumDto);
+	public List<PremiumDto> getPremium();
+	public int calculratePremium(int total);
 }

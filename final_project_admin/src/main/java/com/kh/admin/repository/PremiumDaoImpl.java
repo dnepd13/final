@@ -34,6 +34,16 @@ public class PremiumDaoImpl implements PremiumDao{
 	public void premiumDelete(PremiumDto premiumDto) {
 		sqlSession.delete("admin.premiumDelete", premiumDto);
 	}
+
+	@Override
+	public List<PremiumDto> getPremium() {
+		return sqlSession.selectList("admin.getPremium");
+	}
+
+	@Override
+	public int calculratePremium(int total) {
+		return sqlSession.selectOne("admin.calculratePremium", total);
+	}
 	
 	
 }
