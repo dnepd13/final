@@ -1,11 +1,75 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">    
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-	
-	$(function(){
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+ <script src="https://code.jquery.com/jquery-latest.js"></script>
+ <script src="${pageContext.request.contextPath}/resources/js/goodsOption.js"></script>
+ <script>
+ 	 $(function(){
+////////////	카테고리	///////////////////////////////////
+//------------------------카테고리 등록----------------------//
+ 		 var category_largeList = "${category_largeList}";
+	 	 category_largeList = category_largeList.substring(1, category_largeList.length-1).split(",");
+ 		 $.each(category_largeList, function(index, item){
+ 			 var option = $("<option value='"+item+"'>"+item+"</option>");
+ 			 $(".category_large").append(option);
+ 		 });
+ 		 
+ 		 $(".category_large").change(function(){
+	 		 $(".middleChild").nextAll().remove();
+	 		 $(".smallChild").nextAll().remove();
+ 			 var category_name = $(this).val();
+ 			 var url = "../goods/large";
+ 			 $.ajax({
+ 				 type: "POST",
+ 			 	 url: url,
+ 			 	 data: {"category_name":category_name},
+ 			 	 success: function(resp){
+ 			 		 $.each(resp, function(index, item){
+ 			 			var option = $("<option value='"+item+"'>"+item+"</option>");
+ 			 			$(".category_middle").append(option);
+ 			 		 });
+ 			 	 }
+ 			 });
+ 		 });
+ 		 
+ 		 $(".category_middle").change(function(){
+ 			$(".smallChild").nextAll().remove();
+			 var category_name = $(this).val();
+			 var url = "../goods/middle";
+			 $.ajax({
+				 type: "POST",
+			 	 url: url,
+			 	 data: {"category_name":category_name},
+			 	 success: function(resp){
+			 		 $.each(resp, function(index, item){
+			 			var option = $("<option value='"+item+"'>"+item+"</option>");
+			 			$(".category_small").append(option);
+			 		 });
+			 	 }
+			 });
+ 		 });
+ 		 
+ 		 $(".category_small").change(function(){
+ 			var category_name = $(this).val();
+			 var url = "../goods/small";
+			 $.ajax({
+				 type: "POST",
+			 	 url: url,
+			 	 data: {"category_name":category_name},
+			 	 success: function(resp){
+		 			 $(".category_no").val(resp);
+			 	 }
+			 });
+ 		 });
+	 });
+//----------------------------리스트----------------------------------------------------//
+/* $(function(){
 		$(".btn-modify").click(function(){
 			console.log("ddd");
 			if($(this).text()=="수정"){
@@ -95,35 +159,26 @@
 			});
 		});
 	});
-</script>
-
-<!-- 카테고리관리창-->
-<h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
-
-<div>
-	<form  action="category" method="post">
-		<div>
-			<input type="text" name="category_large" placeholder="대분류" required="required">
-			<input type="text" name="category_middle" placeholder="중분류" required="required">
-			<input type="text" name="category_small" placeholder="소분류" required="required">
-			<input type="submit" value="등록">
-		</div>
-	</form>
-</div>
-
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th width="10%">번호</th>
-      <th width="20%">카테고리 대</th>
-      <th width="30%">카테고리 중</th>
-      <th width="30%">카테고리 소</th>
-      <th width="10%">수정 및 삭제</th>
-    </tr>
-  </thead>
-  <tbody>
-    <c:forEach var="list" items="${list }">
-    <tr class="table-light"">
+ 	 
+ 	  */
+//////////////////////////////////////////////////////////////////////		 
+ </script>
+<body>
+<h1>카테고리 관리 페이지</h1>
+<form action="category_info" method="post">
+<select class="category_large" name="category_large">
+<option class="largeChild">선택</option>
+</select>
+<select class="category_middle" name="category_middle">
+<option class="middleChild">선택</option>
+</select>
+<select class="category_small" name="category_small">
+<option class="smallChild">선택</option>
+</select>
+<!-- 리스트 -->
+	<input class="submit_btn" type="submit" value="등록" >
+ <%-- c:forEach var="list" items="${list }">
+    <tr class="table-light">
       <th scope="row" id="category_no">${list.category_no }</th>
       <td >${list.category_large }</td>
       <td>${list.category_middle }</td>
@@ -164,10 +219,7 @@
 			<li class="page-item">
      			 <a class="page-link" href="${pageContext.request.contextPath}/category?pno1=${paging.finishBlock+1}">&raquo;</a>
     		</li>
-		</c:if>
-	</ul>
-</div>
+		</c:if>--%>
 
-
-
-
+</form>
+</body>

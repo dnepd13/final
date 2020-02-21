@@ -144,7 +144,7 @@ public class AdminController {
 			) {
 		PagingVO vo = boardService.categoryPagination(pno1);
 		model.addAttribute("paging",vo);
-		
+		 
 		List<CategoryDto> list= categoryDao.categoryGetList(vo);
 		model.addAttribute("list", list);
 		return "/category";

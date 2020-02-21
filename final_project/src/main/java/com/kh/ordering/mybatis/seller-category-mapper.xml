@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="seller_category">
+ <!-- 카테고리 리스트 불러오기 -->
+	<!-- <select id="sellerGetCategoryList" parameterType="paging" resultType="categoryDto">
+		select * from(
+			select rownum rn, A.* from(
+				select * from category 
+				order by category_large desc,
+				category_middle, 
+				category_small
+			)A
+		)where rn between #{start} and #{finish}
+	</select>
+	카테고리 목록 총 갯수 가져오기
+	<select id="categoryCount" resultType="int">
+		select count(*) from category 
+	</select>	 -->
+	<!-- 카테고리 등록하기 -->
+	<insert id="insert" parameterType="sellerCategoryDto">
+		insert into seller_category values(
+					#{category_no},
+					#{seller_no})				
+	</insert>
+	<select id="get_category_no" resultType="int" parameterType="CategoryDto">
+	    select category_no from category where category_large=#{category_large}
+	    and category_middle=#{category_middle} 
+	    and category_small=#{category_small}
+	    
+	</select>
+	<insert id="insert2" parameterType="categoryDto"></insert>
+	<!-- 카테고리 수정하기 -->
+  <update id="update" parameterType="sellerCategoryDto">
+		update seller_category set 
+			category_no = #{category_no}
+		where category_no=#{category_no} 
+		         and
+		               seller_no=#{selller_no}
+				
+	</update>
+<!--카테고리 삭제하기  -->
+	<delete id="delete" parameterType="int">
+		delete seller_category where category_no = #{category_no} and seller_no=#{seller_no}
+	</delete>
+ 
+ 
+ </mapper> 
