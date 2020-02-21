@@ -16,9 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsReviewDto;
 import com.kh.ordering.entity.GoodsReviewFilesDto;
+import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.GoodsReviewDao;
 import com.kh.ordering.repository.MemberDao;
+import com.kh.ordering.repository.Member_PointDao;
 import com.kh.ordering.vo.FilesVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,8 @@ public class GoodsReviewServiceImpl implements GoodsReviewService {
 	private MemberDao memberDao;
 	@Autowired
 	private GoodsReviewDao goodsReviewDao;
+	@Autowired
+	private Member_PointDao memberPointDao;
 	@Autowired
 	private FilesDao filesDao;
 	
@@ -56,7 +60,6 @@ public class GoodsReviewServiceImpl implements GoodsReviewService {
 			goodsReviewDto.setGoods_no(goods_no);
 			goodsReviewDto.setMember_no(member_no);
 			goodsReviewDto.setGoods_review_writer(member_id);
-			goodsReviewDto.setGoods_review_star(0);
 			
 			goodsReviewDao.insertReview(goodsReviewDto);
 			
@@ -103,6 +106,16 @@ public class GoodsReviewServiceImpl implements GoodsReviewService {
 					goodsReviewDao.reviewFilesInsert(goodsReviewFilesDto);
 				}
 			}
+			
+			// 리뷰 입력 시 포인트 추가
+			Member_PointDto memberPointDt0
+											= Member_PointDto.builder()
+																				.member_point_change(50)
+																				.member_point_content("리뷰적립")
+																				.member_no(member_no)
+																				.build();
+									
+			memberPointDao.insertPoint(memberPointDt0);
 		}
 		
 		return null;

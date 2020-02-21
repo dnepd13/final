@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import com.kh.ordering.entity.GoodsReviewDto;
+import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.vo.FilesVO;
 
 public interface GoodsReviewService {

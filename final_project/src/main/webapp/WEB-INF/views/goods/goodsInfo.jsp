@@ -4,11 +4,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<!-- 별점 script -->
+<style></style>
+    <script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
+    <script>
+        window.addEventListener("load", function(){
+            Hakademy.PointManager.factory(".star-wrap");
+        });
+    </script>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <%-- <script src="${pageContext.request.contextPath}/resources/js/goodsInfo.js"></script> --%>
 <script>
-
 $(function(){
 	var goodsOptionVOList = JSON.parse('${jsonGoodsOptionVOList}');
 	var goodsVO = JSON.parse('${jsonGoodsVO}');
@@ -523,12 +530,14 @@ $(function(){
 		</tr>
 <c:forEach var="review" items="${goodsReview }">
 		<tr>
-			<td class="star" colspan="4">별점 .. ${review.goods_review_star }</td>
+			<td class="star" colspan="4">
+				<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${review.goods_review_star}" data-image="http://www.sysout.co.kr/file/image/288" readonly></div>
+			</td>
 		</tr>
 		<tr>
 			<td>${review.goods_review_no }</td>
 			<td>
-					<img src="http://localhost:8080/ordering/member/reviewFile?files_no=${files_no } ">
+<%-- 					<img src="http://localhost:8080/ordering/member/reviewFile?files_no=${files_no } "> --%>
 					${review.goods_review_content }</td>
 			<td>${review.goods_review_writer }</td>
 			<td>${review.goods_review_date }</td>

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.kh.ordering.entity.CartInfoDto;
 import com.kh.ordering.entity.CartInfoGoodsDto;
 import com.kh.ordering.entity.CartInfoOpDto;
+import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.GoodsOptionDto;
 import com.kh.ordering.vo.CartInfoGoodsVO;
 import com.kh.ordering.vo.CartVO;
@@ -108,7 +109,16 @@ public class OrderDaoImpl implements OrderDao{
 	public List<CartInfoOpDto> getCartInfoOp(int cart_info_goods_no) {
 		return sqlSession.selectList("getCartInfoOp", cart_info_goods_no);
 	}
+
+	@Override // 상품별 주문내역
+	public List<CartInfoGoodsDto> getGoodsList(int member_no) {
+		return sqlSession.selectList("order.getGoodsList", member_no);
+	}
+
+	@Override // 상품별 구매확정 테이블
+	public List<CartOkDto> getOkList(int member_no) {
+		return sqlSession.selectList("order.getOkList", member_no);
+	}
 	
-	
-	
+
 }

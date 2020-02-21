@@ -15,5 +15,21 @@
 	<select id="getCartInfoOp" parameterType="int" resultType="cartInfoOpDto">
 		select * from cart_info_op where cart_info_goods_no = #{cart_info_goods_no}
 	</select>
-
+	
+	<!-- 회원별, 상품별 주문내역 가져오기 -->
+	<select id="getGoodsList" parameterType="int" resultType="cartInfoGoodsDto">
+ 		select a.goods_no, a.goods_name, b.cart_info_goods_price, b.cart_info_goods_quantity from
+			    goods A inner join cart_info_goods B
+			        on A.goods_no = b.goods_no
+			    inner join cart_info C
+			        on b.cart_info_no=c.cart_info_no
+		    where c.member_no=#{member_no}
+ 	</select>
+ 	<!-- 상품별 구매확정 테이블 -->
+	<select id="getOkList" parameterType="int" resultType="cartOkDto">
+		select cart_ok.* from
+		    cart_ok inner join cart_info_goods
+		        on cart_ok.cart_info_goods_no = cart_info_goods.cart_info_goods_no
+			where cart_ok.member_no=#{member_no}
+	</select>
 </mapper>

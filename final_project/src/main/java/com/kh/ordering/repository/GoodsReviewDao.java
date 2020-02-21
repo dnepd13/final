@@ -17,5 +17,5 @@ public interface GoodsReviewDao {
 	void reviewFilesInsert(GoodsReviewFilesDto goodsReviewFilesDto); // 리뷰 파일 등록
 	List<GoodsReviewDto> getReview(int goods_no);
 	// 파일 출력용
-	List<FilesVO> getFilesNo(int goods_review_no); // 요청서의 파일 No 가져오기
+	List<FilesVO> getFilesNo(int goods_review_no); // 리뷰의 파일 No 가져오기
 }

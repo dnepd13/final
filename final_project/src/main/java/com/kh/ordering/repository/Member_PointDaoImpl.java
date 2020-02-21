@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.ordering.entity.Member_PointDto;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class Member_PointDaoImpl implements Member_PointDao{
 
@@ -32,6 +35,12 @@ public class Member_PointDaoImpl implements Member_PointDao{
 	public List<Member_PointDto> getListPoint(int member_no) {
 
 		return sqlSession.selectList("member_PointDto.getListPoint",member_no);
+	}
+
+	@Override // 포인트 추가적립
+	public void insertPoint(Member_PointDto membePointDto) {
+		
+		sqlSession.insert("member_PointDto.insertPoint",membePointDto);
 	}
 	
 
