@@ -624,9 +624,19 @@
 		delete block where block_no = #{block_no}
 	</delete>
 	
+	<!-- 차단 해제 판매자버전 -->
+	<select id="blockDeleteSeller" parameterType="blockDto" >
+		delete block where seller_no = #{seller_no}
+	</select>
+	
+	<!-- 차단 해제 회원버전 -->
+	<select id="blockDeleteMember" parameterType="blockDto" >
+		delete block where member_no = #{member_no}
+	</select>
+	
 	<!-- 일일 접속자 차트 목록 구해오기 -->
 	<select id="userDaily" resultType="connectList">
-		select * from connecting
+		select * from connecting order by daily asc
 	</select>
 	
 	<!-- 상품 review 불러오기 상품별 -->
@@ -661,6 +671,258 @@
 	<delete id="gradeBenefitDelete" parameterType="gradeBenefitDto">
 		delete grade_benefit where grade_benefit_no = #{grade_benefit_no}
 	</delete>
+	
+	<!-- 오늘의 판매 금액 전체 -->
+	<select id="dailySale" resultType="result">
+		select sum(total_amount) result from ordering 
+			where 
+				to_char(process_time, 'YYYY-MM-DD') 
+				= 
+				to_char(sysdate, 'YYYY-MM-DD')
+			and 
+				ordering_status = '결제완료'
+	</select>
+	
+	<!-- 오늘의 취소 금액 전체 -->
+	<select id="dailyCancel" resultType="result">
+		select sum(total_amount) result from ordering 
+			where 
+				to_char(process_time, 'YYYY-MM-DD') 
+				= 
+				to_char(sysdate, 'YYYY-MM-DD')
+			and 
+				ordering_status = '결제취소'
+	</select>
+	
+	<!-- 오늘의 판매 횟수 -->
+	<select id="todaySaleCount" resultType="result">
+		select count(*) result from ordering 
+			where 
+				to_char(process_time, 'YYYY-MM-DD') 
+				= 
+				to_char(sysdate, 'YYYY-MM-DD')
+			and 
+				ordering_status = '결제완료'
+	</select>
+	
+	<!-- 이번달 판매 금액 -->
+	<select id="thisMonthSalePrice" resultType="result">
+		select sum(total_amount) result 
+		    from ordering 
+		    where ordering_status='결제완료' 
+		    and 
+		    	(to_char(process_time, 'YYYY-MM-DD') 
+			    between trunc(sysdate, 'MM') 
+			    and 
+			    last_day(sysdate))
+	</select>
+	
+	<!-- 이번달 취소 금액 -->
+	<select id="thisMonthCancel" resultType="result">
+		select sum(total_amount) result 
+		    from ordering 
+		    where ordering_status='결제취소' 
+		    and 
+		    	(to_char(process_time, 'YYYY-MM-DD') 
+			    between trunc(sysdate, 'MM') 
+			    and 
+			    last_day(sysdate))
+	</select>
+	
+	<!-- 이번달 판매 총 횟수 -->
+	<select id="thisMonthSaleCount" resultType="result">
+	select count(total_amount) result
+    from ordering 
+    where 
+    	ordering_status='결제완료' 
+    and 
+    (to_char(process_time, 'YYYY-MM-DD') 
+    	between trunc(sysdate, 'MM') 
+    	and last_day(sysdate))
+	</select>
+	
+	<!-- 이번주 판매 총 금액 -->
+	<select id="thisWeekSalePrice" resultType="result">
+		select sum(total_amount) result
+		    from ordering 
+		    where ordering_status='결제완료' 
+		    and 
+		    (to_char(process_time, 'YYYY-MM-DD') 
+		    between trunc(sysdate, 'iw') 
+		    and trunc(sysdate+7, 'dy'))
+	</select>
+	
+	<!-- 이번주 취소금액 -->
+	<select id="thisWeekCancel" resultType="result">
+		select sum(total_amount) result
+		    from ordering 
+		    where ordering_status='결제취소' 
+		    and 
+		    (to_char(process_time, 'YYYY-MM-DD') 
+		    between trunc(sysdate, 'iw') 
+		    and trunc(sysdate+7, 'dy'))
+	</select>
+	
+	<!-- 이번주 판매 총 횟수 -->
+	<select id="thisWeekSaleCount" resultType="result">
+		select count(total_amount) result
+		    from ordering 
+		    where ordering_status='결제완료' 
+		    and 
+		    (to_char(process_time, 'YYYY-MM-DD') 
+		    between trunc(sysdate, 'iw') 
+		    and trunc(sysdate+7, 'dy'))
+	</select>
+	
+	<!-- 월별 판매 금액 -->
+	<select id="monthlySalePrice" resultType="MonthlySalePriceVO">
+		select 
+			sum(total_amount) total_amount,
+			to_char(process_time, 'YYYY-MM-DD') process_time 
+		from 
+			ordering where ordering_status = '결제완료'
+			group by to_char(process_time,'YYYY-MM-DD')
+			order by process_time asc
+	</select>
+	
+	<!-- 정산을 위한 데이터 뽑기 -->
+	<select id="calculate" parameterType="string" resultType="calculateVO">
+		select b.*, s.seller_id, s.seller_name, s.seller_email, s.seller_phone, s.seller_store_name, s.seller_bank_code, s.seller_bank_account, s.seller_bank_username from seller s 
+		    right outer join(
+		        select b.*, g.seller_no, g.goods_name from goods g
+		    right outer join(
+		        
+		        select b.*, o.process_time from ordering o
+		            right outer join (
+		               
+		                select a.cart_info_status,a.partner_order_id, b.goods_no, b.cart_info_goods_price, b.cart_info_goods_quantity 
+		                    from cart_info a 
+		                        left outer join
+		                    cart_info_goods b on a.cart_info_no = b.cart_info_no
+		                        where a.cart_info_status = '결제완료'
+		                        
+		                )b on o.partner_order_id = b.partner_order_id
+		                where ordering_status = '결제완료' 
+		                and  
+		                    (to_char(o.process_time, 'YYYY-MM-DD') 
+		                    between 
+		                        TO_CHAR(TRUNC(ADD_MONTHS(SYSDATE,-1)+1)-TO_CHAR(SYSDATE,'DD'),'YYYY-MM-DD') 
+		                    and 
+		                        TO_CHAR(TRUNC(LAST_DAY(ADD_MONTHS(SYSDATE, -1)))+0.99999421,'YYYY-MM-DD'))
+		                
+		        ) b on g.goods_no = b.goods_no
+		    ) b on s.seller_no = b.seller_no
+   		 where s.seller_id = #{id}
+	</select>
+	
+	<!-- 판매자 아이디 쫙다 불러오기 -->
+	<select id="sellerOnlyId" parameterType="paging" resultType="string">
+		select B.seller_id from(
+			select rownum rn, A.* from(
+				select s.seller_id from seller s 
+    right outer join(
+        select b.*, g.seller_no, g.goods_name from goods g
+    right outer join(
+        
+        select b.*, o.process_time from ordering o
+            right outer join (
+               
+                select a.cart_info_status,a.partner_order_id, b.goods_no, b.cart_info_goods_price, b.cart_info_goods_quantity 
+                    from cart_info a 
+                        left outer join
+                    cart_info_goods b on a.cart_info_no = b.cart_info_no
+                        where a.cart_info_status = '결제완료'
+                        
+                )b on o.partner_order_id = b.partner_order_id
+                where ordering_status = '결제완료' 
+                and  
+                    (to_char(o.process_time, 'YYYY-MM-DD') 
+                    between 
+                        TO_CHAR(TRUNC(ADD_MONTHS(SYSDATE,-1)+1)-TO_CHAR(SYSDATE,'DD'),'YYYY-MM-DD') 
+                    and 
+                        TO_CHAR(TRUNC(LAST_DAY(ADD_MONTHS(SYSDATE, -1)))+0.99999421,'YYYY-MM-DD'))
+                
+        ) b on g.goods_no = b.goods_no
+    ) b on s.seller_no = b.seller_no
+    group by s.seller_id
+				
+			)A
+		) B where rn between #{start} and #{finish}
+		
+		
+	</select>
+	
+	<!-- 정산을 위한 카운트 구하기 -->
+	<select id="sellerTotalCollect" resultType="string">
+	select seller_id from seller s 
+    right outer join(
+        select b.*, g.seller_no, g.goods_name from goods g
+    right outer join(
+        
+        select b.*, o.process_time from ordering o
+            right outer join (
+               
+                select a.cart_info_status,a.partner_order_id, b.goods_no, b.cart_info_goods_price, b.cart_info_goods_quantity 
+                    from cart_info a 
+                        left outer join
+                    cart_info_goods b on a.cart_info_no = b.cart_info_no
+                        where a.cart_info_status = '결제완료'
+                        
+                )b on o.partner_order_id = b.partner_order_id
+                where ordering_status = '결제완료' 
+                and  
+                    (to_char(o.process_time, 'YYYY-MM-DD') 
+                    between 
+                        TO_CHAR(TRUNC(ADD_MONTHS(SYSDATE,-1)+1)-TO_CHAR(SYSDATE,'DD'),'YYYY-MM-DD') 
+                    and 
+                        TO_CHAR(TRUNC(LAST_DAY(ADD_MONTHS(SYSDATE, -1)))+0.99999421,'YYYY-MM-DD'))
+                
+        ) b on g.goods_no = b.goods_no
+    ) b on s.seller_no = b.seller_no
+    group by s.seller_id
+	</select>
+	
+	<!-- 프리미엄 전체 불러오기 -->
+	<select id="getPremium" resultType="premiumDto">
+		select * from premium order by premium_price desc
+	</select>
+	
+	<!-- 프리미엄 계산하기 -->
+	<select id="calculratePremium" parameterType="int" resultType="int">
+		select min(premium_rate) from premium where premium_price <![CDATA[<=]]> #{price}
+	</select>
+	
+	<!-- 많이 팔린 상품 탑텐 이름 -->
+	<select id="goodsTopTen" resultType="topTen">
+		select * from(
+			select goods_name item, sum(cart_info_goods_quantity)result from cart_info_goods CIG
+			    inner join goods GD on CIG.goods_no = GD.goods_no group by goods_name order by sum(cart_info_goods_quantity) desc)
+			    where rownum <![CDATA[<=]]> 10
+	</select>
+		
+	<!-- 판매 금액 높은 상품 탑텐 이름 -->
+	<select id="priceTopTen" resultType="topTen">
+		select * from(
+			select goods_name item, sum(cart_info_goods_price * cart_info_goods_quantity)result from cart_info_goods CIG 
+			    inner join goods G on CIG.goods_no = G.goods_no
+			    group by goods_name
+			    order by sum(cart_info_goods_price * cart_info_goods_quantity) desc)
+			    where rownum <![CDATA[<=]]> 10
+	</select>
+	
+	<!-- 많이 판 판매자 탑텐 이름 -->
+	<select id="sellerTopTen" resultType="topTen">
+		select * from (
+			select S.seller_id item, sum(CIG.cart_info_goods_quantity)result from cart_info_goods CIG
+			    inner join goods GD on CIG.goods_no = GD.goods_no
+			    inner join seller S on GD.seller_no = S.seller_no
+			    group by S.seller_id
+			    order by sum(CIG.cart_info_goods_quantity)desc)
+			    where rownum <![CDATA[<=]]> 10
+	</select>
+	
+	
+	
 	
  </mapper> 
 	

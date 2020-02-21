@@ -15,9 +15,11 @@ public interface AdminDao {
 	void block(BlockDto blockDto);
 	int blockCount();
 	List<BlockDto> blockList(PagingVO paging);
-	void blockDelete(BlockDto blockDto);
+	void blockDelete(BlockDto BlockDto);
 	public int blockGroupCount(String block_group);
 	public int blockIdCount(String block_id);
+	public void blockUnlockSeller(BlockDto BlockDto);
+	public void blockUnlockMember(BlockDto BlockDto);
 	
 	public int registToday();
 }
