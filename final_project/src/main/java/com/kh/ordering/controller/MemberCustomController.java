@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.CustomOrderDto;
@@ -28,9 +29,11 @@ import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.MemberCustomDao;
+import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.service.MemberCustomService;
 import com.kh.ordering.service.SellerCustomService;
+import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.CustomOrderVO;
 import com.kh.ordering.vo.FilesVO;
 import com.kh.ordering.vo.PagingVO;
@@ -54,6 +57,8 @@ public class MemberCustomController {
 	
 	@Autowired
 	private CategoryDao categoryDao;
+	@Autowired
+	private OrderDao orderDao;
 	
 	@Autowired
 	private SellerCustomService sellerCustomService;
@@ -61,8 +66,20 @@ public class MemberCustomController {
 	private SellerCustomDao sellerCustomDao;
 
 //	주문제작 요청서 작성
+	@PostMapping("/pick")
+	@ResponseBody
+	public List<CartInfoVO> sellerPick(@RequestParam(value = "category_name", required=false) String category_name) {
+		
+		// small 카테고리 이름으로 카테고리 정보 가져오기
+		CategoryDto categoryDto = categoryDao.get(category_name); 
+		// 카테고리 정보의 카테고리 번호와 그에 해당하는 판매자 정보 가져와서 보내기
+		int category_no = categoryDto.getCategory_no();
+		
+		return orderDao.getTopSales(category_no);
+	}
 	@GetMapping("/customCate") // 카테고리
-	public String customCate(Model model, HttpSession session) {
+	public String customCate(Model model, HttpSession session,
+													@RequestParam (value = "category_no", required=false) String category_name) {
 		model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
 		
 		String member_id = (String)session.getAttribute("member_id");
@@ -194,7 +211,6 @@ public class MemberCustomController {
 	}
 
 //	수정
-
 	@PostMapping("/updateReq")
 	public String updateCustom(CustomOrderVO customOrderVO) {
 		int member_custom_order_no = customOrderVO.getMember_custom_order_no();

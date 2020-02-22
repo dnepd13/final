@@ -71,17 +71,15 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 			
 			// 판매자 요청서 도착 알람 생성
 			// - seller_no리스트 만큼 판매자 알람 테이블 데이터 입력
-			List<SellerCustomAlarmDto> sellerAlarm = new ArrayList<>();
-			
+
 			for(SellerCategoryDto sellerList : getSellerNo) {
 				
-				sellerAlarm.add(SellerCustomAlarmDto.builder()
-																					.seller_no(sellerList.getSeller_no())
-																					.member_custom_order_no(member_custom_order_no)
-																					.build());
-			}
-			for(int i=0; i<sellerAlarm.size();i++) {
-				SellerCustomAlarmDto sellerCustomAlarmDto = sellerAlarm.get(i);
+				SellerCustomAlarmDto sellerCustomAlarmDto
+											= SellerCustomAlarmDto.builder()
+																						.seller_no(sellerList.getSeller_no())
+																						.member_custom_order_no(member_custom_order_no)
+																						.build();
+				
 				sellerCustomDao.customAlarmInsert(sellerCustomAlarmDto);
 			}
 			

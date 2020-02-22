@@ -120,6 +120,11 @@ public class OrderDaoImpl implements OrderDao{
 	public List<CartOkDto> getOkList(int member_no) {
 		return sqlSession.selectList("order.getOkList", member_no);
 	}
+
+	@Override // 카테고리번호 기준 판매량 top5
+	public List<CartInfoVO> getTopSales(int category_no) {
+		return sqlSession.selectList("order.getTopSales", category_no);
+	}
 	
 
 }

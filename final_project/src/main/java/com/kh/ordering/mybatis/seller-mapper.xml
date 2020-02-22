@@ -81,6 +81,11 @@
 
   
 
+<!-- 판매자 No 단일조회 -->
+	<select id="getSeller" parameterType="int" resultType="seller">
+		select *from seller where seller_no=#{seller_no}
+	</select>
+
 <!-- 	<update id="info_edit" parameterMap="seller"> -->
 <!-- 		update seller set #{seller_email}, #{seller_phone}, #{seller_store_phone}, -->
 <!-- 		#{seller_store_fax}, 'cid', #{seller_bank_code}, -->
@@ -138,17 +143,12 @@
 	<select id="getAlarm" parameterType="int" resultType="SellerAlarmDto">
 		select *from seller_alarm where member_custom_order_no=#{member_custom_order_no}
 	</select>
-
-	<!-- 전체 요청서 보기(카테고리 미구현) -->
-<!-- 	<select id="getListAll" resultType="customOrderVO"> -->
-<!-- 		select *from member_custom_view -->
-<!-- 	</select> -->
 		
 	<!-- 판매자가 받은 요청서 총 개수(목적: 페이징) -->
 	<select id="customCountTest" parameterType="int" resultType="int">
 		select count(*) from seller_alarm where seller_no = #{seller_no}
 	</select>
-	<!-- 나에게 온 요청서만 보기 -->
+	<!-- 나에게 온 요청서 보기 -->
 	<select id="getListReq" parameterType="int" resultType="customOrderVO">
 		select *from(
 		    select rownum rn, RN.*from(

@@ -29,4 +29,7 @@ public class CartInfoVO {
 	
 	private int goods_no;
 	private String goods_name;
+	
+	private int seller_no;
+	private String seller_id;
 }

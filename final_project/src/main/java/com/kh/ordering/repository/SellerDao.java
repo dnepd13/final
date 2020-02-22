@@ -30,7 +30,8 @@ public interface SellerDao {
 
 		int id_check(String seller_id);
 
-
+// 판매자 번호로 단일조회
+	SellerDto sellerDto(int seller_no);
 
 
 

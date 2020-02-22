@@ -32,4 +32,19 @@
 		        on cart_ok.cart_info_goods_no = cart_info_goods.cart_info_goods_no
 			where cart_ok.member_no=#{member_no}
 	</select>
+	
+	<!-- 카테고리번호를 통한 최근 한달 이내, 판매량 Top5 판매자 -->
+	<select id="getTopSales" parameterType="int" resultType="CartInfoVO">
+		select *from(
+			select rownum rn, RN.*from(
+				select A.seller_no, sum(cart_info_goods.cart_info_goods_price), A.seller_id from
+				    seller_category inner join seller A on seller_category.seller_no = A.seller_no
+				            inner join goods on A.seller_no=goods.seller_no
+				            inner join cart_info_goods on goods.goods_no = cart_info_goods.goods_no
+				    where seller_category.category_no = #{category_no}
+				group by A.seller_no, A.seller_id
+				order by sum(cart_info_goods.cart_info_goods_price) desc
+			)RN
+		)where rn between 1 and 5 and sysdate >= sysdate-30
+	</select>
 </mapper>

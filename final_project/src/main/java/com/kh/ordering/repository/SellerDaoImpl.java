@@ -73,6 +73,12 @@ public class SellerDaoImpl implements SellerDao {
 	public int id_check(String seller_id) {
 		return 0;
 	}
+	
+	// seller_no 단일조회
+	@Override
+	public SellerDto sellerDto(int seller_no) {
+		return sqlSession.selectOne("seller.getSeller", seller_no);
+	}
 
 
 }
