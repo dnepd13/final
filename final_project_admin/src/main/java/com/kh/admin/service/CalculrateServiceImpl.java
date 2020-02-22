@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.kh.admin.repository.CalculateDao;
 import com.kh.admin.repository.PremiumDao;
+import com.kh.admin.vo.AdjustmentFullVO;
+import com.kh.admin.vo.AdjustmentInsertVO;
+import com.kh.admin.vo.AdjustmentVO;
 import com.kh.admin.vo.CalculateVO;
 import com.kh.admin.vo.FinalCalculateVO;
 import com.kh.admin.vo.PagingVO;
@@ -23,40 +26,48 @@ public class CalculrateServiceImpl implements CalculrateService{
 	
 	@Autowired
 	private PremiumDao premiumDao;
-	
+
 	@Override
-	public List<FinalCalculateVO> calculrate(PagingVO vo1) {
-		List<FinalCalculateVO> finish = new ArrayList<>();
-		List<String> name = calculateDao.sellerCollect(vo1);
-		log.info("name={}", name);
-		log.info("size={}",name.size());
-		for(int i = 0; i<name.size();i++) {
-			String id = name.get(i);
-			List<CalculateVO> vo = new ArrayList<>();
-					vo=calculateDao.calculate(id);
-				
-				int total = 0;
-				for(int j =0; j < vo.size(); j++ ) {
-					int qu = vo.get(j).getCart_info_goods_quantity();
-					int pri = vo.get(j).getCart_info_goods_price();
-					total += qu*pri;
+	public List<AdjustmentVO> getCalculSeller(PagingVO vo) {
+		List<AdjustmentVO> finalCal = new ArrayList<>();
+		List<String> a = calculateDao.calculateGetSeller(vo);
+		log.info("a={}", a);
+		for(int i=0; i<a.size(); i++) {
+			AdjustmentVO resultvo = new AdjustmentVO();
+			vo.setSeller_id(a.get(i));
+			String seller_id = vo.getSeller_id();
+			List<AdjustmentFullVO> b = new ArrayList<>();
+			b = calculateDao.getCalculate(vo);
+			log.info("b={}",b);
+			log.info("bsize={}",b.size());
+			int total = 0;	
+				for(int j=0; j < b.size(); j++) {
+					
+					log.info("b.get(j).getOdering_status()={}",b.get(j).getOrdering_status());
+					if(b.get(j).getOrdering_status().equals("결제완료")) {
+						total += b.get(j).getCart_info_goods_quantity() * b.get(j).getCart_info_goods_price();
+						log.info("total1={}",b.get(j).getCart_info_goods_quantity() * b.get(j).getCart_info_goods_price());
+					}
+					else {
+						total -= b.get(j).getCart_info_goods_quantity() * b.get(j).getCart_info_goods_price();
+						log.info("total2={}",b.get(j).getCart_info_goods_quantity() * b.get(j).getCart_info_goods_price());
+					}
+					log.info("total={}",total);
 				}
-				int rate = premiumDao.calculratePremium(total);
-				FinalCalculateVO cal = new FinalCalculateVO();
-				cal.setSeller_bank_account(vo.get(0).getSeller_bank_account());
-				cal.setSeller_bank_code(vo.get(0).getSeller_bank_code());
-				cal.setSeller_bank_username(vo.get(0).getSeller_bank_username());
-				cal.setSeller_email(vo.get(0).getSeller_email());
-				cal.setSeller_id(vo.get(0).getSeller_id());
-				cal.setSeller_name(vo.get(0).getSeller_name());
-				cal.setSeller_phone(vo.get(0).getSeller_phone());
-				cal.setSeller_store_name(vo.get(0).getSeller_store_name());
-				cal.setTotal(total);
-				cal.setRate(rate);
-				finish.add(cal);
-			
-		}
-		return finish;
+			int rate = calculateDao.getRate(total);
+			int fee = total * rate / 100;
+			int adjustment_price = total - fee;
+			resultvo.setFee(fee);
+			resultvo.setAdjustment_price(adjustment_price);
+			resultvo.setRate(rate);	
+			resultvo.setTotal_cal_price(total);
+			resultvo.setSeller_id(seller_id);
+			log.info("result={}", resultvo.getTotal_cal_price());
+			finalCal.add(resultvo);
+		}	
+		log.info("final={}", finalCal);
+		return finalCal;
 	}
+	
 
 }

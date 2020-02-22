@@ -40,5 +40,10 @@
  		<typeAlias type="com.kh.admin.vo.CalculateVO" alias="calculateVO"/>
  		<typeAlias type="com.kh.admin.vo.ResultVO" alias="result"/>
  		<typeAlias type="com.kh.admin.vo.TopTenChartVO" alias="topTen"/>
+ 		
+ 		<!-- 정산용 -->
+ 		<typeAlias type="com.kh.admin.vo.AdjustmentFullVO" alias="adjustmentFullVO"/>
+ 		<typeAlias type="com.kh.admin.vo.AdjustmentInsertVO" alias="adjustmentInsertVO"/>
+ 		<typeAlias type="com.kh.admin.vo.AdjustmentVO" alias="adjustmentVO"/>
  	</typeAliases>
  </configuration>

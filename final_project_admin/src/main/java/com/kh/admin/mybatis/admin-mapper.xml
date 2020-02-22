@@ -785,102 +785,6 @@
 			order by process_time asc
 	</select>
 	
-	<!-- 정산을 위한 데이터 뽑기 -->
-	<select id="calculate" parameterType="string" resultType="calculateVO">
-		select b.*, s.seller_id, s.seller_name, s.seller_email, s.seller_phone, s.seller_store_name, s.seller_bank_code, s.seller_bank_account, s.seller_bank_username from seller s 
-		    right outer join(
-		        select b.*, g.seller_no, g.goods_name from goods g
-		    right outer join(
-		        
-		        select b.*, o.process_time from ordering o
-		            right outer join (
-		               
-		                select a.cart_info_status,a.partner_order_id, b.goods_no, b.cart_info_goods_price, b.cart_info_goods_quantity 
-		                    from cart_info a 
-		                        left outer join
-		                    cart_info_goods b on a.cart_info_no = b.cart_info_no
-		                        where a.cart_info_status = '결제완료'
-		                        
-		                )b on o.partner_order_id = b.partner_order_id
-		                where ordering_status = '결제완료' 
-		                and  
-		                    (to_char(o.process_time, 'YYYY-MM-DD') 
-		                    between 
-		                        TO_CHAR(TRUNC(ADD_MONTHS(SYSDATE,-1)+1)-TO_CHAR(SYSDATE,'DD'),'YYYY-MM-DD') 
-		                    and 
-		                        TO_CHAR(TRUNC(LAST_DAY(ADD_MONTHS(SYSDATE, -1)))+0.99999421,'YYYY-MM-DD'))
-		                
-		        ) b on g.goods_no = b.goods_no
-		    ) b on s.seller_no = b.seller_no
-   		 where s.seller_id = #{id}
-	</select>
-	
-	<!-- 판매자 아이디 쫙다 불러오기 -->
-	<select id="sellerOnlyId" parameterType="paging" resultType="string">
-		select B.seller_id from(
-			select rownum rn, A.* from(
-				select s.seller_id from seller s 
-    right outer join(
-        select b.*, g.seller_no, g.goods_name from goods g
-    right outer join(
-        
-        select b.*, o.process_time from ordering o
-            right outer join (
-               
-                select a.cart_info_status,a.partner_order_id, b.goods_no, b.cart_info_goods_price, b.cart_info_goods_quantity 
-                    from cart_info a 
-                        left outer join
-                    cart_info_goods b on a.cart_info_no = b.cart_info_no
-                        where a.cart_info_status = '결제완료'
-                        
-                )b on o.partner_order_id = b.partner_order_id
-                where ordering_status = '결제완료' 
-                and  
-                    (to_char(o.process_time, 'YYYY-MM-DD') 
-                    between 
-                        TO_CHAR(TRUNC(ADD_MONTHS(SYSDATE,-1)+1)-TO_CHAR(SYSDATE,'DD'),'YYYY-MM-DD') 
-                    and 
-                        TO_CHAR(TRUNC(LAST_DAY(ADD_MONTHS(SYSDATE, -1)))+0.99999421,'YYYY-MM-DD'))
-                
-        ) b on g.goods_no = b.goods_no
-    ) b on s.seller_no = b.seller_no
-    group by s.seller_id
-				
-			)A
-		) B where rn between #{start} and #{finish}
-		
-		
-	</select>
-	
-	<!-- 정산을 위한 카운트 구하기 -->
-	<select id="sellerTotalCollect" resultType="string">
-	select seller_id from seller s 
-    right outer join(
-        select b.*, g.seller_no, g.goods_name from goods g
-    right outer join(
-        
-        select b.*, o.process_time from ordering o
-            right outer join (
-               
-                select a.cart_info_status,a.partner_order_id, b.goods_no, b.cart_info_goods_price, b.cart_info_goods_quantity 
-                    from cart_info a 
-                        left outer join
-                    cart_info_goods b on a.cart_info_no = b.cart_info_no
-                        where a.cart_info_status = '결제완료'
-                        
-                )b on o.partner_order_id = b.partner_order_id
-                where ordering_status = '결제완료' 
-                and  
-                    (to_char(o.process_time, 'YYYY-MM-DD') 
-                    between 
-                        TO_CHAR(TRUNC(ADD_MONTHS(SYSDATE,-1)+1)-TO_CHAR(SYSDATE,'DD'),'YYYY-MM-DD') 
-                    and 
-                        TO_CHAR(TRUNC(LAST_DAY(ADD_MONTHS(SYSDATE, -1)))+0.99999421,'YYYY-MM-DD'))
-                
-        ) b on g.goods_no = b.goods_no
-    ) b on s.seller_no = b.seller_no
-    group by s.seller_id
-	</select>
 	
 	<!-- 프리미엄 전체 불러오기 -->
 	<select id="getPremium" resultType="premiumDto">
@@ -921,9 +825,128 @@
 			    where rownum <![CDATA[<=]]> 10
 	</select>
 	
+	<!-- 정산 받을 사람 뽑아오기 -->
+	<select id="adjustmentGetSeller" parameterType="paging" resultType="String">
+		select A.seller_id from(
+			select rownum rn, A.* from(
+					select  S.seller_id
+			    from ordering O 
+			        inner join cart_info CI on O.partner_order_id = ci.partner_order_id
+			        inner join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
+			        inner join goods GD on cig.goods_no = GD.goods_no
+			        inner join seller S on GD.seller_no = S.seller_no
+			        inner join member M on O.member = M.member_no
+			   
+			  	  where O.ordering_status != '결제준비완료'
+			           <choose>
+			           		<when test="seller_id != null">
+					         and 	seller_id like '%'||#{seller_id}||'%'
+			           		</when>
+			           		<otherwise>
+			           		</otherwise>
+			           </choose>
+			            and extract(year from process_time) = #{year}
+			                and 
+			                extract(month from process_time) = #{month}
+			                group by S.seller_id
+			            order by S.seller_id asc
+			)A
+		) A where rn between #{start} and #{finish}
+		
+	</select>
 	
+	<!-- 정산 계산 -->
+	<select id="adjustment" parameterType="paging" resultType="adjustmentFullVO">
+		select O.partner_order_id, O.ordering_status, O.process_time,O.total_amount, CI.total_delivery_price, 
+				 CIG.cart_info_goods_quantity, CIG.cart_info_goods_price, GD.goods_name, S.seller_id, S.seller_name, S.seller_email, S.seller_phone,
+				 S.seller_store_name, S.seller_store_phone, S.seller_bank_code, S.seller_bank_account, S.seller_bank_username, M.member_id
+		    from ordering O 
+		        inner join cart_info CI on O.partner_order_id = ci.partner_order_id
+		        inner join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
+		        inner join goods GD on cig.goods_no = GD.goods_no
+		        inner join seller S on GD.seller_no = S.seller_no
+		        inner join member M on O.member = M.member_no
+		   
+		    where O.ordering_status != '결제준비완료'
+		            and S.seller_id = #{seller_id}
+		            and extract(year from process_time) = #{year}
+		                and 
+		                extract(month from process_time) = #{month}
+            order by S.seller_id asc, O.partner_order_id asc, O.process_time asc
+	</select>
 	
+	<!-- 수수료 구하기 -->
+	<select id="getRate" parameterType="int" resultType="int">
+		select min(premium_rate) from premium where premium_price <![CDATA[<=]]> #{price}
+	</select>
 	
+	<!-- 정산 받을 사람 뽑아오기 -->
+	<select id="adjustmentCount" parameterType="paging" resultType="String">
+					select  S.seller_id
+			    from ordering O 
+			        inner join cart_info CI on O.partner_order_id = ci.partner_order_id
+			        inner join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
+			        inner join goods GD on cig.goods_no = GD.goods_no
+			        inner join seller S on GD.seller_no = S.seller_no
+			        inner join member M on O.member = M.member_no
+			   
+			  	  where O.ordering_status != '결제준비완료'
+			           <choose>
+			           		<when test="seller_id != null">
+					         and 	seller_id like '%'||#{seller_id}||'%'
+			           		</when>
+			           		<otherwise>
+			           		</otherwise>
+			           </choose>
+			            and extract(year from process_time) = #{year}
+			                and 
+			                extract(month from process_time) = #{month}
+			                group by S.seller_id
+			            order by S.seller_id asc
+		
+	</select>
+	
+	<!-- 한명 계산하기 -->
+	<select id="adjustmentOne" parameterType="paging" resultType="adjustmentFullVO">
+		select A.* from(
+			select rownum rn, A.* from(
+					select O.partner_order_id, O.ordering_status, O.process_time,O.total_amount, CI.total_delivery_price, 
+					 CIG.cart_info_goods_quantity, CIG.cart_info_goods_price, GD.goods_name, S.seller_id, S.seller_name, S.seller_email, S.seller_phone,
+					 S.seller_store_name, S.seller_store_phone, S.seller_bank_code, S.seller_bank_account, S.seller_bank_username, M.member_id
+			    from ordering O 
+			        inner join cart_info CI on O.partner_order_id = ci.partner_order_id
+			        inner join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
+			        inner join goods GD on cig.goods_no = GD.goods_no
+			        inner join seller S on GD.seller_no = S.seller_no
+			        inner join member M on O.member = M.member_no
+			   
+			    where O.ordering_status != '결제준비완료'
+			            and S.seller_id = #{seller_id}
+			            and extract(year from process_time) = #{year}
+			                and 
+			                extract(month from process_time) = #{month}
+	            order by S.seller_id asc, O.partner_order_id asc, O.process_time asc
+			)A
+		) A where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 한명의 판매자 목록 총 카운트 구하기 -->
+	<select id="adjustmentOneCount" parameterType="adjustmentInsertVO" resultType="int">
+		select count(*)
+			    from ordering O 
+			        inner join cart_info CI on O.partner_order_id = ci.partner_order_id
+			        inner join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
+			        inner join goods GD on cig.goods_no = GD.goods_no
+			        inner join seller S on GD.seller_no = S.seller_no
+			        inner join member M on O.member = M.member_no
+			   
+			    where O.ordering_status != '결제준비완료'
+			            and S.seller_id = #{seller_id}
+			            and extract(year from process_time) = #{year}
+			                and 
+			                extract(month from process_time) = #{month}
+            order by S.seller_id asc, O.partner_order_id asc, O.process_time asc          
+	</select>
  </mapper> 
 	
  

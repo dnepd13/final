@@ -1,5 +1,6 @@
 package com.kh.admin.controller;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -121,6 +122,12 @@ public class AdminController {
 		model.addAttribute("memberCount", memberCount);
 		model.addAttribute("sellerCount", sellerCount);
 		model.addAttribute("todayRegist", registTodayCount);
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int month = (Calendar.getInstance().get(Calendar.MONTH));
+		log.info("year={}",year);
+		log.info("month={}",month+1);
+		model.addAttribute("year", year);
+		model.addAttribute("month", month+1);
 		return "/home";
 	}
 	//---------------------------관리자가입창----------------------------------

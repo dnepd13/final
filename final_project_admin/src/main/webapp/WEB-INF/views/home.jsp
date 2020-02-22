@@ -11,7 +11,7 @@
 <h1><a href="${pageContext.request.contextPath}/seller/manage">판매자관리</a></h1><br>
 <h1><a href="${pageContext.request.contextPath}/member/manage">회원관리</a></h1><br>
 <h1><a href="${pageContext.request.contextPath}/gradebenefit">회원등급혜택</a></h1><br>
-<h1><a href="${pageContext.request.contextPath}/calculate/total">정산</a></h1><br>
+<h1><a href="${pageContext.request.contextPath}/calculate/total?year=${year}&month=${month}">정산</a></h1><br>
 <h1><a href="${pageContext.request.contextPath}/premium">수수료관리</a></h1><br>
 <h1><a href="${pageContext.request.contextPath}/board/manageqna">관리문의게시판</a></h1><br>
 <h1><a href="${pageContext.request.contextPath}/board/review">리뷰게시판</a></h1><br>

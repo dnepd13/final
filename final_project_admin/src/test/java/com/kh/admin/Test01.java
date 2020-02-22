@@ -17,6 +17,9 @@ import com.kh.admin.repository.CalculateDao;
 import com.kh.admin.repository.GradeBenefitDao;
 import com.kh.admin.repository.PremiumDao;
 import com.kh.admin.repository.SellerDao;
+import com.kh.admin.vo.AdjustmentFullVO;
+import com.kh.admin.vo.AdjustmentInsertVO;
+import com.kh.admin.vo.AdjustmentVO;
 import com.kh.admin.vo.CalculateVO;
 import com.kh.admin.vo.FinalCalculateVO;
 import com.kh.admin.vo.PagingVO;
@@ -47,11 +50,52 @@ public class Test01 {
 	@Autowired
 	private PremiumDao premiumDao;
 	
-	@Test
-	public void test() {
-		int a = premiumDao.calculratePremium(500000);
-		log.info("a={}",a);
-	}
+	
+//	public void test() {
+//		AdjustmentInsertVO vo = AdjustmentInsertVO.builder().year(2020).month(2).build();
+//		List<AdjustmentVO> finalCal = new ArrayList<>();
+//		List<String> a = calculateDao.calculateGetSeller(vo);
+//		for(int i=0; i<a.size(); i++) {
+//			AdjustmentVO resultvo = new AdjustmentVO();
+//			vo.setSeller_id(a.get(i));
+//			String seller_id = vo.getSeller_id();
+//			List<AdjustmentFullVO> b = new ArrayList<>();
+//			b = calculateDao.getCalculate(vo);
+//			log.info("b={}",b);
+//			log.info("bsize={}",b.size());
+//			int total = 0;	
+//				for(int j=0; j < b.size(); j++) {
+//					
+//					log.info("b.get(j).getOdering_status()={}",b.get(j).getOrdering_status());
+//					if(b.get(j).getOrdering_status().equals("결제완료")) {
+//						total += b.get(j).getCart_info_goods_quantity() * b.get(j).getCart_info_goods_price();
+//						log.info("total1={}",b.get(j).getCart_info_goods_quantity() * b.get(j).getCart_info_goods_price());
+//					}
+//					else {
+//						total -= b.get(j).getCart_info_goods_quantity() * b.get(j).getCart_info_goods_price();
+//						log.info("total2={}",b.get(j).getCart_info_goods_quantity() * b.get(j).getCart_info_goods_price());
+//					}
+//					log.info("total={}",total);
+//				}
+//			int rate = calculateDao.getRate(total);
+//			int fee = total * rate / 100;
+//			int adjustment_price = total - fee;
+//			resultvo.setFee(fee);
+//			resultvo.setAdjustment_price(adjustment_price);
+//			resultvo.setRate(rate);	
+//			resultvo.setTotal_cal_price(total);
+//			resultvo.setSeller_id(seller_id);
+//			log.info("result={}", resultvo.getTotal_cal_price());
+//			finalCal.add(resultvo);
+//		}	
+//		log.info("final={}", finalCal);
+//		}
+	
+//	@Test
+//	public void test() {
+//		int a = premiumDao.calculratePremium(500000);
+//		log.info("a={}",a);
+//	}
 	
 //	@Test
 //	public void test() {
