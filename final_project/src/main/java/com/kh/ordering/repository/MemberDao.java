@@ -66,9 +66,7 @@ public interface MemberDao {
 		
 //		//멤버아이디로 번호 구해오기 (영락)
 //		int findno(@RequestParam MemberDto member, int member_no);
-		
-////// 주문내역
-		List<CartInfoDto> getCartList(int member_no);
+
 
 }
 

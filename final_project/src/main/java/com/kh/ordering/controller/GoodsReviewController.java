@@ -19,17 +19,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.kh.ordering.entity.CartInfoDto;
-import com.kh.ordering.entity.CartInfoGoodsDto;
 import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsReviewDto;
-import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.service.GoodsReviewService;
+import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.FilesVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -58,11 +56,8 @@ public class GoodsReviewController {
 		int member_no = memberDao.getNo(member_id);
 		
 		// 배송정보를 포함하는 전체 주문내역
-		List<CartInfoDto> cartInfoDto = memberDao.getCartList(member_no);
-		model.addAttribute("getCartList", cartInfoDto);
-		// 상품별 주문내역 
-		List<CartInfoGoodsDto> getGoodsList = orderDao.getGoodsList(member_no);
-		model.addAttribute("getGoodsList", getGoodsList);
+		List<CartInfoVO> getCartInfoVO = orderDao.getCartInfoVO(member_no);
+		model.addAttribute("getCart", getCartInfoVO);
 		// 상품별 구매확정 기록
 		List<CartOkDto> getOkList = orderDao.getOkList(member_no);
 		model.addAttribute("getOkList", getOkList);

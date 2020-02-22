@@ -188,14 +188,14 @@ public class MemberCustomController {
 		List<FilesVO>  filesVO = memberCustomService.filesList(member_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
 		
-		model.addAttribute("alarm", sellerCustomDao.getsellerAlarm(member_custom_order_no));
+		model.addAttribute("alarm", sellerCustomDao.getSellerAlarm(member_custom_order_no));
 		
 		return "member/customInfoReq";
 	}
 
 //	수정
 
-	@PostMapping("/updateCustom")
+	@PostMapping("/updateReq")
 	public String updateCustom(CustomOrderVO customOrderVO) {
 		int member_custom_order_no = customOrderVO.getMember_custom_order_no();
 		int custom_order_no = memberCustomDao.getCustomNo(member_custom_order_no);

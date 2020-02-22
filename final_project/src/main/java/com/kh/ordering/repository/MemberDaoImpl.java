@@ -193,11 +193,4 @@ public class MemberDaoImpl implements MemberDao{
 //		}
 
 
-//// 주문내역
-		@Override
-		public List<CartInfoDto> getCartList(int member_no) {
-			return sqlSession.selectList("member.getCartList", member_no);
-		}
-	
-	
 }

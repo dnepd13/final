@@ -22,32 +22,29 @@
 
 <table border="1">
 		<tr>
-			<th>주문내역 PK</th>
 			<th>주문번호</th>
 			<th>상품명</th>
-			<th>수량</th>
-			<th>가격</th>
+			<th>구매수량</th>
+			<th>결제금액</th>
 			<th>결제상태</th>
 			<th>리뷰상태</th>
 		</tr>
-		<c:forEach var="cartList" items="${getCartList }">
+		<c:forEach var="getCart" items="${getCart }">
 		<tr>
-			<td>${cartList.cart_info_no }</td>
-			<td>${cartList.partner_order_id }</td>
-			<td>
-					</td>
-			<td>${cartList.total_quantity } 개</td>
-			<td>${cartList.total_price } 원<h6>배송금액: ${cartList.total_delivery_price } 원</h6></td>
-			<td>${cartList.cart_info_status }	
-					<c:set var="cartStatus" value="${cartList.cart_info_status }"/>
-					<c:if test="${functions: contains(cartStatus, '결제완료') }">
+			<td>${getCart.partner_order_id }</td>
+			<td>${getCart.goods_name }</td>
+			<td>${getCart.cart_info_goods_quantity } 개</td>
+			<td>${getCart.cart_info_goods_price } 원</td>
+			<td><%-- ${getCartInfo.cart_info_status }	 --%>
+<%-- 					<c:set var="cartStatus" value="${getCartInfo.cart_info_status }"/> --%>
+<%-- 					<c:if test="${functions: contains(cartStatus, '결제완료') }"> --%>
 						<button class="orderConfirm">구매확정</button>
 						<button class="btn_review" style="display:none;">리뷰쓰기</button>
 						
 						<form action="insertReview" method="post" enctype="multipart/form-data" class="insertReview" style="display:block;">
 							
-							<input type="hidden" name="cart_info_no" value="${cartList.cart_info_no }">
-							<input type="hidden" name="member_no" value="${cartList.member_no }">
+							<input type="hidden" name="cart_info_no" value="${getCart.cart_info_goods_no }">
+							<input type="hidden" name="member_no" value="${getCartInfo.member_no }">
 							<div data-sendname="goods_review_star" class="star-wrap" data-limit="5" data-unitsize="20" data-image="http://www.sysout.co.kr/file/image/288"></div>
 							<input type="file" name="files" multiple><br>
 							<textarea name="goods_review_content" required>	</textarea>
@@ -56,7 +53,7 @@
 							<input type="hidden" name="member_point_change" value="50">
 							<input type="hidden" name="member_point_content" value="리뷰적립">
 						</form>			
-					</c:if>
+<%-- 					</c:if> --%>
 			</td>
 			<td><button>리뷰보기</button></td>
 		</tr>

@@ -82,6 +82,10 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	public int customAlarm(int member_no) {
 		return sqlSession.selectOne("member.customCheck", member_no);
 	}
+	@Override // 알람테이블 조회
+	public MemberCustomAlarmDto getMemberAlarm(int seller_custom_order_no) {
+		return sqlSession.selectOne("member.getAlarm", seller_custom_order_no);
+	}
 
 	@Override // 구매자가 받은 견적서 count
 	public int customRespCount(int member_no) {
@@ -128,5 +132,5 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	public void deleteCustom(int member_custom_order_no) {
 		sqlSession.delete("member.deleteCustom", member_custom_order_no);	
 	}
-	
+
 }

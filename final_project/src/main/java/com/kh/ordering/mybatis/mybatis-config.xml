@@ -64,6 +64,7 @@
 		<typeAlias type="com.kh.ordering.entity.CartInfoOpDto" alias="cartInfoOpDto"/>
 		
 		<!-- 주문내역 -->
+		<typeAlias type="com.kh.ordering.vo.CartInfoVO" alias="cartInfoVO"/>
 		<typeAlias type="com.kh.ordering.entity.CartOkDto" alias="cartOkDto"/>
 		
 		<!-- 포인트 -->

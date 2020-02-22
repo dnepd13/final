@@ -12,6 +12,7 @@ import com.kh.ordering.entity.CartInfoOpDto;
 import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.GoodsOptionDto;
 import com.kh.ordering.vo.CartInfoGoodsVO;
+import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.CartVO;
 import com.kh.ordering.vo.OrderDeliveryVO;
 import com.kh.ordering.vo.OrderVO;
@@ -111,8 +112,8 @@ public class OrderDaoImpl implements OrderDao{
 	}
 
 	@Override // 상품별 주문내역
-	public List<CartInfoGoodsDto> getGoodsList(int member_no) {
-		return sqlSession.selectList("order.getGoodsList", member_no);
+	public List<CartInfoVO> getCartInfoVO(int member_no) {
+		return sqlSession.selectList("order.getCartInfoVO", member_no);
 	}
 
 	@Override // 상품별 구매확정 테이블

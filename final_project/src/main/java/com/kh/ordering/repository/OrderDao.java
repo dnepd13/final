@@ -7,6 +7,7 @@ import com.kh.ordering.entity.CartInfoGoodsDto;
 import com.kh.ordering.entity.CartInfoOpDto;
 import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.OrderVO;
 
 public interface OrderDao {
@@ -18,6 +19,6 @@ public interface OrderDao {
 	OrderVO getOrderVO(int partner_order_id);
 	
 	// 주문내역
-	List<CartInfoGoodsDto> getGoodsList(int member_no); // 상품별 주문내역
+	List<CartInfoVO> getCartInfoVO(int member_no);
 	List<CartOkDto> getOkList(int member_no); // 상품별 구매확정 테이블
 }

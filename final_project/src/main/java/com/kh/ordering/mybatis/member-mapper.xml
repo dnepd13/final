@@ -62,6 +62,10 @@
 								values(member_alarm_seq.nextval, #{member_no}, #{seller_custom_order_no},
 											'N', 'N')
 	</insert>
+	
+	<select id="getAlarm" parameterType="int" resultType="MemberAlarmDto">
+		select *from member_alarm where seller_custom_order_no=#{seller_custom_order_no}
+	</select>
 
 	<!-- 전체 견적서 보기(카테고리 미구현) -->
 	<select id="getListAll" resultType="customOrderVO">
@@ -104,12 +108,7 @@
 	<select id="customReqCount" parameterType="int" resultType="int">
 		select count(*) from member_custom_order where member_no=#{member_no}
 	</select>
-	
-	<!-- 보낸 1:1 요청서 삭제 -->
-	<select id="getCustomNo" parameterType="int" resultType="int">
-		select custom_order_no from member_custom_view
-				where seller_alarm_check='N' and member_custom_order_no=#{member_custom_order_no}
-	</select>
+	<!-- 보낸 요청서 수정 -->
 	<update id="updateCustom" parameterType="customOrderDto">
 		update custom_order set custom_order_title=#{custom_order_title},
 							                        custom_order_content=#{custom_order_content},
@@ -118,13 +117,18 @@
 							                        custom_order_date=sysdate
                 where custom_order_no=#{custom_order_no}
 	</update>
+	<!-- 보낸 1:1 요청서 삭제 -->
+	<select id="getCustomNo" parameterType="int" resultType="int">
+		select custom_order_no from member_custom_view
+				where seller_alarm_check='N' and member_custom_order_no=#{member_custom_order_no}
+	</select>
 	<delete id="deleteReq" parameterType="int">
 		delete from custom_order A
 		    where exists( select 1 from member_custom_order B
 				                    	where A.custom_order_no = B.custom_order_no
 				                    				and B.custom_order_no=#{custom_order_no})
 	</delete>
-	<delete id="deleteAlarm">
+	<delete id="deleteAlarm" parameterType="int">
 		delete seller_alarm where member_custom_order_no= #{member_custom_order_no}
 	</delete>
 	<!-- 보낸 카테고리 요청서 삭제 -->
@@ -143,7 +147,7 @@
 				select A.*, B.member_no, B.member_custom_order_no from
 				    custom_order A inner join member_custom_order B
 				        on a.custom_order_no = b.custom_order_no
-				    where member_no =232 order by custom_order_date desc
+				    where member_no =#{member_no} order by custom_order_date desc
 			)RN
 		)where rn between #{start} and #{finish}
 	</select>
@@ -283,12 +287,6 @@
 	
 	<select id="getGradeBenefitRate" parameterType="String" resultType="int">
 		select grade_benefit_rate from grade_benefit where grade_benefit_grade = #{member_grade}
-	</select>
-	
-<!-- 주문내역 -->
-	<!-- 회원번호로 전체 cartInfo 조회-->
-	<select id="getCartList" parameterType="int" resultType="cartInfoDto">
-		select *from cart_info where member_no=#{member_no}
 	</select>
 	
  </mapper> 

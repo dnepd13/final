@@ -35,7 +35,7 @@ public interface SellerCustomDao {
 	void updateAlarm(int seller_no, int member_custom_order_no);
 	//판매자 알람테이블 check N
 	int customAlarm(int seller_no);
-	SellerCustomAlarmDto getsellerAlarm(int member_custom_order_no);
+	SellerCustomAlarmDto getSellerAlarm(int member_custom_order_no);
 	
 	//받은 요청서 삭제
 	void deleteCustomReq(SellerCustomAlarmDto sellerAlarmDto);
@@ -55,4 +55,7 @@ public interface SellerCustomDao {
 	List<CustomOrderDto> getListResp(PagingVO paging);	//목록
 	CustomOrderVO customOrderVO2(int seller_custom_order_no); // 상세보기
 	int customRespCount(int seller_no); // 내가 보낸 견적서 총 개수
+	
+	// 수정
+	void updateCustom(CustomOrderDto customOrderDto);
 }

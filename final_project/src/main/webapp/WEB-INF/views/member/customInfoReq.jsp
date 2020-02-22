@@ -8,7 +8,7 @@
 	$(function(){
 		
 		var alarm = $(".btn_update").data("alarm_check");
-		console.log(alarm)
+
 		if(alarm=="N"){
 			$(".btn_update").attr("disabled", false);
 			$(".btn_update").click(function(){
@@ -48,7 +48,8 @@
 <hr>
 
 <div class="update_form" style="display:none;">
-	<form action="updateCustom" method="post">
+	<form action="updateReq" method="post">
+		<input type="hidden">
 		<input type="hidden" name="custom_order_no" value="${getListInfoReq.custom_order_no}">
 		<input type="hidden" name="member_custom_order_no" value="${getListInfoReq.member_custom_order_no}">
 		<h5>요청서 제목을 작성해주세요.</h5>

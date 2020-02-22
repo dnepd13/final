@@ -91,7 +91,7 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 		return sqlSession.selectOne("seller.customCheck", seller_no);
 	}
 	@Override // 알람테이블 조회
-	public SellerCustomAlarmDto getsellerAlarm(int member_custom_order_no) {
+	public SellerCustomAlarmDto getSellerAlarm(int member_custom_order_no) {
 		return sqlSession.selectOne("seller.getAlarm", member_custom_order_no);
 	}
 
@@ -124,10 +124,15 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	public void deleteCustomReq(SellerCustomAlarmDto sellerAlarmDto) {
 		sqlSession.delete("seller.deleteReq", sellerAlarmDto);
 	}
+	
 //	보낸 견적서 삭제
-	@Override // 삭제를 위한 custom_order_no 조회
+	@Override // 삭제,수정을 위한 custom_order_no 조회
 	public int getCustomNo(int seller_custom_order_no) {
 		return sqlSession.selectOne("seller.getCustomNo", seller_custom_order_no);
+	}
+	@Override // 수정
+	public void updateCustom(CustomOrderDto customOrderDto) {
+		sqlSession.update("seller.updateCustom", customOrderDto);
 	}
 	@Override // 삭제
 	public void deleteCustomResp(int custom_order_no) {
