@@ -32,7 +32,7 @@
  							vat_amount
  							)
  			values(
- 				ordering_seq.nextval, #{member}
+ 				ordering_seq.nextval, #{member},
  				#{tid}, #{cid}, to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
  				#{item_name}, #{partner_order_id}, #{partner_user_id},
  				#{quantity}, #{total_amount}, '결제준비완료', '1', '0', '0', '0', '0'
@@ -46,7 +46,7 @@
  							vat_amount
  							)
  			values(
- 				ordering_seq.nextval, #{member}
+ 				ordering_seq.nextval, #{member},
  				#{tid}, #{cid}, to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
  				#{item_name}, #{partner_order_id}, #{partner_user_id},
  				#{quantity}, #{total_amount}, '결제완료', #{aid}, '0', #{used_point}, '0', #{vat_amount}

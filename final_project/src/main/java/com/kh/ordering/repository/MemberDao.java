@@ -25,6 +25,14 @@ public interface MemberDao {
 	int getGradeBenefitRate(String member_grade);
 	boolean minusPointOrder(int member_no, int point);
 	boolean checkPoint(int member_no, int point);
+	void insertGoodsCartList(List<GoodsCartDto> goodsCartDtoList);
+	void insertOptionCartList(List<OptionCartDto> optionCartDtoList);
+	List<GoodsCartDto> getGoodsCartList(int member_no);
+	List<GoodsCartDto> getGoodsCartList(String member_id);
+	List<OptionCartDto> getOptionCartList(int member_no);
+	List<OptionCartDto> getOptionCartList(String member_id);
+	List<Integer> getGoodsOptionNoList(int goods_cart_no);
+	void deleteCart(int goods_cart_no);
 //////////////////////////////////////
 	
 	
@@ -56,8 +64,10 @@ public interface MemberDao {
 
 
 		public MemberDto memberGetOne(MemberDto member);
-		void insertGoodsCartList(List<GoodsCartDto> goodsCartDtoList);
-		void insertOptionCartList(List<OptionCartDto> optionCartDtoList);
+		
+		
+		
+		
 		
 		
 		

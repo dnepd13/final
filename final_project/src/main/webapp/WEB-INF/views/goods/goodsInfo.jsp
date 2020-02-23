@@ -136,7 +136,7 @@ $(function(){
 			delete_btn.click(function(e){
 				e.preventDefault();
 				$(this).parent(".total_price_area").remove();
-				VOindex--;
+// 				VOindex--;
 				setFinalArea();
 				
 				count--;
@@ -162,6 +162,7 @@ $(function(){
 	// 장바구니
 	$(".add_cart_btn").click(function(e){
 		e.preventDefault();
+		setFinalArea();
 		//버튼 바로 위에 있는 form을 데이터화하여 전송
 		var form = $(this).parent();
 		var url = "../member/addCart";
@@ -332,7 +333,7 @@ $(function(){
 	<h1>상품+옵션 선택 내용</h1>
 </div>
 
-<input class="submit_ordering" type="submit" value="주문하기" disabled="true">
+<input class="submit_ordering" type="submit" value="주문하기" disabled>
 <button class="add_cart_btn" disabled>장바구니</button>
 </form>
 <hr>

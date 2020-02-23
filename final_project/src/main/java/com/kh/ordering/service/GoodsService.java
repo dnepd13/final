@@ -1,10 +1,15 @@
 package com.kh.ordering.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsDto;
+import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.repository.GoodsQnaDao;
@@ -13,6 +18,9 @@ import com.kh.ordering.vo.GoodsVO;
 import com.kh.ordering.vo.PagingVO;
 
 public class GoodsService {
+
+	@Autowired
+	private FilesDao filesDao;
 	
 	@Autowired
 	private GoodsDao goodsDao;
@@ -48,6 +56,16 @@ public class GoodsService {
 	public List<GoodsOptionVO> getGoodsOptionVOList(int goods_no) {
 		return goodsOptionDao.getGoodsOptionVOList(goods_no);
 	}
+	
+	public void insertFiles(MultipartFile multipartFile, int goods_no) {
+		filesDao.insertGoodsFiles(multipartFile, goods_no);
+	}
+	
+	// 다중 파일(content_image)
+	public void insertFiles(MultipartFile[] multipartFileList, int goods_no) {
+		filesDao.insertGoodsFiles(multipartFileList, goods_no);
+	}
+	
 	
 	// 문의 게시판 내비게이터
 	public PagingVO goodsQnaPaging(String pageNo, int goods_no) {

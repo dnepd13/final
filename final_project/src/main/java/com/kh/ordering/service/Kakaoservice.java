@@ -157,6 +157,9 @@ public class Kakaoservice implements payService {
 		
 		payDao.insertSuccess(payDto);
 		
+		// 구매확정 테이블에 추가
+//		memberDao.insert
+		
 		return returnVO;
 	}
 	

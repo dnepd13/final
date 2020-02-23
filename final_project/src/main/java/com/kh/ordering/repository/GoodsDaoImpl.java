@@ -44,6 +44,8 @@ public class GoodsDaoImpl implements GoodsDao{
 		}
 	}
 	
+	
+	
 	@Override
 	public void plusStock(int goods_no, int stock) {
 		GoodsStockVO goodsStockVO = GoodsStockVO.builder()
@@ -92,6 +94,7 @@ public class GoodsDaoImpl implements GoodsDao{
 		return sqlSession.selectOne("goods.getSequence");
 	}
 	
+	// 상품 정보 + 상품에 딸린 옵션들 불러오기
 	@Override
 	public GoodsVO getGoodsVO(int goods_no) {
 		return sqlSession.selectOne("goods.getGoodsVO", goods_no);

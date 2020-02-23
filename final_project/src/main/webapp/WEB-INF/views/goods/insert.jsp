@@ -76,7 +76,7 @@
 <body>
 <h1>상품 등록 페이지</h1>
 
-<form action="insert" method="post">
+<form action="insert" method="post" enctype="Multipart/form-data">
 	
 	<!-- 세션에서 번호 가져와서 히든으로 넒길 거 --------------------------->
 	<p>판매자 번호 </p>
@@ -119,6 +119,12 @@
     <ul class="optionArea">
       <li>이름 		내용		 가격		 수량 		상태</li>
     </ul>
+	
+	<p>대표사진</p>
+	<input type="file" name="goods_main_image" required>
+	
+	<p>상품사진</p>
+	<input type="file" multiple="multiple" name="goods_content_image">
 	
 	<hr><hr><hr>
 	<h1>배송 정보 입력</h1>

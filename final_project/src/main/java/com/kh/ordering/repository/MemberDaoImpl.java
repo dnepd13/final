@@ -132,6 +132,37 @@ public class MemberDaoImpl implements MemberDao{
 		sqlSession.insert("member.insertOptionCartList", optionCartDtoList);
 	}
 	
+	@Override
+	public List<GoodsCartDto> getGoodsCartList(int member_no){
+		return sqlSession.selectList("member.getGoodsCartList", member_no);
+	}
+	
+	@Override
+	public List<GoodsCartDto> getGoodsCartList(String member_id){
+		return this.getGoodsCartList(this.getNo(member_id));
+	}
+	
+	@Override
+	public List<Integer> getGoodsOptionNoList(int goods_cart_no){
+		return sqlSession.selectList("member.getGoodsOptionNoList", goods_cart_no);
+	}
+	
+	@Override
+	public List<OptionCartDto> getOptionCartList(int member_no){
+		return sqlSession.selectList("member.getOptionCartList", member_no); 
+	}
+	
+	@Override
+	public List<OptionCartDto> getOptionCartList(String member_id){
+		return this.getOptionCartList(this.getNo(member_id));
+	}
+	
+	@Override
+	public void deleteCart(int goods_cart_no) {
+		sqlSession.delete("member.deleteOptionCart", goods_cart_no);
+		sqlSession.delete("member.deleteGoodsCart", goods_cart_no);
+	}
+	
 //////////////////////////////////////	
 	
 	

@@ -1,5 +1,6 @@
 package com.kh.ordering.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsQnaDto;
 import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.GoodsDao;
@@ -62,10 +65,23 @@ public class GoodsController {
 	}
 	
 	@PostMapping("/insert")
-	public String insert(@ModelAttribute GoodsVO goodsVO, @ModelAttribute DeliveryVO deliveryVO) {
+	public String insert(@ModelAttribute GoodsVO goodsVO, 
+						@ModelAttribute DeliveryVO deliveryVO,
+						@RequestParam MultipartFile goods_main_image,
+						@RequestParam MultipartFile[] goods_content_image
+						) {
+		// 상품 처리
 		int goods_no = goodsService.insert(goodsVO);
 		deliveryVO.setGoods_no(goods_no);
 		deliveryService.insert(deliveryVO);
+		
+		// 파일 처리
+		goodsService.insertFiles(goods_main_image, goods_no);
+		goodsService.insertFiles(goods_content_image, goods_no);
+		
+		// 물리 저장 처리
+		
+		
 		return "redirect:goodsInfo?goods_no=" + goods_no;
 	}
 	

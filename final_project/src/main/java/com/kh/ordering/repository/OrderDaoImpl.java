@@ -80,6 +80,7 @@ public class OrderDaoImpl implements OrderDao {
 			for (GoodsOptionDto goodsOptionDto : goodsOptionDtoList) {
 				if (!goodsOptionDao.minusStock(goodsOptionDto.getGoods_option_no(), stock)) {
 					payService.revoke(orderDao.getOrdering_no(partner_order_id));
+					System.out.println("옵션수량부족");
 					throw new Exception();
 				}
 			}
@@ -87,6 +88,7 @@ public class OrderDaoImpl implements OrderDao {
 			// 상품 수량 감소
 			if (!goodsDao.minusStock(cartVO.getGoodsDto().getGoods_no(), stock)) {
 				payService.revoke(orderDao.getOrdering_no(partner_order_id));
+				System.out.println("상품수량부족");
 				throw new Exception();
 			}
 		}
@@ -94,11 +96,16 @@ public class OrderDaoImpl implements OrderDao {
 		// 포인트 검사, 감소
 		if (!memberDao.minusPointOrder(member_no, orderVO.getUsed_point())) {
 			payService.revoke(orderDao.getOrdering_no(partner_order_id));
+			System.out.println("포인트부족	");
 			throw new Exception();
 		}
 		
 		// 상품 구매 포인트 적용
 		memberDao.registOrderPoint(member_no, orderVO.getTotal_price());
+		
+		// 구매확정 테이블 추가
+//		CartOkDto cartOkDto = CartOkDto.
+//		memberDao.insertCartOK(cartOkDto);
 		
 		return true;
 	}
