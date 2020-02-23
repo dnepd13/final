@@ -131,8 +131,8 @@ public class GoodsController {
 			// 리뷰
 			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
 			model.addAttribute("goodsReview", goodsReview);
-//			List<FilesVO>  filesVO = goodsReviewService.filesList(goods_no);
-//			model.addAttribute("filesVO", filesVO);
+			List<FilesVO>  filesVO = goodsReviewService.filesList(goods_no);
+			model.addAttribute("filesVO", filesVO);
 		}
 		else if(seller_id!=null){
 			int seller_no = sellerCustomDao.getNo(seller_id);
@@ -145,8 +145,8 @@ public class GoodsController {
 			
 			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
 			model.addAttribute("goodsReview", goodsReview);
-//			List<FilesVO>  filesVO = goodsReviewService.filesList(goods_no);
-//			model.addAttribute("filesVO", filesVO);
+			List<FilesVO>  filesVO = goodsReviewService.filesList(goods_no);
+			model.addAttribute("filesVO", filesVO);
 		}
 		else {
 			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
@@ -156,8 +156,8 @@ public class GoodsController {
 			
 			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
 			model.addAttribute("goodsReview", goodsReview);
-//			List<FilesVO>  filesVO = goodsReviewService.filesList(goods_no);
-//			model.addAttribute("filesVO", filesVO);
+			List<FilesVO>  filesVO = goodsReviewService.filesList(goods_no);
+			model.addAttribute("filesVO", filesVO);
 		}	
 		
 		return "goods/goodsInfo";
