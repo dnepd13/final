@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsReviewDto;
 import com.kh.ordering.entity.GoodsReviewFilesDto;
@@ -21,6 +22,7 @@ import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.GoodsReviewDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.Member_PointDao;
+import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.vo.FilesVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,13 +35,15 @@ public class GoodsReviewServiceImpl implements GoodsReviewService {
 	@Autowired
 	private GoodsReviewDao goodsReviewDao;
 	@Autowired
+	private FilesDao filesDao;
+	@Autowired
 	private Member_PointDao memberPointDao;
 	@Autowired
-	private FilesDao filesDao;
+	private OrderDao orderDao;
 	
 	@Override
 	public GoodsReviewDto insertReview(HttpSession session, FilesVO files,
-																		@RequestParam int cart_info_no,
+																		@RequestParam int cart_info_goods_no,
 																		@ModelAttribute GoodsReviewDto goodsReviewDto)
 																		throws IllegalStateException, IOException {
 		// writer 
@@ -51,16 +55,13 @@ public class GoodsReviewServiceImpl implements GoodsReviewService {
 			// 히든으로 넘어오지 않는 정보: goods_no, writer, ordering_no
 			// 서비스에 들어가야 할 내용: 리뷰 등록 및 파일 insert
 
-			// ordering_no 구하기
-			int ordering_no = goodsReviewDao.getOrderingNo(cart_info_no);	
 			// goods_no 구하기
-			int goods_no = goodsReviewDao.getGoodsNo(cart_info_no);
+			int goods_no = goodsReviewDao.getGoodsNo(cart_info_goods_no);
 
-			goodsReviewDto.setOrdering_no(ordering_no);
 			goodsReviewDto.setGoods_no(goods_no);
+			goodsReviewDto.setCart_info_goods_no(cart_info_goods_no);
 			goodsReviewDto.setMember_no(member_no);
 			goodsReviewDto.setGoods_review_writer(member_id);
-			
 			goodsReviewDao.insertReview(goodsReviewDto);
 			
 			// 현재 Review No 번호 가져오기
@@ -118,16 +119,19 @@ public class GoodsReviewServiceImpl implements GoodsReviewService {
 			memberPointDao.insertPoint(memberPointDt0);
 		}
 		
+		// 리뷰 입력 시 리뷰등록 상태 업데이트
+		orderDao.updateCartReview(cart_info_goods_no);
+		
 		return null;
 	}
 
 	// 리뷰 파일 no 가져오기(출력)
 	@Override
-	public List<FilesVO> filesList(int goods_review_no){
+	public List<FilesVO> filesList(int goods_no){
 	
-		List<FilesVO> filesVO = goodsReviewDao.getFilesNo(goods_review_no);
+		List<FilesVO> filesVO = goodsReviewDao.getFilesNo(goods_no);
 		
 		return filesVO;
-	}	
+	}
 
 }

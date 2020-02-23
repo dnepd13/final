@@ -153,9 +153,9 @@
 	</select>
 	<select id="getListInfoReq" parameterType="int" resultType="customOrderVO">
 		select A.*, B.member_no, b.member_custom_order_no from
-		    custom_order A inner join member_custom_order B
-		        on a.custom_order_no = b.custom_order_no
-		where b.member_custom_order_no =#{member_custom_order_no}
+			    custom_order A inner join member_custom_order B
+			        on a.custom_order_no = b.custom_order_no
+		where b.member_custom_order_no = #{member_custom_order_no}
 	</select>
 	<!-- 내가 보낸 요청서에 대한 파일 no 가져오기 -->
 	<select id="getReqFilesNo" parameterType="int" resultType="FilesVO">

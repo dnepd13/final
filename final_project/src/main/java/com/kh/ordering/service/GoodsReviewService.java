@@ -14,5 +14,5 @@ public interface GoodsReviewService {
 															int cart_info_no,
 															GoodsReviewDto goodsReviewDto)
 															throws IllegalStateException, IOException;
-	List<FilesVO> filesList(int goods_review_no); //파일 출력을 위한 파일no
+	List<FilesVO> filesList(int goods_no); //파일 출력을 위한 파일no
 }

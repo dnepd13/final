@@ -313,13 +313,21 @@ $(function(){
 	    	
 	    	$(this).parents(".qna_seller").hide();
 	    });
-        
-});
 
-	function star(){
-		var star = document.querySelector(".star");
-		console.log(staro);
-	}
+	    $(".btn_reply").click(function(){
+	    	
+	        if($(this).text()=="댓글쓰기"){
+	        	$(this).parents().next().next(".reply").show();
+	            $(this).text("취소");
+	        }
+	        else{
+	            $(".reply").hide();
+	            $(this).text("댓글쓰기");
+	        }
+	        
+	    });
+	    
+});
 
 </script>
 
@@ -343,6 +351,7 @@ $(function(){
 
 <p>상품 상세 내용(goods_content)</p>
 <p>${goodsVO.goods_content}</p>
+<span>평점: ${star }</span>
 <hr>
 <br>
 
@@ -521,26 +530,43 @@ $(function(){
 <!-- ----------------------------------------------------------------------- -->
 <section>
 <p>리뷰</p>
-	<table>
+	<table border="1">
 		<tr>
 			<th>글번호</th>
-			<th>내용</th>
 			<th>작성자</th>
 			<th>작성시간</th>
+			<th></th>
 		</tr>
 <c:forEach var="review" items="${goodsReview }">
 		<tr>
 			<td class="star" colspan="4">
-				<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${review.goods_review_star}" data-image="http://www.sysout.co.kr/file/image/288" readonly></div>
+				<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${review.goods_review_star}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
 			</td>
 		</tr>
 		<tr>
-			<td>${review.goods_review_no }</td>
-			<td>
-<%-- 					<img src="http://localhost:8080/ordering/member/reviewFile?files_no=${files_no } "> --%>
-					${review.goods_review_content }</td>
-			<td>${review.goods_review_writer }</td>
+			<td colspan="2">${review.goods_review_writer }</td>
 			<td>${review.goods_review_date }</td>
+			<td><button class="btn_reply">댓글쓰기</button></td>
+		</tr>
+<!-- 		<tr> -->
+<%-- 			<td colspan="4"><img src="http://localhost:8080/ordering/member/reviewFile?files_no=${filesVO.files_no}"></td> --%>
+<!-- 		</tr> -->
+		<tr>
+			<td colspan="4">${review.goods_review_content }</td>
+		</tr>
+		<tr class="reply" style="display:none;">
+			<td colspan="4">
+				<form action="insertReply" method="post">
+					<input type="hidden" name="goods_review_no" value="${review.goods_review_no }">
+					<input type="hidden">
+					<textarea name="goods_review_reply_content" required></textarea>
+					<input type="submit" value="댓글등록">
+				</form>
+				</td>
+		</tr>
+		<tr>
+			<td>
+			</td>
 		</tr>
 </c:forEach>
 	</table>

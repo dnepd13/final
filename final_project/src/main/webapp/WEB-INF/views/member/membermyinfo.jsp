@@ -4,7 +4,7 @@
     <h1>회원 마이페이지</h1>
     
     
-<h1><a href="${pageContext.request.contextPath}/member/orderingList">주문/배송 내역</a></h1>
+<h1><a href="${pageContext.request.contextPath}/member/cartList">주문/배송 내역</a></h1>
 <br><br>
 <h1><a href="">교환/환불/취소</a></h1>
 <br>

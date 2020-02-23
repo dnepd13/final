@@ -49,6 +49,7 @@
 		<!-- 상품 문의/리뷰게시판 -->
 		<typeAlias type="com.kh.ordering.entity.GoodsQnaDto" alias="goodsQnaDto"/>
 		<typeAlias type="com.kh.ordering.entity.GoodsReviewDto" alias="goodsReviewDto"/>
+		<typeAlias type="com.kh.ordering.entity.GoodsReviewReplyDto" alias="goodsReviewReplyDto"/>
 		
 		<!-- pay -->
 		<typeAlias type="com.kh.ordering.entity.PayDto" alias="payDto"/>

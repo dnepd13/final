@@ -18,17 +18,23 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.ordering.entity.CartInfoDto;
 import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsReviewDto;
+import com.kh.ordering.entity.GoodsReviewReplyDto;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
+import com.kh.ordering.repository.GoodsReviewDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.OrderDao;
+import com.kh.ordering.service.CartInfoService;
 import com.kh.ordering.service.GoodsReviewService;
 import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.FilesVO;
+import com.kh.ordering.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,42 +46,65 @@ public class GoodsReviewController {
 	private MemberDao memberDao;
 	@Autowired
 	private OrderDao orderDao;
+	
+	@Autowired
+	private CartInfoService cartInfoService;
 	@Autowired
 	private GoodsReviewService goodsReviewService;
+	@Autowired
+	private GoodsReviewDao goodsReviewDao;
 	
 	@Autowired
 	private FilesDao filesDao;
 	@Autowired
 	private FilesPhysicalDao filesPhysicalDao;
 	
-	@GetMapping("/orderingList")
-	public String orderingList(HttpSession session, Model model) {
+	@GetMapping("/cartList")
+	public String orderingList(HttpSession session, Model model,
+													@RequestParam(value = "pageNo", required=false, defaultValue = "0") String pageNo){
 		
-		//주문정보 cart_info 정보 넘기기
+		// 전체 주문내역 cart_info 정보 넘기기
 		String member_id = (String)session.getAttribute("member_id");
 		int member_no = memberDao.getNo(member_id);
 		
-		// 배송정보를 포함하는 전체 주문내역
-		List<CartInfoVO> getCartInfoVO = orderDao.getCartInfoVO(member_no);
-		model.addAttribute("getCart", getCartInfoVO);
-		// 상품별 구매확정 기록
-		List<CartOkDto> getOkList = orderDao.getOkList(member_no);
-		model.addAttribute("getOkList", getOkList);
+		PagingVO result = cartInfoService.cartInfoPaging(pageNo, member_no);
+		model.addAttribute("paging", result);
+		List<CartInfoDto> getCartInfoMember = orderDao.getCartInfoMember(result);
+		model.addAttribute("getCartInfo", getCartInfoMember);
 		
-		return "member/orderingList";
+		return "member/cartList";
 	}
+	@GetMapping("/cartDetails")
+	public String cartInfoGoods(Model model,
+													@RequestParam int cart_info_no) {
+
+		List<CartInfoVO> getCartGoods = orderDao.getCartGoods(cart_info_no);
+		model.addAttribute("getCartGoods", getCartGoods);
+		
+		return "member/cartDetails";
+	}
+	
+//	구매확정, 리뷰등록 등 상태변화 update
+	@PostMapping("/updateConfirm")
+	@ResponseBody
+	public CartOkDto updateConfirm(@RequestParam(value = "cart_info_goods_no") int cart_info_goods_no) {
+		orderDao.updateCartOk(cart_info_goods_no);
+		return orderDao.getCartOk(cart_info_goods_no);
+	}
+	
 	@PostMapping("/insertReview")
 	public String insertReview(HttpSession session, FilesVO files,
 													@RequestParam int cart_info_no,
+													@RequestParam int cart_info_goods_no,
 													@ModelAttribute GoodsReviewDto goodsReviewDto)
 													throws IllegalStateException, IOException {
 		
-		goodsReviewService.insertReview(session, files, cart_info_no, goodsReviewDto);
+		goodsReviewService.insertReview(session, files, cart_info_goods_no, goodsReviewDto);
 		
 		
-		return "redirect:/member/orderingList";
+		return "redirect:/member/cartDetails?cart_info_no="+cart_info_no;
 	}
-	
+
 	// 파일 이미지 다운로드
 		@GetMapping("/reviewFile")
 		public ResponseEntity<ByteArrayResource> CustomReqFile(@RequestParam int files_no) throws IOException{
