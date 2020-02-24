@@ -17,15 +17,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.ordering.entity.GoodsQnaDto;
+import com.kh.ordering.entity.GoodsReviewDto;
+import com.kh.ordering.entity.GoodsReviewReplyDto;
 import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.repository.GoodsQnaDao;
+import com.kh.ordering.repository.GoodsReviewDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.service.DeliveryService;
+import com.kh.ordering.service.GoodsReviewService;
 import com.kh.ordering.service.GoodsService;
 import com.kh.ordering.vo.DeliveryVO;
+import com.kh.ordering.vo.FilesVO;
 import com.kh.ordering.vo.GoodsVO;
 import com.kh.ordering.vo.PagingVO;
 
@@ -57,6 +62,10 @@ public class GoodsController {
 	private SellerCustomDao sellerCustomDao;
 	@Autowired
 	private MemberDao memberDao;
+	@Autowired
+	private GoodsReviewDao goodsReviewDao;
+	@Autowired
+	private GoodsReviewService goodsReviewService;
 	
 	@GetMapping("/insert")
 	public String insert(Model model) {
@@ -102,17 +111,24 @@ public class GoodsController {
 		model.addAttribute("jsonGoodsVO", jsonGoodsVO);
 		model.addAttribute("jsonGoodsOptionVOList", jsonGoodsOptionVOList);
 
-//	문의 게시판 ...... 세션아이디 없어도 들어갈 수 있게 ..........ㅎ....
+//	문의, 리뷰 게시판 ...... 세션아이디 없어도 들어갈 수 있게 ..........ㅎ....
 		String member_id=(String)session.getAttribute("member_id");
 		String seller_id = (String)session.getAttribute("seller_id");
 		if(member_id!=null) { // 판매자 로그인 상태일 때 세션에서 seller_id 가져와서 비교		
 			int member_no = memberDao.getNo(member_id);
 			model.addAttribute("member_no",member_no);
 			
+			// 문의
 			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
 			model.addAttribute("paging", result);			
 			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
 			model.addAttribute("goodsQna", goodsQna);
+			
+			// 리뷰
+			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
+			model.addAttribute("goodsReview", goodsReview);
+			List<FilesVO>  filesVO = goodsReviewService.filesList(goods_no);
+			model.addAttribute("filesVO", filesVO);
 		}
 		else if(seller_id!=null){
 			int seller_no = sellerCustomDao.getNo(seller_id);
@@ -122,12 +138,22 @@ public class GoodsController {
 			model.addAttribute("paging", result);			
 			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
 			model.addAttribute("goodsQna", goodsQna);
+			
+			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
+			model.addAttribute("goodsReview", goodsReview);
+			List<FilesVO>  filesVO = goodsReviewService.filesList(goods_no);
+			model.addAttribute("filesVO", filesVO);
 		}
 		else {
 			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
 			model.addAttribute("paging", result);			
 			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
 			model.addAttribute("goodsQna", goodsQna);
+			
+			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
+			model.addAttribute("goodsReview", goodsReview);
+			List<FilesVO>  filesVO = goodsReviewService.filesList(goods_no);
+			model.addAttribute("filesVO", filesVO);
 		}	
 		
 		return "goods/goodsInfo";
@@ -194,7 +220,6 @@ public class GoodsController {
 											@RequestParam int goods_no) {
 		
 		String seller_id = (String)session.getAttribute("seller_id");
-//		String seller_id ="test3";
 		
 		goodsQnaDto.setGoods_qna_groupno(goodsQnaDto.getGoods_qna_groupno());
 		goodsQnaDto.setGoods_qna_superno(goodsQnaDto.getGoods_qna_no());
@@ -207,5 +232,24 @@ public class GoodsController {
 		
 		return "redirect:goodsInfo?goods_no="+goodsQnaDto.getGoods_no();
 	}
+
+// 리뷰 댓글
+	@PostMapping("/insertReply")
+	public String insertReply(HttpSession session,
+													@ModelAttribute GoodsReviewReplyDto goodsReviewReplyDto,
+													int goods_review_no) {
+		
+		String member_id = (String)session.getAttribute("member_id");
+		int member_no= memberDao.getNo(member_id);
+		
+		goodsReviewReplyDto.setMember_no(member_no);
+		goodsReviewReplyDto.setGoods_review_reply_writer(member_id);
+		goodsReviewDao.insertReviewReply(goodsReviewReplyDto);
+		
+		int goods_no = goodsReviewDao.getGoodsNoReview(goods_review_no);
+		
+		return "redirect:/goods/goodsInfo?goods_no="+goods_no;
+	}
+	
 	
 }

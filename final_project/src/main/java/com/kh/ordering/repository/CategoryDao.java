@@ -16,4 +16,6 @@ public interface CategoryDao {
 	
 	// 카테고리 번호로 판매자 no 검색
 	List<SellerCategoryDto> getSellerNo(int category_no);
+	// 카테고리로 판매자 List 검색 (카테고리 요청서 보낼 때 추천 list 활용)
+	List<SellerDto> getSeller(int category_no);
 }

@@ -54,4 +54,14 @@
 		select * from member_point where member_no = #{member_no} order by member_point_no asc
 	</select>
 	
+	<!-- 포인트 적립 추가-->
+	<insert id="insertPoint" parameterType="member_PointDto">
+		insert into member_point(member_point_no, member_point_status,
+							                        member_point_date, member_point_limit,
+							                        member_point_change, member_point_content, member_no)
+		            values(member_point_seq.nextval, '적립',
+			                    sysdate, sysdate+30,
+			                    #{member_point_change}, #{member_point_content}, #{member_no})
+	</insert>
+	
  </mapper> 

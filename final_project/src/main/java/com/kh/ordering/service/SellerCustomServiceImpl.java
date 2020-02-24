@@ -20,6 +20,7 @@ import com.kh.ordering.entity.CustomOrderFilesDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.MemberCustomAlarmDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
+import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.vo.FilesVO;
@@ -36,6 +37,8 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 	private SellerCustomDao sellerCustomDao;
 	@Autowired
 	private MemberCustomDao memberCustomDao;
+	@Autowired
+	private FilesDao filesDao;
 
 //	견적서 등록 service
 	@Transactional
@@ -74,12 +77,15 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 			
 			for(MultipartFile multiFile : files.getFiles()) {
 				// 파일 시퀀스번호 미리 가져오기
-				files_no= sellerCustomDao.filesSeq();
+				files_no= filesDao.getSeq();
+				
+				// savename+파일 형식 저장
+				String fileType=multiFile.getContentType().substring(6, multiFile.getContentType().length());
 				
 				filesList.add(FilesDto.builder()
 														.files_no(files_no)
 														.files_size(multiFile.getSize())
-														.files_savename(Integer.toString(files_no))
+														.files_savename(Integer.toString(files_no)+"."+fileType)
 														.files_uploadname(multiFile.getOriginalFilename())
 														.build());
 			}
@@ -92,7 +98,7 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 					File target = new File(dir, filesDto.getFiles_savename());
 					multiFile.transferTo(target);
 					
-					sellerCustomDao.filesInsert(filesDto);
+					filesDao.filesInsert(filesDto);
 					
 					// 주문제작-파일 테이블
 					files_no = filesList.get(i).getFiles_no();

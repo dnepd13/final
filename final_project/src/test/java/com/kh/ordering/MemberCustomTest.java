@@ -1,6 +1,11 @@
 package com.kh.ordering;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
@@ -10,10 +15,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.kh.ordering.entity.CustomOrderDto;
-import com.kh.ordering.entity.MemberCustomOrderDto;
+import com.kh.ordering.entity.CategoryDto;
+import com.kh.ordering.entity.SellerDto;
+import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.MemberCustomDao;
-import com.kh.ordering.repository.SellerCustomDao;
 
 import lombok.extern.slf4j.Slf4j;
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -85,4 +90,5 @@ public class MemberCustomTest {
 		memberCustomDao.deleteAlarm(member_custom_order_no);
 		memberCustomDao.deleteCustom(member_custom_order_no);
 	}
+
 }
