@@ -253,6 +253,12 @@ public class MemberDaoImpl implements MemberDao{
 			
 		}
 
+		@Override
+		public void memberdelete(MemberDto memberDto) {
+			sqlSession.delete("member.memberdelete", memberDto);
+			
+		}
+
 //		@Override
 //		public List<MemberDto> memberGetOne(int member_no) {
 //			

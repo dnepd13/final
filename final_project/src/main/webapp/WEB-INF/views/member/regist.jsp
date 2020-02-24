@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
+
+
 
 
 <h1>회원가입</h1>
@@ -11,8 +12,9 @@
 	    
 	    <input type="text" name="member_id" placeholder="아이디를 입력하세요">
 	    <br><br>
-    	<input type="password" name="member_pw" placeholder="비밀번호를 입력하세요">
+    	<input type="password" class=join name="member_pw" id="pw1" oninput="pwCheck(pw1.value)" placeholder="비밀번호를 입력">
     	<br><br>
+
     	<input type="text" name="member_name" placeholder="이름을 입력하세요">
     	<br><br>
     	<input type="text" name="member_email" placeholder="이메일 주소를 입력하세요">
@@ -21,7 +23,18 @@
 		<br><br>
     	<input type="text" name="member_birth" placeholder="생년월일을 입력하세요 (ex: 19890101)">
     	<br><br><br><br>
-    	
-  
-    	<input type="submit" value="회원가입">
+    	<input type="submit" value="회원가입" onclic="DosingUp();"/>
     </form>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+

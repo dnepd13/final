@@ -120,7 +120,32 @@ public class MemberController {
 			return "redirect:/member/login"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
 		}
 	
+	//회원 탈퇴
+	@GetMapping("memberdelete")
+	public String memberdelete() {
+		
+		return "member/memberdelete";
+	}
 
+	@PostMapping("memberdelete")
+	public String memberdelete(HttpSession session, @ModelAttribute MemberDto memberDto)
+	{
+		String member_id = (String)session.getAttribute("member_id");
+		memberDto.setMember_id(member_id);
+		MemberDto login = memberDao.login(memberDto);
+		
+		boolean correct = passwordEncoder.matches(memberDto.getMember_pw(),login.getMember_pw());
+		
+		if(login == null) {
+			return "redirect:/ordering/member/membermyinfo";
+		}
+		else {
+			session.invalidate();
+			memberDao.memberdelete(login);
+			return "redirect:/";
+		}
+	}
+	
 	
 //	@GetMapping("/registsuccess")
 //	public String registsuccess() {
@@ -221,6 +246,12 @@ public class MemberController {
 //		session.removeAttribute("member_no");
 		
 		return "redirect:/";
+	}
+	
+	@GetMapping("/style")
+	public String style() {
+		
+		return "member/style";
 	}
 
 	

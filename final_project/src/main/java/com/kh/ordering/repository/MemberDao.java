@@ -69,8 +69,11 @@ public interface MemberDao {
 		//세션에 있는 id를 통해 번호구하기
 		int getNo(@RequestParam String member_id);
 
-
+		
 		public MemberDto memberGetOne(MemberDto member);
+		
+		//회원 탈퇴
+		void memberdelete(MemberDto memberDto);
 		
 		
 		
