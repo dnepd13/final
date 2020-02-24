@@ -5,6 +5,7 @@
  <script src="https://code.jquery.com/jquery-latest.js"></script>
 
  <script>
+ 	
  	 $(function(){
 ////////////	카테고리	///////////////////////////////////
  		 var category_largeList = "${category_largeList}";
@@ -17,6 +18,7 @@
  		 $(".category_large").change(function(){
 	 		 $(".middleChild").nextAll().remove();
 	 		 $(".smallChild").nextAll().remove();
+	 		 $(".sellerList").children().remove();
  			 var category_name = $(this).val();
  			 var url = "${pageContext.request.contextPath}/goods/large";
  			 $.ajax({
@@ -34,6 +36,7 @@
  		 
  		 $(".category_middle").change(function(){
  			$(".smallChild").nextAll().remove();
+ 			$(".sellerList").children().remove();
 			 var category_name = $(this).val();
 			 var url = "${pageContext.request.contextPath}/goods/middle";
 			 $.ajax({
@@ -50,6 +53,7 @@
  		 });
  		 
  		 $(".category_small").change(function(){
+ 			$(".sellerList").children().remove();
  			var category_name = $(this).val();
 			 var url = "${pageContext.request.contextPath}/goods/small";
 			 $.ajax({
@@ -60,8 +64,29 @@
 		 			 $(".category_no").val(resp);
 			 	 }
 			 });
- 		 });	 
+ 		 });
  		 
+ 		 $(".category_small").change(function(){
+   			var category_name = $(this).val();
+
+  			 var url = "${pageContext.request.contextPath}/member/pick";
+  			 $.ajax({
+  				 type: "POST",
+  			 	 url: url,
+  			 	 data: {"category_name":category_name},
+  			 	 success: function(resp){			 		 
+  			 		 var p = $("<p>추천 판매자를 선택하시면 1:1 개인요청서로 전환됩니다.</p>")
+  			 		 
+  			 		 $(".sellerList").append(p);
+  			 		 
+  			 		$.each(resp, function(index, item){
+  			 			var seller = $("<a href='${pageContext.request.contextPath}/member/customOrder?seller_no="+item.seller_no+"'>"+item.seller_id+"</a><br>");
+  			 			$(".sellerList").append(seller);
+ 			 		 });
+  			 		
+  			 	 }
+  			 });
+ 		 });
  	///////////////// 요청서 입력창 스타일 제어
  		$(".btn_next").click(function(){
             var insert_req = document.querySelector(".insert_req");
@@ -77,8 +102,11 @@
                 $(this).text("다음");
             }
         });
- 	
+ 		
+ 		$(".redirect").hide();
+
 	});
+
  </script>
  
 <h3>member/customoCate.jsp 카테고리 주문제작 페이지</h3>
@@ -86,24 +114,25 @@
 <br><br>
 
 <!-- 카테고리 선택페이지 -->
-<div>
+<div class="customCate" style="display:block;">
 	<h5>요청서를 보낼 기본 카테고리를 선택해주세요.</h5>
-	<form action="customCate" method="post">
+	<form action="customCate" method="post" enctype="multipart/form-data"
+				onsubmit="return confirm('추후 판매자가 확인하지 않은 요청서만 삭제할 수 있습니다. 요청서를 보내시겠습니까?');">
 		<div class="insert_cate">
-			<select class="category_large" name="category_middle">
+			<select class="category_large" name="category_large">
 				<option class="largeChild">선택</option>
 			</select>
 			<select class="category_middle" name="category_middle">
 				<option class="middleChild">선택</option>
 			</select>
-			<select class="category_small" name="category_middle">
-				<option class="smallChild">선택</option>
+			<select class="category_small" name="category_name">
+				<option class="smallChild" value="">선택</option>
 			</select>
+			<div class="sellerList">
+			</div>
 		</div>
 		<div class="insert_req" style="display:none;">
-			<input class="category_no" type="hidden" name="category" value="">	
  			<input type="hidden" name="member_no" value="${member_no }">
-			<input type="hidden" name="seller_no" value="${seller_no }">
 			<input type="text" name="custom_order_title" placeholder="요청서 제목" required>
 			<h5>요청하는 상세내용을 작성해주세요.</h5>
 			<textarea name="custom_order_content" required></textarea>
@@ -116,6 +145,6 @@
 				<br><br>
 			<input type="submit" value="요청서 보내기">
 		</div>
-		<button class="btn_next">다음</button>
 	</form>
+		<button type="button" class="btn_next">다음</button>
 </div>

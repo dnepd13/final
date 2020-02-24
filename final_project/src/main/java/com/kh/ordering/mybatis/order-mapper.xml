@@ -23,4 +23,61 @@
 	<select id="getOrdering_no" parameterType="String" resultType="int">
 		select ordering_no from ordering where partner_order_id = #{partner_order_id} and ordering_status = '결제완료'
 	</select>
+	<!-- 회원번호를 기준으로 주문내역(cart_info) 가져오기 -->
+	<select id="getCartInfoMember" parameterType="int" resultType="cartInfoDto">
+		select *from(
+		    select rownum rn, RN.*from(
+		        select * from cart_info
+		            where member_no=#{member_no}
+		        order by partner_order_id desc
+		    )RN
+		)where rn between #{start} and #{finish}
+ 	</select>
+ 	<select id="getCartInfoCount" parameterType="int" resultType="int">
+ 		select count(*) from cart_info where member_no=#{member_no}
+ 	</select>
+ 	
+ 	<!-- cart_info_no에 대한 상품 관련 모든 것 -->
+	<select id="getCartGoods" parameterType="int" resultType="cartInfoVO">
+		select cart_info_goods.*, cart_ok.member_no, cart_ok.cart_ok_status, goods.goods_name, cart_info.cart_info_status
+		    from cart_info_goods
+		        inner join cart_ok on cart_ok.cart_info_goods_no = cart_info_goods.cart_info_goods_no
+		        inner join cart_info on cart_info_goods.cart_info_no = cart_info.cart_info_no
+		        inner join goods on goods.goods_no = cart_info_goods.goods_no
+		where cart_info.cart_info_no=#{cart_info_no}
+	</select>
+ 	
+ 	<!-- 상품별 구매확정 테이블 -->
+	<select id="getOkList" parameterType="int" resultType="cartOkDto">
+		select cart_ok.* from
+		    cart_ok inner join cart_info_goods A
+		        on cart_ok.cart_info_goods_no = A.cart_info_goods_no
+			where A.cart_info_goods_no=#{cart_info_goods_no}
+	</select>
+	
+	<!-- 구매확정 시 상태 업데이트 -->
+	<update id="updateCartOk" parameterType="int">
+		update cart_ok set cart_ok_status='구매확정', cart_ok_date=sysdate
+			where cart_info_goods_no=#{cart_info_goods_no}
+	</update>
+	<!-- 리뷰등록 시 상태 업데이트 -->
+	<update id="updateCartReview" parameterType="int">
+		update cart_ok set cart_ok_status='리뷰등록'
+			where cart_info_goods_no=#{cart_info_goods_no}
+	</update>
+	
+	<!-- 카테고리번호를 통한 최근 한달 이내, 판매량 Top5 판매자 -->
+	<select id="getTopSales" parameterType="int" resultType="CartInfoVO">
+		select *from(
+			select rownum rn, RN.*from(
+				select A.seller_no, sum(cart_info_goods.cart_info_goods_price), A.seller_id from
+				    seller_category inner join seller A on seller_category.seller_no = A.seller_no
+				            inner join goods on A.seller_no=goods.seller_no
+				            inner join cart_info_goods on goods.goods_no = cart_info_goods.goods_no
+				    where seller_category.category_no = #{category_no}
+				group by A.seller_no, A.seller_id
+				order by sum(cart_info_goods.cart_info_goods_price) desc
+			)RN
+		)where rn between 1 and 5 and sysdate >= sysdate-30
+	</select>
 </mapper>

@@ -30,6 +30,7 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	@Override
 	public int getNo(String seller_id) {
 		// seller_id 나중에 세션에서 가져와서 바꾸기
+		
 		int seller_no = sqlSession.selectOne("seller.getNo", seller_id);
 
 		return seller_no;
@@ -37,38 +38,30 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 
 //	판매자 견적서 작성
 	@Override // 견적서 저장
-	public void CustomOrderInsert(CustomOrderDto customOrderDto) {
+	public void customOrderInsert(CustomOrderDto customOrderDto) {
 		sqlSession.insert("seller.customResp", customOrderDto);
 	}
 	@Override // 견적서 관리 저장
-	public void SellerCustom(SellerCustomOrderDto sellerCustomDto) {
+	public void sellerCustom(SellerCustomOrderDto sellerCustomDto) {
 		sqlSession.insert("seller.customInsert", sellerCustomDto);
 	}	
 	@Override // 견적서 관리테이블 .currval 시퀀스
-	public int CustomOrderSeq() {
+	public int customOrderSeq() {
 		return sqlSession.selectOne("seller.customOrderSeq");
 	}
 
 	@Override // 견적서 .currval 시퀀스
-	public int CustomSeq() {	
+	public int customSeq() {	
 		return sqlSession.selectOne("seller.customSeq");
 	}
 
 	@Override // 요청서 도착 알람 테이블 입력
-	public void CustomAlarmInsert(SellerCustomAlarmDto sellerAlramDto) {
+	public void customAlarmInsert(SellerCustomAlarmDto sellerAlramDto) {
 		sqlSession.insert("seller.insertAlarm", sellerAlramDto);
 	}
-	
-	@Override // 파일 .nextval 시퀀스
-	public int FilesSeq() {
-		return sqlSession.selectOne("files.getSeq");
-	}	
-	@Override // 파일테이블 등록
-	public void FilesInsert(FilesDto filesDto) {
-		sqlSession.insert("files.insert", filesDto);
-	}
+
 	@Override // 주문제작-파일테이블
-	public void CustomFilesInsert(CustomOrderFilesDto customOrderFilesDto) {
+	public void customFilesInsert(CustomOrderFilesDto customOrderFilesDto) {
 		sqlSession.insert("files.customInsert", customOrderFilesDto);
 	}
 	
@@ -78,11 +71,15 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 		
 	}	
 	@Override // 구매자 요청서 상세보기. 주문제작 번호 단일조회
-	public CustomOrderVO customOrderVO1(int member_custom_order_no) {		
-		return sqlSession.selectOne("seller.getListInfoReq", member_custom_order_no);
+	public CustomOrderVO customOrderVO1(int member_custom_order_no, int seller_no) {
+		CustomOrderVO customOrderVO1 = CustomOrderVO.builder()
+																										.member_custom_order_no(member_custom_order_no)
+																										.seller_no(seller_no)
+																										.build();
+		return sqlSession.selectOne("seller.getListInfoReq", customOrderVO1);
 	}	
 	@Override // 요청서 상세페이지 접속하면 판매자 알람테이블 업데이트
-	public void UpdateAlarm(int seller_no, int member_custom_order_no) {
+	public void updateAlarm(int seller_no, int member_custom_order_no) {
 		SellerCustomAlarmDto updateAlarm = SellerCustomAlarmDto.builder()
 																														.seller_no(seller_no)
 																														.member_custom_order_no(member_custom_order_no)
@@ -92,7 +89,11 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	@Override // 판매자 알람테이블 check N count
 	public int customAlarm(int seller_no) {
 		return sqlSession.selectOne("seller.customCheck", seller_no);
-	}	
+	}
+	@Override // 알람테이블 조회
+	public SellerCustomAlarmDto getSellerAlarm(int member_custom_order_no) {
+		return sqlSession.selectOne("seller.getAlarm", member_custom_order_no);
+	}
 
 	@Override // 판매자가 받은 요청서 count
 	public int customReqCount(int seller_no) {
@@ -116,6 +117,30 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	@Override // 보낸 견적서 count (페이징 용도)
 	public int customRespCount(int seller_no) {
 		return sqlSession.selectOne("seller.customRespCount", seller_no);
+	}
+	
+//	받은 요청서 삭제
+	@Override
+	public void deleteCustomReq(SellerCustomAlarmDto sellerAlarmDto) {
+		sqlSession.delete("seller.deleteReq", sellerAlarmDto);
+	}
+	
+//	보낸 견적서 삭제
+	@Override // 삭제,수정을 위한 custom_order_no 조회
+	public int getCustomNo(int seller_custom_order_no) {
+		return sqlSession.selectOne("seller.getCustomNo", seller_custom_order_no);
+	}
+	@Override // 수정
+	public void updateCustom(CustomOrderDto customOrderDto) {
+		sqlSession.update("seller.updateCustom", customOrderDto);
+	}
+	@Override // 삭제
+	public void deleteCustomResp(int custom_order_no) {
+		sqlSession.delete("seller.deleteResp", custom_order_no);
+	}
+	@Override // 구매자 알람테이블 정보 삭제
+	public void deleteAlarm(int seller_custom_order_no) {
+		sqlSession.delete("seller.deleteAlarm", seller_custom_order_no);
 	}
 	
 }

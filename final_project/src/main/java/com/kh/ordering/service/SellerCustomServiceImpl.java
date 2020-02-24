@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,7 @@ import com.kh.ordering.entity.CustomOrderFilesDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.MemberCustomAlarmDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
+import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.vo.FilesVO;
@@ -35,11 +37,15 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 	private SellerCustomDao sellerCustomDao;
 	@Autowired
 	private MemberCustomDao memberCustomDao;
+	@Autowired
+	private FilesDao filesDao;
 
 //	견적서 등록 service
+	@Transactional
 	@Override
 	public CustomOrderDto SellerCustom(HttpSession session,
 																@RequestParam int member_no,
+																@RequestParam int category_no,
 																@ModelAttribute FilesVO files,
 																@ModelAttribute CustomOrderDto customOrderDto)
 																throws IllegalStateException, IOException {
@@ -48,16 +54,17 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 		int seller_no = sellerCustomDao.getNo(seller_id);
 
 		// 견적서 저장하고
-		sellerCustomDao.CustomOrderInsert(customOrderDto);
+		customOrderDto.setCustom_order_category(category_no);
+		sellerCustomDao.customOrderInsert(customOrderDto);
 		
 		// 견적서 저장 테이블 시퀀스 가져오기
-		int custom_order_no = sellerCustomDao.CustomSeq();
+		int custom_order_no = sellerCustomDao.customSeq();
 		// 견적서 관리 테이블에 판매자번호, 견적서 번호 등록
 		SellerCustomOrderDto sellerCustomDto = SellerCustomOrderDto.builder()
 																															.custom_order_no(custom_order_no)
 																															.seller_no(seller_no)
 																															.build();
-		sellerCustomDao.SellerCustom(sellerCustomDto);
+		sellerCustomDao.sellerCustom(sellerCustomDto);
 
 		//		- 파일이 있으면 파일테이블에 등록
 			File dir = new File("D:/upload/kh2d");
@@ -70,12 +77,15 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 			
 			for(MultipartFile multiFile : files.getFiles()) {
 				// 파일 시퀀스번호 미리 가져오기
-				files_no= sellerCustomDao.FilesSeq();
+				files_no= filesDao.getSeq();
+				
+				// savename+파일 형식 저장
+				String fileType=multiFile.getContentType().substring(6, multiFile.getContentType().length());
 				
 				filesList.add(FilesDto.builder()
 														.files_no(files_no)
 														.files_size(multiFile.getSize())
-														.files_savename(Integer.toString(files_no))
+														.files_savename(Integer.toString(files_no)+"."+fileType)
 														.files_uploadname(multiFile.getOriginalFilename())
 														.build());
 			}
@@ -88,7 +98,7 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 					File target = new File(dir, filesDto.getFiles_savename());
 					multiFile.transferTo(target);
 					
-					sellerCustomDao.FilesInsert(filesDto);
+					filesDao.filesInsert(filesDto);
 					
 					// 주문제작-파일 테이블
 					files_no = filesList.get(i).getFiles_no();
@@ -96,11 +106,11 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 																																			.files_no(files_no)
 																																			.custom_order_no(custom_order_no)
 																																			.build();
-					sellerCustomDao.CustomFilesInsert(customOrderFilesDto);
+					sellerCustomDao.customFilesInsert(customOrderFilesDto);
 			}
 		}
 
-		int seller_custom_order_no = sellerCustomDao.CustomOrderSeq();
+		int seller_custom_order_no = sellerCustomDao.customOrderSeq();
 		//구매자에게 견적서 도착 알람 생성
 		// - 구매자 ID 통해서 구매자 회원번호 가져오기
 //		String member_id = "member"; // 세션 임의설정

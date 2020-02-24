@@ -47,4 +47,15 @@
 		select distinct category_small from category where category_middle = #{category_name}
 	</select>
 	
+	<!-- 카테고리 번호로 판매자 번호만 검색 -->
+	<select id="getSellerNo" parameterType="int" resultType="com.kh.ordering.entity.SellerCategoryDto">
+		select distinct seller_no from seller_category where category_no=#{category_no}
+	</select>
+	<!-- 카테고리 번호로 판매자 정보 불러오기 -->
+	<select id="getSeller" parameterType="int" resultType="seller">
+		select distinct seller.seller_no, seller.seller_id, seller.seller_name from
+		    seller_category inner join seller
+		        on seller_category.seller_no = seller.seller_no where category_no=#{category_no}
+	</select>
+	
  </mapper>

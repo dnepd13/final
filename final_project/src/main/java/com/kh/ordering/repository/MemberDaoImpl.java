@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.ordering.entity.GoodsCartDto;
+import com.kh.ordering.entity.CartInfoDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.OptionCartDto;
 import com.kh.ordering.vo.MemberPointVO;
@@ -269,7 +270,4 @@ public class MemberDaoImpl implements MemberDao{
 //		}
 
 
-		
-	
-	
 }

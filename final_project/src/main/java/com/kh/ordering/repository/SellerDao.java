@@ -25,12 +25,26 @@ public interface SellerDao {
 	
 	//판매자 회원탈퇴
 	void delete(SellerDto sellerDto);
-	void changepw(SellerDto sellerDto);
+	
+	//판매자 비밀번호 번경
+	void change_pw(SellerDto sellerDto);
+//	SellerDto change_pw(SellerDto sellerDto);
+	
+//판매자 아이디 중복검사
+	int id_check(String seller_id);
+	
+	//판매자 아이디 찾기
+	SellerDto find_id(SellerDto sellerDto);
 	
 
-		int id_check(String seller_id);
+		
+		
+
+	
 
 
+// 판매자 번호로 단일조회
+	SellerDto sellerDto(int seller_no);
 
 
 

@@ -1,5 +1,6 @@
 package com.kh.admin.controller;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -121,6 +122,12 @@ public class AdminController {
 		model.addAttribute("memberCount", memberCount);
 		model.addAttribute("sellerCount", sellerCount);
 		model.addAttribute("todayRegist", registTodayCount);
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int month = (Calendar.getInstance().get(Calendar.MONTH));
+		log.info("year={}",year);
+		log.info("month={}",month+1);
+		model.addAttribute("year", year);
+		model.addAttribute("month", month+1);
 		return "/home";
 	}
 	//---------------------------관리자가입창----------------------------------
@@ -155,7 +162,7 @@ public class AdminController {
 			) {
 		PagingVO vo = boardService.categoryPagination(pno1);
 		model.addAttribute("paging",vo);
-		
+		 
 		List<CategoryDto> list= categoryDao.categoryGetList(vo);
 		model.addAttribute("list", list);
 		
@@ -371,6 +378,29 @@ public class AdminController {
 		adminDao.blockDelete(blockDto);
 		return "redirect:/blocklist";
 	}
+	
+	//----------------차단 해제------------------------------
+	@GetMapping("/unlock")
+	public String unlock(
+			@RequestParam(value="seller_no", required = false, defaultValue = "0") int seller_no,
+			@RequestParam(value="member_no", required = false, defaultValue = "0") int member_no
+			) {
+				BlockDto blockDto = new BlockDto();
+				if(seller_no != 0) {
+					blockDto.setSeller_no(seller_no);
+					adminDao.blockUnlockSeller(blockDto);
+					return "redirect:/seller/manage";
+				}
+				else if(member_no !=0) {
+					blockDto.setMember_no(member_no);
+					adminDao.blockUnlockMember(blockDto);
+					return "redirect:/member/manage";
+				}
+				else {
+					return "redirect:/blocklist";
+				}
+	}
+	
 	
 	//--------------------등급 혜택 --------------------------------------
 	@GetMapping("/gradebenefit")

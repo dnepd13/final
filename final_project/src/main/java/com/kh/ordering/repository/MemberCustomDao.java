@@ -24,8 +24,6 @@ public interface MemberCustomDao {
 	void memberCustom(MemberCustomOrderDto memberCustomDto); // 요청서 관리 테이블
 	int customOrderSeq(); // 요청서 관리테이블 .currval 시퀀스
 	void customAlarmInsert(MemberCustomAlarmDto memberCustomAlarmDto); //견적서 도착 알람 테이블 생성
-	int fileSeq(); // 파일 .nextval 시퀀스번호
-	void filesInsert(FilesDto filesDto); // 파일 저장
 	void customFilesInsert(CustomOrderFilesDto customOrderFilesDto); // 주문제작-파일 테이블
 	
 	//판매자 1:1 견적서 보기
@@ -36,6 +34,17 @@ public interface MemberCustomDao {
 	void updateAlarm(int member_no, int seller_custom_order_no);
 	//구매 알람테이블 견적서 총 개수 check N
 	int customAlarm(int member_no);
+	MemberCustomAlarmDto getMemberAlarm(int seller_custom_order_no);
+	
+	// 수정
+	void updateCustom(CustomOrderDto customOrderDto);
+	
+	//보낸 요청서 삭제 (1:1)
+	int getCustomNo(int member_custom_order_no);
+	void deleteCustomReq(int custom_order_no);
+	//                        (카테고리)
+	void deleteAlarm(int member_custom_order_no);
+	void deleteCustom(int member_custom_order_no);
 	
 	// 파일 출력용
 	List<FilesVO> getFilesNo(int member_custom_order_no); // 요청서의 파일 No 가져오기

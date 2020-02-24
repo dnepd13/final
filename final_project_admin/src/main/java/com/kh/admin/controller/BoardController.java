@@ -116,6 +116,8 @@ public class BoardController {
 			@RequestParam(value = "admin_qna_no1", required = false, defaultValue = "0") int admin_qna_no,
 			HttpSession session
 			) {
+		log.info("adminqna={}",adminQnaBoardDto);
+		log.info("admin_qna_no={}",admin_qna_no);
 		String id = (String)session.getAttribute("admin_id");
 		AdminDto adminDto = AdminDto.builder().admin_id(id).build();
 		AdminDto admin = adminDao.login(adminDto);

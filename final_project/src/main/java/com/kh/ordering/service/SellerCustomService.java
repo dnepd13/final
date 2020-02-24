@@ -12,7 +12,7 @@ import com.kh.ordering.vo.PagingVO;
 //	판매자 견적서 Service
 public interface SellerCustomService {
 	// 견적서 작성
-	CustomOrderDto SellerCustom(HttpSession session, int member_no,
+	CustomOrderDto SellerCustom(HttpSession session, int member_no, int category_no,
 													FilesVO files,
 													CustomOrderDto customOrderDto) throws IllegalStateException, IOException;
 	

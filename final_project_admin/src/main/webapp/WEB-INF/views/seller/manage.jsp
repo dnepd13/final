@@ -9,15 +9,15 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th width="15%">아이디</th>
-      <th width="10%">이름</th>
-      <th width="15%">이메일</th>
-      <th width="10%">연락처</th>
-      <th width="10%">등급</th>
-      <th width="10%">가입일</th>
-      <th width="10%">마지막 접속일시</th>
-      <th width="10%">상세보기</th>
-      <th width="10%">차단
+      <th width="11%">아이디</th>
+      <th width="11%">이름</th>
+      <th width="11%">이메일</th>
+      <th width="11%">연락처</th>
+      <th width="11%">등급</th>
+      <th width="11%">가입일</th>
+      <th width="11%">마지막 접속일시</th>
+      <th width="11%">상세보기</th>
+      <th width="12%">차단
       </th>
     </tr>
   </thead>
@@ -39,7 +39,9 @@
       </td>
       <c:choose>
       	<c:when test="${list.block_no > 0 }">
-      		<td>차단된 회원</td>
+      		<td>
+      		<a href="${pageContext.request.contextPath}/unlock?seller_no=${list.seller_no}"><button type="button" class="btn btn-danger">차단해제</button></a>
+      		</td>
       	</c:when>
       	<c:otherwise>
 		       <td>

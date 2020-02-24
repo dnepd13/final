@@ -86,6 +86,16 @@ public class AdminDaoImpl implements AdminDao{
 		return member+seller;
 	}
 
+	@Override
+	public void blockUnlockSeller(BlockDto BlockDto) {
+		sqlSession.delete("admin.blockDeleteSeller", BlockDto);
+	}
+
+	@Override
+	public void blockUnlockMember(BlockDto BlockDto) {
+		sqlSession.delete("admin.blockDeleteMember", BlockDto);
+	}
+
 	
 	
 	
