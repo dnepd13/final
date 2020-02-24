@@ -1,5 +1,6 @@
 package com.kh.admin.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.admin.entity.AdminDto;
 import com.kh.admin.entity.SellerDto;
+import com.kh.admin.repository.CalculateDao;
 import com.kh.admin.repository.SellerDao;
 import com.kh.admin.service.BoardService;
 import com.kh.admin.vo.BlockSellerVO;
+import com.kh.admin.vo.CalculateVO;
 import com.kh.admin.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +33,9 @@ public class SellerController {
 	
 	@Autowired
 	private SellerDao sellerDao;
+	
+	@Autowired
+	private CalculateDao calculateDao;
 	
 	@GetMapping("/manage")
 	public String manage(
@@ -115,4 +121,6 @@ public class SellerController {
 		sellerDao.sellerDelete(sellerDto);
 		return "redirect:/seller/manage";
 	}
+	
+	
 }

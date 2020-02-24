@@ -2,6 +2,7 @@ package com.kh.ordering.repository;
 
 
 
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -62,23 +63,47 @@ public class SellerDaoImpl implements SellerDao {
 	}
 	//판매자 비밀번호 변경
 	@Override
-	public void changepw(SellerDto sellerDto) {
+	public void change_pw(SellerDto sellerDto) {
 			sqlSession.update("seller.change_pw",sellerDto);
 	}
+//	@Override
+//	public SellerDto change_pw(SellerDto sellerDto) {
+//              sqlSession.update("seller.change_pw",sellerDto);
+//				return sellerDto;
+//	 
+//	}
+	//판매자 아이디 중복 검사
+	
+//	@Override
+//	public int check_id(String seller_id) {
+//		int count = sqlSession.selectOne("seller.check_id",seller_id);
+//		return count;
+//	}
+
+	
 	
 	//판매자 아이디 중복 검사
-
-
+//
+//
 	@Override
 	public int id_check(String seller_id) {
 		return 0;
 	}
+
 	
 	// seller_no 단일조회
 	@Override
 	public SellerDto sellerDto(int seller_no) {
 		return sqlSession.selectOne("seller.getSeller", seller_no);
 	}
+
+	//판매자 아이디찾기
+	@Override
+	public SellerDto find_id(SellerDto sellerDto) {
+		SellerDto find_id=sqlSession.selectOne("seller.find_id", sellerDto);
+		return find_id;
+	}
+
 
 
 }

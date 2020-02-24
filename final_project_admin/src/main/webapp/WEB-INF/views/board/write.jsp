@@ -8,6 +8,7 @@
     <div class="form-group">
       <label for="exampleSelect1">말머리</label>
       <select class="form-control" name="admin_qna_head" id="exampleSelect1">
+      	<option>공지</option>
         <option>답변</option>
       </select>
     </div>
@@ -20,16 +21,18 @@
     <div class="form-group row">
       <label for="staticEmail" class="col-sm-2 col-form-label">작성자</label>
       <div class="col-sm-10">
-        <input type="text" name="admin_qna_writer" class="form-control-plaintext" id="staticEmail" placeholder="${admin_id }" value="${admin_id }">
+        <input type="text" name="admin_qna_writer" class="form-control-plaintext" id="staticEmail" placeholder="${admin_id }" value="${admin_id }" required="required">
       </div>
     </div>
     <div class="form-group">
       <label for="exampleTextarea">Example textarea</label>
-      <textarea name="admin_qna_content" class="form-control" id="exampleTextarea" rows="5"></textarea>
+      <textarea name="admin_qna_content" class="form-control" id="exampleTextarea" rows="5" required="required"></textarea>
     </div>
+    <c:if test="${param.member_no != null or param.seller_no != null }">
     <input type="hidden" name="admin_qna_no1" value="${admin_qna_no }">
     <input type="hidden" name="member_no" value="${param.member_no }">
     <input type="hidden" name="seller_no" value="${param.seller_no }">
+    </c:if>
     <div class="btn-group-vertical">
   		<button type="submit" class="btn btn-primary">등록</button>
 	</div>

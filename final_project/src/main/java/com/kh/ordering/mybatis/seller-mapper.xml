@@ -30,8 +30,8 @@
 		)
 	</insert>
 	<!-- 아이디 중복검사 -->
-	<select id="id_check"  parameterType="string" resultType="seller">
-		select *from seller where seller_id =#{seller_id}
+	<select id="id_check"  parameterType="string" resultType="int">
+		select count(*) from seller where seller_id =#{seller_id}
 		</select>
 	
 	
@@ -49,10 +49,17 @@
 	<select id="login" parameterType="seller" resultType="seller">
 		select*from seller where seller_id =#{seller_id}
 	</select>
+	<!-- 판매자 아이디 찾기 -->
+	<select id="find_id" parameterType="seller" resultType="seller">
+		select  seller_id from seller where seller_name=#{seller_name} 
+		and seller_email=#{seller_email}
+	</select>
+	
 	<!-- 판매자 정보 조회 -->
 	<select id="info" parameterType="seller" resultType="seller">
 		select * from seller where seller_id=#{seller_id}
 	</select>
+	
 	<!-- 판매자 정보 수정 -->
 
 	<update id="info_edit" parameterType="seller">
@@ -67,19 +74,16 @@
 		</update>
 		<!-- 비밀번호 수정 -->
 		<update id="change_pw" parameterType="seller">
-				update seller set seller_pw=#{seller_pw} where seller_id=#{seller_id}
-		
+						update seller set seller_pw=#{seller_pw} where seller_id=#{seller_id} 
+						
 		</update>
 		
 			<!-- 판매자 회원탈퇴 -->
 			<delete id="delete" parameterType="seller">
 			delete seller where seller_id=#{seller_id} 
 			</delete>
-		
 
 
-
-  
 
 <!-- 판매자 No 단일조회 -->
 	<select id="getSeller" parameterType="int" resultType="seller">

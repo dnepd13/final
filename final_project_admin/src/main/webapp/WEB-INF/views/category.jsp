@@ -97,7 +97,7 @@
 	});
 </script>
 
-<카테고리관리창>
+<!-- 카테고리관리창-->
 <h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
 
 <div>
