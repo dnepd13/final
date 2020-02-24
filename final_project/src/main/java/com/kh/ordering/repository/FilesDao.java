@@ -1,5 +1,7 @@
 package com.kh.ordering.repository;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.ordering.entity.FilesDto;
@@ -8,7 +10,7 @@ import com.kh.ordering.entity.FilesDto;
 public interface FilesDao {
 	FilesDto getFiles(int files_no); // 파일 번호로 파일정보 가져오기
 
-	void insertGoodsFiles(MultipartFile multipartFile, int goods_no);
+	int insertGoodsFiles(MultipartFile multipartFile, int goods_no);
 
-	void insertGoodsFiles(MultipartFile[] multipartFile, int goods_no);
+	List<Integer> insertGoodsFiles(MultipartFile[] multipartFile, int goods_no);
 }

@@ -57,13 +57,13 @@ public class GoodsService {
 		return goodsOptionDao.getGoodsOptionVOList(goods_no);
 	}
 	
-	public void insertFiles(MultipartFile multipartFile, int goods_no) {
-		filesDao.insertGoodsFiles(multipartFile, goods_no);
+	public int insertFiles(MultipartFile multipartFile, int goods_no) {
+		return filesDao.insertGoodsFiles(multipartFile, goods_no);
 	}
 	
 	// 다중 파일(content_image)
-	public void insertFiles(MultipartFile[] multipartFileList, int goods_no) {
-		filesDao.insertGoodsFiles(multipartFileList, goods_no);
+	public List<Integer> insertFiles(MultipartFile[] multipartFileList, int goods_no) {
+		return filesDao.insertGoodsFiles(multipartFileList, goods_no);
 	}
 	
 	

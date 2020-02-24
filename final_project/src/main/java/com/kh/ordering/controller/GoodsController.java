@@ -1,7 +1,9 @@
 package com.kh.ordering.controller;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsQnaDto;
 import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.GoodsDao;
@@ -69,18 +70,29 @@ public class GoodsController {
 						@ModelAttribute DeliveryVO deliveryVO,
 						@RequestParam MultipartFile goods_main_image,
 						@RequestParam MultipartFile[] goods_content_image
-						) {
+						) throws IllegalStateException, IOException {
 		// 상품 처리
 		int goods_no = goodsService.insert(goodsVO);
 		deliveryVO.setGoods_no(goods_no);
 		deliveryService.insert(deliveryVO);
 		
 		// 파일 처리
-		goodsService.insertFiles(goods_main_image, goods_no);
-		goodsService.insertFiles(goods_content_image, goods_no);
+		int files_no = goodsService.insertFiles(goods_main_image, goods_no);
+		List<Integer> list = goodsService.insertFiles(goods_content_image, goods_no);
 		
 		// 물리 저장 처리
+		//파일 저장 : 저장을 할 가상의 파일 객체가 필요
+		//저장경로 : D:/upload
+		File dir = new File("C:/upload");
+		dir.mkdirs();//디렉터리 생성
 		
+		File target = new File(dir, "goodsMain" + files_no);
+		goods_main_image.transferTo(target);//파일 저장
+		
+		for(int i = 0; i<list.size(); i++) {
+			File tg = new File(dir, "goodsContent" + list.get(i));
+			goods_content_image[i].transferTo(tg);
+		}
 		
 		return "redirect:goodsInfo?goods_no=" + goods_no;
 	}

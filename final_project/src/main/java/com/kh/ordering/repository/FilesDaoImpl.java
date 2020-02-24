@@ -27,7 +27,7 @@ public class FilesDaoImpl implements FilesDao {
 	}
 	
 	@Override
-	public void insertGoodsFiles(MultipartFile multipartFile, int goods_no) {
+	public int insertGoodsFiles(MultipartFile multipartFile, int goods_no) {
 		// 단일파일
 		// 중계테이블(files_goods) : files_no, goods_no
 		// 파일테이블(files) : files_no, size, savename, uploadname 
@@ -35,7 +35,7 @@ public class FilesDaoImpl implements FilesDao {
 		FilesDto filesDto = FilesDto.builder()
 					.files_no(files_no)
 					.files_size(multipartFile.getSize())
-					.files_savename("goodsmain"+files_no)
+					.files_savename("goodsMain"+files_no)
 					.files_uploadname(multipartFile.getOriginalFilename())
 				.build();
 		sqlSession.insert("files.insert", filesDto);
@@ -43,20 +43,24 @@ public class FilesDaoImpl implements FilesDao {
 		map.put("files_no", files_no);
 		map.put("goods_no", goods_no);
 		sqlSession.insert("files.insertFilesGoods", map);
+		
+		return files_no;
 	}
 	
 	@Override
-	public void insertGoodsFiles(MultipartFile[] multipartFileList, int goods_no) {
+	public List<Integer> insertGoodsFiles(MultipartFile[] multipartFileList, int goods_no) {
 		List<FilesDto> filesDtoList = new ArrayList<>();
+		List<Integer> list = new ArrayList<>();
 		for(MultipartFile file : multipartFileList) {
 			int files_no = sqlSession.selectOne("files.getSeq");
 			FilesDto filesDto = FilesDto.builder()
 						.files_no(files_no)
 						.files_size(file.getSize())
-						.files_savename("content"+files_no)
+						.files_savename("goodsContent"+files_no)
 						.files_uploadname(file.getOriginalFilename())
 					.build();
 			filesDtoList.add(filesDto);
+			list.add(files_no);
 		}
 		sqlSession.insert("files.insertAll", filesDtoList);
 		
@@ -67,5 +71,6 @@ public class FilesDaoImpl implements FilesDao {
 			map.put("goods_no", goods_no);
 			sqlSession.insert("files.insertFilesGoods", map);
 		}
+		return list;
 	}
 }
