@@ -19,5 +19,6 @@ public class PagingVO {
 		public int member_no;
 		public String key,
 							search;
-		
+		public String seller_id;
+		public int year, month;
 }
