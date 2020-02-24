@@ -52,8 +52,10 @@ public class CategoryDaoImpl implements CategoryDao{
 		
 	}
 
+
 	@Override // 카테고리 번호로 판매자 List 검색
 	public List<SellerCategoryDto> getSellerNo(int category_no) {
 		return sqlSession.selectList("category.getSellerNo", category_no);
 	}
+
 }

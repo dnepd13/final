@@ -1,4 +1,4 @@
-package com.kh.admin.repository;
+    package com.kh.admin.repository;
 
 import java.util.List;
 
