@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
     <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
     
     <h1>판매자 로그인페이지</h1>
