@@ -38,6 +38,7 @@
       <th width="15%">수수료(원)</th>
       <th width="15%">정산 금액</th>
       <th width="15%">상세보기</th> 
+      <th width="10%">정산</th> 
     </tr>
   </thead>
   <tbody>
@@ -50,6 +51,9 @@
       <td>${list.adjustment_price }</td>
       <td>
    			<a href="${pageContext.request.contextPath}/calculate/detail?seller_id=${list.seller_id}&year=${param.year}&month=${param.month}"><button type="button" class="btn btn-primary btn-delete" >상세보기</button></a>
+      </td>
+      <td>
+   			<a href="#"><button type="button" class="btn btn-primary btn-delete" >정산</button></a>
       </td>
     </tr>
 	</c:forEach>
