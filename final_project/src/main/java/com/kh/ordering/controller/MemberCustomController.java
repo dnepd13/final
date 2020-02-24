@@ -198,14 +198,14 @@ public class MemberCustomController {
 		CustomOrderVO content = memberCustomDao.customOrderVO2(member_custom_order_no);
 		model.addAttribute("getListInfoReq", content);
 
-			// 카테고리 표시를 위한 model정보
+		// 카테고리 표시를 위한 model정보
 		int category_no = content.getCustom_order_category();
 		model.addAttribute("category", categoryDao.get(category_no));
 		
 		List<FilesVO>  filesVO = memberCustomService.filesList(member_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
-		
-		model.addAttribute("alarm", sellerCustomDao.getSellerAlarm(member_custom_order_no));
+		log.info("category_no={}", category_no);
+//		model.addAttribute("alarm", sellerCustomDao.getSellerAlarm(member_custom_order_no));
 		
 		return "member/customInfoReq";
 	}

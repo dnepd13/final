@@ -57,7 +57,6 @@
 				href="#menu1">판매자 로그인</a></li>
 		</ul>
 
-<<<<<<< HEAD
 		<!-- Tab panes -->
 		<div class="tab-content login">
 			<div id="home" class="container tab-pane active" style="margin:0 0">
@@ -85,11 +84,4 @@
 </div>
 </body>
 </html>
-=======
-<form action="login" method="post">
-	<input type="text" name="member_id" placeholder="아이디"><br><br>
-	<input type="password" name="member_pw"placeholder="비밀번호"><br><br>
-	<input type="submit" value="로그인">
 
-</form>
->>>>>>> refs/remotes/origin/master
