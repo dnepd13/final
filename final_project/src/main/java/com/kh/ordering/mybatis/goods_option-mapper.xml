@@ -68,19 +68,27 @@
 		select * from goods_option where goods_no = #{goods_no}
 	</select>
 	
-	<resultMap type="goodsOptionVO" id="getGoodsOptionVO">
-		<result column="goods_option_title" property="goods_option_title"/>
+<!-- 	<resultMap type="goodsOptionVO" id="getGoodsOptionVO"> -->
+<!-- 		<result column="goods_option_title" property="goods_option_title"/> -->
 		
-		<collection property="goodsOptionList" javaType="list"
-					ofType="goodsOptionDto" select="getGoodsOption" column="goods_option_title"></collection>
-	</resultMap>
+<!-- 		<collection property="goodsOptionList" javaType="list" -->
+<!-- 					ofType="goodsOptionDto" select="getGoodsOption" column="goodsOptionDto"></collection> -->
+<!-- 	</resultMap> -->
 	
-	<select id="getGoodsOptionVOList" parameterType="int" resultMap="getGoodsOptionVO">
-		select distinct goods_option_title from goods_option where goods_no = ${goods_no}
+<!-- 	<select id="getGoodsOptionVOList" parameterType="int" resultMap="getGoodsOptionVO"> -->
+<!-- 		select distinct * from goods_option where goods_no = ${goods_no} -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="getGoodsOption" parameterType="int" resultType="goodsOptionDto"> -->
+<!-- 		select * from goods_option where goods_no = #{goodsOptionDto.goods_no} -->
+<!-- 	</select> -->
+	
+	<select id="getGoodsOpionTitleList" parameterType="int" resultType="String">
+		select distinct goods_option_title from goods_option where goods_no = #{goods_no}
 	</select>
 	
-	<select id="getGoodsOption" parameterType="String" resultType="goodsOptionDto">
-		select * from goods_option where goods_option_title = #{goods_option_title}
+	<select id="getGoodsOptionList" parameterType="map" resultType="goodsOptionDto">
+		select * from goods_option where goods_no = #{goods_no} and goods_option_title = #{goods_option_title}
 	</select>
 	
  </mapper>

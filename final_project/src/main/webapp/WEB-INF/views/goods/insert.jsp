@@ -57,6 +57,7 @@
  		 
  		 $(".category_small").change(function(){
  			var category_name = $(this).val();
+ 			 console.log(category_name);
 			 var url = "small";
 			 $.ajax({
 				 type: "POST",
