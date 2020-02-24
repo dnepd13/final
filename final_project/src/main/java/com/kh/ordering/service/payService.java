@@ -19,4 +19,5 @@ public interface payService {
 	KakaoPaySuccessReturnVO approve(KakaoPaySuccessReadyVO data) throws URISyntaxException;
 	KakaoPayRevokeReturnVO revoke(int no)  throws URISyntaxException;
 	KakaoPayReadyVO setReadyVO(String orerVO) throws JsonMappingException, JsonProcessingException;
+	boolean transactionOrder(String partner_order_id) throws Exception;
 }

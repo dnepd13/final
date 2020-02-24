@@ -12,4 +12,9 @@ public interface GoodsDao {
 	List<GoodsDto> getList();
 	int getSequence();
 	GoodsVO getGoodsVO(int goods_no);
+	int getStock(int goods_no);
+	boolean minusStock(int goods_no, int stock);
+	void plusStock(int goods_no, int stock);
+	List<GoodsVO> getGoodsVOList(int seller_no);
+	List<Integer> getGoodsNoList(int seller_no);
 }

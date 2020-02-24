@@ -1,7 +1,7 @@
  package com.kh.ordering.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,16 +16,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.ordering.entity.GoodsCartDto;
 import com.kh.ordering.entity.MemberDto;
-import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.entity.Member_AddrDto;
+import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.Member_AddrDao;
 import com.kh.ordering.repository.Member_PointDao;
+import com.kh.ordering.service.GoodsOptionService;
 import com.kh.ordering.service.MemberService;
-import com.kh.ordering.service.Member_AddrService;
+import com.kh.ordering.vo.CartVO;
+import com.kh.ordering.vo.ItemVO;
+import com.kh.ordering.vo.ItemVOList;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +41,12 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 
 	@Autowired
+	private GoodsOptionService goodsOptionService;
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
 	private MemberDao memberDao;
 	
 	@Autowired
@@ -45,16 +56,60 @@ public class MemberController {
 	private Member_AddrDao member_AddrDao;
 	
 	@Autowired
-	private Member_AddrService member_AddrService;
-	
-	@Autowired
 	private PasswordEncoder encoder;
 	
 	@Autowired
 	private SqlSession sqlSession;
 	
-	
+	// 장바구니 (월용) ///////////////////////
+	@GetMapping("/cart")
+	public String cart(HttpSession session, Model model) throws JsonProcessingException {
+		String member_id = (String)session.getAttribute("member_id");
 		
+		List<GoodsCartDto> goodsCartDtoList = memberDao.getGoodsCartList(member_id);
+		List<ItemVO> itemVOList = new ArrayList<>();
+		List<Integer> goodsCartNoList = new ArrayList<>();
+		
+		for(GoodsCartDto goodsCartDto : goodsCartDtoList) {
+			goodsCartNoList.add(goodsCartDto.getGoods_cart_no());
+			
+			ItemVO itemVO = ItemVO.builder()
+					.goods_no(goodsCartDto.getGoods_no())
+					.option_no_list(memberDao.getGoodsOptionNoList(goodsCartDto.getGoods_cart_no()))
+					.price(goodsCartDto.getGoods_cart_price())
+					.quantity(goodsCartDto.getGoods_cart_quantity())
+				.build();
+			itemVOList.add(itemVO);
+		}
+		
+		List<CartVO> cartVOList = goodsOptionService.getCartVOList(itemVOList);
+		
+		
+		
+		model.addAttribute("cartVOList", cartVOList);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		model.addAttribute("jsonCartVOList", mapper.writeValueAsString(cartVOList));
+		model.addAttribute("jsGoodsCartNoList", goodsCartNoList);
+		return "member/cart";
+	}
+	
+	@PostMapping("/addCart")
+	@ResponseBody
+	public String addCart(@ModelAttribute ItemVOList itemVOList, HttpSession session) {
+		memberService.addCart((String)session.getAttribute("member_id"), itemVOList);
+		return "";
+	}
+	
+	@PostMapping("/deleteCart")
+	@ResponseBody
+	public String deleteCart(@RequestParam int goods_cart_no) {
+		memberService.deleteCart(goods_cart_no);
+		return "";
+	}
+	
+	
+	/////////////////////////////////////	
 	
 		//회원 가입하기
 	

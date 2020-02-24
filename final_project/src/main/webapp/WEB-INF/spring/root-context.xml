@@ -118,7 +118,7 @@
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dbcpSource"></property>
 	</bean>
-	
+
 <!-- bcrypt password encoder등록 -->	 
 	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
 </beans>

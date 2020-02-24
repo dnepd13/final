@@ -289,6 +289,55 @@
 		select grade_benefit_rate from grade_benefit where grade_benefit_grade = #{member_grade}
 	</select>
 	
+	
+	<!-- 장바구니  -->
+	
+	<delete id="deleteGoodsCart" parameterType="int">
+		delete from goods_cart where goods_cart_no = #{goods_cart_no}
+	</delete>
+
+	<delete id="deleteOptionCart" parameterType="int">
+		delete from option_cart where goods_cart_no = #{goods_cart_no}
+	</delete>
+	
+
+	<select id="getGoodsCartList" parameterType="int" resultType="goodsCartDto">
+		select * from goods_cart where member_no = #{member_no}
+	</select>
+	
+	<select id="getOptionCartList" parameterType="int" resultType="optionCartDto">
+		select O.option_cart_no, O.goods_cart_no, O.goods_option_no 
+		from option_cart O
+		inner join (select * from goods_cart where member_no = #{member_no}) G 
+		on G.goods_cart_no = O.goods_cart_no
+	</select>
+	
+	<select id="getGoodsOptionNoList" parameterType="int" resultType="int">
+		select goods_option_no from option_cart where goods_cart_no = #{goods_cart_no}
+	</select>
+	
+	<insert id="insertGoodsCartList" parameterType="list">
+		<foreach collection="list" item="goodsCartDto" open="insert all" close="select * from dual">
+			into goods_cart values(
+				#{goodsCartDto.goods_cart_no},
+				#{goodsCartDto.member_no},
+				#{goodsCartDto.goods_no},
+				#{goodsCartDto.goods_cart_quantity},
+				#{goodsCartDto.goods_cart_price}
+			)
+		</foreach>
+	</insert>
+	
+	<insert id="insertOptionCartList" parameterType="list">
+		<foreach collection="list" item="optionCartDto" open="insert all" close="select * from dual">
+			into option_cart values(
+				#{optionCartDto.option_cart_no},
+				#{optionCartDto.goods_cart_no},
+				#{optionCartDto.goods_option_no}			
+			)
+		</foreach>
+	</insert>
+	
  </mapper> 
 
 

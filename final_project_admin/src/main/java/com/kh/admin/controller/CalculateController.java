@@ -96,5 +96,6 @@ public class CalculateController {
 		model.addAttribute("accountname", list.get(0).getSeller_bank_username());		
 		return "calculate/detail";
 
-	
+	}
+}
 	

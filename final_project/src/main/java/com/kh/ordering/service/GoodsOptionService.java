@@ -12,6 +12,9 @@ import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.vo.CartVO;
 import com.kh.ordering.vo.ItemVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class GoodsOptionService {
 
 	@Autowired
@@ -45,14 +48,18 @@ public class GoodsOptionService {
 	
 	public List<CartVO> getCartVOList(List<ItemVO> list){
 		List<CartVO> cartVOList = new ArrayList<>();
+		log.info("list={}",list);
 		for(ItemVO itemVO : list) {
-			CartVO cartVO = new CartVO();
-			cartVO.setGoodsDto(goodsDao.get(itemVO.getGoods_no()));
-			cartVO.setOption_list(goodsOptionDao.getList(itemVO.getOption_no_list()));
-			cartVO.setPrice(itemVO.getPrice());
-			cartVO.setQuantity(itemVO.getQuantity());
-			cartVO.setDeliveryDto(deliveryDao.get2(itemVO.getGoods_no()));
-			cartVOList.add(cartVO);
+			if(itemVO.getOption_no_list() != null) {
+				log.info("itemVO={}",itemVO);
+				CartVO cartVO = new CartVO();
+				cartVO.setGoodsDto(goodsDao.get(itemVO.getGoods_no()));
+				cartVO.setOption_list(goodsOptionDao.getList(itemVO.getOption_no_list()));
+				cartVO.setPrice(itemVO.getPrice());
+				cartVO.setQuantity(itemVO.getQuantity());
+				cartVO.setDeliveryDto(deliveryDao.get2(itemVO.getGoods_no()));
+				cartVOList.add(cartVO);
+			}
 		}
 		
 		return cartVOList;
