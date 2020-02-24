@@ -78,8 +78,16 @@
 	});
 </script>
 
+<div style="padding-top: 50px;">
+<jsp:include page="template/header.jsp"></jsp:include>
+</div>
+
+<div class="container-fluid">
+        <div class="row" style="padding: 50px;">
+            <div class="offset-md-1 col-md-10">
+<div class="row justify-content-center"  style="padding: 20px;">
 <h1>수수료 관리창</h1>
-<h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
+</div>
 
 <form action="" method="post">
 	<input type="number" name="premium_price" placeholder="수수료조건" required="required">
@@ -107,3 +115,6 @@
   </c:forEach>
   </tbody>
 </table>
+</div>
+        </div>
+    </div>

@@ -44,9 +44,15 @@
 	});
 </script>
 
-<h1>회원 관리창 입니다</h1>
-<h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
-<h1><a href="${pageContext.request.contextPath}/member/manage">목록으로</a></h1>
+<div style="padding-top: 50px;">
+<jsp:include page="../template/header.jsp"></jsp:include>
+</div>
+
+<div class="container-fluid">
+        <div class="row" style="padding: 50px;">
+            <div class="offset-md-1 col-md-10">
+<div class="row justify-content-center"  style="padding: 20px;"><h1>회원 관리 목록</h1></div>
+
 
 <table class="table table-hover">
   <thead>
@@ -96,32 +102,8 @@
 	</c:forEach>
   </tbody>
 </table>
-<form>
-	<input type="number" placeholder="포인트" required="required">
-	<input type="text" name="member_point_content"  class="form-control-plaintext" id="staticEmail1" placeholder="축하드립니다" value="축하드립니다">
-	<input type="date" min="${today }" max="2099-12-31" name="member_point_limit" class="form-control-plaintext" id="staticEmail2" >
-	<button type="button" class="btn btn-primary btn-regist" >포인트등록</button><br>
-</form>
 
-<form action="manage" method="get">
-  <fieldset>
-    <div class="form-group">
-      <label for="exampleSelect1">검색 조건</label>
-      <select class="form-control" name="key" id="exampleSelect1">
-        <option value="member_id">아이디</option>
-        <option value="member_name">이름</option>
-        <option value="member_grade">등급</option>
-      </select>
-    </div>
-    <div class="form-group row">
-      <label for="staticEmail" class="col-sm-2 col-form-label">검색</label>
-      <div class="col-sm-10">
-        <input type="text"  name="search" class="form-control-plaintext" id="staticEmail">
-      </div>
-    </div>
-  </fieldset>
-  <button type="submit" class="btn btn-primary" >검색</button>
-</form>
+<div class="offset-md-4 col-md-4">
 <div>
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
@@ -177,3 +159,36 @@
 		</c:if>
 	</ul>
 </div>
+</div>
+
+<form>
+	<input type="number" placeholder="포인트"  required="required" class="offset-md-0 col-md-12">
+	<input type="text"  name="member_point_content"  class="form-control-plaintext" id="staticEmail1" placeholder="축하드립니다" value="축하드립니다">
+	<input type="date" min="${today }" max="2099-12-31" name="member_point_limit" class="form-control-plaintext" id="staticEmail2" >
+	<button type="button" class="btn btn-primary btn-regist offset-md-4 col-md-4" >포인트등록</button><br>
+</form>
+
+<form action="manage" method="get">
+  <fieldset>
+    <div class="form-group">
+      <label for="exampleSelect1">검색 조건</label>
+      <select class="form-control" name="key" id="exampleSelect1">
+        <option value="member_id">아이디</option>
+        <option value="member_name">이름</option>
+        <option value="member_grade">등급</option>
+      </select>
+    </div>
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">검색</label>
+      <div class="col-sm-10">
+        <input type="text"  name="search" class="form-control-plaintext" id="staticEmail" placeholder="검색어를 입력하세요">
+      </div>
+    </div>
+  </fieldset>
+  
+  <button type="submit" class="btn btn-primary offset-md-4 col-md-4" >검색</button>
+</form>
+
+</div>
+        </div>
+    </div>

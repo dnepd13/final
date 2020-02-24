@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<div style="padding-top: 50px;">
+<jsp:include page="../template/header.jsp"></jsp:include>
+</div>
     <title>Document</title>
     <style></style>
     <script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
@@ -11,7 +14,11 @@
             Hakademy.PointManager.factory(".star-wrap");
         });
     </script>
-<h1>${param.goods_name } 상품리뷰보기</h1>
+    <div class="container-fluid">
+        <div class="row" style="padding: 50px;">
+            <div class="offset-md-2 col-md-8">
+<div class="row justify-content-center" style="padding: 20px;"><h1>상품 리뷰</h1></div>
+
 <c:forEach var="list" items="${list }">
 	<hr>
 	<div>리뷰</div>
@@ -28,3 +35,7 @@
 	</c:choose>
 </c:forEach>
 
+   </div>
+        </div>
+    </div>
+    

@@ -1,6 +1,7 @@
 package com.kh.admin.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,20 @@ public class CalculateController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute PagingVO paging
 			) {
+		
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int month = (Calendar.getInstance().get(Calendar.MONTH));
+		model.addAttribute("year", year);
+		model.addAttribute("month", month+1);
+		
+		if(adjustmentInsertVO.getYear()<1) {
+			adjustmentInsertVO.setYear(year);
+		}
+		if(adjustmentInsertVO.getMonth()<1) {
+			adjustmentInsertVO.setMonth(month);
+		}
+		log.info("ajust={}", adjustmentInsertVO);
+		
 		log.info("v111o={}",paging);
 		int count = calculateDao.calculateCount(adjustmentInsertVO);
 		log.info("count={}", count);
