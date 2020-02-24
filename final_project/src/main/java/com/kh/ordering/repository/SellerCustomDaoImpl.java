@@ -91,8 +91,8 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 		return sqlSession.selectOne("seller.customCheck", seller_no);
 	}
 	@Override // 알람테이블 조회
-	public SellerCustomAlarmDto getSellerAlarm(int member_custom_order_no) {
-		return sqlSession.selectOne("seller.getAlarm", member_custom_order_no);
+	public List<SellerCustomAlarmDto> getSellerAlarm(int member_custom_order_no) {
+		return sqlSession.selectList("seller.getAlarm", member_custom_order_no);
 	}
 
 	@Override // 판매자가 받은 요청서 count

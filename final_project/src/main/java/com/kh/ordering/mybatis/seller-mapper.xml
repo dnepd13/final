@@ -145,7 +145,7 @@
 	</insert>
 	
 	<select id="getAlarm" parameterType="int" resultType="SellerAlarmDto">
-		select distinct *from seller_alarm where member_custom_order_no=#{member_custom_order_no}
+		select *from seller_alarm where member_custom_order_no=#{member_custom_order_no}
 	</select>
 		
 	<!-- 판매자가 받은 요청서 총 개수(목적: 페이징) -->
