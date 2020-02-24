@@ -68,6 +68,39 @@ public class CalculrateServiceImpl implements CalculrateService{
 		log.info("final={}", finalCal);
 		return finalCal;
 	}
+
+	@Override
+	public String getBankName(String bankcode) {
+		String bank ="";
+		switch(bankcode) {
+		case "039" : bank = "경남은행"; break;
+		case "034" : bank = "광주은행"; break;
+		case "004" : bank = "국민은행"; break;
+		case "003" : bank = "기업은행"; break;
+		case "011" : bank = "농협은행"; break;
+		case "031" : bank = "대구은행"; break;
+		case "032" : bank = "부산은행"; break;
+		case "002" : bank = "산업은행"; break;
+		case "064" : bank = "산림조합은행"; break;
+		case "050" : bank = "상호저축은행"; break;
+		case "090" : bank = "카카오뱅크"; break;
+		case "045" : bank = "새마을은행"; break;
+		case "007" : bank = "수협은행"; break;
+		case "023" : bank = "SC제일은행"; break;
+		case "088" : bank = "신한은행"; break;
+		case "048" : bank = "신협은행"; break;
+		case "020" : bank = "우리은행"; break;
+		case "071" : bank = "우체국은행"; break;
+		case "037" : bank = "전북은행"; break;
+		case "035" : bank = "제주은행"; break;
+		case "081" : bank = "KEB하나은행"; break;
+		case "027" : bank = "한국시티은행"; break;
+		case "089" : bank = "K뱅크"; break;
+		default : bank = "kh아카데미은행"; break;
+		}	
+		return bank;
+	}
+
 	
 
 }

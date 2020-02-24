@@ -43,7 +43,8 @@ public interface SellerDao {
 	
 
 
-
+// 판매자 번호로 단일조회
+	SellerDto sellerDto(int seller_no);
 
 
 

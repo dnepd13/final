@@ -4,11 +4,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<!-- 별점 script -->
+<style></style>
+    <script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
+    <script>
+        window.addEventListener("load", function(){
+            Hakademy.PointManager.factory(".star-wrap");
+        });
+    </script>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <%-- <script src="${pageContext.request.contextPath}/resources/js/goodsInfo.js"></script> --%>
 <script>
-
 $(function(){
 	var goodsOptionVOList = JSON.parse('${jsonGoodsOptionVOList}');
 	var goodsVO = JSON.parse('${jsonGoodsVO}');
@@ -200,7 +207,7 @@ $(function(){
 		    		method: "post",
 		    		data: data,
 		    		success: function(resp){
-		    			location.reload(true);
+		    			alert("문의가 등록되었습니다.");
 		    		}
 		    	});
 		    	
@@ -231,8 +238,6 @@ $(function(){
 					var goods_qna_no =$(this).parent().data("goods_qna_no");
 					var goods_no=$(this).parent().data("goods_no");
 					var member_no=$(this).parent().data("member_no");
-					
-					console.log(goods_qna_content);
 					
 					$(this).text("수정");
 					
@@ -265,9 +270,6 @@ $(function(){
 			    					},
 			    		success: function(resp){
 			    			location.reload(true);
-			    		},
-			    		error: function(erro){
-			    			alert("알 수 없는 에러 발생");
 			    		}
 			    	});
 		    	}
@@ -311,7 +313,20 @@ $(function(){
 	    	
 	    	$(this).parents(".qna_seller").hide();
 	    });
-        
+
+	    $(".btn_reply").click(function(){
+	    	
+	        if($(this).text()=="댓글쓰기"){
+	        	$(this).parents().next().next(".reply").show();
+	            $(this).text("취소");
+	        }
+	        else{
+	            $(".reply").hide();
+	            $(this).text("댓글쓰기");
+	        }
+	        
+	    });
+	    
 });
 
 </script>
@@ -336,6 +351,7 @@ $(function(){
 
 <p>상품 상세 내용(goods_content)</p>
 <p>${goodsVO.goods_content}</p>
+<span>평점: </span>
 <hr>
 <br>
 
@@ -514,6 +530,52 @@ $(function(){
 <!-- ----------------------------------------------------------------------- -->
 <section>
 <p>리뷰</p>
+	<table border="1">
+		<tr>
+			<th>글번호</th>
+			<th>작성자</th>
+			<th>작성시간</th>
+			<th></th>
+		</tr>
+<c:forEach var="review" items="${goodsReview }">
+		<tr>
+			<td class="star" colspan="4">
+				<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${review.goods_review_star}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">${review.goods_review_writer }</td>
+			<td>${review.goods_review_date }</td>
+			<td><button class="btn_reply">댓글쓰기</button></td>
+		</tr>
+		<c:if test="${ not empty filesVO }">
+			<tr>
+				<td colspan="4">
+				<c:forEach var="filesVO" items="${filesVO }">
+					<img src="http://localhost:8080/ordering/member/reviewFile?files_no=${filesVO.files_no}" width=100px; height=100px;>
+				</c:forEach>
+				</td>
+			</tr>
+		</c:if>
+		<tr>
+			<td colspan="4">${review.goods_review_content }</td>
+		</tr>
+		<tr class="reply" style="display:none;">
+			<td colspan="4">
+				<form action="insertReply" method="post">
+					<input type="hidden" name="goods_review_no" value="${review.goods_review_no }">
+					<input type="hidden">
+					<textarea name="goods_review_reply_content" required></textarea>
+					<input type="submit" value="댓글등록">
+				</form>
+				</td>
+		</tr>
+		<tr>
+			<td>
+			</td>
+		</tr>
+</c:forEach>
+	</table>
 <hr>
 </section>
 </article>

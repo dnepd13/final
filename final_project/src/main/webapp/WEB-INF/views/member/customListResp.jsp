@@ -6,7 +6,7 @@
 <h3>구매자가 받은 견적서. member customListResp.jsp</h3>
 
 <a href="${pageContext.request.contextPath }">home</a> &#124; 
-<a href="customListReq">보낸 요청서</a>
+
 <h4>확인 안 한 견적서 몇 개냐: <span>${customAlarm } 개</span></h4>	
 
 <c:forEach var="sellerResp" items="${getListResp }">

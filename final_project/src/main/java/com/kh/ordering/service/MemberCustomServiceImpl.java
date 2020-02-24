@@ -12,15 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.CustomOrderFilesDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
 import com.kh.ordering.entity.SellerCategoryDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
-import com.kh.ordering.entity.SellerDto;
 import com.kh.ordering.repository.CategoryDao;
+import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.vo.FilesVO;
@@ -37,6 +36,8 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 	private SellerCustomDao sellerCustomDao;
 	@Autowired
 	private CategoryDao categoryDao;
+	@Autowired
+	private FilesDao filesDao;
 
 	@Transactional
 	@Override // 메인에서의 카테고리 요청서
@@ -70,17 +71,15 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 			
 			// 판매자 요청서 도착 알람 생성
 			// - seller_no리스트 만큼 판매자 알람 테이블 데이터 입력
-			List<SellerCustomAlarmDto> sellerAlarm = new ArrayList<>();
-			
+
 			for(SellerCategoryDto sellerList : getSellerNo) {
 				
-				sellerAlarm.add(SellerCustomAlarmDto.builder()
-																					.seller_no(sellerList.getSeller_no())
-																					.member_custom_order_no(member_custom_order_no)
-																					.build());
-			}
-			for(int i=0; i<sellerAlarm.size();i++) {
-				SellerCustomAlarmDto sellerCustomAlarmDto = sellerAlarm.get(i);
+				SellerCustomAlarmDto sellerCustomAlarmDto
+											= SellerCustomAlarmDto.builder()
+																						.seller_no(sellerList.getSeller_no())
+																						.member_custom_order_no(member_custom_order_no)
+																						.build();
+				
 				sellerCustomDao.customAlarmInsert(sellerCustomAlarmDto);
 			}
 			
@@ -95,7 +94,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 				int files_no;
 				for(MultipartFile multiFile : files.getFiles()) {
 					// 파일의 다음 시퀀스 번호 미리 가져오기
-					files_no =  memberCustomDao.fileSeq();
+					files_no =  filesDao.getSeq();
 					
 					// savename+파일 형식 저장
 					String fileType=multiFile.getContentType().substring(6, multiFile.getContentType().length());
@@ -115,7 +114,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 					if(filesDto.getFiles_size()!=0) {
 						File target = new File(dir, filesDto.getFiles_savename());
 						multiFile.transferTo(target);
-						memberCustomDao.filesInsert(filesDto);
+						filesDao.filesInsert(filesDto);
 						
 						// 주문제작-파일 중개테이블
 						files_no = filesList.get(i).getFiles_no(); // 1번 for문의 filesList 길이만큼 files_no를 꺼내서 변수에 저장
@@ -167,7 +166,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 			int files_no;
 			for(MultipartFile multiFile : files.getFiles()) {
 				// 파일의 다음 시퀀스 번호 미리 가져오기
-				files_no =  memberCustomDao.fileSeq();
+				files_no =  filesDao.getSeq();
 				
 				// savename+파일 형식 저장
 				String fileType=multiFile.getContentType().substring(6, multiFile.getContentType().length());
@@ -187,7 +186,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 				if(filesDto.getFiles_size()!=0) {
 					File target = new File(dir, filesDto.getFiles_savename());
 					multiFile.transferTo(target);
-					memberCustomDao.filesInsert(filesDto);
+					filesDao.filesInsert(filesDto);
 					
 					// 주문제작-파일 중개테이블
 					files_no = filesList.get(i).getFiles_no(); // 1번 for문의 filesList 길이만큼 files_no를 꺼내서 변수에 저장

@@ -9,11 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.kh.ordering.entity.CartInfoDto;
 import com.kh.ordering.entity.CartInfoGoodsDto;
 import com.kh.ordering.entity.CartInfoOpDto;
+import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.GoodsOptionDto;
 import com.kh.ordering.vo.CartInfoGoodsVO;
+import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.CartVO;
 import com.kh.ordering.vo.OrderDeliveryVO;
 import com.kh.ordering.vo.OrderVO;
+import com.kh.ordering.vo.PagingVO;
 
 public class OrderDaoImpl implements OrderDao{
 	
@@ -108,7 +111,37 @@ public class OrderDaoImpl implements OrderDao{
 	public List<CartInfoOpDto> getCartInfoOp(int cart_info_goods_no) {
 		return sqlSession.selectList("getCartInfoOp", cart_info_goods_no);
 	}
-	
-	
-	
+
+
+	@Override // 회원 주문내역
+	public List<CartInfoDto> getCartInfoMember(PagingVO paging) {
+		return sqlSession.selectList("order.getCartInfoMember", paging);
+	}
+	@Override
+	public int getCartInfoCount(int member_no) {
+		return sqlSession.selectOne("order.getCartInfoCount", member_no);
+	}
+	@Override // 주문번호에 대한 상품List
+	public List<CartInfoVO> getCartGoods(int cart_info_no) {
+		return sqlSession.selectList("order.getCartGoods", cart_info_no);
+	}
+
+	@Override // 상품별 구매확정 테이블
+	public CartOkDto getCartOk(int cart_info_goods_no) {
+		return sqlSession.selectOne("order.getOkList", cart_info_goods_no);
+	}
+	@Override // 구매확정 상태 업데이트
+	public void updateCartOk(int cart_info_goods_no) {
+		sqlSession.update("order.updateCartOk", cart_info_goods_no);
+	}
+	@Override // 리뷰등록 상태 업데이트
+	public void updateCartReview(int cart_info_goods_no) {
+		sqlSession.update("order.updateCartReview", cart_info_goods_no);
+	}
+
+	@Override // 카테고리번호 기준 판매량 top5
+	public List<CartInfoVO> getTopSales(int category_no) {
+		return sqlSession.selectList("order.getTopSales", category_no);
+	}
+
 }

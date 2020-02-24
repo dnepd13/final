@@ -84,6 +84,20 @@
 			</delete>
 
 
+
+<!-- 판매자 No 단일조회 -->
+	<select id="getSeller" parameterType="int" resultType="seller">
+		select *from seller where seller_no=#{seller_no}
+	</select>
+
+<!-- 	<update id="info_edit" parameterMap="seller"> -->
+<!-- 		update seller set #{seller_email}, #{seller_phone}, #{seller_store_phone}, -->
+<!-- 		#{seller_store_fax}, 'cid', #{seller_bank_code}, -->
+<!-- 		#{seller_bank_account}, -->
+<!-- 		#{seller_bank_username}, #{seller_bank_birth} -->
+<!-- 		where seller_id =#{seller_id} -->
+<!-- 	</update> -->
+
   <!-- session id로 판매자 번호 구하기-->
  	<select id="getNo" parameterType="String" resultType="int">
  		select seller_no from seller where seller_id = #{seller_id}
@@ -129,17 +143,16 @@
 										#{member_custom_order_no},
 										'N', 'N')
 	</insert>
-
-	<!-- 전체 요청서 보기(카테고리 미구현) -->
-<!-- 	<select id="getListAll" resultType="customOrderVO"> -->
-<!-- 		select *from member_custom_view -->
-<!-- 	</select> -->
+	
+	<select id="getAlarm" parameterType="int" resultType="SellerAlarmDto">
+		select *from seller_alarm where member_custom_order_no=#{member_custom_order_no}
+	</select>
 		
 	<!-- 판매자가 받은 요청서 총 개수(목적: 페이징) -->
 	<select id="customCountTest" parameterType="int" resultType="int">
 		select count(*) from seller_alarm where seller_no = #{seller_no}
 	</select>
-	<!-- 나에게 온 요청서만 보기 -->
+	<!-- 나에게 온 요청서 보기 -->
 	<select id="getListReq" parameterType="int" resultType="customOrderVO">
 		select *from(
 		    select rownum rn, RN.*from(
@@ -189,6 +202,16 @@
 		update seller_alarm set seller_alarm_date=sysdate, seller_alarm_delete='Y'
 			where seller_no=#{seller_no} and member_custom_order_no=#{member_custom_order_no}
 	</delete>
+	
+	<!-- 보낸 견적서 수정 -->
+	<update id="updateCustom" parameterType="customOrderDto">
+		update custom_order set custom_order_title=#{custom_order_title},
+							                        custom_order_content=#{custom_order_content},
+							                        custom_order_price=#{custom_order_price},
+							                        custom_order_hopedate=#{custom_order_hopedate},
+							                        custom_order_date=sysdate
+                where custom_order_no=#{custom_order_no}
+	</update>
 	<!-- 보낸 견적서 삭제 -->
 	<select id="getCustomNo" parameterType="int" resultType="int">
 		select custom_order_no from seller_custom_view
@@ -200,7 +223,7 @@
 				                    	where A.custom_order_no = B.custom_order_no
 				                    	and B.custom_order_no=#{custom_order_no})
 	</delete>
-	<delete id="deleteAlarm">
+	<delete id="deleteAlarm" parameterType="int">
 		delete member_alarm where seller_custom_order_no= #{seller_custom_order_no}
 	</delete>
 	
