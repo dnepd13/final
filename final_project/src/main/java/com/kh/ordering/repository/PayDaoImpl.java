@@ -123,7 +123,4 @@ public class PayDaoImpl implements PayDao{
 		return sqlSession.selectOne("pay.getPartnerOrderId").toString() ;
 	}
 	
-	public OrderVO getOrderVO(String partner_order_id) {
-		return null;
-	}
 }

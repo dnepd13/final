@@ -18,6 +18,7 @@
  		 $(".category_large").change(function(){
 	 		 $(".middleChild").nextAll().remove();
 	 		 $(".smallChild").nextAll().remove();
+	 		 $(".sellerList").children().remove();
  			 var category_name = $(this).val();
  			 var url = "${pageContext.request.contextPath}/goods/large";
  			 $.ajax({
@@ -35,6 +36,7 @@
  		 
  		 $(".category_middle").change(function(){
  			$(".smallChild").nextAll().remove();
+ 			$(".sellerList").children().remove();
 			 var category_name = $(this).val();
 			 var url = "${pageContext.request.contextPath}/goods/middle";
 			 $.ajax({
@@ -51,6 +53,7 @@
  		 });
  		 
  		 $(".category_small").change(function(){
+ 			$(".sellerList").children().remove();
  			var category_name = $(this).val();
 			 var url = "${pageContext.request.contextPath}/goods/small";
 			 $.ajax({
@@ -61,8 +64,29 @@
 		 			 $(".category_no").val(resp);
 			 	 }
 			 });
- 		 });	 
+ 		 });
  		 
+ 		 $(".category_small").change(function(){
+   			var category_name = $(this).val();
+
+  			 var url = "${pageContext.request.contextPath}/member/pick";
+  			 $.ajax({
+  				 type: "POST",
+  			 	 url: url,
+  			 	 data: {"category_name":category_name},
+  			 	 success: function(resp){			 		 
+  			 		 var p = $("<p>추천 판매자를 선택하시면 1:1 개인요청서로 전환됩니다.</p>")
+  			 		 
+  			 		 $(".sellerList").append(p);
+  			 		 
+  			 		$.each(resp, function(index, item){
+  			 			var seller = $("<a href='${pageContext.request.contextPath}/member/customOrder?seller_no="+item.seller_no+"'>"+item.seller_id+"</a><br>");
+  			 			$(".sellerList").append(seller);
+ 			 		 });
+  			 		
+  			 	 }
+  			 });
+ 		 });
  	///////////////// 요청서 입력창 스타일 제어
  		$(".btn_next").click(function(){
             var insert_req = document.querySelector(".insert_req");
@@ -82,6 +106,7 @@
  		$(".redirect").hide();
 
 	});
+
  </script>
  
 <h3>member/customoCate.jsp 카테고리 주문제작 페이지</h3>
@@ -103,6 +128,8 @@
 			<select class="category_small" name="category_name">
 				<option class="smallChild" value="">선택</option>
 			</select>
+			<div class="sellerList">
+			</div>
 		</div>
 		<div class="insert_req" style="display:none;">
  			<input type="hidden" name="member_no" value="${member_no }">
@@ -118,6 +145,6 @@
 				<br><br>
 			<input type="submit" value="요청서 보내기">
 		</div>
-		<button class="btn_next">다음</button>
 	</form>
+		<button type="button" class="btn_next">다음</button>
 </div>

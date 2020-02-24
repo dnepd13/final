@@ -24,6 +24,10 @@
 		<p>${member_id}님 환영합니다.</p>
     <h1><a href="/ordering/member/membermyinfo">마이페이지</a></h1>
 		<h1><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></h1>
+		
+		<h1><a href="/ordering/board/memberreport">회원신고게시판</a></h1><br>
+<h1><a href="/ordering/board/memberqna">회원문의게시판</a></h1><br>
+		
 		<span><a href="${pageContext.request.contextPath }/goods/getList">상품List</a></span>
 		<span>&verbar;</span>
 		<span><a href="${pageContext.request.contextPath }/member/customCate">요청서 보내기</a></span>

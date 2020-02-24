@@ -10,6 +10,19 @@
  		insert into files values(#{files_no}, #{files_size},#{files_savename},#{files_uploadname})
  	</insert>
  	
+ 	<insert id="insertAll" parameterType="list">
+ 		<foreach collection="list" item="FilesDto" open="insert all" close="select * from dual">
+ 			into files values(#{FilesDto.files_no}, #{FilesDto.files_size},#{FilesDto.files_savename},#{FilesDto.files_uploadname})
+ 		</foreach>
+ 	</insert>
+ 	
+ 	<insert id="insertFilesGoods" parameterType="map">
+ 		insert into files_goods values(
+ 			#{files_no},
+ 			#{goods_no}
+ 		)
+ 	</insert>
+ 	
  	<!-- 파일 다음 시퀀스번호 -->
  	<select id="getSeq" resultType="int">
  		select files_seq.nextval from dual
@@ -17,7 +30,7 @@
  	
  	<!-- 파일 번호로 파일 정보 가져오기 -->
  	<select id="getFiles" parameterType="int" resultType="FilesDto">
-		select *from files where files_no=#{files_no}
+		select * from files where files_no=#{files_no}
 	</select>
 	
  	<!-- 주문제작/파일 테이블 insert -->

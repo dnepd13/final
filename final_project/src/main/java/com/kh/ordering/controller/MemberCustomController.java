@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.CustomOrderDto;
@@ -28,8 +29,11 @@ import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.MemberCustomDao;
+import com.kh.ordering.repository.OrderDao;
+import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.service.MemberCustomService;
 import com.kh.ordering.service.SellerCustomService;
+import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.CustomOrderVO;
 import com.kh.ordering.vo.FilesVO;
 import com.kh.ordering.vo.PagingVO;
@@ -42,26 +46,40 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberCustomController {
 	
 	@Autowired
-	private MemberCustomService memberCustomService;
-	
+	private MemberCustomService memberCustomService;	
 	@Autowired
 	private MemberCustomDao memberCustomDao;
 	
 	@Autowired
 	private FilesDao filesDao;
-	
 	@Autowired
 	private FilesPhysicalDao filesPhysicalDao;
 	
 	@Autowired
 	private CategoryDao categoryDao;
+	@Autowired
+	private OrderDao orderDao;
 	
 	@Autowired
 	private SellerCustomService sellerCustomService;
+	@Autowired
+	private SellerCustomDao sellerCustomDao;
 
 //	주문제작 요청서 작성
+	@PostMapping("/pick")
+	@ResponseBody
+	public List<CartInfoVO> sellerPick(@RequestParam(value = "category_name", required=false) String category_name) {
+		
+		// small 카테고리 이름으로 카테고리 정보 가져오기
+		CategoryDto categoryDto = categoryDao.get(category_name); 
+		// 카테고리 정보의 카테고리 번호와 그에 해당하는 판매자 정보 가져와서 보내기
+		int category_no = categoryDto.getCategory_no();
+		
+		return orderDao.getTopSales(category_no);
+	}
 	@GetMapping("/customCate") // 카테고리
-	public String customCate(Model model, HttpSession session) {
+	public String customCate(Model model, HttpSession session,
+													@RequestParam (value = "category_no", required=false) String category_name) {
 		model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
 		
 		String member_id = (String)session.getAttribute("member_id");
@@ -179,7 +197,7 @@ public class MemberCustomController {
 		
 		CustomOrderVO content = memberCustomDao.customOrderVO2(member_custom_order_no);
 		model.addAttribute("getListInfoReq", content);
-		
+
 			// 카테고리 표시를 위한 model정보
 		int category_no = content.getCustom_order_category();
 		model.addAttribute("category", categoryDao.get(category_no));
@@ -187,7 +205,28 @@ public class MemberCustomController {
 		List<FilesVO>  filesVO = memberCustomService.filesList(member_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
 		
+		model.addAttribute("alarm", sellerCustomDao.getSellerAlarm(member_custom_order_no));
+		
 		return "member/customInfoReq";
+	}
+
+//	수정
+	@PostMapping("/updateReq")
+	public String updateCustom(CustomOrderVO customOrderVO) {
+		int member_custom_order_no = customOrderVO.getMember_custom_order_no();
+		int custom_order_no = memberCustomDao.getCustomNo(member_custom_order_no);
+
+		CustomOrderDto customOrderDto
+				= CustomOrderDto.builder()
+												.custom_order_no(custom_order_no)
+												.custom_order_title(customOrderVO.getCustom_order_title())
+												.custom_order_content(customOrderVO.getCustom_order_content())
+												.custom_order_price(customOrderVO.getCustom_order_price())
+												.custom_order_hopedate(customOrderVO.getCustom_order_hopedate())
+												.build();
+		memberCustomDao.updateCustom(customOrderDto);
+		
+		return "redirect:/member/customInfoReq?member_custom_order_no="+member_custom_order_no;
 	}
 
 //	삭제

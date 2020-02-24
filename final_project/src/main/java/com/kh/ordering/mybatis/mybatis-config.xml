@@ -27,6 +27,7 @@
  		<typeAlias type="com.kh.ordering.entity.MemberDto" alias="member"/>
 		<typeAlias type="com.kh.ordering.entity.Member_PointDto" alias="member_PointDto"/>
  		<typeAlias type="com.kh.ordering.entity.Member_AddrDto" alias="member_AddrDto"/>
+ 		<typeAlias type="com.kh.ordering.entity.AdminQnaDto" alias="adminQnaDto"/>
  		
 		<typeAlias type="com.kh.ordering.entity.CustomOrderDto" alias="customOrderDto"/>
 		<typeAlias type="com.kh.ordering.entity.MemberCustomOrderDto" alias="memberCustomDto"/>
@@ -47,8 +48,13 @@
 		<typeAlias type="com.kh.ordering.vo.DeliveryVO" alias="deliveryVO"/>
 		<typeAlias type="com.kh.ordering.entity.DeliveryDto" alias="deliveryDto"/>
 		
+		<typeAlias type="com.kh.ordering.vo.GoodsStockVO" alias="goodsStockVO"/>
+		<typeAlias type="com.kh.ordering.vo.GoodsOptionStockVO" alias="goodsOptionStockVO"/>
+		
 		<!-- 상품 문의/리뷰게시판 -->
 		<typeAlias type="com.kh.ordering.entity.GoodsQnaDto" alias="goodsQnaDto"/>
+		<typeAlias type="com.kh.ordering.entity.GoodsReviewDto" alias="goodsReviewDto"/>
+		<typeAlias type="com.kh.ordering.entity.GoodsReviewReplyDto" alias="goodsReviewReplyDto"/>
 		
 		<!-- pay -->
 		<typeAlias type="com.kh.ordering.entity.PayDto" alias="payDto"/>
@@ -63,8 +69,16 @@
 		<typeAlias type="com.kh.ordering.entity.CartInfoGoodsDto" alias="cartInfoGoodsDto"/>
 		<typeAlias type="com.kh.ordering.entity.CartInfoOpDto" alias="cartInfoOpDto"/>
 		
+		<!-- 주문내역 -->
+		<typeAlias type="com.kh.ordering.vo.CartInfoVO" alias="cartInfoVO"/>
+		<typeAlias type="com.kh.ordering.entity.CartOkDto" alias="cartOkDto"/>
+		
 		<!-- 포인트 -->
 		<typeAlias type="com.kh.ordering.vo.MemberPointVO" alias="memberPointVO"/>
+		
+		<!-- 장바구니 -->
+		<typeAlias type="com.kh.ordering.entity.GoodsCartDto" alias="goodsCartDto"/>
+		<typeAlias type="com.kh.ordering.entity.OptionCartDto" alias="optionCartDto"/>
 		
 	</typeAliases>
  </configuration>

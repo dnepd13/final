@@ -20,5 +20,4 @@ public interface PayDao {
 
 	String getPartnerOrderId();
 	
-	OrderVO getOrderVO(String partner_order_id);
 }

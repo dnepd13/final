@@ -1,10 +1,15 @@
 package com.kh.ordering.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.ordering.entity.GoodsCartDto;
+import com.kh.ordering.entity.CartInfoDto;
 import com.kh.ordering.entity.MemberDto;
+import com.kh.ordering.entity.OptionCartDto;
 import com.kh.ordering.vo.MemberPointVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,11 +45,42 @@ public class MemberDaoImpl implements MemberDao{
 	}
 	
 	// 포인트 검사
-	
-	
-	// 구매시 포인트 적용(상품가격 + 회원번호)
 	@Override
-	public void resgistOrderPoint(int member_no, int price) {
+	public boolean checkPoint(int member_no, int point) {
+		return this.getPoint(member_no) >= point;
+	}
+	
+	// 구매시 사용한 포인트 차감
+	@Override
+	public boolean minusPointOrder(int member_no, int point) {
+		if(this.checkPoint(member_no, point)) {
+			MemberPointVO memberPointVO = MemberPointVO.builder()
+										.member_point_status("차감")
+										.member_point_change(-point)
+										.member_point_content("상품 구매에 사용")
+										.member_no(member_no)
+									.build();
+			this.registPoint(memberPointVO);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	// 포인트 추가
+	public void plusPointCancel(int member_no, int point) {
+		MemberPointVO memberPointVO = MemberPointVO.builder()
+				.member_point_status("적립")
+				.member_point_change(point)
+				.member_point_content("결제 취소")
+				.member_no(member_no)
+			.build();
+		this.registPoint(memberPointVO);
+	}
+	
+	// 구매시 포인트 추가 적용(상품가격 + 회원번호)
+	@Override
+	public void registOrderPoint(int member_no, int price) {
 		
 		String member_grade = this.getMemberGrade(member_no);
 		int point = getOrderPoint(member_grade, price);
@@ -84,6 +120,50 @@ public class MemberDaoImpl implements MemberDao{
 		return this.getMember(this.getNo(member_id));
 	}
 //	!지우지마세요, 포인트 관련  (월용) //////////////////////////
+	
+//	장바구니
+	
+	@Override
+	public void insertGoodsCartList(List<GoodsCartDto> goodsCartDtoList) {
+		sqlSession.insert("member.insertGoodsCartList", goodsCartDtoList);
+	}
+	
+	@Override
+	public void insertOptionCartList(List<OptionCartDto> optionCartDtoList) {
+		sqlSession.insert("member.insertOptionCartList", optionCartDtoList);
+	}
+	
+	@Override
+	public List<GoodsCartDto> getGoodsCartList(int member_no){
+		return sqlSession.selectList("member.getGoodsCartList", member_no);
+	}
+	
+	@Override
+	public List<GoodsCartDto> getGoodsCartList(String member_id){
+		return this.getGoodsCartList(this.getNo(member_id));
+	}
+	
+	@Override
+	public List<Integer> getGoodsOptionNoList(int goods_cart_no){
+		return sqlSession.selectList("member.getGoodsOptionNoList", goods_cart_no);
+	}
+	
+	@Override
+	public List<OptionCartDto> getOptionCartList(int member_no){
+		return sqlSession.selectList("member.getOptionCartList", member_no); 
+	}
+	
+	@Override
+	public List<OptionCartDto> getOptionCartList(String member_id){
+		return this.getOptionCartList(this.getNo(member_id));
+	}
+	
+	@Override
+	public void deleteCart(int goods_cart_no) {
+		sqlSession.delete("member.deleteOptionCart", goods_cart_no);
+		sqlSession.delete("member.deleteGoodsCart", goods_cart_no);
+	}
+	
 //////////////////////////////////////	
 	
 	
@@ -109,7 +189,9 @@ public class MemberDaoImpl implements MemberDao{
 		
 		@Override //로그인
 		public MemberDto login(MemberDto member) {
-			return sqlSession.selectOne("member.login", member);
+			MemberDto login = sqlSession.selectOne("member.login", member);
+
+			return login;
 		}
 
 		//최종 로그인 변동 하기
@@ -118,8 +200,40 @@ public class MemberDaoImpl implements MemberDao{
 		sqlSession.update("member.lastLogin", member);
 			
 		}
+		
+		@Override
+		public MemberDto memberGetOne(int member_no) {
+			MemberDto member = sqlSession.selectOne("member.memberGETOne",member_no);
+			return member;
+		}
 
+		//회원 아이디 찾기
+				@Override
+				public MemberDto memberfind_id(MemberDto memberDto) {
+					MemberDto find_id=sqlSession.selectOne("member.find_id", memberDto);
+					return find_id;
+				}
 
+				@Override
+				public int id_check(String member_id) {
+
+					return 0;
+				}
+
+				//회원 비밀번호 변경
+				@Override
+				public void memberchange_pw(MemberDto memberDto) {
+					sqlSession.update("member.memberchange_pw",memberDto);
+
+				}
+		
+//				@Override
+//				public List<MemberDto> memberGetOne(int member_no) {
+//					// TODO Auto-generated method stub
+//					return null;
+//				}
+		
+				
 		@Override
 		public int getNo(String member_id) {
 			int member_no = sqlSession.selectOne("member.getNo", member_id);
@@ -190,7 +304,4 @@ public class MemberDaoImpl implements MemberDao{
 //		}
 
 
-		
-	
-	
 }

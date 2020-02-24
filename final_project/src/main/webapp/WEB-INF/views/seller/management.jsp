@@ -5,14 +5,14 @@
 <a href="category_insert">카테고리관리</a><br><br>
 <a href="goods/insert">상품등록</a><br><br>
 <a href="?">판매중인 상품</a><br><br>
+
 <h3>판매관리</h3>
-<<<<<<< HEAD
 <a href="customListReq">받은 요청서</a><br><br>
 <a href="customListResp">보낸 견적서</a><br><br>
-=======
+
 <a href="?">판매정산</a><br><br>
 <a href="?">받은 요청서/보낸 견적서</a><br><br>
->>>>>>> refs/remotes/origin/bible
+
 <a href="?">구매확정내역</a><br><br>
 <a href="?">배송현황</a><br><br>
 
