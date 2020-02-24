@@ -12,6 +12,8 @@ public interface SellerService {
 	SellerDto login(SellerDto sellerDto);
 //	//판매자 정보조회
 //	SellerDto info(SellerDto sellerDto);
+//판매자 아이디 중복검사
+//	int check_id(String seller_id);
 
 
 
