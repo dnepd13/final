@@ -5,6 +5,10 @@
  
   <mapper namespace="member_AddrDto">
   
+  <select id="addrgetUpdate" parameterType="int" resultType="member_AddrDto">
+  		select * from member_addr where member_addr_no = #{member_addr_no}
+  </select>
+  
   <!-- 회원 배송지 추가 구문  -->
    <insert id="insertaddr" parameterType="member_AddrDto">
    	insert into member_addr(
@@ -43,7 +47,7 @@
    </delete>
    
    <!-- 선택된 배송지 수정(1개) -->
-   <update id="addredit" parameterType="member_AddrDto">
+   <update id="addrUpdate" parameterType="member_AddrDto">
    		update member_addr
    		set
    			member_name_extra = #{member_name_extra},

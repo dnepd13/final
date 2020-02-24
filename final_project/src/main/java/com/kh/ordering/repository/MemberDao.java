@@ -17,6 +17,12 @@ public interface MemberDao {
 	int getPoint(int member_no);
 	int getPoint(String member_id);
 	public void memberedit(MemberDto member);
+	public MemberDto memberGetOne(int member_no);
+	//판매자 아이디 중복검사
+	int id_check(String member_id);
+	//회원 아이디 찾기
+	MemberDto memberfind_id(MemberDto memberDto);
+	public void memberchange_pw(MemberDto memberDto);
 	void registPoint(MemberPointVO memberPointVO);	
 	int getOrderPoint(String member_grade, int price);
 	void registOrderPoint(int member_no, int price);

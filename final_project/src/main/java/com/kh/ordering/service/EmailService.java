@@ -1,11 +1,15 @@
 package com.kh.ordering.service;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.web.bind.annotation.RequestParam;
+import javax.mail.MessagingException;
 
 public interface EmailService {
- String sendCertMessege(String email, String cert);
+
+		String sendCert(String member_email, String cert);
+
+		void sendChangePasswordMail(String email) throws MessagingException;
+
+		String sendCertMessege(String email, String cert);
 
 
-	
+
 }

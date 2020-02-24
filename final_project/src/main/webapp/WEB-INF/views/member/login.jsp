@@ -9,6 +9,6 @@
 <form action="login" method="post">
 	<input type="text" name="member_id" placeholder="아이디"><br><br>
 	<input type="password" name="member_pw"placeholder="비밀번호"><br><br>
-	<input type="submit">
+	<input type="submit" value="로그인">
 
 </form>
