@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">       
 
 <h1>회원 정보 수정 테이블</h1>
 
@@ -15,11 +15,6 @@
 	<h3>회원 가입일시:${memberGetOne.member_join_date}</h3>
 	<h3>회원 최종로그인:${memberGetOne.member_last_login}</h3>
 	<h3>회원 등급:${memberGetOne.member_grade}</h3>
-		<h3>
-			<form action="memberedit" method="post">
-				<input type="hidden" name="member_no" value="${memberGetOne.member_no}">
-				<input type="text" name="member_email" value="${memberGetOne.member_email}" required="required">
-				<input type="text" name="member_phone" value="${memberGetOne.member_phone}" required="required">
-				<input type="submit" value="회원정보수정">
-			</form>
-		</h3>
+	<div class="btn-group-vertical">
+		<a href="${pageContext.request.contextPath}/member/editmember?member_no=${memberGetOne.member_no}">수정<button type="button" class="btn btn-primary"></button></a>
+	</div> 

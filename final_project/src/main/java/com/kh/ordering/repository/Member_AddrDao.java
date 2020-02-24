@@ -20,6 +20,12 @@ public interface Member_AddrDao {
 	//배송지 정보 수정
 	public void addredit(Member_AddrDto member_AddrDto);
 
+	public Member_AddrDto addrgetUpdate(int member_addr_no);
+
+	public void addrUpdate(Member_AddrDto member_AddrDto);
+
+	void addrregist(Member_AddrDto member_AddrDto);
+
 	
 	
 //	//배송지 정보조회
