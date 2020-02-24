@@ -65,7 +65,7 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 		sqlSession.insert("files.customInsert", customOrderFilesDto);
 	}
 	
-	@Override // 구매자 1:1 요청서 보기(카테고리 조건 미구현)
+	@Override // 구매자 1:1 요청서 보기
 	public List<CustomOrderVO> getListReq(PagingVO paging) {
 		return sqlSession.selectList("seller.getListReq", paging);
 		

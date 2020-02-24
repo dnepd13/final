@@ -22,7 +22,7 @@ public interface MemberCustomDao {
 	void customOrderInsert(CustomOrderDto customOrderDto); // 요청서 저장 테이블
 	int customSeq();// 주문제작 .currval 시퀀스 번호
 	void memberCustom(MemberCustomOrderDto memberCustomDto); // 요청서 관리 테이블
-	int customOrderSeq(); // 요청서 관리테이블 .currval 시퀀스
+	int memberCustomSeq(); // 요청서 관리테이블 .currval 시퀀스
 	void customAlarmInsert(MemberCustomAlarmDto memberCustomAlarmDto); //견적서 도착 알람 테이블 생성
 	void customFilesInsert(CustomOrderFilesDto customOrderFilesDto); // 주문제작-파일 테이블
 	

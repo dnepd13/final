@@ -103,7 +103,7 @@ public class MemberCustomController {
 		int category_no = categoryDto.getCategory_no();
 		
 		customOrderDto.setCustom_order_category(category_no);
-
+		
 		memberCustomService.customCate(category_no, session, customOrderDto, files);
 		
 		return "redirect:/member/customSuccess";
@@ -210,8 +210,6 @@ public class MemberCustomController {
 		model.addAttribute("filesVO", filesVO);
 		
 		List<SellerCustomAlarmDto> alarmList = sellerCustomDao.getSellerAlarm(member_custom_order_no);
-		
-		log.info("alarmList={}", alarmList.size());
 		
 		if(alarmList.size()==1) {
 			SellerCustomAlarmDto alarm = SellerCustomAlarmDto.builder()
