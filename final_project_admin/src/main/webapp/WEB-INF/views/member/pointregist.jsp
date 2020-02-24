@@ -1,7 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
+<div style="padding-top: 50px;">
+<jsp:include page="../template/header.jsp"></jsp:include>
+</div>
+
+<div class="container-fluid">
+        <div class="row" style="padding: 50px;">
+            <div class="offset-md-1 col-md-10">
+
+	<div class="offset-md-4 col-md-4">
+
+</div>
+   
+<div class="row justify-content-center" >
 <h1>${member.member_id }님의 포인트를 등록합니다</h1>
+</div>
 <form action="pointregist" method="post">
   <fieldset>
     <div class="form-group">
@@ -32,5 +46,8 @@
     </div>
     <input type="hidden" name="member_no" value="${member.member_no }">
   </fieldset>
-  <button type="submit" class="btn btn-primary btn-delete" >포인트 등록</button>
+  <button type="submit" class="btn btn-primary btn-delete offset-md-1 col-md-10" >포인트 등록</button>
 </form>
+</div>
+        </div>
+    </div>
