@@ -351,7 +351,7 @@ $(function(){
 
 <p>상품 상세 내용(goods_content)</p>
 <p>${goodsVO.goods_content}</p>
-<span>평점: ${star }</span>
+<span>평점: </span>
 <hr>
 <br>
 
@@ -548,15 +548,15 @@ $(function(){
 			<td>${review.goods_review_date }</td>
 			<td><button class="btn_reply">댓글쓰기</button></td>
 		</tr>
-<%-- 		<c:if test="${ not empty filesVO }"> --%>
-<!-- 			<tr> -->
-<!-- 				<td colspan="4"> -->
-<%-- 				<c:forEach var="filesVO" items="${filesVO }"> --%>
-<%-- 					<img src="http://localhost:8080/ordering/member/reviewFile?files_no=${filesVO.files_no}" width=100px; height=100px;> --%>
-<%-- 				</c:forEach> --%>
-<!-- 				</td> -->
-<!-- 			</tr> -->
-<%-- 		</c:if> --%>
+		<c:if test="${ not empty filesVO }">
+			<tr>
+				<td colspan="4">
+				<c:forEach var="filesVO" items="${filesVO }">
+					<img src="http://localhost:8080/ordering/member/reviewFile?files_no=${filesVO.files_no}" width=100px; height=100px;>
+				</c:forEach>
+				</td>
+			</tr>
+		</c:if>
 		<tr>
 			<td colspan="4">${review.goods_review_content }</td>
 		</tr>

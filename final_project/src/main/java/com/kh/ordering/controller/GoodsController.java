@@ -110,10 +110,6 @@ public class GoodsController {
 		model.addAttribute("goodsOptionVOList", goodsService.getGoodsOptionVOList(goods_no));
 		model.addAttribute("jsonGoodsVO", jsonGoodsVO);
 		model.addAttribute("jsonGoodsOptionVOList", jsonGoodsOptionVOList);
-		
-		// 리뷰 평점
-		double star = (double)goodsReviewDao.getStarAvg(goods_no);
-		model.addAttribute("star", star);
 
 //	문의, 리뷰 게시판 ...... 세션아이디 없어도 들어갈 수 있게 ..........ㅎ....
 		String member_id=(String)session.getAttribute("member_id");
