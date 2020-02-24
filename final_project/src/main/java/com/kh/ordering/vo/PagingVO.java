@@ -10,12 +10,12 @@ public class PagingVO {
 		private int pno, 
 						count,
 						pagesize,
-						navsize;
-		public int pagecount;
-		public int startBlock;
-		public int finishBlock;
-		public int start;
-		public int finish;
+						navsize,
+						pagecount,
+						startBlock,
+						finishBlock,
+						start,
+						finish;
 
 		private int seller_no;
 		private int member_no;

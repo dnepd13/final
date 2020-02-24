@@ -75,9 +75,14 @@
 		
 	});
 </script>
-<h1>구매자 등급 혜택</h1>
+<div style="padding-top: 50px;">
+<jsp:include page="template/header.jsp"></jsp:include>
+</div>
 
-<h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
+<div class="container-fluid">
+        <div class="row" style="padding: 50px;">
+            <div class="offset-md-1 col-md-10">
+<div class="row justify-content-center" style="padding: 20px;"><h1>구매자 등급 혜택</h1></div>
 
 <h3>등급 혜택 등록하기</h3>
 <form action="" method="post">
@@ -110,3 +115,7 @@
   </c:forEach>
   </tbody>
 </table>
+
+   </div>
+        </div>
+    </div>
