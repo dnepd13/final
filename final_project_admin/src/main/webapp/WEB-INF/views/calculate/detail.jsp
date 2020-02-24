@@ -3,9 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
 <h1>${param.seller_id } 님의 ${param.year }년 ${param.month }월 상세 정산 보기</h1>
+
 <h1>판매자 이름 : ${sellername} / 판매자 이메일 : ${email } / 판매자 연락처 : ${phone } </h1>
 <h1>상호명 : ${storename } / 회사 연락처 : ${storephone } </h1>
 <h1>은행명 : ${bankname } / 계좌번호 : ${account } / 계좌명 : ${accountname }</h1>
+
 <table class="table table-hover">
   <thead>
     <tr>

@@ -30,8 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CalculateController {
 	
-	
-	
+
 	@Autowired
 	private CalculateDao calculateDao;
 	
@@ -84,7 +83,7 @@ public class CalculateController {
 		List<AdjustmentFullVO> list = calculateDao.getOneSeller(vo);
 		
 		model.addAttribute("list", list);
-		
+
 		String bankcode = list.get(0).getSeller_bank_code();
 		String bank = calculrateService.getBankName(bankcode);
 		model.addAttribute("bankname", bank);
@@ -96,9 +95,6 @@ public class CalculateController {
 		model.addAttribute("account", list.get(0).getSeller_bank_account());
 		model.addAttribute("accountname", list.get(0).getSeller_bank_username());		
 		return "calculate/detail";
-	}
+
 	
 	
-	
-	
-}

@@ -344,12 +344,12 @@ public class SellerController {
 	///////////////////////////////////////////////////
 	
 	//-------------------아이디 찾기-------------------------//
-	@GetMapping("/find_id2")
+	@GetMapping("/find_id")
 	public String find_id() {
-		return "seller/find_id2";
+		return "seller/find_id";
 				
 	}
-	@PostMapping("/find_id2")
+	@PostMapping("/find_id")
 
 	public String find_id(HttpSession session,@RequestParam String seller_email,
 			@RequestParam String seller_name,Model model) {
@@ -363,7 +363,7 @@ public class SellerController {
 			log.info("2find_id={}",sellerDto);
 			log.info("2find_id={}",find_id);
 			model.addAttribute("sellerDto",find_id);
-		return "seller/find_id_info";
+		return "/seller/find_id_info";
 				
 }
 	@GetMapping("/find_id_info")
