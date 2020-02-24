@@ -6,6 +6,7 @@
 	<c:when test="${seller_id==null }">
 	   <h3><a href="${pageContext.request.contextPath}/seller/regist_agree">가입하기</a></h3><br><br>
         <h3><a href="${pageContext.request.contextPath}/seller/login">로그인하기</a></h3><br><br>
+        <h3><a href="${pageContext.request.contextPath}/seller/find_id">아이디 찾기</a></h3><br><br>
         </c:when>
 	
 	<c:otherwise>
