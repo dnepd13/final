@@ -6,7 +6,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+
 import com.kh.admin.entity.CalculateDto;
+
 import com.kh.admin.vo.AdjustmentFullVO;
 import com.kh.admin.vo.AdjustmentInsertVO;
 import com.kh.admin.vo.CalculateVO;
@@ -54,12 +56,11 @@ public class CalculateDaoImpl implements CalculateDao{
 		return sqlSession.selectOne("admin.adjustmentOneCount", vo);
 	}
 
+
 	@Override
 	public void insert(CalculateDto calculateDto) {
 		sqlSession.insert("admin.insertCal", calculateDto);
 		
 	}
-
-	
 
 }

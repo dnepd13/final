@@ -947,8 +947,8 @@
 			                extract(month from process_time) = #{month}
             order by S.seller_id asc, O.partner_order_id asc, O.process_time asc          
 	</select>
-	
-	<!-- 정산하기 -->
+  
+   <!-- 정산하기 -->
 	<insert id="insertCal" parameterType="calculateDto">
 		insert into calculate(
 				calculate_no, ordering, calculate_start, calculate_finish, 
@@ -965,8 +965,7 @@
 				#{calculate_exception}, 
 				#{calculate_final})
 	</insert>
-	  
-	
+
  </mapper> 
 	
  

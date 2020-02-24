@@ -10,7 +10,8 @@ import com.kh.admin.vo.PagingVO;
 
 public interface CalculrateService {
 	public List<AdjustmentVO> getCalculSeller(PagingVO vo);
-	
+
 	//은행 코드로 이름 가져오기
 	public String getBankName(String bankcode);
+
 }

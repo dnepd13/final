@@ -38,6 +38,7 @@ $(function(){
 		if(selectedAll){
 			count++;
 			$(".submit_ordering").attr("disabled",false);
+			$(".add_cart_btn").attr("disabled",false);
 			
 			var price = goodsVO.goods_price;
 			var title;
@@ -54,6 +55,7 @@ $(function(){
 			$(".options").each(function(i){
 				var no = $(this).val();
 				var arr = goodsOptionVOList[i].goodsOptionList;
+				var index = arr.findIndex(dto => dto.goods_option_no == no);
 				console.log(arr);
 				var index = arr.findIndex(dto <= dto.goods_option_no == no);
 				price += arr[index].goods_option_price;
@@ -143,11 +145,15 @@ $(function(){
 			delete_btn.click(function(e){
 				e.preventDefault();
 				$(this).parent(".total_price_area").remove();
-				VOindex--;
+// 				VOindex--;
 				setFinalArea();
 				
 				count--;
-				if(count < 1) $(".submit_ordering").attr("disabled",true);
+				if(count < 1) {
+					$(".submit_ordering").attr("disabled",true);
+					$(".add_cart_btn").attr("disabled",true);
+				}
+				
 			});
 			
 			// 리셋
@@ -159,7 +165,27 @@ $(function(){
 			// 총 상품금액(수량) 업데이트
 			setFinalArea();
 		}
+		
 	});
+
+	// 장바구니
+	$(".add_cart_btn").click(function(e){
+		e.preventDefault();
+		setFinalArea();
+		//버튼 바로 위에 있는 form을 데이터화하여 전송
+		var form = $(this).parent();
+		var url = "../member/addCart";
+//			var data = {이름:값, 이름:값};
+		var data = form.serialize();
+		$.ajax({
+			type: "POST",
+			url: url,
+			data:data,
+			success: function(){
+				window.alert("추가되었습니다!");
+			}
+		});
+	});	
 	
 	// 총 상품금액(수량) 업데이트
 	function setFinalArea(){
@@ -388,7 +414,8 @@ $(function(){
 	<h1>상품+옵션 선택 내용</h1>
 </div>
 
-<input class="submit_ordering" type="submit" value="주문하기" disabled="true">
+<input class="submit_ordering" type="submit" value="주문하기" disabled>
+<button class="add_cart_btn" disabled>장바구니</button>
 </form>
 <hr>
 <div class="total_area">

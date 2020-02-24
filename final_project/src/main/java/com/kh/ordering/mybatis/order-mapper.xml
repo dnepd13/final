@@ -16,6 +16,13 @@
 		select * from cart_info_op where cart_info_goods_no = #{cart_info_goods_no}
 	</select>
 	
+	<select id="getMember_no" parameterType="String" resultType="int">
+		select member_no from cart_info where partner_order_id = #{partner_order_id}
+	</select>
+	
+	<select id="getOrdering_no" parameterType="String" resultType="int">
+		select ordering_no from ordering where partner_order_id = #{partner_order_id} and ordering_status = '결제완료'
+	</select>
 	<!-- 회원번호를 기준으로 주문내역(cart_info) 가져오기 -->
 	<select id="getCartInfoMember" parameterType="int" resultType="cartInfoDto">
 		select *from(

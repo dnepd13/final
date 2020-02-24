@@ -35,6 +35,7 @@ public class OrderController {
 	
 	@PostMapping("/order")
 	public String order(@ModelAttribute ItemVOList itemVOList, Model model) throws JsonProcessingException {
+		log.info("컨트롤러에서itemVOList={}",itemVOList.getItemVOList());
 		List<CartVO> cartVOList = goodsOptionService.getCartVOList(itemVOList.getItemVOList());
 		// 상품 1개 배송 정보
 		// 배송 정보 리스트로 보내야 함

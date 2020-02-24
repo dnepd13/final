@@ -208,15 +208,14 @@
 	
 	<!-- 로그인 -->
 	<select id="login" parameterType="member" resultType="member">
-		select * from member where member_id=#{member_id}
-			
+			select * from member where member_id = #{member_id}
+
 	</select>
 	
-<!-- 	<select id="getNo" parameterType="String" resultType="member">
-		select member_no from member
-		where
-			member_id=#{member_id}
-	</select> -->
+<!--수정전 정보조회-->
+	<select id="memberGETOne" parameterType="int" resultType="member">
+		select * from member where member_no = #{member_no}
+	</select>
 	
 	<!-- 최종 로그인 변경  -->
 	<update id="lastLogin" parameterType="member">
@@ -228,15 +227,32 @@
 		select * from member where member_no = #{member_no}
 	</select>
 	
-		<!-- 회원 수정 -->
-	<update id="memberedit" parameterType="member">
-	  update member
-	  set
-	  	member_email = #{member_email},
-	  	member_phone = #{member_phone}
-	  where
-	  	member_no = #{member_no}	
-	</update>
+	
+		<!-- 회원 아이디 검사-->
+	<select id="id_check" parameterType="string" resultType="int">
+		select count(*) from member where member_id =#{member_id}
+	</select>
+	
+	<!-- 회원 아이디 찾기 -->
+	<select id="find_id" parameterType="member" resultType="member">
+		select  member_id from member where member_name=#{member_name} 
+		and member_email=#{member_email}
+	</select>
+
+	<!-- 회원비밀번호 수정입니다. -->
+<update id="memberchange_pw" parameterType="member">
+	update member set member_pw=#{member_pw} where member_id=#{member_id} 
+</update>
+	
+<!--회원정보 수정-->
+ 	<update id="memberedit" parameterType="member">
+ 		update member
+ 		set
+ 			member_email = #{member_email},
+ 			member_phone = #{member_phone}
+ 		where
+ 			member_no = #{member_no}
+ 	</update>
 	
 	
 	<!-- 회원 탈퇴 -->
@@ -288,6 +304,55 @@
 	<select id="getGradeBenefitRate" parameterType="String" resultType="int">
 		select grade_benefit_rate from grade_benefit where grade_benefit_grade = #{member_grade}
 	</select>
+	
+	
+	<!-- 장바구니  -->
+	
+	<delete id="deleteGoodsCart" parameterType="int">
+		delete from goods_cart where goods_cart_no = #{goods_cart_no}
+	</delete>
+
+	<delete id="deleteOptionCart" parameterType="int">
+		delete from option_cart where goods_cart_no = #{goods_cart_no}
+	</delete>
+	
+
+	<select id="getGoodsCartList" parameterType="int" resultType="goodsCartDto">
+		select * from goods_cart where member_no = #{member_no}
+	</select>
+	
+	<select id="getOptionCartList" parameterType="int" resultType="optionCartDto">
+		select O.option_cart_no, O.goods_cart_no, O.goods_option_no 
+		from option_cart O
+		inner join (select * from goods_cart where member_no = #{member_no}) G 
+		on G.goods_cart_no = O.goods_cart_no
+	</select>
+	
+	<select id="getGoodsOptionNoList" parameterType="int" resultType="int">
+		select goods_option_no from option_cart where goods_cart_no = #{goods_cart_no}
+	</select>
+	
+	<insert id="insertGoodsCartList" parameterType="list">
+		<foreach collection="list" item="goodsCartDto" open="insert all" close="select * from dual">
+			into goods_cart values(
+				#{goodsCartDto.goods_cart_no},
+				#{goodsCartDto.member_no},
+				#{goodsCartDto.goods_no},
+				#{goodsCartDto.goods_cart_quantity},
+				#{goodsCartDto.goods_cart_price}
+			)
+		</foreach>
+	</insert>
+	
+	<insert id="insertOptionCartList" parameterType="list">
+		<foreach collection="list" item="optionCartDto" open="insert all" close="select * from dual">
+			into option_cart values(
+				#{optionCartDto.option_cart_no},
+				#{optionCartDto.goods_cart_no},
+				#{optionCartDto.goods_option_no}			
+			)
+		</foreach>
+	</insert>
 	
  </mapper> 
 

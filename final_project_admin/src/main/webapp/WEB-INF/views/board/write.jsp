@@ -1,8 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-글작성
+
+<div style="padding-top: 50px;">
+<jsp:include page="../template/header.jsp"></jsp:include>
+</div>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
+<div class="container-fluid">
+        <div class="row" style="padding: 50px;"><br>
+            <div class="offset-md-3 col-md-6">
+
+	<div class="row justify-content-center"><h1>관리문의글작성</h1></div>
+
 <form action="" method="post">
   <fieldset>
     <div class="form-group">
@@ -33,8 +42,12 @@
     <input type="hidden" name="member_no" value="${param.member_no }">
     <input type="hidden" name="seller_no" value="${param.seller_no }">
     </c:if>
-    <div class="btn-group-vertical">
+    <div class="btn-group-vertical offset-md-4 col-md-4">
   		<button type="submit" class="btn btn-primary">등록</button>
 	</div>
   </fieldset>
 </form>
+
+   </div>
+        </div>
+    </div>

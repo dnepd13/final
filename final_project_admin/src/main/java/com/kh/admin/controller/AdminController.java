@@ -32,12 +32,14 @@ import com.kh.admin.repository.GoodsDao;
 import com.kh.admin.repository.GradeBenefitDao;
 import com.kh.admin.repository.MemberDao;
 import com.kh.admin.repository.PremiumDao;
+import com.kh.admin.repository.SalesDao;
 import com.kh.admin.repository.SellerDao;
 import com.kh.admin.service.BoardService;
 import com.kh.admin.vo.GoodsCategoryVO;
 import com.kh.admin.vo.GoodsVO;
 import com.kh.admin.vo.MemberPointVO;
 import com.kh.admin.vo.PagingVO;
+import com.kh.admin.vo.ResultVO;
 import com.kh.admin.vo.SellerGoodsVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -71,6 +73,9 @@ public class AdminController {
 	
 	@Autowired
 	private GradeBenefitDao gradeBenefitDao;
+	
+	@Autowired
+	private SalesDao salesDao;
 	
 	//---------------------------로그인창----------------------------------
 	@GetMapping("/")
@@ -128,6 +133,81 @@ public class AdminController {
 		log.info("month={}",month+1);
 		model.addAttribute("year", year);
 		model.addAttribute("month", month+1);
+		
+		//통계
+		int a = 0;
+		ResultVO result = salesDao.dailySalePrice();
+		if(result != null) {
+			model.addAttribute("dailySalePrice", result.getResult());
+		}
+		else {
+			model.addAttribute("dailySalePrice", a);
+		}
+		
+		ResultVO result1 =salesDao.todaySaleCount();
+		if(result1 != null) {
+			model.addAttribute("todaySaleCount", result1.getResult());
+		}
+		else {
+			model.addAttribute("todaySaleCount", a);
+		}
+		
+		ResultVO result2 = salesDao.thisMonthSalePrice();
+		if(result2 != null) {
+			model.addAttribute("thisMonthSalePrice", result2.getResult());
+		}
+		else {
+			model.addAttribute("todaySaleCount", a);
+		}
+		
+		ResultVO result3 = salesDao.thisMonthSaleCount();
+		if(result3 != null) {
+			model.addAttribute("thisMonthSaleCount", result3.getResult());
+		}
+		else {
+			model.addAttribute("todaySaleCount", a);
+		}
+		
+		ResultVO result4 = salesDao.thisWeekSalePrice();
+		if(result4 != null) {
+			model.addAttribute("thisWeekSalePrice", result4.getResult());
+		}
+		else {
+			model.addAttribute("todaySaleCount", a);
+		}
+		
+		ResultVO result5 = salesDao.thisWeekSaleCount();
+		if(result5 != null) {
+			model.addAttribute("thisWeekSaleCount", result5.getResult());
+		}
+		else {
+			model.addAttribute("todaySaleCount", a);
+		}
+		
+		//취소 오늘, 이번주, 이번달
+		ResultVO result6 = salesDao.dailyCancel();
+		if(result6 != null) {
+			model.addAttribute("dailyCancel", result6.getResult());
+		}
+		else {
+			model.addAttribute("dailyCancel", a);
+		}
+		
+		ResultVO result7 = salesDao.thisWeekCancel();
+		if(result7 != null) {
+			model.addAttribute("thisWeekCancel", result7.getResult());
+		}
+		else {
+			model.addAttribute("thisWeekCancel", a);
+		}
+		
+		ResultVO result8 = salesDao.thisMonthCancel();
+		if(result8 != null) {
+			model.addAttribute("thisMonthCancel", result8.getResult());
+		}
+		else {
+			model.addAttribute("thisMonthCancel", a);
+		}
 		return "/home";
 	}
 	//---------------------------관리자가입창----------------------------------
@@ -434,6 +514,13 @@ public class AdminController {
 	public String basicpagesetting() {
 		return "basicpagesetting";
 	}
+	
+	//---------------------헤더-------------------------
+//	@GetMapping("/template/header")
+//	public String header() {
+//		return "template/header";
+//	}
+//	
 	
 	//------------------------연습용 별
 //	@GetMapping("/star")

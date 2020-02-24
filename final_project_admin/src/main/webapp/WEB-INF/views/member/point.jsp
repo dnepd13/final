@@ -2,15 +2,17 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
-<h1>회원 포인트 창 ${member_id }</h1>
-<h1>회원 포인트 총합  : ${pointsum }</h1>
-<h1><a href="${pageContext.request.contextPath}/member/manage">
-<button type="button" class="btn btn-primary btn-delete" >목록으로</button>
-</a></h1>
-<h1><a href="${pageContext.request.contextPath}/member/pointregist?member_no=${paging.member_no}">
-<button type="button" class="btn btn-primary btn-delete" >포인트 등록</button>
-</a></h1>
-<h1>포인트</h1>
+<div style="padding-top: 50px;">
+<jsp:include page="../template/header.jsp"></jsp:include>
+</div>
+<div class="container-fluid">
+        <div class="row">
+            <div class="offset-md-1 col-md-10">
+
+
+
+<div class="row justify-content-center" style="padding: 50px;"><h1>${member_id } 회원님의 포인트 창 </h1></div>
+
 
 <table class="table table-hover">
   <thead>
@@ -43,6 +45,10 @@
 	    
   </tbody>
 </table>
+
+<div class="offset-md-4 col-md-4">
+
+
 <div>
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
@@ -71,3 +77,13 @@
 		</c:if>
 	</ul>
 </div>
+</div>
+
+<div class="offset-md-10 col-md-10">
+<h1><a href="${pageContext.request.contextPath}/member/pointregist?member_no=${paging.member_no}">
+<button type="button" class="btn btn-primary btn-delete" >포인트 등록</button>
+</a></h1>
+</div>
+</div>
+        </div>
+    </div>

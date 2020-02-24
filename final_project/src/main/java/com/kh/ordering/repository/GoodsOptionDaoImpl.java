@@ -7,12 +7,41 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.vo.GoodsOptionStockVO;
 import com.kh.ordering.vo.GoodsOptionVO;
 
 public class GoodsOptionDaoImpl implements GoodsOptionDao{
 	
 	@Autowired
 	private SqlSession sqlSession;
+	
+	@Override
+	public void plusStock(int goods_option_no, int stock) {
+		GoodsOptionStockVO goodsOptionStockVO = GoodsOptionStockVO.builder()
+					.goods_option_no(goods_option_no)
+					.goods_option_stock(stock)
+				.build();
+		sqlSession.update("goods_option.plusStock", goodsOptionStockVO);
+	}
+	
+	@Override
+	public boolean minusStock(int goods_option_no, int stock) {
+		if(this.getStock(goods_option_no) >= stock) {
+			GoodsOptionStockVO goodsOptionStockVO = GoodsOptionStockVO.builder()
+						.goods_option_no(goods_option_no)
+						.goods_option_stock(stock)
+					.build();
+			sqlSession.update("goods_option.minusStock", goodsOptionStockVO);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public int getStock(int goods_option_no) {
+		return sqlSession.selectOne("goods_option.getStock", goods_option_no);
+	}
 	
 	@Override
 	public void insert(GoodsOptionDto goodsOptionDto) {
