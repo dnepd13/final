@@ -130,7 +130,8 @@ public class SellerController {
 //        return map;
 //	}
 
-	///아이디 중복검사
+	
+			///아이디 중복검사
 			@GetMapping(value = "/id_check",produces ="application/text; charset=utf-8")
 			@ResponseBody //ajax로 보낼때 사용하는 어노테이션
 			public String id_check(String seller_id, Model model) {

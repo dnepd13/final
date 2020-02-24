@@ -68,6 +68,24 @@
 			 });
  		 });
 	 });
+ 	 
+ 	 $(function(){
+ 		 $(".submit_btn").on('click',function(){
+ 			 //alert('success');
+ 			 var category_small = $(".category_small option:selected").val();
+ 			 //submit
+ 			$.ajax({
+				url:"category_insert",
+				type:"post",
+				data:{
+					"category_small": category_small
+				},
+				success : function(resp){
+					console.log(resp);
+				}
+			});
+ 		 });
+ 	 });
 //----------------------------리스트----------------------------------------------------//
 /* $(function(){
 		$(".btn-modify").click(function(){

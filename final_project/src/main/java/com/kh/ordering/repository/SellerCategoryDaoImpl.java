@@ -1,5 +1,7 @@
 package com.kh.ordering.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,11 +37,24 @@ public class SellerCategoryDaoImpl implements SellerCategoryDao{
 		sqlSession.delete("seller_category.delete", sellerCategoryDto);
 		
 	}
+	//------------------------- 카테고 번호----------------//
 	@Override
 	public int category_no(CategoryDto categoryDto) {
 		
 		return 	sqlSession.selectOne("seller_category.get_category_no", categoryDto);
 		
+	}
+	//------------------------- 판매자의 카테고리 리스트----------------//
+	@Override
+	public List<Integer> seller_category_list(int seller_no) {
+		
+		return sqlSession.selectList("seller_category.get_category_list", seller_no);
+	}
+	//-------------------------카테고리 리스트----------------//
+	@Override
+	public List<CategoryDto> seller_category_name_list(List<Integer> list) {
+		
+		return sqlSession.selectList("seller_category.get_category_name_list",list);
 	}
 
 }

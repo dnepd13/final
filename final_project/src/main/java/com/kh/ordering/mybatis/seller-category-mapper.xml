@@ -24,11 +24,27 @@
 					#{category_no},
 					#{seller_no})				
 	</insert>
+	<!-- 카테고리 번호 -->
 	<select id="get_category_no" resultType="int" parameterType="CategoryDto">
-	    select category_no from category where category_large=#{category_large}
-	    and category_middle=#{category_middle} 
-	    and category_small=#{category_small}
-	    
+	    select category_no from category where 
+		    category_large =#{category_large} 
+		    and category_middle =#{category_middel} 
+		    and category_small = #{category_small} 
+	</select>
+	
+	<!-- 판매자가 등록한 카테고리 조회하기 -->
+	<select id="get_category_list" resultType="int">
+		select DISTINCT category_no from seller_category where seller_no=#{seller_no}
+    </select>
+    
+		<!-- 카테고리 리스트 -->
+	<select id="get_category_name_list" resultType="CategoryDto">
+		select category_large , category_middle , category_small , category_no from category where category_no in (
+		<foreach item="item" collection="list" separator="," close=")">
+				#{item}
+		</foreach>
+		
+		
 	</select>
 	<insert id="insert2" parameterType="categoryDto"></insert>
 	<!-- 카테고리 수정하기 -->
