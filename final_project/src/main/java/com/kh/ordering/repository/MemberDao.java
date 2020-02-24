@@ -1,7 +1,10 @@
 package com.kh.ordering.repository;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.ordering.entity.CartInfoDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.vo.MemberPointVO;
 
@@ -63,8 +66,6 @@ public interface MemberDao {
 		
 //		//멤버아이디로 번호 구해오기 (영락)
 //		int findno(@RequestParam MemberDto member, int member_no);
-		
-
 
 
 }

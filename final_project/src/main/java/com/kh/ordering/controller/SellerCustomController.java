@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
-import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
+import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.service.MemberCustomService;
 import com.kh.ordering.service.SellerCustomService;
@@ -41,13 +41,14 @@ import lombok.extern.slf4j.Slf4j;
 public class SellerCustomController {
 	
 	@Autowired
-	private SellerCustomService sellerCustomService;
-	
+	private SellerCustomService sellerCustomService;	
 	@Autowired
 	private SellerCustomDao sellerCustomDao;
 	
 	@Autowired
 	private MemberCustomService memberCustomService;
+	@Autowired
+	private MemberCustomDao memberCustomDao;
 	
 	@Autowired
 	private FilesDao filesDao;
@@ -160,9 +161,30 @@ public class SellerCustomController {
 		List<FilesVO> filesVO = sellerCustomService.filesList(seller_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
 		
+		model.addAttribute("alarm", memberCustomDao.getMemberAlarm(seller_custom_order_no));
+		
 		return "seller/customInfoResp";
 	}
 
+//	수정
+	@PostMapping("/updateResp")
+	public String updateCustom(CustomOrderVO customOrderVO) {
+		int seller_custom_order_no = customOrderVO.getSeller_custom_order_no();
+		int custom_order_no = sellerCustomDao.getCustomNo(seller_custom_order_no);
+		
+		CustomOrderDto customOrderDto
+				= CustomOrderDto.builder()
+												.custom_order_no(custom_order_no)
+												.custom_order_title(customOrderVO.getCustom_order_title())
+												.custom_order_content(customOrderVO.getCustom_order_content())
+												.custom_order_price(customOrderVO.getCustom_order_price())
+												.custom_order_hopedate(customOrderVO.getCustom_order_hopedate())
+												.build();
+		sellerCustomDao.updateCustom(customOrderDto);
+		
+		return "redirect:/seller/customInfoResp?seller_custom_order_no="+seller_custom_order_no;
+	}
+	
 //	삭제
 	@GetMapping("/deleteReq") // 받은 요청서 삭제
 	public String CustomReqDelete(int member_custom_order_no,

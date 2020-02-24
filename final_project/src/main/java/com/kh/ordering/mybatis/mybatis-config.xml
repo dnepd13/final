@@ -49,6 +49,8 @@
 		
 		<!-- 상품 문의/리뷰게시판 -->
 		<typeAlias type="com.kh.ordering.entity.GoodsQnaDto" alias="goodsQnaDto"/>
+		<typeAlias type="com.kh.ordering.entity.GoodsReviewDto" alias="goodsReviewDto"/>
+		<typeAlias type="com.kh.ordering.entity.GoodsReviewReplyDto" alias="goodsReviewReplyDto"/>
 		
 		<!-- pay -->
 		<typeAlias type="com.kh.ordering.entity.PayDto" alias="payDto"/>
@@ -62,6 +64,10 @@
 		<typeAlias type="com.kh.ordering.entity.CartInfoDto" alias="cartInfoDto"/>
 		<typeAlias type="com.kh.ordering.entity.CartInfoGoodsDto" alias="cartInfoGoodsDto"/>
 		<typeAlias type="com.kh.ordering.entity.CartInfoOpDto" alias="cartInfoOpDto"/>
+		
+		<!-- 주문내역 -->
+		<typeAlias type="com.kh.ordering.vo.CartInfoVO" alias="cartInfoVO"/>
+		<typeAlias type="com.kh.ordering.entity.CartOkDto" alias="cartOkDto"/>
 		
 		<!-- 포인트 -->
 		<typeAlias type="com.kh.ordering.vo.MemberPointVO" alias="memberPointVO"/>
