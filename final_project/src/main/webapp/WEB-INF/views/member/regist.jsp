@@ -3,7 +3,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
 
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
   </script>
   <script>  
   $(function() {
@@ -21,7 +21,7 @@
                               url : "id_check",
                               type : "get",
                               data : {
-                                 'seller_id' : seller_id
+                                 'member_id' : member_id
                               },
                               success : function(resp) { //resp = 위코드가 성공적으로 컨트롤러에 다녀왔을때 가져온 값
 									console.log(resp);                              		
