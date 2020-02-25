@@ -63,16 +63,16 @@ $(function() {
 					//console.log(resp);
 					if(resp == "success"){
 						$("#check_email_code").show();
+						
 					}
 				}
 			
 			});
 		});
-});
 // 		validate-form이 전송되면 /validate로 비동기 요청을 전송
 		$("#check_email_code").click(function(e){
 			e.preventDefault();
-			
+			console.log("string");
 // 			var url = $(this).attr("action"); 
 // 			var method = $(this).attr("method");
 		var data = $(this).serialize();
@@ -81,20 +81,21 @@ $(function() {
 				url:"validate",
 				type:"post",
 				data:{
-					'check_email' :$("input[name='check_email_code']").val()
+					'cert' :$("input[name='cert']").val()
 				},
 				success:function(resp){
 // 					console.log(resp);
-					if(resp == "email_success"){
-						alert("인증 완료");
+					if(resp == "success"){
+						window.alert("인증 완료");
 					}
 					else{
-						alert("인증 실패");
+						window.alert("인증 실패");
 					}
 				}
 			});
 		});
 
+});
 
 </script>
 </head>
