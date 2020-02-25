@@ -1017,6 +1017,57 @@
 		    inner join goods G on FG.goods_no = G.goods_no
 		    where F.files_no = #{files_no}
 	</select>
+	
+	<!-- 주문제작 리스트 가져오기 -->
+	<select id="getCustomOrderList" parameterType="paging" resultType="customOrderVO">
+		select * from(
+			select rownum rn, A.* from(
+		
+		select CO.*, M.member_id, S.seller_id, c.category_large, c.category_middle, c.category_small from custom_order CO
+		    left outer join member_custom_order MCO on co.custom_order_no = mco.custom_order_no
+		    left outer join seller_custom_order SCO on co.custom_order_no = sco.custom_order_no
+		    left outer join member M on mco.member_no = m.member_no
+		    left outer join seller S on sco.seller_no = S.seller_no
+		    left outer join category C on co.custom_order_category = c.category_no
+		    <choose>
+		    	<when test="key == 'custom_order_type'">
+		    		where custom_order_type like '%'||#{search}||'%'
+		    	</when>
+		    	<when test="key == 'id'">
+		    		where member_id like '%'||#{search}||'%' or seller_id like '%'||#{search}||'%'
+		    	</when>
+		    	<when test="key == 'custom_order_status'">
+		    		where custom_order_status like '%'||#{search}||'%'
+		    	</when>
+		    	<otherwise></otherwise>
+		    </choose>
+		    order by co.custom_order_date desc
+		    
+		    			)A
+		)where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 주문제작 리스트 카운트 -->
+	<select id="getCustomOrderCount" parameterType="paging" resultType="int">
+		select count(*) from custom_order CO
+		    left outer join member_custom_order MCO on co.custom_order_no = mco.custom_order_no
+		    left outer join seller_custom_order SCO on co.custom_order_no = sco.custom_order_no
+		    left outer join member M on mco.member_no = m.member_no
+		    left outer join seller S on sco.seller_no = S.seller_no
+		    left outer join category C on co.custom_order_category = c.category_no
+		    <choose>
+		    	<when test="key == 'custom_order_type'">
+		    		where custom_order_type like '%'||#{search}||'%'
+		    	</when>
+		    	<when test="key == 'id'">
+		    		where member_id like '%'||#{search}||'%' or seller_id like '%'||#{search}||'%'
+		    	</when>
+		    	<when test="key == 'custom_order_status'">
+		    		where custom_order_status like '%'||#{search}||'%'
+		    	</when>
+		    	<otherwise></otherwise>
+		    </choose>
+	</select>
  </mapper> 
 	
  

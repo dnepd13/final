@@ -28,7 +28,7 @@ public class AdminDaoImpl implements AdminDao{
 	private GoodsFilesDao goodsFilesDao;
 	
 	//사진 주소 여기만 바꾸면 됨
-	private File directory = new File("C:/upload");
+	private File directory = new File("D:/upload/kh2d");
 	
 	//로그인
 	@Override
