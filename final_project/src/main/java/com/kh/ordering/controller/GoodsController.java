@@ -39,6 +39,7 @@ import com.kh.ordering.repository.GoodsQnaDao;
 import com.kh.ordering.repository.GoodsReviewDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.SellerCustomDao;
+import com.kh.ordering.repository.SellerDao;
 import com.kh.ordering.service.DeliveryService;
 import com.kh.ordering.service.GoodsReviewService;
 import com.kh.ordering.service.GoodsService;
@@ -55,6 +56,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GoodsController {
 
+	@Autowired
+	private SellerDao sellerDao;
+	
 	@Autowired
 	private FilesDao filesDao;
 	
@@ -113,8 +117,9 @@ public class GoodsController {
 	
 	
 	@GetMapping("/insert")
-	public String insert(Model model) {
+	public String insert(Model model, HttpSession session) {
 		model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
+		model.addAttribute("seller_no", sellerDao.getSellerNo((String)session.getAttribute("seller_id")));
 		return "goods/insert";
 	}
 	
@@ -195,7 +200,13 @@ public class GoodsController {
 		model.addAttribute("goodsOptionVOList", goodsService.getGoodsOptionVOList(goods_no));
 		model.addAttribute("jsonGoodsVO", jsonGoodsVO);
 		model.addAttribute("jsonGoodsOptionVOList", jsonGoodsOptionVOList);
-
+		
+		model.addAttribute("files_no", goodsDao.getGoodsMainImage(goods_no));
+		
+		
+		// 적립금
+		int rate = memberDao.getGradeBenefitRate(memberDao.getMemberGrade(memberDao.getNo((String)session.getAttribute("member_id"))));
+		model.addAttribute("rate", rate);
 //	문의, 리뷰 게시판 ...... 세션아이디 없어도 들어갈 수 있게 ..........ㅎ....
 		String member_id=(String)session.getAttribute("member_id");
 		String seller_id = (String)session.getAttribute("seller_id");
@@ -244,7 +255,7 @@ public class GoodsController {
 		return "goods/goodsInfo";
 	}
 	
-	@PostMapping("/large")
+	@PostMapping("/large") 
 	@ResponseBody
 	public List<String> large(@RequestParam String category_name) {
 		return categoryDao.getList("category_middle", category_name);

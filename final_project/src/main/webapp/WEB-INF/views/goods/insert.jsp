@@ -9,6 +9,7 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
  <script src="https://code.jquery.com/jquery-latest.js"></script>
+ <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
  <script src="${pageContext.request.contextPath}/resources/js/goodsOption.js"></script>
  <script>
  	 $(function(){
@@ -73,106 +74,177 @@
  		 
 	});
  </script>
+<style>
+ul{
+   list-style:none;
+   padding-left:0px;
+}
+</style>
 </head>
 <body>
-<h1>상품 등록 페이지</h1>
 
 <form action="insert" method="post" enctype="Multipart/form-data">
-	
-	<!-- 세션에서 번호 가져와서 히든으로 넒길 거 --------------------------->
-	<p>판매자 번호 </p>
-	<input type="text" name="seller_no" required><br><br>
-	<!-- -------------------------------------------------- -->
-	
-	<p>상품 이름 </p>
-	<input type="text" name="goods_name" required><br><br>
-	<p>상품 가격 </p>
-	<input type="text" name="goods_price" required><br><br>
-	<p>상품 수량 </p>
-	<input type="text" name="goods_stock" required><br><br>
-	<p>할인 가격 </p>
-	<input type="text" name="goods_discount_price" required><br><br>
-	<p>할인 시작 </p>
-	<input type="date" name="goods_discount_start" required><br><br>
-	<p>할인 종료 </p>
-	<input type="date" name="goods_discount_finish" required><br><br>
-	<p>판매 여부 </p>
-	<select name="goods_status">
-		<option value="Y">Y</option>
-		<option value="N">N</option>
-	</select><br><br>
-	<p>상품 설명 : </p>
-	<input type="text" name="goods_content"><br><br>
-	
-	<select class="category_large" name="category_middle">
-			<option class="largeChild">선택</option>
-	</select>
-	<select class="category_middle" name="category_middle">
-			<option class="middleChild">선택</option>
-	</select>
-	<select class="category_small" name="category_middle">
-			<option class="smallChild">선택</option>
-	</select>
-	<input class="category_no" type="hidden" name="category_no" value="">	
-		
-	<p>옵션</p>
-	<button class="addOptionBtn">옵션 추가</button>
-    <ul class="optionArea">
-      <li>이름 		내용		 가격		 수량 		상태</li>
-    </ul>
-	
-	<p>대표사진</p>
-	<input type="file" name="goods_main_image" required>
-	
-	<p>상품사진</p>
-	<input type="file" multiple="multiple" name="goods_content_image">
-	
-	<hr><hr><hr>
-	<h1>배송 정보 입력</h1>
-	배송여부 : 
-	<select name="delivery_agree">
-		<option value="Y">Y</option>
-		<option value="N">N</option>
-	</select>
-	<br>
-	묶음 배송 여부 : 
-	<select name="delivery_set_agree">
-		<option value="Y">Y</option>
-		<option value="N">N</option>
-	</select>
-	<br>
-	묶음 배송 조건 금액 : 
-	<input required type="text" name="delivery_set_op_price">
-	<br>
-	택배 회사 : 
-	<select name="delivery_company">
-		<option>선택</option>
-		<option value="우체국">우체국</option>
-		<option value="한진">한진</option>
-		<option value="로젠">로젠</option>
-	</select>
-	<br>
-	상품별 배송비 : 
-	<select class="delivery_option" name="delivery_option">
-		<option>선택</option>
-		<option value="무료">무료</option>
-		<option value="유료">유료</option>
-		<option value="조건부무료">조건부무료</option>
-	</select>
-	<br>
-	<div class="delivery_price">
-	배송비 : 
-	<input required type="text" name="delivery_price" value="0">
+	<div class="container">
+		<h1 class="text-center">상품 등록 페이지</h1>
+		<div class="row justify-content-center">
+			<div class="col-lg-8">
+					<div class="row goods_name_area">
+						<div class="col">
+							<div class="input-group">
+							  <div class="input-group-prepend">
+							    <span class="input-group-text" id="inputGroup-sizing-default">상품명</span>
+							  </div>
+							<input type="text" class="form-control" name="goods_name" required>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+<%-- 						<img src="${contextPage.request.contextPath}/resources/img/star-custom.png"/> --%>
+							<div class="input-group">
+							  <div class="input-group-prepend">
+							    <span class="input-group-text" id="inputGroupFileAddon01">대표사진</span>
+							  </div>
+							  <div class="custom-file">
+							    <input type="file" class="custom-file-input" name="goods_main_image" required>
+							    <label class="custom-file-label" for="inputGroupFile01">파일 찾기</label>
+							  </div>
+							</div>
+						</div>					
+						<div class="col-lg-6">
+						<div class="input- group">
+							<div class="input-group-prepend">
+							    <span class="input-group-text">상품가격</span>
+						    </div>
+							<input type="text" class="form-control" name="goods_price" required>
+						</div>
+						<div class="input-group">
+							<div class="input-group-prepend">
+							    <span class="input-group-text" id="inputGroup-sizing-default">상품수량</span>
+						    </div>
+							<input type="text" class="form-control" name="goods_stock" required>
+						</div>	
+						<div class="input-group">
+							<div class="input-group-prepend">
+							    <span class="input-group-text">판매여부</span>
+						    </div>
+							<select name="goods_status" class="form-control">
+								<option value="Y">Y</option>
+								<option value="N">N</option>
+							</select>
+						</div>		
+						</div>	
+					</div>
+					
+					
+				<div class="form-group">
+			      <label for="content">상품 설명</label>
+			      <textarea class="form-control" id="content" rows="3" name="goods_content"></textarea>
+			    </div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+					    <span class="input-group-text">카테고리</span>
+					</div>
+					<select class="form-control category_large inline-block" name="category_middle">
+							<option class="largeChild">선택</option>
+					</select>
+					<select class="form-control category_middle" name="category_middle">
+							<option class="middleChild">선택</option>
+					</select>
+					<select class="form-control category_small" name="category_middle">
+							<option class="smallChild">선택</option>
+					</select>
+				</div>
+				<input class="category_no" type="hidden" name="category_no" value="">	
+				
+				<div class="form-group">
+			      <label for="">옵션</label><br>
+					<button type="button" class="addOptionBtn btn btn-secondary btn-sm">옵션 추가</button>
+				    <ul class="optionArea">
+				    </ul>
+			    </div>	
+				
+				
+				<p>상품사진</p>
+				<input type="file" multiple="multiple" name="goods_content_image">
+				
+				<h1>배송 정보 입력</h1>
+				<div class="input-group">
+					<div class="input-group-prepend">
+					    <span class="input-group-text">배송여부</span>
+					</div>
+					<select class="form-control" name="delivery_agree">
+						<option value="Y">Y</option>
+						<option value="N">N</option>
+					</select>
+				</div>
+				
+				<div class="input-group">
+					<div class="input-group-prepend">
+					    <span class="input-group-text">묶음배송여부</span>
+					</div>
+					<select class="form-control" name="delivery_set_agree">
+						<option value="Y">Y</option>
+						<option value="N">N</option>
+					</select>
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+					    <span class="input-group-text">묶음배송 조건금액</span>
+					</div>
+					<input class="form-control" required type="text" name="delivery_set_op_price">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+					    <span class="input-group-text">택배회사</span>
+					</div>	
+					<select class="form-control" name="delivery_company">
+						<option>선택</option>
+						<option value="우체국">우체국</option>
+						<option value="한진">한진</option>
+						<option value="로젠">로젠</option>
+					</select>
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+					    <span class="input-group-text">배송조건</span>
+					</div>
+					<select class="delivery_option form-control" name="delivery_option">
+						<option>선택</option>
+						<option value="무료">무료</option>
+						<option value="유료">유료</option>
+						<option value="조건부무료">조건부무료</option>
+					</select>
+				</div>
+				<div class="input-group delivery_price">
+					<div class="input-group-prepend">
+					    <span class="input-group-text">배송비</span>
+					</div>
+						<input class="form-control" required type="text" name="delivery_price" value="0">
+				</div>
+				<div class="input-group delivery_op_price">
+					<div class="input-group-prepend">
+					    <span class="input-group-text">조건부 무료 금액</span>
+					</div>
+						<input class="form-control" required type="text" name="delivery_op_price" value="0">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+					    <span class="input-group-text">반품 배송비</span>
+					</div>
+					<input class="form-control" required type="text" name="delivery_return_price">
+				</div>
+					<h5 class="submit_comment" style="color:red">기본옵션을 추가해주세요</h5>
+					<input class="form-control" class="submit_btn" type="submit" value="등록" disabled>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div class="delivery_op_price" >
-	조건부 무료 금액 : 
-	<input required type="text" name="delivery_op_price" value="0">
-	</div>
-	반품 배송비 :
-	<input required type="text" name="delivery_return_price">
-	<br>	
-	<h5 class="submit_comment" style="color:red">기본옵션을 추가해주세요</h5>
-	<input class="submit_btn" type="submit" value="등록" disabled="true">
+	<input type="hidden" name="seller_no" value="${seller_no}">
+	<input type="hidden" name="goods_discount_price" value="0" required>
+	<input type="hidden" name="goods_discount_start" value="2020-02-25" required>
+	<input type="hidden" name="goods_discount_finish" value="2020-02-25" required>
+
 </form>
 
 </body>

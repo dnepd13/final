@@ -39,27 +39,27 @@ var count = 0;
   });
 
 function createOption(index) {
-	var div = $("<div class='div'></div>");
+	var div = $("<div class='div input-group'></div>");
 	div.appendTo(".optionArea");
-	
-    var input_title = $("<input required>")
+    var input_title = $("<input class='form-control' placeholder='옵션그룹이름' required>")
 	  .attr("type", "text")
 	  .attr("name", "goodsOptionList[" + index + "].goods_option_title");
 	
-	var input_content = $("<input required>")
+	var input_content = $("<input class='form-control' placeholder='세부옵션이름' required>")
 	  .attr("type", "text")
 	  .attr("name", "goodsOptionList[" + index + "].goods_option_content");
 	
-	var input_price = $("<input required>")
+	var input_price = $("<input class='form-control' placeholder='가격' required>")
 	  .attr("type", "text")
 	  .attr("name", "goodsOptionList[" + index + "].goods_option_price");
 	
-	var input_stock = $("<input required>")
+	var input_stock = $("<input class='form-control' placeholder='수량' required>")
 	  .attr("type", "text")
 	  .attr("name", "goodsOptionList[" + index + "].goods_option_stock");
 	
-	var input_status = $("<select required>")
+	var input_status = $("<select class='form-control' required>")
 	  .attr("name", "goodsOptionList[" + index + "].goods_option_status")
+	  .append("<option>판매여부</option>")
 	  .append("<option value='Y'>Y</option>")
 	  .append("<option value='N'>N</option>");
 	
@@ -75,7 +75,7 @@ function createOption(index) {
 		}
 	});
 	
-	var li = $("<li>");
+	var li = $("<li class='input-group'>");
 	li.append(input_title)
 	  .append(input_content)
 	  .append(input_price)

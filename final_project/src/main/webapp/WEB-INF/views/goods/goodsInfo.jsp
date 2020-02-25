@@ -5,16 +5,15 @@
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!-- 별점 script -->
-<style></style>
-    <script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
-    <script>
-        window.addEventListener("load", function(){
-            Hakademy.PointManager.factory(".star-wrap");
-        });
-    </script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"/>
+<script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<%-- <script src="${pageContext.request.contextPath}/resources/js/goodsInfo.js"></script> --%>
+<script>
+    window.addEventListener("load", function(){
+        Hakademy.PointManager.factory(".star-wrap");
+    });
+</script>
 <script>
 $(function(){
 	var goodsOptionVOList = JSON.parse('${jsonGoodsOptionVOList}');
@@ -23,6 +22,12 @@ $(function(){
 	var final_price = 0;
 	var final_qtt = 0;
 	var count = 0;
+	
+	$(".one_btn").click(function(e){
+		e.preventDefault();
+		var url = $(".alink").attr("href");
+		$(location).attr('href', url);
+	});
 	
 	// 옵션 선택 이벤트
 	$(".options").change(function(){
@@ -47,9 +52,7 @@ $(function(){
 			var option_no_list = new Array();
 			var qtty;
 			
-			var div = $("<div class='total_price_area'></div>"); // 선택 상품+옵션 그룹div
-			
-			div.append($("<h4>선택한 옵션</h4>"));
+			var div = $("<div class='total_price_area col-12'></div>"); // 선택 상품+옵션 그룹div
 			
 			// 옵션 선택 정보 저장 (옵션번호리스트, 가격합계)
 			$(".options").each(function(i){
@@ -62,7 +65,7 @@ $(function(){
 				option_price = arr[index].goods_option_price;
 				
 				// div에 옵션별 정보 추가
-				var option_info = $("<h5>" + title + " : " + content + "(" + addComma(option_price) + "원)" +"</h5>");
+				var option_info = $("<span>" + title + " : " + content + "(" + addComma(option_price) + "원)" +"</span><br>");
 				div.append(option_info);
 				
 				// div에 no 추가
@@ -73,11 +76,11 @@ $(function(){
 			
 			
 			// div에 나머지 기능 추가
-			var goods_name = $("<h3>" + goodsVO.goods_name + "</h3>");
+			var goods_name = $("<span>"+ "상품명 : " + goodsVO.goods_name + "</span>");
 			var span = $("<span class='total_price'>"+ addComma(price) + "원</span>");
 			var plus = $("<a class='plus_btn' href='#'> + </a>");
 			var minus = $("<a class='minus_btn' href='#'> - </a>");
-			var delete_btn = $("<a class='delete' href='#'>X</a>");
+			var delete_btn = $("<a class='delete_btn' href='#'>X</a>");
 			
 			// div에 수량 추가
 			var quantity = $("<input class='quantity' name='itemVOList["+VOindex+"].quantity' type='text' value='1'>");
@@ -91,8 +94,8 @@ $(function(){
 			div.append(hidden_price);
 			
 			$(".selected_area").append(div);
-			div.append(goods_name).append(span).append(quantity).append(plus).append(minus)
-			.append(delete_btn);
+			div.append(goods_name).append("<br>").append(span).append(quantity).append(plus).append(minus)
+			.append(delete_btn).append("<hr style='margin-bottom: 0'>");
 			
 			// 상품+옵션 가격
 			var total_price = price;
@@ -370,57 +373,181 @@ $(function(){
 		width: 100%;
 	}
 </style>
+<style>
+
+.final_price, .final_qtt {
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+
+.total_price {
+	font-size: 1rem;
+}
+
+.table th, .table td{
+	border: none;
+}
+
+.quantity {
+	margin-left:130px;
+	width: 50px;
+}
+
+.total_price_area {
+	margin: 15px 0px;
+}
+
+.plus_btn {
+	color: black;
+	font-size: 1.5rem;
+	margin-left: 10px;
+	margin-right: 3px;
+}
+
+.minus_btn {
+	color: black;
+	font-size: 2rem;
+	margin-right: 3px;
+}
+
+.delete_btn {
+	color: black;
+	font-size: 1.2rem;
+}
+
+.total_area {
+	margin-bottom: 15px;
+}
+
+.add_cart_btn {
+	margin: 10px;
+}
+
+.mainImage_box {
+	padding: 10px;
+	width: 100%;
+	height: auto;
+}
+
+.mainImage_box > img {
+	width: 100%;
+	height: auto;
+}
+
+.contentImage_box {
+	width: 100%;
+	height: 100px;
+}
+
+.contentImage_box > img {
+	width: 150px;
+	height: 100px;
+	margin: 5px;
+}
+
+.options {
+	margin-left: 10px;
+}
+
+</style>
 <article>
-<h1>상품 상세 페이지</h1>
-
-<p>상품 상세 내용(goods_content)</p>
-<p>${goodsVO.goods_content}</p>
-<span>평점: </span>
-<hr>
-<br>
-
-<span>
-	<c:choose>
-		<c:when test="${member_id !=null }">
-			<a href="${pageContext.request.contextPath}/member/customOrder?seller_no=${goodsVO.seller_no }">1:1 요청서</a>
-		</c:when>
-		<c:otherwise>
-			<a href="${pageContext.request.contextPath}/member/login">1:1 요청서</a>
-		</c:otherwise>
-	</c:choose>
-</span>
-
-<hr>
-<form action="../order/order" method="POST">
-<!-- 옵션 선택하는 부분----------------------------------------->
-<h1>옵션선택</h1>
-<div class="option_area">
-	<c:forEach items="${goodsOptionVOList}" var="goodsOptionVO" varStatus="status">
-		<span>${goodsOptionVO.goods_option_title} : </span>
-		<select class=options>
-			<option value="">선택</option>
-			<c:forEach items="${goodsOptionVO.goodsOptionList}" var="goodsOptionDto">
-				<option value="${goodsOptionDto.goods_option_no}">${goodsOptionDto.goods_option_content}(${goodsOptionDto.goods_option_price})</option>			
-			</c:forEach>
-		</select>
-		<br>
-	</c:forEach>
-</div>
-<!-- --------------------------------------------------- -->
-<hr>
-<div class="selected_area">
-	<h1>상품+옵션 선택 내용</h1>
-</div>
-
-<input class="submit_ordering" type="submit" value="주문하기" disabled>
-<button class="add_cart_btn" disabled>장바구니</button>
-</form>
-<hr>
-<div class="total_area">
-<h1>총 상품금액(수량)</h1>
-<span class="final_price">0원 </span><span class="final_qtt">(0개)</span>
-</div>
-<hr>
+<section>
+	<form action="../order/order" method="POST">
+	<h1 class="text-center">상품 상세 페이지</h1>
+	<hr>
+	<div class="row justify-content-center">
+	<div class="detail_area col-lg-8">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="mainImage_box">
+					<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${files_no}">
+				</div>
+				<div class="contentImage_box">
+					<c:forEach var="content_files" items="content_files_list">
+						<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${files_no}">
+					</c:forEach>
+				</div>
+			</div>		
+			<div class="col-lg-6">
+				<div class="goods_title_area">
+					<h3>${goodsVO.goods_name}</h3>
+				</div>
+				<div class="row">
+					<table class="table">
+						<tbody>
+						<tr>
+							<th width="20%">상품명</th>
+							<th><span>${goodsVO.goods_name}</span></th>
+							<th></th>
+						</tr>
+						<tr>
+							<th>판매가</th>
+							<th colspan="2">
+							<fmt:formatNumber pattern="###,###,###" type="number">
+							${goodsVO.goods_price}
+							</fmt:formatNumber>
+							원
+							</th>
+						</tr>
+						<tr>
+							<td>적립금</td>
+							<td colspan="2">
+							<fmt:formatNumber pattern="###,###,###" type="number">
+							${goodsVO.goods_price/100*rate}
+							</fmt:formatNumber> 원
+							</td>
+						</tr>
+						</tbody>
+					</table>
+					<div class="option_area col-12">
+						<c:forEach items="${goodsOptionVOList}" var="goodsOptionVO" varStatus="status">
+							<span>${goodsOptionVO.goods_option_title} : </span>
+							<select class="options">
+								<option value="">선택</option>
+								<c:forEach items="${goodsOptionVO.goodsOptionList}" var="goodsOptionDto">
+									<option value="${goodsOptionDto.goods_option_no}">${goodsOptionDto.goods_option_content}(${goodsOptionDto.goods_option_price})</option>
+								</c:forEach>
+							</select>
+							<hr>
+						</c:forEach>
+					</div>
+				</div>
+					<div class="selected_area row">
+					</div>
+				<div class="row">
+					<div class="total_area col-12">
+						<h4>총 상품금액(수량)</h4>
+						<span class="final_price">0원 </span><span class="final_qtt">(0개)</span>
+				</div>
+					</div>
+				<div class="row">
+					<div class="col-12">
+						<input class="submit_ordering btn btn-primary" type="submit" value="주문하기" disabled>
+						<button class="add_cart_btn btn btn-primary" disabled>장바구니</button>
+						<span>
+							<c:choose>
+								<c:when test="${member_id !=null }">
+									<a class="alink" href="${pageContext.request.contextPath}/member/customOrder?seller_no=${goodsVO.seller_no }">
+										<button class="one_btn btn btn-primary">1:1 요청서</button>
+									</a>
+								</c:when>
+								<c:otherwise>
+									<a class="alink" href="${pageContext.request.contextPath}/member/login">
+										<button class="one_btn btn btn-primary">1:1 요청서</button>
+									</a>
+								</c:otherwise>
+							</c:choose>
+						</span>
+					</div>
+				</div>
+			</div>		
+		</div>
+	</div>
+	</div>
+	</form>
+	<hr>
+	<br>
+</section>
 <!-- --------------------------------------------------- -->
 <section>
 <p>상품 문의</p>

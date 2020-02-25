@@ -254,5 +254,9 @@
 		where c.seller_custom_order_no=#{seller_custom_order_no}
 	</select>
 
+	<select id="getSellerNo" parameterType="String" resultType="int">
+		select seller_no from seller where seller_id = #{seller_id}
+	</select>
+
  </mapper>
 
