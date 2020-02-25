@@ -50,7 +50,7 @@
 		<br>	
 		작성일: ${memberReq.custom_order_date } <br>
 	<hr>
-	</div>
+	</div> 
 </c:forEach>
 </div>
 
