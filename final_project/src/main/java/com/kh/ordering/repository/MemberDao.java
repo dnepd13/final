@@ -2,6 +2,7 @@ package com.kh.ordering.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.ordering.entity.GoodsCartDto;
@@ -76,8 +77,7 @@ public interface MemberDao {
 		void memberdelete(MemberDto memberDto);
 		
 		
-		
-		
+	
 		
 		
 		

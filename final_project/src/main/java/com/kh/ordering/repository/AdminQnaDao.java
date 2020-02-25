@@ -29,6 +29,8 @@ public interface AdminQnaDao {
 
 	public AdminQnaDto qnagetUpdate(int admin_qna_no);
 
+	void deleteqna(AdminQnaDto adminQnaDto);
+
 
 
 

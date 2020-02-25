@@ -1,9 +1,12 @@
 package com.kh.ordering.service;
 
+
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,10 +18,18 @@ import com.kh.ordering.repository.CertDao;
 
 import lombok.extern.slf4j.Slf4j;
 
+
+
+
+
 @Service
 @Slf4j
 public class GmailService implements EmailService{
 
+
+
+
+	
 	@Autowired
 	private JavaMailSender sender;
 
@@ -96,13 +107,20 @@ public class GmailService implements EmailService{
 			message.setSubject("[ordering판매자] 인증을 위한 이메일입니다.");
 			message.setText("인증번호 : " + cert);
 			sender.send(message);
-			return "email_success";
+			System.out.println("성공");
+			return "success";
 		}
 		catch(Exception e) {
+			System.out.println("오류");
 			e.printStackTrace();
-			return "email_fail";
+			return "fail";
 		}
 	}
+
+	
+	 
+
+
 
 }
 

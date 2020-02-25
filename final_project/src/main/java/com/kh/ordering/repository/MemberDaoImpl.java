@@ -259,6 +259,8 @@ public class MemberDaoImpl implements MemberDao{
 			
 		}
 
+	
+
 //		@Override
 //		public List<MemberDto> memberGetOne(int member_no) {
 //			

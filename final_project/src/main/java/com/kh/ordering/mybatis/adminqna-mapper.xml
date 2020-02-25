@@ -102,5 +102,10 @@
  <select id="QnaGetOne" parameterType="adminQnaDto" resultType="adminQnaDto">
  	select * from admin_qna where admin_qna_no = #{admin_qna_no}
  </select>
+	
+<!-- 문의글 삭제 -->	
+<delete id="deleteqna" parameterType="adminQnaDto">
+	delete admin_qna where admin_qna_no = #{admin_qna_no}
+</delete>
 
  </mapper>  
