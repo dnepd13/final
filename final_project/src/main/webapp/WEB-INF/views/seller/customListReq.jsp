@@ -19,7 +19,6 @@
 <script src="https://code.jquery.com/jquery-latest.js"></script>
     
 <script>
-
 	//요청서 삭제
 	function deleteReq(member_custom_order_no){
 		if(confirm('요청서를 삭제하시겠습니까?')){
