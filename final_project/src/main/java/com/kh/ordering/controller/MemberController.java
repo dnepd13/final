@@ -139,7 +139,8 @@ public class MemberController {
 	
 	
 		
-	// 회원 로그인	s
+	// 회원 로그인	
+		
 	@GetMapping("/login")
 	public String login() {
 		return "member/login"; 
