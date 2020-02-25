@@ -21,4 +21,4 @@
  <h3>판매자 등급 :${sellerDto.seller_grade}</h3>    
  
  <input type="submit" value="판매자 정보 수정하러 가기"> <a href="management" >뒤로가기</a>
- </form>          		                                                       
+ </form>
