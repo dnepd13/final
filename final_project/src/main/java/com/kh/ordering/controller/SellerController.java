@@ -106,11 +106,14 @@ public class SellerController {
 	      }
 	@PostMapping("/validate")//세션에 있는 cert랑 사용자가 입력한 번호랑 같아야한다
 	@ResponseBody
-	public String validate(HttpSession session, @RequestParam(value = "cert",required = false,defaultValue = "")  String cert) {
+	public String validate(HttpSession session, @RequestParam String cert) {
 			String value =(String)session.getAttribute("cert");//서버에 저장된 번호를 내놔라 사용자가 입력한 값이 cert로 들어와야한다
 			      session.removeAttribute("cert");//세션값을 지운다 한번쓰면 지워야한다(버려야한다)
-			if (value.equals(cert)) {  //사용자가 입력한 값이 cert랑 같으면
-				return "email_success";
+			      	//	System.out.println(cert+"11111111111");
+			      
+			      if (value.equals(cert)) {  //사용자가 입력한 값이 cert랑 같으면
+			
+				return "success";
 			}	
 				else {
 					return "fail";

@@ -1,7 +1,9 @@
 package com.kh.ordering.repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,9 @@ import com.kh.ordering.entity.GoodsOptionDto;
 import com.kh.ordering.vo.GoodsOptionStockVO;
 import com.kh.ordering.vo.GoodsOptionVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class GoodsOptionDaoImpl implements GoodsOptionDao{
 	
 	@Autowired
@@ -84,7 +89,19 @@ public class GoodsOptionDaoImpl implements GoodsOptionDao{
 	
 	@Override
 	public List<GoodsOptionVO> getGoodsOptionVOList(int goods_no) {
-		return sqlSession.selectList("goods_option.getGoodsOptionVOList", goods_no);
+		List<GoodsOptionVO> goodsOptionVOList = new ArrayList<>();
+		List<String> titleList = sqlSession.selectList("goods_option.getGoodsOpionTitleList", goods_no);
+		
+		for(int i=0; i<titleList.size(); i++) {
+			goodsOptionVOList.add(i, new GoodsOptionVO());
+			goodsOptionVOList.get(i).setGoods_option_title(titleList.get(i));
+			Map<String, String> map = new HashMap<>();
+			map.put("goods_option_title", titleList.get(i));
+			map.put("goods_no", String.valueOf(goods_no));
+			goodsOptionVOList.get(i).setGoodsOptionList(sqlSession.selectList("goods_option.getGoodsOptionList", map));
+		}
+		
+		return goodsOptionVOList;
 	}
 	
 }

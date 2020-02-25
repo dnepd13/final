@@ -3,6 +3,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+
+<style>
+	.articleBox {
+		margin: 0 25%;
+	}
+	.navBox {
+		margin: 0 35%
+	}
+</style>
+
 <script src="https://code.jquery.com/jquery-latest.js"></script>
     
 <script>
@@ -35,9 +46,10 @@
 <h4>확인 안 한 요청서 몇 개냐: <span class="alarm">${customAlarm } 개</span></h4>	
 
 <h4>요청서 목록</h4>
-<div>
+
+<article class="articleBox">
 <c:forEach var="memberReq" items="${getListReq }">
-	<div>
+	<div class="listBox">
 		보낸사람: ${memberReq.member_id }
 		<button onclick="deleteReq(${memberReq.member_custom_order_no })">&Cross;</button><br>
 		제목: <a href="customInfoReq?member_custom_order_no=${memberReq.member_custom_order_no }">
@@ -52,9 +64,8 @@
 	<hr>
 	</div> 
 </c:forEach>
-</div>
 
-<div>
+<div class="navBox">
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
 			<li class="page-item">
@@ -82,5 +93,5 @@
 		</c:if>
 	</ul>
 </div>
-
+</article>
 

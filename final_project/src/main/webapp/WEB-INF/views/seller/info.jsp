@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <h1>판매자 정보 조회 페이지</h1>
 <form action="info" method="post">
 <h3>판매자 아이디 :${sellerDto.seller_id}</h3> 
@@ -19,5 +20,5 @@
  <h3>판매자 사업장 은행 주민 등록번호 : ${sellerDto.seller_bank_birth} </h3>
  <h3>판매자 등급 :${sellerDto.seller_grade}</h3>    
  
- <input type="submit" value="판매자 정보 수정하러 가기"> <a href="management" ><a href="management" >뒤로가기</a>
+ <input type="submit" value="판매자 정보 수정하러 가기"> <a href="management" >뒤로가기</a>
  </form>          		                                                       

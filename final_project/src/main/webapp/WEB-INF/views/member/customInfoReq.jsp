@@ -8,23 +8,41 @@
 	$(function(){
 		
 		var alarm = $(".btn_update").data("alarm_check");
-
-		if(alarm=="N"){
-			$(".btn_update").attr("disabled", false);
-			$(".btn_update").click(function(){
-				$(".update_form").show();
-			});
+		
+		if(alarm!=null){
+			if(alarm=="N"){
+				$(".btn_update").attr("disabled", false);
+				$(".btn_update").click(function(){
+					$(".update_form").show();
+				});
+			}
+			
+			$(".btn_return").click(function(){
+				$(".update_form").hide();
+			});			
 		}
 		
+		$(".btn_update").attr("disabled", false);
+		$(".btn_update").click(function(){
+			$(".update_form").show();
+		});
+			
 		$(".btn_return").click(function(){
 			$(".update_form").hide();
-		});
+		});	
 
 	});
 </script>
     
  <h4>보낸 요청서 상세내용 member Custom Info Req.jsp</h4>
- 	카테고리: ${category.category_large } / ${category.category_middle } / ${category.category_small } <br>   
+ 	<c:choose>
+ 		<c:when test="${not empty category }">
+		 	카테고리: ${category.category_large } / ${category.category_middle } / ${category.category_small } <br> 
+ 		</c:when>
+ 		<c:otherwise>
+ 			${seller_id } 님에게 보낸 요청서
+ 		</c:otherwise>
+ 	</c:choose>
 	제목: <span>${getListInfoReq.custom_order_title}</span> <br>
 	상세내용 <br>
 			<span>${getListInfoReq.custom_order_content}</span> <br>
