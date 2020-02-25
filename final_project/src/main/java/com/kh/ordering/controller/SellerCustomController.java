@@ -21,11 +21,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
+import com.kh.ordering.entity.MemberCustomAlarmDto;
+import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
 import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.MemberCustomDao;
+import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.service.MemberCustomService;
 import com.kh.ordering.service.SellerCustomService;
@@ -49,6 +52,8 @@ public class SellerCustomController {
 	private MemberCustomService memberCustomService;
 	@Autowired
 	private MemberCustomDao memberCustomDao;
+	@Autowired
+	private MemberDao memberDao;
 	
 	@Autowired
 	private FilesDao filesDao;
@@ -161,7 +166,13 @@ public class SellerCustomController {
 		List<FilesVO> filesVO = sellerCustomService.filesList(seller_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
 		
-		model.addAttribute("alarm", memberCustomDao.getMemberAlarm(seller_custom_order_no));
+		MemberCustomAlarmDto memberAlarm = memberCustomDao.getMemberAlarm(seller_custom_order_no);
+		model.addAttribute("alarm", memberAlarm);
+		
+		int member_no = memberAlarm.getMember_no();
+		MemberDto memberDto = memberDao.getMember(member_no);
+		String member_id = memberDto.getMember_id();
+		model.addAttribute("member_id", member_id);
 		
 		return "seller/customInfoResp";
 	}

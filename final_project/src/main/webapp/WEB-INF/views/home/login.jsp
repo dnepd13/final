@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +10,6 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
-
 
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -53,9 +52,9 @@
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs">
 			<li class="nav-item"><a class="nav-link active"
-				data-toggle="tab" href="#member/loign">일반회원 로그인</a></li>
+				data-toggle="tab" href="#home">일반회원 로그인</a></li>
 			<li class="nav-item"><a class="nav-link" data-toggle="tab"
-				href="#seller/login">판매자 로그인</a></li>
+				href="#menu1">판매자 로그인</a></li>
 		</ul>
 
 		<!-- Tab panes -->
@@ -86,13 +85,3 @@
 </body>
 </html>
 
-<!--     <h1>판매자 로그인페이지</h1>
-<form action="login" method="post">
-아이디 <input type="text" name="seller_id" ><br><br>
-비밀번호 <input type="password" name="seller_pw" ><br><br>
-<input type="submit" value="로그인하기">
-
-</form>
-<form action="find" method="get">
-<input type="submit" value="아이디" ><input type="submit" value="비밀번호 찾기" >
-</form> -->
