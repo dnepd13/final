@@ -52,8 +52,9 @@ public class CustomOrderController {
 			Model model,
 			@RequestParam int custom_order_no
 			) {
-		
+		log.info("no={}",custom_order_no);
 		CustomOrderVO vo = customorderDao.getOne(custom_order_no);
+		log.info("vo={}", vo);
 		model.addAttribute("list", vo);
 		return "custom/detail";
 	}
