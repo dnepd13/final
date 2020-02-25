@@ -16,10 +16,7 @@
 	}
 </style>
 
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-latest.js"></script>
     
 <script>
 	function deleteReq(member_custom_order_no){
@@ -61,10 +58,6 @@
 	}
 </script>
 
-<h3>구매자가 보낸 요청서. member customListReq.jsp</h3>
-
-<a href="${pageContext.request.contextPath }">home</a> &#124; 
-
 <h4>확인 안 한 견적서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
 
 <article class="articleBox">
@@ -79,7 +72,7 @@
 			</p>
 			<p>
 				<span>${memberCustom.custom_order_date }</span>
-				<span class="delete"><button onclick="deleteReq(${memberCustom.member_custom_order_no })">삭제</button></span>
+				<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span>
 			</p>
 		</td>
 	</tr>

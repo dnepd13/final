@@ -20,6 +20,3 @@
      <button type="button" class="btn btn-primary"  onclick="location='delete'">탈퇴하기</button><br>
      <button type="button" class="btn btn-primary"  onclick="location='main '">홈으로가기</button><br>                            
 </div>
-
-
-

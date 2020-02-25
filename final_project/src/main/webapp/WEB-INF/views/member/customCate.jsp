@@ -119,8 +119,8 @@
   			 	 data: {"category_name":category_name},
   			 	 success: function(resp){	
   			 		 if(resp.seller_no!=null){
-	  			 		 var p = $("<p><a href='#' title='최근 한 달간 판매량 순'>&check;</a> 추천 판매자를 선택하시면 1:1 개인요청서로 전환됩니다.</p>")
-	  			 		 $(".sellerList").append(p); 
+	  			 		 var p = $("<p><a href='#' title='최근 한 달간 판매량 순'>&check;</a> 추천 판매자를 선택하시면 1:1 개인요청서로 전환됩니다.</p>");
+	  			 		$(".sellerList").append(p); 
   			 		 }
   			 		 var btn_next = document.querySelector(".btn_next");
   			 		 $(btn_next).attr("disabled", false);

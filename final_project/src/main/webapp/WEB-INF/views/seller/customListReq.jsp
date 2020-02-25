@@ -6,18 +6,19 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 
 <style>
-	.articleBox {
-		margin: 0 25%;
-	}
+	.articleBox,
 	.navBox {
-		margin: 0 35%
+		width: 500px;
+		margin: 0 auto;
+	}
+	.delete {
+		float: right;
 	}
 </style>
 
 <script src="https://code.jquery.com/jquery-latest.js"></script>
     
 <script>
-
 	//요청서 삭제
 	function deleteReq(member_custom_order_no){
 		if(confirm('요청서를 삭제하시겠습니까?')){
@@ -36,34 +37,34 @@
 		}
 	}
 			
-    </script> 
-    
-<button class="toast"></button>
+</script> 
 
 <h3>판매자가 받은 요청서 customListReq.jsp</h3>
-<a href="main">판매자 홈으로</a> &verbar; 
-<a href="customListResp">보낸 견적서</a>
-<h4>확인 안 한 요청서 몇 개냐: <span class="alarm">${customAlarm } 개</span></h4>	
 
-<h4>요청서 목록</h4>
+<h4>확인 안 한 요청서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
 
 <article class="articleBox">
-<c:forEach var="memberReq" items="${getListReq }">
-	<div class="listBox">
-		보낸사람: ${memberReq.member_id }
-		<button onclick="deleteReq(${memberReq.member_custom_order_no })">&Cross;</button><br>
-		제목: <a href="customInfoReq?member_custom_order_no=${memberReq.member_custom_order_no }">
-						${memberReq.custom_order_title }
-				</a>
+<table class="table table-hover listBox">
+	<c:forEach var="memberReq" items="${getListReq }">
+	<tr>
+		<td>
+			<p><span>${memberReq.member_id } 님이 보낸 요청서입니다.</span>
 				<span style="color: red">
-				<c:set var="check" value="${memberReq.seller_alarm_check }"/> 
-				<c:if test="${functions : contains(check, 'N') }"> new </c:if>
+					<c:set var="check" value="${memberReq.seller_alarm_check }"/> 
+					<c:if test="${functions : contains(check, 'N') }">
+						new
+					</c:if>
 				</span>
-		<br>	
-		작성일: ${memberReq.custom_order_date } <br>
-	<hr>
-	</div> 
-</c:forEach>
+			</p>
+			<p><a href="customInfoReq?member_custom_order_no=${memberReq.member_custom_order_no }">
+						${memberReq.custom_order_title }</a>
+			</p>
+			<span>${memberReq.custom_order_date }</span>
+			<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberReq.member_custom_order_no })">&times;</button></span>
+		</td>
+	</tr>
+	</c:forEach>
+</table>
 
 <div class="navBox">
 	<ul class="pagination">
