@@ -162,7 +162,7 @@
   </tbody>
 </table>
 
-<div class="offset-md-4 col-md-4">
+<div class="row justify-content-center">
 
 <div>
 	<ul class="pagination">

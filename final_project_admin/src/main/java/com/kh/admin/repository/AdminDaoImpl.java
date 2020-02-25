@@ -1,7 +1,10 @@
 package com.kh.admin.repository;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.admin.entity.AdminDto;
 import com.kh.admin.entity.BlockDto;
 import com.kh.admin.entity.CategoryDto;
+import com.kh.admin.entity.FilesDto;
 import com.kh.admin.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +23,12 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Autowired
 	private SqlSession sqlSession;
+	
+	@Autowired
+	private GoodsFilesDao goodsFilesDao;
+	
+	//사진 주소 여기만 바꾸면 됨
+	private File directory = new File("C:/upload");
 	
 	//로그인
 	@Override
@@ -94,6 +104,15 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public void blockUnlockMember(BlockDto BlockDto) {
 		sqlSession.delete("admin.blockDeleteMember", BlockDto);
+	}
+
+	@Override
+	public byte[] get(int files_no) throws IOException {
+		FilesDto filesDto = goodsFilesDao.getFile(files_no);
+		
+		File file = new File(directory, filesDto.getFiles_savename());
+		byte[] data = FileUtils.readFileToByteArray(file);
+		return data;
 	}
 
 	

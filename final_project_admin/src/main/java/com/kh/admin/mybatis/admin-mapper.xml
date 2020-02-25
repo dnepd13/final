@@ -831,11 +831,11 @@
 			select rownum rn, A.* from(
 					select  S.seller_id
 			    from ordering O 
-			        inner join cart_info CI on O.partner_order_id = ci.partner_order_id
-			        inner join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
-			        inner join goods GD on cig.goods_no = GD.goods_no
-			        inner join seller S on GD.seller_no = S.seller_no
-			        inner join member M on O.member = M.member_no
+			        left outer join cart_info CI on O.partner_order_id = ci.partner_order_id
+			        left outer join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
+			        left outer join goods GD on cig.goods_no = GD.goods_no
+			        left outer join seller S on GD.seller_no = S.seller_no
+			       	left outer join member M on CI.member_no = M.member_no
 			   
 			  	  where O.ordering_status != '결제준비완료'
 			           <choose>
@@ -861,11 +861,11 @@
 				 CIG.cart_info_goods_quantity, CIG.cart_info_goods_price, GD.goods_name, S.seller_id, S.seller_name, S.seller_email, S.seller_phone,
 				 S.seller_store_name, S.seller_store_phone, S.seller_bank_code, S.seller_bank_account, S.seller_bank_username, M.member_id
 		    from ordering O 
-		        inner join cart_info CI on O.partner_order_id = ci.partner_order_id
-		        inner join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
-		        inner join goods GD on cig.goods_no = GD.goods_no
-		        inner join seller S on GD.seller_no = S.seller_no
-		        inner join member M on O.member = M.member_no
+		        left outer join cart_info CI on O.partner_order_id = ci.partner_order_id
+		        left outer join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
+		        left outer join goods GD on cig.goods_no = GD.goods_no
+		        left outer join seller S on GD.seller_no = S.seller_no
+		        left outer join member M on CI.member_no = M.member_no
 		   
 		    where O.ordering_status != '결제준비완료'
 		            and S.seller_id = #{seller_id}
@@ -884,11 +884,11 @@
 	<select id="adjustmentCount" parameterType="paging" resultType="String">
 					select  S.seller_id
 			    from ordering O 
-			        inner join cart_info CI on O.partner_order_id = ci.partner_order_id
-			        inner join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
-			        inner join goods GD on cig.goods_no = GD.goods_no
-			        inner join seller S on GD.seller_no = S.seller_no
-			        inner join member M on O.member = M.member_no
+			        left outer join cart_info CI on O.partner_order_id = ci.partner_order_id
+			        left outer join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
+			        left outer join goods GD on cig.goods_no = GD.goods_no
+			        left outer join seller S on GD.seller_no = S.seller_no
+			        left outer join member M on CI.member_no = M.member_no
 			   
 			  	  where O.ordering_status != '결제준비완료'
 			           <choose>
@@ -914,11 +914,11 @@
 					 CIG.cart_info_goods_quantity, CIG.cart_info_goods_price, GD.goods_name, S.seller_id, S.seller_name, S.seller_email, S.seller_phone,
 					 S.seller_store_name, S.seller_store_phone, S.seller_bank_code, S.seller_bank_account, S.seller_bank_username, M.member_id
 			    from ordering O 
-			        inner join cart_info CI on O.partner_order_id = ci.partner_order_id
-			        inner join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
-			        inner join goods GD on cig.goods_no = GD.goods_no
-			        inner join seller S on GD.seller_no = S.seller_no
-			        inner join member M on O.member = M.member_no
+			        left outer join cart_info CI on O.partner_order_id = ci.partner_order_id
+			        left outer join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
+			        left outer join goods GD on cig.goods_no = GD.goods_no
+			        left outer join seller S on GD.seller_no = S.seller_no
+			        left outer join member M on CI.member_no = M.member_no
 			   
 			    where O.ordering_status != '결제준비완료'
 			            and S.seller_id = #{seller_id}
@@ -934,11 +934,11 @@
 	<select id="adjustmentOneCount" parameterType="adjustmentInsertVO" resultType="int">
 		select count(*)
 			    from ordering O 
-			        inner join cart_info CI on O.partner_order_id = ci.partner_order_id
-			        inner join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
-			        inner join goods GD on cig.goods_no = GD.goods_no
-			        inner join seller S on GD.seller_no = S.seller_no
-			        inner join member M on O.member = M.member_no
+			        left outer join cart_info CI on O.partner_order_id = ci.partner_order_id
+			        left outer join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
+			        left outer join goods GD on cig.goods_no = GD.goods_no
+			        left outer join seller S on GD.seller_no = S.seller_no
+			        left outer join member M on CI.member_no = M.member_no
 			   
 			    where O.ordering_status != '결제준비완료'
 			            and S.seller_id = #{seller_id}
@@ -948,24 +948,75 @@
             order by S.seller_id asc, O.partner_order_id asc, O.process_time asc          
 	</select>
   
-   <!-- 정산하기 -->
-	<insert id="insertCal" parameterType="calculateDto">
-		insert into calculate(
-				calculate_no, ordering, calculate_start, calculate_finish, 
-				calculate_ok_date, calculate_status, calculate_total, 
-				calculate_exception, calculate_final)
-			values (
-				calculate_seq.nextval, 
-				#{ordering},
-				TO_CHAR(TRUNC(sysdate,'MM')) ,
-				TO_CHAR(LAST_DAY(sysdate)),
-				sysdate, 
-				'정산완료', 
-				#{calculate_total}, 
-				#{calculate_exception}, 
-				#{calculate_final})
+	<!-- 스케쥴러를 통해 정산할 것 구해오기 -->
+	<select id="scheduleCalculate" parameterType="string" resultType="adjustmentFullVO">
+		select O.ordering_status, CI.total_delivery_price, 
+			 CIG.cart_info_goods_quantity, CIG.cart_info_goods_price, S.seller_id, S.seller_no 
+			    from ordering O 
+			        left outer join cart_info CI on O.partner_order_id = ci.partner_order_id
+			        left outer join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
+			        left outer join goods GD on cig.goods_no = GD.goods_no
+			        inner join seller S on GD.seller_no = S.seller_no
+			        left outer join member M on CI.member_no = M.member_no
+			   
+			    where O.ordering_status != '결제준비완료'
+			    		and S.seller_id=#{seller_id}
+			            and O.process_time between
+			               TO_CHAR(TRUNC(ADD_MONTHS(SYSDATE,-1)+1)-TO_CHAR(SYSDATE,'DD'),'YYYY-MM-DD') 
+			                and
+			                TO_CHAR(TRUNC(LAST_DAY(ADD_MONTHS(SYSDATE, -1)))+0.99999421,'YYYY-MM-DD')
+			            order by S.seller_id asc, O.partner_order_id asc, O.process_time asc
+	</select>
+	
+	<!-- 정산 테이블에 넣기 인설트 -->
+	<insert id="scheduleCalculateInsert" parameterType="calculateDto">
+		insert into calculate values(calculate_seq.nextval, 
+				TO_CHAR(TRUNC(ADD_MONTHS(SYSDATE,-1)+1)-TO_CHAR(SYSDATE,'DD'),'YYYY-MM-DD'), 
+            	TO_CHAR(TRUNC(LAST_DAY(ADD_MONTHS(SYSDATE, -1)))+0.99999421,'YYYY-MM-DD'),
+           		 to_char(sysdate, 'YYYY-MM-DD'),
+           		 '정산완료',
+           		 #{calculate_total},
+           		 #{calculate_exception},
+           		 #{calculate_final},
+           		 #{seller_id},
+           		 #{seller_no}
+           		 )
 	</insert>
-
+	
+	<!--  스케쥴러 정산을 위한 아이디 가져오기-->
+	<select id="scheduleCalculateGetSeller" resultType="string">
+		select S.seller_id
+			    from ordering O 
+			        left outer join cart_info CI on O.partner_order_id = ci.partner_order_id
+			        left outer join cart_info_goods CIG on CI.cart_info_no = CIG.cart_info_no
+			        left outer join goods GD on cig.goods_no = GD.goods_no
+			        inner join seller S on GD.seller_no = S.seller_no
+			        left outer join member M on CI.member_no = M.member_no
+   
+    		where O.ordering_status != '결제준비완료'
+          
+	            and O.process_time between
+	                trunc(sysdate, 'MM')
+	                and
+	                last_day(trunc(sysdate, 'MM'))
+	            group by S.seller_id
+	</select>
+	
+	<!-- 상품 파일사진 불러오기 -->
+	<select id="getGoodsFiles" parameterType="int" resultType="GoodsFiles">
+		select F.* from files F
+		    inner join files_goods FG on F.files_no = FG.files_no
+		    inner join goods G on FG.goods_no = G.goods_no
+		    where G.goods_no = #{goods_no}
+	</select>
+	
+	<!-- 파일 번호로 파일 정보가져오기 -->
+	<select id="getFile" parameterType="int" resultType="GoodsFiles">
+		select F.* from files F
+		    inner join files_goods FG on F.files_no = FG.files_no
+		    inner join goods G on FG.goods_no = G.goods_no
+		    where F.files_no = #{files_no}
+	</select>
  </mapper> 
 	
  

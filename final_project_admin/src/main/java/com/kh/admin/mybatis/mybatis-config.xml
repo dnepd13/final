@@ -46,8 +46,10 @@
  		<typeAlias type="com.kh.admin.vo.AdjustmentInsertVO" alias="adjustmentInsertVO"/>
  		<typeAlias type="com.kh.admin.vo.AdjustmentVO" alias="adjustmentVO"/>
 
- 
+ 	
  		<typeAlias type="com.kh.admin.entity.CalculateDto" alias="calculateDto"/>
 
+		<!-- 상품 파일 -->
+		<typeAlias type="com.kh.admin.entity.FilesDto" alias="GoodsFiles"/>
  	</typeAliases>
  </configuration>

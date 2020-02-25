@@ -30,20 +30,33 @@ public class AdminManageController {
 			Model model,
 			@RequestParam(value="pno1", required = false) String pno1
 			) {
+		try {
+			
+		
 		PagingVO vo = boardService.pagination(pno1);
 		
 		model.addAttribute("paging", vo);
 		List<AdminDto> list = adminManage.selectBoard(vo);
 		model.addAttribute("list", list);
 		return "admin/manage";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "admin/manage";
+		}
 	}
 	
 	@PostMapping("/manage")
 	public String manage(
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute AdminDto adminDto) {
+		try {
+			
 		adminManage.adminDelete(adminDto);
 		
 		return "redirect:/admin/manage?pno1="+pno1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/admin/manage?pno1="+pno1;
+		}
 	}
 }

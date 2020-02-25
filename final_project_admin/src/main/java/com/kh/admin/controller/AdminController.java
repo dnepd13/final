@@ -108,7 +108,7 @@ public class AdminController {
 				}
 				else {
 					log.info("???");
-					return "redirect:/?error";
+					return "redirect:/?error=error";
 				}
 			}
 		
@@ -121,6 +121,7 @@ public class AdminController {
 	//---------------------------홈창----------------------------------
 	@GetMapping("/home")
 	public String home(Model model) {
+		try {
 		int memberCount = memberDao.memberCount();
 		int sellerCount = sellerDao.sellerCount();
 		int registTodayCount = adminDao.registToday();
@@ -208,7 +209,12 @@ public class AdminController {
 		else {
 			model.addAttribute("thisMonthCancel", a);
 		}
+		
 		return "/home";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "/home";
+		}
 	}
 	//---------------------------관리자가입창----------------------------------
 	@GetMapping("/regist")
@@ -218,20 +224,34 @@ public class AdminController {
 	//---------------------------관리자가입창----------------------------------
 	@PostMapping("/regist")
 	public String regist(@ModelAttribute AdminDto adminDto) {
+		try {
+			
+		
 		adminDto.setAdmin_pw(passwordEncoder.encode(adminDto.getAdmin_pw()));
 		
 		
 		adminDao.regist(adminDto);
 
 		return "/regist";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "/regist";
+		}
 	}
 	
 	//---------------------------로그아웃창----------------------------------
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
+		try {
+			
+		
 		session.removeAttribute("admin_id");
 		session.removeAttribute("admin_grade");
 		return "redirect:/";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/";
+		}
 	}
 	
 	//---------------------------카테고리 관리창----------------------------------
@@ -240,6 +260,8 @@ public class AdminController {
 			Model model,
 			@RequestParam(value="pno1", required = false) String pno1
 			) {
+		try {
+			
 		PagingVO vo = boardService.categoryPagination(pno1);
 		model.addAttribute("paging",vo);
 		 
@@ -252,6 +274,10 @@ public class AdminController {
 		model.addAttribute("small", categoryDao.categorySmall());
 		log.info("small={}", categoryDao.categorySmall());
 		return "/category";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "/category";
+		}
 	
 	}
 	//---------------------------카테고리 등록----------------------------------
@@ -259,8 +285,14 @@ public class AdminController {
 	public String categoryInsert(
 			@ModelAttribute CategoryDto categoryDto
 			) {
+		try {
+			
 		categoryDao.insertCategory(categoryDto);
 		return "redirect:/category";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/category";
+		}
 	}
 	//---------------------------카테고리 업데이트----------------------------------
 	@PostMapping("/categoryUpdate")
@@ -271,6 +303,8 @@ public class AdminController {
 			@RequestParam String category_middle,
 			@RequestParam String category_small
 			) {
+		try {
+			
 		
 		log.info("1={}", category_no);
 		log.info("1={}", category_large);
@@ -286,6 +320,11 @@ public class AdminController {
 		
 		categoryDao.updateCategory(categoryDto);
 		return "/category";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "/category";
+			
+		}
 	}
 	
 	//---------------------------카테고리 삭제----------------------------------
@@ -294,23 +333,42 @@ public class AdminController {
 	public String categoryDelete(
 			@RequestParam int category_no
 			) {
+		try {
+			
+		
 		categoryDao.deleteCategory(category_no);
 		
 		return "redirect:/category";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/category";
+		}
 	}
 	//---------------------------수수료창----------------------------------
 	@GetMapping("/premium")
 	public String premium(Model model) {
+		try {
+			
 		List<PremiumDto> list = premiumDao.premiumGetList();
 		model.addAttribute("list", list);
 		return "/premium";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "/premium";
+		}
 	}
 	
 	//---------------------------수수료 추가----------------------------------
 	@PostMapping("/premium")
 	public String premium(@ModelAttribute PremiumDto premiumDto) {
+		try {
+			
 		premiumDao.premiumInsert(premiumDto);
 		return "redirect:/premium";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/premium";
+		}
 	}
 	//---------------------------수수료 변경----------------------------------
 	@PostMapping("premiumUpdate")
@@ -320,6 +378,8 @@ public class AdminController {
 			@RequestParam int premium_price,
 			@RequestParam int premium_rate
 			) {
+		try {
+			
 		PremiumDto premiumDto = PremiumDto.builder()
 																		.premium_no(premium_no)
 																		.premium_price(premium_price)
@@ -327,6 +387,10 @@ public class AdminController {
 																	.build();
 		premiumDao.premiumUpdate(premiumDto);
 		return "redirect:/premium";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/premium";
+		}
 	}
 	
 	
@@ -336,11 +400,17 @@ public class AdminController {
 	public String premiumDelete(
 			@RequestParam int premium_no
 			) {
+		try {
+			
 		PremiumDto premiumDto = PremiumDto.builder()
 																	.premium_no(premium_no)
 																		.build();
 		premiumDao.premiumDelete(premiumDto);
 		return "redirect:/premium";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/premium";
+		}
 	}
 	
 	
@@ -362,6 +432,9 @@ public class AdminController {
 			@RequestParam(value = "seller_no", required = false, defaultValue = "0") int seller_no,
 			Model model
 			) {
+		try {
+			
+		
 		//member_no가 0이 멤버를 모델
 		if(member_no != 0) {
 			MemberDto memberDto = MemberDto.builder().member_no(member_no).build();
@@ -378,6 +451,10 @@ public class AdminController {
 		}
 		
 		return "/block";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "/block";
+		}
 	}
 	
 	@PostMapping("block")
@@ -385,6 +462,8 @@ public class AdminController {
 			@ModelAttribute BlockDto blockDto
 			) {
 		//멤버 번호를 가지고 있으면 멤버를 차단하고 멤버리스트로 리턴
+		try {
+			
 		if(blockDto.getMember_no() != 0) {
 			adminDao.block(blockDto);
 			return "redirect:/member/manage";
@@ -398,6 +477,10 @@ public class AdminController {
 		else {
 			return "redirect:/";
 		}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/";
+		}
 	}
 	
 	// ----------------------------차단 리스트 -----------------------------------
@@ -407,6 +490,8 @@ public class AdminController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute PagingVO paging
 			) {
+		try {
+			
 			int count;
 			if(paging.getKey()==null) {
 				count = adminDao.blockCount();
@@ -449,14 +534,24 @@ public class AdminController {
 				
 				return "/blocklist";
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "/blocklist";
+		}
 	}
 	
 	@PostMapping("/blocklist")
 	public String blocklist(
 			@ModelAttribute BlockDto blockDto
 			) {
+		try {
+			
 		adminDao.blockDelete(blockDto);
 		return "redirect:/blocklist";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/blocklist";
+		}
 	}
 	
 	//----------------차단 해제------------------------------
@@ -465,7 +560,10 @@ public class AdminController {
 			@RequestParam(value="seller_no", required = false, defaultValue = "0") int seller_no,
 			@RequestParam(value="member_no", required = false, defaultValue = "0") int member_no
 			) {
-				BlockDto blockDto = new BlockDto();
+		try {
+			
+		
+			BlockDto blockDto = new BlockDto();
 				if(seller_no != 0) {
 					blockDto.setSeller_no(seller_no);
 					adminDao.blockUnlockSeller(blockDto);
@@ -479,40 +577,72 @@ public class AdminController {
 				else {
 					return "redirect:/blocklist";
 				}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/blocklist";
+		}
 	}
 	
 	
 	//--------------------등급 혜택 --------------------------------------
 	@GetMapping("/gradebenefit")
 	public String benefit(Model model) {
+		try {
+			
 		model.addAttribute("list", gradeBenefitDao.gradeBenefitList());
 		return "gradebenefit";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "gradebenefit";
+		}
 	}
 	
 	@PostMapping("/gradebenefit")
 	public String benefit(@ModelAttribute GradeBenefitDto gradeBenefitDto) {
+		try {
+			
 		gradeBenefitDao.gradeBenefitRegist(gradeBenefitDto);
 		
 		return "redirect:gradebenefit";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:gradebenefit";
+		}
 	}
 	
 	//------------------등급혜택 수정-----------------------------------
 	@PostMapping("/gradebenefitupdate")
 	public void gradebenefitupdate(@ModelAttribute GradeBenefitDto gradeBenefitDto) {
+		try {
+			
 		log.info("bene={}", gradeBenefitDto);
 		gradeBenefitDao.gradeBenefitUpdate(gradeBenefitDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//--------------등급혜택 삭제------------------------------------------
 	@PostMapping("gradebenefitdelete")
 	public void gradebenefitdelete(@ModelAttribute GradeBenefitDto gradeBenefitDto) {
+		try {
+			
 		gradeBenefitDao.gradeBenefitDelete(gradeBenefitDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//---------------------사이트 기본정보 설정--------------------------
 	@GetMapping("/basicpagesetting")
 	public String basicpagesetting() {
+		try {
+			
 		return "basicpagesetting";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "basicpagesetting";
+		}
 	}
 	
 	//---------------------헤더-------------------------

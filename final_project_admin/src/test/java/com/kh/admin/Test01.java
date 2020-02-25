@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.kh.admin.entity.AdminDto;
+import com.kh.admin.entity.CalculateDto;
 import com.kh.admin.entity.GradeBenefitDto;
 import com.kh.admin.entity.PremiumDto;
 import com.kh.admin.entity.SellerDto;
@@ -49,6 +50,44 @@ public class Test01 {
 	
 	@Autowired
 	private PremiumDao premiumDao;
+	
+	
+	//스케쥴러는 이걸 사용하면 될듯하다
+	@Test
+	public void test() {
+		List<String> a = calculateDao.scheduleCalculateGetSeller();
+		for(int j=0; j<a.size();j++) {
+			List<AdjustmentFullVO> list = calculateDao.scheduleCalcul(a.get(j));
+			int total = 0;
+			
+			CalculateDto calculateDto = new CalculateDto();
+			log.info("list={}", list);
+		
+		
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).getOrdering_status().equals("결제완료")) {
+				total += list.get(i).getCart_info_goods_quantity() * list.get(i).getCart_info_goods_price();
+				log.info("total1={}",list.get(i).getCart_info_goods_quantity() * list.get(i).getCart_info_goods_price());
+			}
+			else {
+				total -= list.get(i).getCart_info_goods_quantity() * list.get(i).getCart_info_goods_price();
+				log.info("total2={}",list.get(i).getCart_info_goods_quantity() * list.get(i).getCart_info_goods_price());
+			}
+		}
+		int rate = calculateDao.getRate(total);
+		int fee = total * rate / 100;
+		int adjustment_price = total - fee;
+		
+		calculateDto.setSeller_no(list.get(j).getSeller_no());
+		calculateDto.setCalculate_total(total);
+		calculateDto.setCalculate_exception(fee);
+		calculateDto.setCalculate_final(adjustment_price);
+		calculateDto.setSeller_id(list.get(j).getSeller_id());
+		
+		calculateDao.scheduleCalculateInsert(calculateDto);
+		
+		}
+	}
 	
 	
 //	public void test() {

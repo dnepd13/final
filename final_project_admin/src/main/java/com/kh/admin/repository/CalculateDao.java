@@ -20,7 +20,8 @@ public interface CalculateDao {
 	//판매자 한명의 목록 카운트구하기
 	public int oneSellerCount(AdjustmentInsertVO vo);
 
-	//정산하기
-	public void insert(CalculateDto calculateDto);
-
+	//스케쥴러를 이용해 정산 값 넣기
+	public List<AdjustmentFullVO> scheduleCalcul(String seller_id);
+	public void scheduleCalculateInsert(CalculateDto calculateDto);
+	public List<String> scheduleCalculateGetSeller();
 }
