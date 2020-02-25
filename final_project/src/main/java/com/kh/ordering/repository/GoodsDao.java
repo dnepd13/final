@@ -3,6 +3,7 @@ package com.kh.ordering.repository;
 import java.util.List;
 
 import com.kh.ordering.entity.GoodsDto;
+import com.kh.ordering.vo.GoodsFileVO;
 import com.kh.ordering.vo.GoodsVO;
 
 public interface GoodsDao {
@@ -17,4 +18,9 @@ public interface GoodsDao {
 	void plusStock(int goods_no, int stock);
 	List<GoodsVO> getGoodsVOList(int seller_no);
 	List<Integer> getGoodsNoList(int seller_no);
+	int getGoodsMainImage(int goods_no);
+	//정렬 나중에..
+//	void getList(String type);
+	List<GoodsFileVO> getListNew();
+	List<GoodsFileVO> getListBest();
 }

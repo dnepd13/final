@@ -65,7 +65,7 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 		sqlSession.insert("files.customInsert", customOrderFilesDto);
 	}
 	
-	@Override // 구매자 1:1 요청서 보기(카테고리 조건 미구현)
+	@Override // 구매자 1:1 요청서 보기
 	public List<CustomOrderVO> getListReq(PagingVO paging) {
 		return sqlSession.selectList("seller.getListReq", paging);
 		
@@ -91,8 +91,8 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 		return sqlSession.selectOne("seller.customCheck", seller_no);
 	}
 	@Override // 알람테이블 조회
-	public SellerCustomAlarmDto getSellerAlarm(int member_custom_order_no) {
-		return sqlSession.selectOne("seller.getAlarm", member_custom_order_no);
+	public List<SellerCustomAlarmDto> getSellerAlarm(int member_custom_order_no) {
+		return sqlSession.selectList("seller.getAlarm", member_custom_order_no);
 	}
 
 	@Override // 판매자가 받은 요청서 count

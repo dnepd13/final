@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.vo.GoodsFileVO;
 import com.kh.ordering.vo.GoodsStockVO;
 import com.kh.ordering.vo.GoodsVO;
 
@@ -18,6 +19,33 @@ public class GoodsDaoImpl implements GoodsDao{
 	
 	@Autowired
 	private GoodsDao goodsDao;
+	
+	
+	// 정렬.... 나중에..
+//	@Override
+//	public void getList(String type) {
+//		Map<String, String> map = new HashMap<>();
+//		
+//		switch (type) {
+//		case "price_asc": 
+//			map.put("column", "price");
+//			map.put("align", "asc");
+//			break;
+//		case "price_desc":
+//			map.put("column", "price");
+//			map.put("align", "desc");
+//		default:
+//			break;
+//		}
+//		
+//	}
+	
+	@Override
+	public int getGoodsMainImage(int goods_no) {
+		if(sqlSession.selectOne("goods.getGoodsMainImage", goods_no) != null)
+		return sqlSession.selectOne("goods.getGoodsMainImage", goods_no);
+		else return 0;
+	}
 	
 	@Override
 	public void insert(GoodsVO goodsVO) {
@@ -87,6 +115,39 @@ public class GoodsDaoImpl implements GoodsDao{
 	@Override
 	public List<GoodsDto> getList() {
 		return sqlSession.selectList("goods.getList");
+	}
+	
+	// 판매 베스트 5 상품
+	@Override
+	public List<GoodsFileVO> getListBest(){
+		List<GoodsDto> listBest = sqlSession.selectList("goods.getListBest");
+		List<GoodsFileVO> VOlistBest = new ArrayList<>();
+		for(GoodsDto goodsDto : listBest) {
+			GoodsFileVO goodsFileVO = GoodsFileVO.builder()
+					.goodsDto(goodsDto)
+					.goods_main_image(goodsDao.getGoodsMainImage(goodsDto.getGoods_no()))
+					.build();
+			VOlistBest.add(goodsFileVO);
+		}
+		
+		return VOlistBest;
+	}
+	
+	// 신규 상품
+	@Override
+	public List<GoodsFileVO> getListNew() {
+		// 신규 상품
+		List<GoodsDto> listNew = sqlSession.selectList("goods.getListNew");
+		List<GoodsFileVO> VOlistNew = new ArrayList<>();
+		for(GoodsDto goodsDto : listNew) {
+			GoodsFileVO goodsFileVO = GoodsFileVO.builder()
+					.goodsDto(goodsDto)
+					.goods_main_image(goodsDao.getGoodsMainImage(goodsDto.getGoods_no()))
+					.build();
+			VOlistNew.add(goodsFileVO);
+		}
+		
+		return VOlistNew;
 	}
 	
 	@Override
