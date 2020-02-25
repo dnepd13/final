@@ -43,6 +43,9 @@ public class SellerController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute PagingVO paging
 			) {
+		try {
+			
+		
 		log.info("paging={}",paging);
 		
 		//검색을 위의 정보가 담긴 paging으로 해야한다
@@ -100,6 +103,11 @@ public class SellerController {
 			
 			return "seller/manage";
 		}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "seller/manage";
+		}
+		
 	}
 	
 	@PostMapping("/sellerpage")
@@ -107,10 +115,16 @@ public class SellerController {
 			@RequestParam int seller_no,
 			Model model
 			) {
+		try {
+			
 		SellerDto sellerDto = SellerDto.builder().seller_no(seller_no).build();
 		SellerDto getOne = sellerDao.sellerGetOne(sellerDto);
 		model.addAttribute("seller", getOne);
 		return "seller/sellerpage";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "seller/sellerpage";
+		}
 	}
 	
 	@GetMapping("/delete")
@@ -118,8 +132,14 @@ public class SellerController {
 			@ModelAttribute SellerDto sellerDto,
 			Model model
 			) {
+		try {
+			
 		sellerDao.sellerDelete(sellerDto);
 		return "redirect:/seller/manage";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/seller/manage";
+		}
 	}
 	
 	
