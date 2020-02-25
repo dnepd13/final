@@ -25,12 +25,14 @@ import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
+import com.kh.ordering.entity.SellerDto;
 import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.repository.SellerCustomDao;
+import com.kh.ordering.repository.SellerDao;
 import com.kh.ordering.service.MemberCustomService;
 import com.kh.ordering.service.SellerCustomService;
 import com.kh.ordering.vo.CartInfoVO;
@@ -64,7 +66,9 @@ public class MemberCustomController {
 	private SellerCustomService sellerCustomService;
 	@Autowired
 	private SellerCustomDao sellerCustomDao;
-
+	@Autowired
+	private SellerDao sellerDao;
+	
 //	주문제작 요청서 작성
 	@PostMapping("/pick")
 	@ResponseBody
@@ -99,7 +103,7 @@ public class MemberCustomController {
 		int category_no = categoryDto.getCategory_no();
 		
 		customOrderDto.setCustom_order_category(category_no);
-
+		
 		memberCustomService.customCate(category_no, session, customOrderDto, files);
 		
 		return "redirect:/member/customSuccess";
@@ -198,14 +202,30 @@ public class MemberCustomController {
 		CustomOrderVO content = memberCustomDao.customOrderVO2(member_custom_order_no);
 		model.addAttribute("getListInfoReq", content);
 
-			// 카테고리 표시를 위한 model정보
+		// 카테고리 표시를 위한 model정보
 		int category_no = content.getCustom_order_category();
 		model.addAttribute("category", categoryDao.get(category_no));
 		
 		List<FilesVO>  filesVO = memberCustomService.filesList(member_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
 		
-		model.addAttribute("alarm", sellerCustomDao.getSellerAlarm(member_custom_order_no));
+		List<SellerCustomAlarmDto> alarmList = sellerCustomDao.getSellerAlarm(member_custom_order_no);
+		
+		if(alarmList.size()==1) {
+			SellerCustomAlarmDto alarm = SellerCustomAlarmDto.builder()
+																											.seller_no(alarmList.get(0).getSeller_no())
+																											.seller_alarm_no(alarmList.get(0).getSeller_no())
+																											.seller_alarm_check(alarmList.get(0).getSeller_alarm_check())
+																											.build(); 			
+			model.addAttribute("alarm", alarm);
+			
+			int seller_no = alarmList.get(0).getSeller_no();
+			SellerDto sellerDto= sellerDao.sellerDto(seller_no);
+			String seller_id = sellerDto.getSeller_id();
+			model.addAttribute("seller_id", seller_id);
+
+			return "member/customInfoReq";
+		}
 		
 		return "member/customInfoReq";
 	}

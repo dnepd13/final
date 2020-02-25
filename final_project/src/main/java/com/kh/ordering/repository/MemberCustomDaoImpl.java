@@ -42,7 +42,7 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 		sqlSession.insert("member.customInsert", memberCustomDto);
 	}
 	@Override // 요청서 관리테이블 .currval 시퀀스번호
-	public int customOrderSeq() {
+	public int memberCustomSeq() {
 		return sqlSession.selectOne("member.customOrderSeq");
 	}
 

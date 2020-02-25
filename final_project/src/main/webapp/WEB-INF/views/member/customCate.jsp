@@ -2,6 +2,40 @@
     pageEncoding="UTF-8"%>
  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+ 
+ <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+ 
+ <style>
+ 	.articleBox {
+ 		width: 500px;
+		margin: 0 auto;
+	}
+ 	.insert_cate,
+ 	.insert_req  {
+ 		width: 90%;
+ 	}
+ 	.insert_req * {
+ 		width: 100%;
+ 	}
+ 	.text-primary {
+ 		font-weight: bold; 
+ 	}
+ 	.insert_req > textarea {
+ 		resize: none;
+ 		height: 25%;
+ 	}
+ 	.insert_req input[type=submit] {
+ 		height: 50px;
+ 	}
+ 	.btn_next {
+ 		border: 1px solid darkgray;
+ 		background-color: white;
+ 	}
+	.btn_next:focus {
+ 		outline: none;
+ 	}
+ </style>
+ 
  <script src="https://code.jquery.com/jquery-latest.js"></script>
 
  <script>
@@ -19,7 +53,9 @@
 	 		 $(".middleChild").nextAll().remove();
 	 		 $(".smallChild").nextAll().remove();
 	 		 $(".sellerList").children().remove();
+	 		 
  			 var category_name = $(this).val();
+	 		 
  			 var url = "${pageContext.request.contextPath}/goods/large";
  			 $.ajax({
  				 type: "POST",
@@ -37,7 +73,9 @@
  		 $(".category_middle").change(function(){
  			$(".smallChild").nextAll().remove();
  			$(".sellerList").children().remove();
+ 			
 			 var category_name = $(this).val();
+ 			
 			 var url = "${pageContext.request.contextPath}/goods/middle";
 			 $.ajax({
 				 type: "POST",
@@ -54,7 +92,9 @@
  		 
  		 $(".category_small").change(function(){
  			$(".sellerList").children().remove();
+ 			
  			var category_name = $(this).val();
+ 			
 			 var url = "${pageContext.request.contextPath}/goods/small";
 			 $.ajax({
 				 type: "POST",
@@ -62,6 +102,9 @@
 			 	 data: {"category_name":category_name},
 			 	 success: function(resp){
 		 			 $(".category_no").val(resp);
+		 			 
+		 			var btn_next = document.querySelector(".btn_next");
+ 			 		 $(btn_next).attr("disabled", false);
 			 	 }
 			 });
  		 });
@@ -74,10 +117,13 @@
   				 type: "POST",
   			 	 url: url,
   			 	 data: {"category_name":category_name},
-  			 	 success: function(resp){			 		 
-  			 		 var p = $("<p>추천 판매자를 선택하시면 1:1 개인요청서로 전환됩니다.</p>")
-  			 		 
-  			 		 $(".sellerList").append(p);
+  			 	 success: function(resp){	
+  			 		 if(resp.seller_no!=null){
+	  			 		 var p = $("<p><a href='#' title='최근 한 달간 판매량 순'>&check;</a> 추천 판매자를 선택하시면 1:1 개인요청서로 전환됩니다.</p>")
+	  			 		 $(".sellerList").append(p); 
+  			 		 }
+  			 		 var btn_next = document.querySelector(".btn_next");
+  			 		 $(btn_next).attr("disabled", false);
   			 		 
   			 		$.each(resp, function(index, item){
   			 			var seller = $("<a href='${pageContext.request.contextPath}/member/customOrder?seller_no="+item.seller_no+"'>"+item.seller_id+"</a><br>");
@@ -89,6 +135,7 @@
  		 });
  	///////////////// 요청서 입력창 스타일 제어
  		$(".btn_next").click(function(){
+ 			var category_large = document.querySelector(".customCate");
             var insert_req = document.querySelector(".insert_req");
 
             if($(this).text()=="다음"){
@@ -114,37 +161,47 @@
 <br><br>
 
 <!-- 카테고리 선택페이지 -->
+<article class="articleBox">
 <div class="customCate" style="display:block;">
-	<h5>요청서를 보낼 기본 카테고리를 선택해주세요.</h5>
 	<form action="customCate" method="post" enctype="multipart/form-data"
 				onsubmit="return confirm('추후 판매자가 확인하지 않은 요청서만 삭제할 수 있습니다. 요청서를 보내시겠습니까?');">
-		<div class="insert_cate">
-			<select class="category_large" name="category_large">
-				<option class="largeChild">선택</option>
+		<div class="insert_cate form-group">
+			<h6 class="text-secondary">요청서를 보낼 기본 카테고리를 선택해주세요.</h6>
+			<select class="category_large form-control" name="category_large" required>
+				<option class="largeChild" value="">선택</option>
 			</select>
-			<select class="category_middle" name="category_middle">
-				<option class="middleChild">선택</option>
+			<p></p>
+			<select class="category_middle form-control" name="category_middle" required>
+				<option class="middleChild" value="">선택</option>
 			</select>
-			<select class="category_small" name="category_name">
+			<p></p>
+			<select class="category_small form-control" name="category_name" required>
 				<option class="smallChild" value="">선택</option>
 			</select>
+			<p></p>
 			<div class="sellerList">
 			</div>
 		</div>
 		<div class="insert_req" style="display:none;">
  			<input type="hidden" name="member_no" value="${member_no }">
-			<input type="text" name="custom_order_title" placeholder="요청서 제목" required>
-			<h5>요청하는 상세내용을 작성해주세요.</h5>
-			<textarea name="custom_order_content" required></textarea>
-			<h5>희망 가격은 얼마인가요?</h5>
-			<input type="number" name="custom_order_price" placeholder="원" required>
-			<h5>희망 날짜는 언제인가요? </h5>
-			<input type="date" name="custom_order_hopedate" required>
-			<h5>원하는 디자인 등이 있다면 함께 보내주세요.</h5>
-			<input type="file" name="files" multiple>
-				<br><br>
-			<input type="submit" value="요청서 보내기">
+ 			<h6 class="text-secondary">요청서 제목을 작성해주세요.</h6>
+			<input class="input_req form-control" type="text" name="custom_order_title" placeholder="요청서 제목" required>
+				<br>
+			<h6 class="text-secondary">요청하는 상세내용을 작성해주세요.</h6>
+			<textarea class="input_req form-control" name="custom_order_content" required></textarea>
+				<br>
+			<h6 class="text-secondary">희망 가격은 얼마인가요?</h6>
+			<input class="input_req form-control" type="number" name="custom_order_price" placeholder="원" required>
+				<br>
+			<h6 class="text-secondary">희망 날짜는 언제인가요? </h6>
+			<input class="input_req form-control" type="date" name="custom_order_hopedate" required>
+				<br>
+			<h6 class="text-secondary">원하는 디자인 등이 있다면 함께 보내주세요.</h6>
+			<input class="input_req form-control-file" type="file" name="files" multiple>
+				<br>
+			<input class="input_req form-control btn btn-primary" type="submit" value="요청서 보내기">
 		</div>
 	</form>
-		<button type="button" class="btn_next">다음</button>
+		<button type="button" class="btn_next" disabled>다음</button>
 </div>
+</article>
