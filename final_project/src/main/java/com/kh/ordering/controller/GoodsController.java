@@ -2,12 +2,18 @@ package com.kh.ordering.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +26,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.ordering.entity.FilesDto;
+import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.entity.GoodsQnaDto;
 import com.kh.ordering.entity.GoodsReviewDto;
 import com.kh.ordering.entity.GoodsReviewReplyDto;
 import com.kh.ordering.repository.CategoryDao;
+import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.repository.GoodsQnaDao;
@@ -35,6 +44,7 @@ import com.kh.ordering.service.GoodsReviewService;
 import com.kh.ordering.service.GoodsService;
 import com.kh.ordering.vo.DeliveryVO;
 import com.kh.ordering.vo.FilesVO;
+import com.kh.ordering.vo.GoodsFileVO;
 import com.kh.ordering.vo.GoodsVO;
 import com.kh.ordering.vo.PagingVO;
 
@@ -44,6 +54,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/goods")
 @Slf4j
 public class GoodsController {
+
+	@Autowired
+	private FilesDao filesDao;
 	
 	@Autowired
 	private GoodsService goodsService;
@@ -70,6 +83,34 @@ public class GoodsController {
 	private GoodsReviewDao goodsReviewDao;
 	@Autowired
 	private GoodsReviewService goodsReviewService;
+	
+	// 정렬 나중에...
+//	@GetMapping("/align")
+//	public void align(@RequestParam String type) {
+//		goodsService.align(type);
+//	}
+	
+	// 파일 다운로드
+	@GetMapping("/mainImageDown")
+	public ResponseEntity<ByteArrayResource> mainImageDown(@RequestParam int files_no) throws IOException{
+		File dir = new File("C:/upload");
+		File target = new File(dir, "goodsMain" + files_no);
+		byte[] data = FileUtils.readFileToByteArray(target);
+		
+		if(data==null) {
+			return ResponseEntity.notFound().build();
+		}
+		ByteArrayResource resource = new ByteArrayResource(data);
+		
+		FilesDto filesDto = filesDao.getFiles(files_no);
+		
+		return ResponseEntity.ok()
+				.contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.contentLength(filesDto.getFiles_size())
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+URLEncoder.encode(filesDto.getFiles_savename(),"UTF-8")+"\"")
+				.body(resource);
+	}
+	
 	
 	@GetMapping("/insert")
 	public String insert(Model model) {
@@ -106,7 +147,7 @@ public class GoodsController {
 			goods_content_image[i].transferTo(tg);
 		}
 		
-		return "redirect:goodsInfo?goods_no=" + goods_no;
+		return "redirect:getList";
 	}
 	
 	@GetMapping("/get")
@@ -123,7 +164,23 @@ public class GoodsController {
 	
 	@GetMapping("/getList")
 	public String getList(Model model) {
-		model.addAttribute("list", goodsService.getList());
+		
+		
+		model.addAttribute("listNew", goodsService.getListNew());
+		model.addAttribute("listBest", goodsService.getListBest());
+		
+		// 전체 상품
+		List<GoodsDto> list = goodsService.getList();
+		List<GoodsFileVO> VOlist = new ArrayList<>();
+		for (GoodsDto goodsDto : list) {
+			GoodsFileVO goodsFileVO = GoodsFileVO.builder()
+					.goodsDto(goodsDto)
+					.goods_main_image(goodsDao.getGoodsMainImage(goodsDto.getGoods_no()))
+					.build();
+			VOlist.add(goodsFileVO);
+		}
+		model.addAttribute("list", VOlist);
+//		model.addAttribute("VOList", VOlist);
 		return "goods/getList";
 	}
 	

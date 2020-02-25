@@ -1,18 +1,16 @@
 package com.kh.ordering.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.repository.GoodsQnaDao;
+import com.kh.ordering.vo.GoodsFileVO;
 import com.kh.ordering.vo.GoodsOptionVO;
 import com.kh.ordering.vo.GoodsVO;
 import com.kh.ordering.vo.PagingVO;
@@ -111,4 +109,17 @@ public class GoodsService {
 				.build();
 		return pagingVO;
 	}
+	
+	public List<GoodsFileVO> getListBest(){
+		return goodsDao.getListBest();
+	}
+	
+	public List<GoodsFileVO> getListNew() {
+		return goodsDao.getListNew();
+	}
+	
+	// 정렬 나중에..
+//	public void align(String type) {
+//		goodsDao.getList(type);
+//	}
 }
