@@ -3,11 +3,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-  
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+
+<style>
+	.articleBox,
+	.navBox {
+		width: 500px;
+		margin: 0 auto;
+	}
+	.delete {
+		float: right;
+	}
+</style>
+
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+    
 <script>
 	function deleteReq(member_custom_order_no){
 
@@ -29,19 +39,17 @@
 		}		
 	}
 	
-	function deleteCateReq(member_custom_order_no){
+	function deleteCustom(member_custom_order_no){
 
 		if(confirm("요청서를 삭제하시겠습니까?")){
 			$.ajax({
-				url : "deleteReq",
+				url : "deleteCustom",
 				data: {"member_custom_order_no" : member_custom_order_no},
 				method: "get",
 				success: function(resp){
+						alert("요청서가 삭제되었습니다.");
 						location.reload(true);
 					},
-				error: function(error){
-						alert("요청서가 삭제되었습니다.");
-					}
 			})		
 		}
 		else{
@@ -50,34 +58,29 @@
 	}
 </script>
 
-<h3>구매자가 보낸 요청서. member customListReq.jsp</h3>
+<h4>확인 안 한 견적서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
 
-<a href="${pageContext.request.contextPath }">home</a> &#124; 
-
-<h4>확인 안 한 견적서 몇 개냐: <span>${customAlarm } 개</span></h4>	
-
+<article class="articleBox">
+<table class="table table-hover listBox">
 <c:forEach var="memberCustom" items="${getListReq }">
-<div>
-	cateNo: <span>${memberCustom.custom_order_category }</span><br>
-	<a href="customInfoReq?member_custom_order_no=${memberCustom.member_custom_order_no }">
-		제목: ${memberCustom.custom_order_title }</a>
-			
-	<c:choose> 
-		<c:when test="${functions:length(memberCustom) == 1}">
-			<button onclick="deleteReq(${memberCustom.member_custom_order_no })">&Cross;</button>
-		</c:when>
-		<c:otherwise>
-			<button onclick="deleteCateReq(${memberCustom.member_custom_order_no })">&Cross;</button>
-		</c:otherwise>
-	</c:choose>
-	<br>
-	작성일: ${memberCustom.custom_order_date }
-	<hr>
-</div>
+	<tr>
+		<td>
+			cateNo: <span>${memberCustom.custom_order_category }</span><br>
+			<p><a href="customInfoReq?member_custom_order_no=${memberCustom.member_custom_order_no }">
+				${memberCustom.custom_order_title }
+				</a>
+			</p>
+			<p>
+				<span>${memberCustom.custom_order_date }</span>
+				<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span>
+			</p>
+		</td>
+	</tr>
 </c:forEach>
+</table>
 
 <!-- 내비게이터 -->
-<div>
+<div class="navBox">
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
 			<li class="page-item">
@@ -105,3 +108,4 @@
 		</c:if>
 	</ul>	
 </div>
+</article>

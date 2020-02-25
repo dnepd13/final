@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+   
 <h1>판매자 정보 수정 페이지</h1>
          <form action="info_edit" method="post">
          <h3>판매자 아이디 :${sellerDto.seller_id}</h3>

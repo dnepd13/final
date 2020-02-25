@@ -97,8 +97,15 @@
 	});
 </script>
 
-<!-- 카테고리관리창-->
-<h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
+<!-- 카테고리관리창--><div style="padding-top: 50px;">
+<jsp:include page="template/header.jsp"></jsp:include>
+</div>
+
+
+<div class="container-fluid">
+        <div class="row" style="padding: 50px;">
+            <div class="offset-md-1 col-md-10">
+<div class="row justify-content-center"  style="padding: 20px;"><h1>카테고리 관리</h1></div>
 
 <div>
 	<form  action="category" method="post">
@@ -154,6 +161,9 @@
 	</c:forEach>
   </tbody>
 </table>
+
+<div class="offset-md-4 col-md-4">
+
 <div>
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
@@ -183,6 +193,9 @@
 	</ul>
 </div>
 
-
+</div>
+   </div>
+        </div>
+    </div>
 
 

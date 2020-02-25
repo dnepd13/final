@@ -2,11 +2,41 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
-<h1>${param.seller_id } 님의 ${param.year }년 ${param.month }월 상세 정산 보기</h1>
+<div style="padding-top: 50px;">
+<jsp:include page="../template/header.jsp"></jsp:include>
+</div>
 
-<h1>판매자 이름 : ${sellername} / 판매자 이메일 : ${email } / 판매자 연락처 : ${phone } </h1>
-<h1>상호명 : ${storename } / 회사 연락처 : ${storephone } </h1>
-<h1>은행명 : ${bankname } / 계좌번호 : ${account } / 계좌명 : ${accountname }</h1>
+<div class="container-fluid">
+        <div class="row">
+            <div class="offset-md-1 col-md-10">
+<h1>${param.seller_id } 님의 ${param.year }년 ${param.month }월 상세 정산 보기</h1>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th width="10%">이름</th>
+      <th width="10%">이메일</th>
+      <th width="10%">연락처</th>
+      <th width="15%">상호명</th>
+      <th width="15%">회사연락처</th>
+      <th width="10%">은행명</th>
+      <th width="20%">계좌번호</th>
+      <th width="10%">계좌명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="table-light">
+    	<th class="center"><input type="checkbox" id="checkRow" name="checkRow" value="${list.member_no }"  style="width:20px;height:20px;"></th>
+      <th scope="row">${sellername}</th>
+      <td>${email }</td>
+      <td>${phone }</td>
+      <td>${storename } </td>
+      <td>${storephone }</td>
+      <td>${bankname }</td>
+      <td>${account } </td>
+      <td>${accountname } </td>
+    </tr>
+  </tbody>
+</table>
 
 <table class="table table-hover">
   <thead>
@@ -90,3 +120,7 @@
 		</c:if>
 	</ul>
 </div>
+
+   </div>
+        </div>
+    </div>
