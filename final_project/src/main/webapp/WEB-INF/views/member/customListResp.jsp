@@ -6,20 +6,15 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 
 <style>
-	.articleBox {
-		margin: 0 25%;
-	}
+	.articleBox,
 	.navBox {
-		margin: 0 35%
+		width: 500px;
+		margin: 0 auto;
 	}
 	.new {
 		float: right;
 	}
 </style>
-
-<h3>구매자가 받은 견적서. member customListResp.jsp</h3>
-
-<a href="${pageContext.request.contextPath }">home</a> &#124; 
 
 <h4>확인 안 한 견적서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
 
@@ -28,7 +23,7 @@
 <c:forEach var="sellerResp" items="${getListResp }">
 	<tr>
 		<td>
-			<p><span>${sellerResp.seller_id }님이 보낸 견적서입니다.</span>
+			<p><span>${sellerResp.seller_id } 님이 보낸 견적서입니다.</span>
 				<span class="new" style="color: red">
 					<c:set var="check" value="${sellerResp.member_alarm_check }"/>
 					<c:if test="${functions : contains(check, 'N') }">
@@ -39,7 +34,8 @@
 			<p><a href="customInfoResp?seller_custom_order_no=${sellerResp.seller_custom_order_no }">
 						${sellerResp.custom_order_title }</a>
 			</p>
-			<p>${sellerResp.custom_order_date }</p>
+			<span>${sellerResp.custom_order_date }</span>
+<%-- 			<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span> --%>
 		</td>
 </c:forEach>
 </table>

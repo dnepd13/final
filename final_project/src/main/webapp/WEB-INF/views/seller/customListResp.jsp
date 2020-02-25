@@ -5,18 +5,18 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 
 <style>
-	.articleBox {
-		margin: 0 25%;
-	}
+	.articleBox,
 	.navBox {
-		margin: 0 35%
+		width: 500px;
+		margin: 0 auto;
+	}
+	.delete {
+		float: right;
 	}
 </style>
 
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+
 <script>
 	function deleteResp(seller_custom_order_no){
 
@@ -42,24 +42,26 @@
 
 <h3>판매자가 보낸 견적서 customListResp.jsp</h3>
 
-<a href="main">판매자 홈으로</a> &verbar; 
-<a href="customListReq">받은 요청서</a>
 <h4>확인 안 한 요청서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
 
-<h4>보낸 견적서</h4>
-
 <article class="articleBox">
+<table class="table table-hover listBox">
 <c:forEach var="sellerCustom" items="${getListResp }">
-	<div class="listBox">
-	제목: <a href="customInfoResp?seller_custom_order_no=${sellerCustom.seller_custom_order_no }">
+	<tr>
+		<td>
+			<p>
+				<a href="customInfoResp?seller_custom_order_no=${sellerCustom.seller_custom_order_no }">
 						${sellerCustom.custom_order_title }
-			</a>
-			<button onclick="deleteResp(${sellerCustom.seller_custom_order_no })">&Cross;</button>
-			<br>	
-	작성일: ${sellerCustom.custom_order_date } <br>
-	<hr>
-	</div>
+				</a>
+			</p>
+			<p>
+				<span>${sellerCustom.custom_order_date }</span>
+				<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteResp(${sellerCustom.seller_custom_order_no })">&times;</button></span>
+			</p>
+		</td>
+	</tr>
 </c:forEach>
+</table>
 
 <div class="navBox">
 	<ul class="pagination">

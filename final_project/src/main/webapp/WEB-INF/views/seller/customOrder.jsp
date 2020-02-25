@@ -42,7 +42,7 @@
 		<h6 class="text-secondary">견적서의 상세내용을 작성해주세요.</h6>
 		<textarea class="input_req form-control" name="custom_order_content" required></textarea>
 			<br>
-		<h6 class="text-secondary">희망 견적은 얼마인가요?</h6>
+		<h6 class="text-secondary">예상 견적은 얼마인가요?</h6>
 		<input class="input_req form-control" type="number" name="custom_order_price" placeholder="원">
 			<br>
 		<h6 class="text-secondary">언제까지 가능한가요?</h6>
