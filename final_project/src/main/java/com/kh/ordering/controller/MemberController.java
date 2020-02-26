@@ -1,17 +1,20 @@
  package com.kh.ordering.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,10 +24,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kh.ordering.entity.CertDto;
+
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.entity.Member_AddrDto;
@@ -50,6 +52,9 @@ public class MemberController {
 	
 	@Autowired
 	private JavaMailSender sender;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	@Autowired
 	private RandomService randomService;
@@ -120,7 +125,32 @@ public class MemberController {
 			return "redirect:/member/login"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
 		}
 	
+	//회원 탈퇴
+	@GetMapping("memberdelete")
+	public String memberdelete() {
+		
+		return "member/memberdelete";
+	}
 
+	@PostMapping("memberdelete")
+	public String memberdelete(HttpSession session, @ModelAttribute MemberDto memberDto)
+	{
+		String member_id = (String)session.getAttribute("member_id");
+		memberDto.setMember_id(member_id);
+		MemberDto login = memberDao.login(memberDto);
+		
+		boolean correct = passwordEncoder.matches(memberDto.getMember_pw(),login.getMember_pw());
+		
+		if(login == null) {
+			return "redirect:/ordering/member/membermyinfo";
+		}
+		else {
+			session.invalidate();
+			memberDao.memberdelete(login);
+			return "redirect:/";
+		}
+	}
+	
 	
 //	@GetMapping("/registsuccess")
 //	public String registsuccess() {
@@ -221,6 +251,12 @@ public class MemberController {
 //		session.removeAttribute("member_no");
 		
 		return "redirect:/";
+	}
+	
+	@GetMapping("/style")
+	public String style() {
+		
+		return "member/style";
 	}
 
 	
@@ -329,6 +365,16 @@ public class MemberController {
 		return "member/membercheck";
 	}
 	
+	
+	
+	
+	
+	
+
+
+
+	
+	
 //회원 이메일 인증
 	@PostMapping("/send")//jsp로 결과가 나가면 안된다
 	@ResponseBody//내가 반환하는 내용이 곧 결과물
@@ -343,14 +389,15 @@ public class MemberController {
 	      }
 	@PostMapping("/validate")//세션에 있는 cert랑 사용자가 입력한 번호랑 같아야한다
 	@ResponseBody
-	public String validate(HttpSession session, @RequestParam(value = "cert",required = false,defaultValue = "")  String cert) {
+	public String validate(HttpSession session, @RequestParam String cert) {
 			String value =(String)session.getAttribute("cert");//서버에 저장된 번호를 내놔라 사용자가 입력한 값이 cert로 들어와야한다
 			      session.removeAttribute("cert");//세션값을 지운다 한번쓰면 지워야한다(버려야한다)
-			if (value.equals(cert)) {  //사용자가 입력한 값이 cert랑 같으면
-				return "email_success";
-			}	
-				else {
-					return "fail";
+			      if (value.equals(cert)) {  //사용자가 입력한 값이 cert랑 같으면
+
+						return "success";
+			      }
+			      else {
+			    	  	return "fail";
 
 				}
 			}

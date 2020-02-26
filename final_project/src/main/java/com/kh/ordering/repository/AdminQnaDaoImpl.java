@@ -83,6 +83,11 @@ public class AdminQnaDaoImpl implements AdminQnaDao{
 		return result;
 	}
 
+	@Override
+	public void deleteqna(AdminQnaDto adminQnaDto) {
+		sqlSession.delete("adminQnaDto.deleteqna", adminQnaDto);
+	}
+
 
 
 

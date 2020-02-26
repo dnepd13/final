@@ -10,6 +10,6 @@ public interface EmailService {
 
 		String sendCertMessege(String email, String cert);
 
-
-
+	
+	
 }
