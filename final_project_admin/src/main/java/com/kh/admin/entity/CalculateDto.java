@@ -11,13 +11,12 @@ public class CalculateDto {
 						calculate_finish,
 						calculate_ok_date,
 						calculate_status,
-						calculate_total,
-						calculate_exception,
-						calculate_final;
+						seller_id
+						;
 	
 	private int calculate_no,
-					ordering,
-					member,
-					non;
-					
+					seller_no,
+					calculate_total,
+					calculate_exception,
+					calculate_final;
 }

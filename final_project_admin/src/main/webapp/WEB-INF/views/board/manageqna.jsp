@@ -51,7 +51,7 @@
 </div>
 
 
-<div class="offset-md-4 col-md-8">
+<div class="row justify-content-center">
 
 
 <div>
