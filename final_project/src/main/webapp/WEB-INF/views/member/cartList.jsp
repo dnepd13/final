@@ -3,36 +3,43 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 
 <style>
 	* {box-sizing: border-box;}
 	table {border-collapse: collapse;}
+	.table_head {
+		background-color: rgb(248,245,240);
+	}
+	
 </style>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <h4>회원 주문내역페이지 member/orderingList.jsp</h4>
 
-<div>
-	<table  border="1">
-		<c:forEach var="cartInfo" items="${getCartInfo }">
-		<tr>
-			<th>주문번호</th>
-			<th>주문상품</th>
-			<th>결제금액<br>(배송비)</th>
-			<th>결제상태</th>
-			<th>배송상태</th>
-		</tr>
-		<tr>
-			<td>${cartInfo.partner_order_id }</td>
-			<td><a href="${pageContext.request.contextPath }/member/cartDetails?cart_info_no=${cartInfo.cart_info_no}" >.....외 ${cartInfo.total_quantity } 건</a></td>
-			<td>${cartInfo.total_price }<br>(${cartInfo.total_delivery_price })</td>
-			<td>${cartInfo.cart_info_status }</td>
-			<td>${cartInfo.cart_info_addr_status }</td>
-		</tr>
-		</c:forEach>
-	</table>	
-</div>
-
+<table class="table table-hover" border="1">
+  <thead>
+    <tr class="table_head">
+      <th scope="col">주문번호</th>
+      <th scope="col">주문상품</th>
+      <th scope="col">결제금액</th>
+      <th scope="col"><a href="">결제상태</a></th>
+      <th scope="col">배송상태</th>
+    </tr>
+  </thead>
+  <tbody>
+  	<c:forEach var="cartInfo" items="${getCartInfo }">
+    <tr>
+      <td scope="row">${cartInfo.partner_order_id }</td>
+      <td><a href="${pageContext.request.contextPath }/member/cartDetails?cart_info_no=${cartInfo.cart_info_no}" >.....외 ${cartInfo.total_quantity } 건</a></td>
+      <td>${cartInfo.total_price }<br>(${cartInfo.total_delivery_price })</td>
+      <td>${cartInfo.cart_info_status }</td>
+      <td>${cartInfo.cart_info_addr_status }</td>
+    </tr>
+    </c:forEach>
+  </tbody>
+</table> 
 
 <!-- 내비게이터 -->
 <div>
