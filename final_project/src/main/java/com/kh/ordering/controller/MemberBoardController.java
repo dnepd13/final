@@ -51,25 +51,25 @@ public class MemberBoardController {
 
 		String member_id = (String)session.getAttribute("member_id");
 		int member_no = memberDao.getNo(member_id);	
-		log.info("no={}",member_no);
+//		log.info("no={}",member_no);
 
 		PagingVO pagingVO = boardQnaService.adminQnaPagination(pno1,member_no);
 
 	int member_no1 = memberDao.getNo(member_id);
-	log.info("nore1={}",member_no1);
+//	log.info("nore1={}",member_no1);
 
 	pagingVO.setMember_no(member_no);
 
-	log.info("pagingVO={}",pagingVO);
+//	log.info("pagingVO={}",pagingVO);
 
 	List<AdminQnaDto> reportlist = adminQnaDao.getListReport(pagingVO);
-	log.info("reportlist={}",reportlist);
+//	log.info("reportlist={}",reportlist);
 
 
 
 	model.addAttribute("getListReport",reportlist);
 	model.addAttribute("paging",pagingVO);
-	log.info("1={}",model);
+//	log.info("1={}",model);
 
 		return "board/memberreport";
 	}
@@ -105,7 +105,7 @@ public class MemberBoardController {
 			Model model
 			) {
 		AdminQnaDto result = adminQnaDao.qnaBoardGetOne(adminQnaDto);
-		log.info("result={}",result);
+//		log.info("result={}",result);
 		model.addAttribute("reportone", result);
 
 		return "board/detailreport";
@@ -120,7 +120,7 @@ public class MemberBoardController {
 			Model model
 			) {
 		AdminQnaDto result1 = adminQnaDao.qnaGetOne(adminQnaDto);
-		log.info("result={}",result1);
+//		log.info("result={}",result1);
 
 		model.addAttribute("qnaone",result1);
 
@@ -136,6 +136,9 @@ public class MemberBoardController {
 
 		return "board/qnaregist";
 	}
+	
+	
+	
 
 	@PostMapping("/qnaregist")
 	public String qnaregist(@ModelAttribute AdminQnaDto adminQnaDto,
@@ -164,19 +167,19 @@ public class MemberBoardController {
 		adminQnaDto.setAdmin_qna_writer(member_id);
 		adminQnaDto.setSuper_no(qnaseq);
 
-		log.info("adminQnaDtoGroup={}",qnaseq);
-		log.info("adminQnaDtore={}",adminQnaDto);
-
-		log.info("adminQnaDtoregi={}",adminQnaDto);
-//		model.addAttribute("insertQna", adminQnaDto);
-		log.info("modelregi={}",model);
+//		log.info("adminQnaDtoGroup={}",qnaseq);
+//		log.info("adminQnaDtore={}",adminQnaDto);
+//
+//		log.info("adminQnaDtoregi={}",adminQnaDto);
+////		model.addAttribute("insertQna", adminQnaDto);
+//		log.info("modelregi={}",model);
 
 
 
 		adminQnaDao.qnaregist(adminQnaDto);
 //	sqlSession.insert("adminQnaDto.qnaregist",adminQnaDto);
 
-		log.info("modelfinal={}",adminQnaDto);
+//		log.info("modelfinal={}",adminQnaDto);
 
 	return "redirect:/board/memberqna";
 }
@@ -187,13 +190,13 @@ public class MemberBoardController {
 	// 회원 문의게시판 수정
 	@GetMapping("/editqna")
 	public String editqna(@RequestParam int admin_qna_no,Model model) {
-		log.info("upno={}", admin_qna_no);
+//		log.info("upno={}", admin_qna_no);
 
 		AdminQnaDto result = adminQnaDao.qnagetUpdate(admin_qna_no);
-		log.info("resultup={}",result);
+//		log.info("resultup={}",result);
 		model.addAttribute("updateget",result);
 
-		log.info("modelup={}",result);
+//		log.info("modelup={}",result);
 
 		return "board/editqna";
 	}
@@ -210,11 +213,27 @@ public class MemberBoardController {
 		log.info("model={}", model);
 
 
-		log.info("uppoDto= {}",adminQnaDto);
+//		log.info("uppoDto= {}",adminQnaDto);
 //		log.info("resultpo={}",result);
 		adminQnaDao.qnaUpdate(adminQnaDto);
 
 		return "redirect:/board/memberqna";
 	}
-
+	
+	
+	@GetMapping("/deleteqna")
+	public String deleteqna()
+	{
+		return "/board/deleteqna";
+	}
+	@PostMapping("/deleteqna")
+	public String deleteqna(@ModelAttribute AdminQnaDto adminQnaDto)
+	{
+		log.info("deleteno={}",adminQnaDto);
+		adminQnaDao.deleteqna(adminQnaDto);
+		
+		return "redirect:/board/memberqna";
+	}
+	
 }
+	

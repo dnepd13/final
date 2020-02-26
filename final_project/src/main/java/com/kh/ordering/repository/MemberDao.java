@@ -2,6 +2,7 @@ package com.kh.ordering.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.ordering.entity.GoodsCartDto;
@@ -69,12 +70,14 @@ public interface MemberDao {
 		//세션에 있는 id를 통해 번호구하기
 		int getNo(@RequestParam String member_id);
 
-
+		
 		public MemberDto memberGetOne(MemberDto member);
 		
+		//회원 탈퇴
+		void memberdelete(MemberDto memberDto);
 		
 		
-		
+	
 		
 		
 		

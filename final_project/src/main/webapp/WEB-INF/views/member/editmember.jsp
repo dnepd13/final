@@ -3,6 +3,8 @@
 
 <h1>회원정보 수정하기</h1>
 
+<h1><a href="/ordering/member/memberinfo">내 정보 보기로 이동</a></h1>
+
 <form action="editmember" method="post">
 	<input type="hidden" name="member_no" value="${memberget.member_no}">
 
