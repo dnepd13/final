@@ -1003,7 +1003,7 @@
 	</select>
 	
 	<!-- 상품 파일사진 불러오기 -->
-	<select id="getGoodsFiles" parameterType="int" resultType="GoodsFiles">
+	<select id="getGoodsFiles" parameterType="int" resultType="Files">
 		select F.* from files F
 		    inner join files_goods FG on F.files_no = FG.files_no
 		    inner join goods G on FG.goods_no = G.goods_no
@@ -1011,11 +1011,17 @@
 	</select>
 	
 	<!-- 파일 번호로 파일 정보가져오기 -->
-	<select id="getFile" parameterType="int" resultType="GoodsFiles">
-		select F.* from files F
-		    inner join files_goods FG on F.files_no = FG.files_no
-		    inner join goods G on FG.goods_no = G.goods_no
+	<select id="getFile" parameterType="int" resultType="Files">
+		select F.* from files F  
 		    where F.files_no = #{files_no}
+	</select>
+	
+	<!-- 주문제작 파일 사진 불러오기 -->
+	<select id="getCustomOrderFiles" parameterType="int" resultType="Files">
+		select F.*, CO.custom_order_no from files F
+		    inner join files_custom_order FCO on F.files_no = fco.files_no
+		    inner join custom_order CO on fco.custom_order_no = co.custom_order_no
+		    where CO.custom_order_no = #{custom_order_no}
 	</select>
 	
 	<!-- 주문제작 리스트 가져오기 -->
