@@ -177,16 +177,17 @@ public class SellerController {
 		//비밀번호 암호화
 		//아이디 검색을 하고 결과 유무 확인
 			SellerDto find = sellerService.login(sellerDto);
-//			log.info("id={}",find);
-//			log.info("sellerDto={}",sellerDto);
+			System.out.println(sellerDto);
+			log.info("id={}",find);
+			log.info("sellerDto={}",sellerDto);
 		if(find == null) {
-//			log.info("asd={}",find);
+			log.info("asd={}",find);
 				return "redirect:/seller/login?error";
 		}
 		else {//id가  잇으면--->비밀번호 매칭검사
 			boolean correct =passwordEncoder.matches(sellerDto.getSeller_pw(),find.getSeller_pw());
 //			boolean correct = sellerDto.getSeller_pw().equals(find.getSeller_pw());
-//			log.info("current={}",correct);
+			log.info("current={}",correct);
 					if(correct == true) {   //비밀번호일치
 						session.setAttribute("seller_id", find.getSeller_id());
 						return "redirect:/seller/main";				
