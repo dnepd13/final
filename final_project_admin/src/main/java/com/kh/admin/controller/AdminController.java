@@ -77,13 +77,13 @@ public class AdminController {
 	@Autowired
 	private SalesDao salesDao;
 	
-	//---------------------------로그인창----------------------------------
+	//---------------------------濡쒓렇�씤李�----------------------------------
 	@GetMapping("/")
 	public String login() {
 		
 		return "login";
 	}
-	//---------------------------로그인창----------------------------------
+	//---------------------------濡쒓렇�씤李�----------------------------------
 	@PostMapping("/")
 	public String login(
 			@ModelAttribute AdminDto adminDto,
@@ -118,7 +118,7 @@ public class AdminController {
 		}
 	
 	}
-	//---------------------------홈창----------------------------------
+	//---------------------------�솃李�----------------------------------
 	@GetMapping("/home")
 	public String home(Model model) {
 		try {
@@ -135,7 +135,7 @@ public class AdminController {
 		model.addAttribute("year", year);
 		model.addAttribute("month", month+1);
 		
-		//통계
+		//�넻怨�
 		int a = 0;
 		ResultVO result = salesDao.dailySalePrice();
 		if(result != null) {
@@ -185,7 +185,7 @@ public class AdminController {
 			model.addAttribute("todaySaleCount", a);
 		}
 		
-		//취소 오늘, 이번주, 이번달
+		//痍⑥냼 �삤�뒛, �씠踰덉＜, �씠踰덈떖
 		ResultVO result6 = salesDao.dailyCancel();
 		if(result6 != null) {
 			model.addAttribute("dailyCancel", result6.getResult());
@@ -216,12 +216,12 @@ public class AdminController {
 			return "/home";
 		}
 	}
-	//---------------------------관리자가입창----------------------------------
+	//---------------------------愿�由ъ옄媛��엯李�----------------------------------
 	@GetMapping("/regist")
 	public String regist() {
 		return "/regist";
 	}
-	//---------------------------관리자가입창----------------------------------
+	//---------------------------愿�由ъ옄媛��엯李�----------------------------------
 	@PostMapping("/regist")
 	public String regist(@ModelAttribute AdminDto adminDto) {
 		try {
@@ -239,7 +239,7 @@ public class AdminController {
 		}
 	}
 	
-	//---------------------------로그아웃창----------------------------------
+	//---------------------------濡쒓렇�븘�썐李�----------------------------------
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		try {
@@ -254,7 +254,7 @@ public class AdminController {
 		}
 	}
 	
-	//---------------------------카테고리 관리창----------------------------------
+	//---------------------------移댄뀒怨좊━ 愿�由ъ갹----------------------------------
 	@GetMapping("/category")
 	public String category(
 			Model model,
@@ -268,7 +268,7 @@ public class AdminController {
 		List<CategoryDto> list= categoryDao.categoryGetList(vo);
 		model.addAttribute("list", list);
 		
-		//카테고리 대 중 소 따로 따로 보내기
+		//移댄뀒怨좊━ �� 以� �냼 �뵲濡� �뵲濡� 蹂대궡湲�
 		model.addAttribute("big", categoryDao.categoryBig());
 		model.addAttribute("middle", categoryDao.categoryMiddle());
 		model.addAttribute("small", categoryDao.categorySmall());
@@ -280,7 +280,7 @@ public class AdminController {
 		}
 	
 	}
-	//---------------------------카테고리 등록----------------------------------
+	//---------------------------移댄뀒怨좊━ �벑濡�----------------------------------
 	@PostMapping("/category")
 	public String categoryInsert(
 			@ModelAttribute CategoryDto categoryDto
@@ -294,7 +294,7 @@ public class AdminController {
 			return "redirect:/category";
 		}
 	}
-	//---------------------------카테고리 업데이트----------------------------------
+	//---------------------------移댄뀒怨좊━ �뾽�뜲�씠�듃----------------------------------
 	@PostMapping("/categoryUpdate")
 	@ResponseBody
 	public String categoryUpdate(
@@ -327,7 +327,7 @@ public class AdminController {
 		}
 	}
 	
-	//---------------------------카테고리 삭제----------------------------------
+	//---------------------------移댄뀒怨좊━ �궘�젣----------------------------------
 	@PostMapping("/categoryDelete")
 	@ResponseBody
 	public String categoryDelete(
@@ -344,7 +344,7 @@ public class AdminController {
 			return "redirect:/category";
 		}
 	}
-	//---------------------------수수료창----------------------------------
+	//---------------------------�닔�닔猷뚯갹----------------------------------
 	@GetMapping("/premium")
 	public String premium(Model model) {
 		try {
@@ -358,7 +358,7 @@ public class AdminController {
 		}
 	}
 	
-	//---------------------------수수료 추가----------------------------------
+	//---------------------------�닔�닔猷� 異붽�----------------------------------
 	@PostMapping("/premium")
 	public String premium(@ModelAttribute PremiumDto premiumDto) {
 		try {
@@ -370,7 +370,7 @@ public class AdminController {
 			return "redirect:/premium";
 		}
 	}
-	//---------------------------수수료 변경----------------------------------
+	//---------------------------�닔�닔猷� 蹂�寃�----------------------------------
 	@PostMapping("premiumUpdate")
 	@ResponseBody
 	public String premiumUpdate(
@@ -394,7 +394,7 @@ public class AdminController {
 	}
 	
 	
-	//---------------------------수수료 삭제----------------------------------
+	//---------------------------�닔�닔猷� �궘�젣----------------------------------
 	@PostMapping("/premiumDelete")
 	@ResponseBody
 	public String premiumDelete(
@@ -415,7 +415,7 @@ public class AdminController {
 	
 	
 	
-	//resultmap을 써서 부른것
+	//resultmap�쓣 �뜥�꽌 遺�瑜멸쾬
 	//	@GetMapping("/goods")
 //	public String goods(
 //			Model model
@@ -425,7 +425,7 @@ public class AdminController {
 //		return "/goods";
 //	}
 	
-	//---------------------------차단----------------------------------
+	//---------------------------李⑤떒----------------------------------
 	@GetMapping("/block")
 	public String block(
 			@RequestParam(value = "member_no", required = false, defaultValue = "0") int member_no,
@@ -435,7 +435,7 @@ public class AdminController {
 		try {
 			
 		
-		//member_no가 0이 멤버를 모델
+		//member_no媛� 0�씠 硫ㅻ쾭瑜� 紐⑤뜽
 		if(member_no != 0) {
 			MemberDto memberDto = MemberDto.builder().member_no(member_no).build();
 			MemberDto result = memberDao.memberGetOne(memberDto);
@@ -461,19 +461,19 @@ public class AdminController {
 	public String block(
 			@ModelAttribute BlockDto blockDto
 			) {
-		//멤버 번호를 가지고 있으면 멤버를 차단하고 멤버리스트로 리턴
+		//硫ㅻ쾭 踰덊샇瑜� 媛�吏�怨� �엳�쑝硫� 硫ㅻ쾭瑜� 李⑤떒�븯怨� 硫ㅻ쾭由ъ뒪�듃濡� 由ы꽩
 		try {
 			
 		if(blockDto.getMember_no() != 0) {
 			adminDao.block(blockDto);
 			return "redirect:/member/manage";
 		}
-		//셀러 번호를 가지고 있으면 셀러를 차단하고 셀러리스트로 리턴
+		//���윭 踰덊샇瑜� 媛�吏�怨� �엳�쑝硫� ���윭瑜� 李⑤떒�븯怨� ���윭由ъ뒪�듃濡� 由ы꽩
 		else if(blockDto.getSeller_no() != 0) {
 			adminDao.block(blockDto);
 			return "redirect:/seller/manage";
 		}
-		//아니면 오류
+		//�븘�땲硫� �삤瑜�
 		else {
 			return "redirect:/";
 		}
@@ -483,7 +483,7 @@ public class AdminController {
 		}
 	}
 	
-	// ----------------------------차단 리스트 -----------------------------------
+	// ----------------------------李⑤떒 由ъ뒪�듃 -----------------------------------
 	@GetMapping("/blocklist")
 	public String blocklist(
 			Model model,
@@ -554,7 +554,7 @@ public class AdminController {
 		}
 	}
 	
-	//----------------차단 해제------------------------------
+	//----------------李⑤떒 �빐�젣------------------------------
 	@GetMapping("/unlock")
 	public String unlock(
 			@RequestParam(value="seller_no", required = false, defaultValue = "0") int seller_no,
@@ -584,7 +584,7 @@ public class AdminController {
 	}
 	
 	
-	//--------------------등급 혜택 --------------------------------------
+	//--------------------�벑湲� �삙�깮 --------------------------------------
 	@GetMapping("/gradebenefit")
 	public String benefit(Model model) {
 		try {
@@ -610,7 +610,7 @@ public class AdminController {
 		}
 	}
 	
-	//------------------등급혜택 수정-----------------------------------
+	//------------------�벑湲됲삙�깮 �닔�젙-----------------------------------
 	@PostMapping("/gradebenefitupdate")
 	public void gradebenefitupdate(@ModelAttribute GradeBenefitDto gradeBenefitDto) {
 		try {
@@ -622,7 +622,7 @@ public class AdminController {
 		}
 	}
 	
-	//--------------등급혜택 삭제------------------------------------------
+	//--------------�벑湲됲삙�깮 �궘�젣------------------------------------------
 	@PostMapping("gradebenefitdelete")
 	public void gradebenefitdelete(@ModelAttribute GradeBenefitDto gradeBenefitDto) {
 		try {
@@ -633,7 +633,7 @@ public class AdminController {
 		}
 	}
 	
-	//---------------------사이트 기본정보 설정--------------------------
+	//---------------------�궗�씠�듃 湲곕낯�젙蹂� �꽕�젙--------------------------
 	@GetMapping("/basicpagesetting")
 	public String basicpagesetting() {
 		try {
@@ -645,14 +645,14 @@ public class AdminController {
 		}
 	}
 	
-	//---------------------헤더-------------------------
+	//---------------------�뿤�뜑-------------------------
 //	@GetMapping("/template/header")
 //	public String header() {
 //		return "template/header";
 //	}
 //	
 	
-	//------------------------연습용 별
+	//------------------------�뿰�뒿�슜 蹂�
 //	@GetMapping("/star")
 //	public String star() {
 //		return "star";
