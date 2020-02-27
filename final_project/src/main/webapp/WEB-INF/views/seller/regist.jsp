@@ -3,6 +3,9 @@
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
   </script>
+  <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+  
   <script>  
   $(function() {
 	  $(".buttontest").attr("disabled", true);
@@ -100,13 +103,112 @@ $(function() {
 </script>
 </head>
 <body>
-
-<h1>regist.jsp</h1>
-<h1>회원가입 페이지</h1>
-<form action="regist" method="post">
-<div>
+<div class="continer-fluid">
+	<div class="row"  style="padding:50px;">
+		<div class="offset-md-4 col-md-4 ">
+	 	 <div class="row justify-content-center" style="padding: 20px;"><h1>판매자 회원가입</h1></div>
+         <br><br><br>
+		 <form action="regist" method="post">
+		 <!-- <form class="form-inline">옆으로 오는 입력 형식 -->
+              <!--아이디 입력창-->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">ID : </label>
+  				<input type="text" class="form-control" name="seller_id"required>
+			  	 <!--  name = 값 controller에있는파라미터값변수명하고 일치해야함 -->
+			  	<input class="test" type="button" id="id_check" value="중복확인" ><br>
+			  </div>
+              <!-- 비밀번호 입력창 -->
+               <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">PW : </label>
+  				<input type="password" class="form-control"id="inputDefault"name="seller_pw"required>
+			  </div>
+			  <!-- 이름 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">이름 : </label>
+  				<input type="text" class="form-control"id="inputDefault"name="seller_name"required>
+			  </div>
+			   <!-- 이메 입력창 -->
+			  <div class="form-group">			 
+  				<label class="col-form-label" for="email">이메일 : </label>
+  				<input type="email" class="form-control"id="email"name="seller_email"placeholder="이메일 입력" required>
+			  	<input type="button" id="check_email"value="인증번호 보내기">
+				<input type="text" name="cert" placeholder="인증번호 입력">
+				<input type="button" name="check_email_code" id="check_email_code" value="인증코드확인">	
+			  </div>
+			  <!-- 전화번호 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">전화번호 : </label>
+  				<input type="tel" class="form-control"id="inputDefault"name="seller_phone"required>
+			  </div>
+			  <!--주민등록번호/사업자번호 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">주민등록번호 또는 사업자번호 : </label>
+  				<input type="number" class="form-control"id="inputDefault"name="seller_birth"required>
+			  </div>
+			  <!--사업장 우편번호 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">사업장 우편번호 : </label>
+  				<input type="text" class="form-control"id="inputDefault"name="seller_addr_post"required>
+			  </div>
+			  <!--사업장 기본주소 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">사업장 기본주소 : </label>
+  				<input type="text" class="form-control"id="inputDefault"name="seller_addr_basic"required>
+			  </div>
+			  <!--사업장 상세주소 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">사업장 상세주소 : </label>
+  				<input type="text" class="form-control"id="inputDefault"name="seller_addr_extra"required>
+			  </div>
+			  <!--사업장 이름 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">사업장 이름 : </label>
+  				<input type="text" class="form-control"id="inputDefault"name="seller_store_name"required>
+			  </div>
+			  <!--사업장 전화번호 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">사업장 전화번호 : </label>
+  				<input type="tel" class="form-control"id="inputDefault"name="seller_store_phone"required>
+			  </div>
+			  <!--사업장 팩스번호 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">사업장 팩번호 : </label>
+  				<input type="number" class="form-control"id="inputDefault"name="seller_store_"required>
+			  </div>
+			  <!--사업장 은행명 (코드)입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">사업장 은행 : </label>
+  				<input type="text" class="form-control"id="inputDefault"name="seller_bank_code"required>
+			  </div>
+			  <!--사업장 은행계좌번호 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">사업장 은행 계좌번호 : </label>
+  				<input type="text" class="form-control"id="inputDefault"name="seller_bank_account"required>
+			  </div>
+			 
+			  <!--사업장 은행 예금주 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">사업장 은행 예금주 : </label>
+  				<input type="text" class="form-control"id="inputDefault"name="seller_bank_username"required>
+			  </div>
+			   <!--사업장 은행 주민등록번호 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label" for="inputDefault">사업장 은행 주민등록번 : </label>
+  				<input type="text" class="form-control"id="inputDefault"name="seller_bank_birth"required>
+			  </div>
+			   <!--가입일 숨겨서 온다-->
+			  <input type="hidden" name="seller_agree_date" value="${param.dTime }">
+			   <!--버튼 창 -->
+			   <button type="button" class="btn btn-secondary disabled" onclick="test();">가입하기</button>
+			  </form>
+			 </div>
+		</div>
+    </div>
+			  
+			  
+<!-- <div>
 판매자 아이디 <input type="text" name="seller_id"  id="seller_id" >
-  <!--  name = 값 controller에있는파라미터값변수명하고 일치해야함 -->
+   name = 값 controller에있는파라미터값변수명하고 일치해야함
                      <input class="test" type="button" id="id_check" value="중복확인" ><br>
 </div>
 <div>
@@ -117,12 +219,10 @@ $(function() {
 </div>
 
 <div >
-
 	<input type="email" id="email" name="seller_email" placeholder="이메일 입력">
 	<input type="button" id="check_email"value="인증번호 보내기">
 	<input type="text" name="cert" placeholder="인증번호 입력">
 	<input type="button" name="check_email_code" id="check_email_code" value="인증코드확인">
-
 </div>
 <div>
 판매자 대표자 전화번호 <input type="tel" name="seller_phone"><br><br>
@@ -144,7 +244,7 @@ $(function() {
 </div>
 <div>
 판매자 사업장 전화번호 <input type="tel" name="seller_store_phone"><br><br>
-</div>
+</div> 
 <div>
 판매자 사업장 팩스번호 <input type="number" name="seller_store_fax"><br><br>
 </div>
@@ -163,6 +263,7 @@ $(function() {
 
 <input type="hidden" name="seller_agree_date" value="${param.dTime }">
 <div>
+
 <input type="submit" class="buttontest" value="가입하기" onclick="test();">
 </div>
-</form>
+</form>-->
