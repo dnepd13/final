@@ -21,6 +21,9 @@
 			     <li class="nav-item"><a href="${pageContext.request.contextPath}/regist" class="nav-link">관리자가입</a></li class="nav-item">
 			     <li class="nav-item"><a href="${pageContext.request.contextPath}/admin/manage" class="nav-link">관리자관리</a></li>
 			</c:if>
+			<c:if test="${admin_grade ==  '일반관리자'}">
+				<li class="nav-item"><a href="${pageContext.request.contextPath}/admin/my" class="nav-link">내정보</a></li>
+			</c:if>
             <li class="nav-item"><a href="${pageContext.request.contextPath}/seller/manage" class="nav-link">판매자관리</a></li>
             <li class="nav-item"><a href="${pageContext.request.contextPath}/member/manage" class="nav-link">회원관리</a></li>
             <li class="nav-item"><a href="${pageContext.request.contextPath}/gradebenefit" class="nav-link">회원등급혜택</a></li>

@@ -79,6 +79,24 @@
 		delete admin where admin_no = #{admin_no}
 	</delete>
 	
+	<!-- 관리자 자기정보 -->
+	<select id="amindMy" parameterType="string" resultType="adminDto" >
+		select * from admin where admin_id = #{admin_id}
+	</select>
+	
+	<!-- 관리자 자기비밀번호 변경 위한 비밀번호 확인 -->
+	<select id="adminCheckPw" parameterType="int" resultType="adminDto">
+		select * from admin where admin_no = #{admin_no}
+	</select>
+	
+	<!-- 관리자 비밀번호 변경하기 관리자가 자기 아이디 하는 것 -->
+	<select id="adminChangePw" parameterType="adminDto">
+		update admin set 
+			admin_pw = #{admin_pw}
+		where 
+			admin_no = #{admin_no}
+	</select>
+	
 	<!-- 판매자 리스트 불러오기 -->
 	<select id="sellerGetList" parameterType="paging" resultType="blockSellerDto">
 		select * from(
