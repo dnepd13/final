@@ -591,7 +591,7 @@ $(function(){
 				<td colspan="4">
 				<c:forEach var="filesVO" items="${filesVO }">
 					<c:if test="${review.goods_review_no==filesVO.goods_review_no }">
-					<img src="${pageContext.request.contextPath }/member/reviewFile?files_no=${filesVO.files_no}" width=100px; height=100px;>
+						<img src="${pageContext.request.contextPath }/member/reviewFile?files_no=${filesVO.files_no}" width=100px; height=100px;>
 					</c:if>
 				</c:forEach>
 				</td>
