@@ -2,14 +2,23 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
+<style>
+	.justify-content-center{
+		padding:30px;
+	}	
+</style>
+
 <div style="padding-top: 50px;">
 <jsp:include page="../template/header.jsp"></jsp:include>
 </div>
 
+
 <div class="container-fluid">
         <div class="row">
             <div class="offset-md-1 col-md-10">
+            <div class="row justify-content-center">
 <h1>${param.seller_id } 님의 ${param.year }년 ${param.month }월 상세 정산 보기</h1>
+            </div>
 <table class="table table-hover">
   <thead>
     <tr>
@@ -25,7 +34,6 @@
   </thead>
   <tbody>
     <tr class="table-light">
-    	<th class="center"><input type="checkbox" id="checkRow" name="checkRow" value="${list.member_no }"  style="width:20px;height:20px;"></th>
       <th scope="row">${sellername}</th>
       <td>${email }</td>
       <td>${phone }</td>
@@ -65,7 +73,7 @@
   </tbody>
 </table>
 
-<div>
+<div class="row justify-content-center">
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
 			<c:choose>

@@ -1,5 +1,6 @@
 package com.kh.admin.repository;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.kh.admin.entity.AdminDto;
@@ -22,4 +23,6 @@ public interface AdminDao {
 	public void blockUnlockMember(BlockDto BlockDto);
 	
 	public int registToday();
+	
+	public byte[] get(int files_no) throws IOException;
 }

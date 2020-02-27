@@ -20,16 +20,15 @@
 		select member_no from cart_info where partner_order_id = #{partner_order_id}
 	</select>
 	
-	<select id="getOrdering_no" parameterType="String" resultType="int">
-		select ordering_no from ordering where partner_order_id = #{partner_order_id} and ordering_status = '결제완료'
-	</select>
-	<!-- 회원번호를 기준으로 주문내역(cart_info) 가져오기 -->
-	<select id="getCartInfoMember" parameterType="int" resultType="cartInfoDto">
+	<!-- 회원번호를 기준으로 주문/결제내역(ordering+cart_info) 가져오기 -->
+	<select id="getCartInfoMember" parameterType="int" resultType="cartInfoVO">
 		select *from(
 		    select rownum rn, RN.*from(
-		        select * from cart_info
-		            where member_no=#{member_no}
-		        order by partner_order_id desc
+		        select distinct A.*, ordering.item_name
+				    from
+				        cart_info A inner join ordering on A.partner_order_id = ordering.partner_order_id
+				    where A.member_no=#{member_no}
+				    order by a.cart_info_no desc
 		    )RN
 		)where rn between #{start} and #{finish}
  	</select>
@@ -37,14 +36,23 @@
  		select count(*) from cart_info where member_no=#{member_no}
  	</select>
  	
- 	<!-- cart_info_no에 대한 상품 관련 모든 것 -->
-	<select id="getCartGoods" parameterType="int" resultType="cartInfoVO">
-		select cart_info_goods.*, cart_ok.member_no, cart_ok.cart_ok_status, goods.goods_name, cart_info.cart_info_status
-		    from cart_info_goods
-		        inner join cart_ok on cart_ok.cart_info_goods_no = cart_info_goods.cart_info_goods_no
-		        inner join cart_info on cart_info_goods.cart_info_no = cart_info.cart_info_no
-		        inner join goods on goods.goods_no = cart_info_goods.goods_no
-		where cart_info.cart_info_no=#{cart_info_no}
+ 	<!-- cart_info_no에 대한 상품 주문내역 -->
+	<select id="getCartGoods" parameterType="int" resultType="cartDetailsVO">
+		select A.member_no, A.cart_info_status, B.*, c.goods_name, c.goods_price, c.category_no,
+		        cart_ok.member_no, cart_ok.cart_ok_status
+		    from
+		        cart_info A inner join cart_info_goods B on A.cart_info_no = B.cart_info_no
+				                    inner join goods C on B.goods_no = C.goods_no
+				                    inner join cart_ok on b.cart_info_goods_no = cart_ok.cart_info_goods_no
+		    where A.cart_info_no =#{cart_info_no}
+	</select>
+	<!-- cart_info_goods에 대한 옵션 주문내역 -->
+	<select id="getCartOption" parameterType="int" resultType="cartDetailsVO">
+		select A.cart_info_goods_no, C.*
+		    from
+		        cart_info_goods A inner join cart_info_op B on A.cart_info_goods_no = B.cart_info_goods_no
+		                          				  inner join goods_option C on B.goods_option_no = c.goods_option_no
+		    where a.cart_info_goods_no=#{cart_info_goods_no}
 	</select>
  	
  	<!-- 상품별 구매확정 테이블 -->

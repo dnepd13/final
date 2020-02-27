@@ -29,9 +29,11 @@
             <li class="nav-item"><a href="${pageContext.request.contextPath}/category" class="nav-link">카테고리 관리</a></li>
             <li class="nav-item"><a href="${pageContext.request.contextPath}/blocklist" class="nav-link">차단된 회원 목록</a></li>
             <li class="nav-item"><a href="${pageContext.request.contextPath}/goods/list" class="nav-link">상품 목록</a></li>
+            <li class="nav-item"><a href="${pageContext.request.contextPath}/custom/list" class="nav-link">주문제작</a></li>
             <li class="nav-item"><a href="${pageContext.request.contextPath}/basicpagesetting" class="nav-link">사이트 기본 정보 관리</a></li>
             <li class="nav-item"><a href="${pageContext.request.contextPath}/calculate/total" class="nav-link">정산</a></li>
             <li class="nav-item"><a href="${pageContext.request.contextPath}/logout" class="nav-link">로그아웃</a></li>
+          
           </ul>
         </div>  
       </nav>

@@ -2,20 +2,13 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 
 
-</head>
-<body>
-	<header>
 
-	</header>
-	<main>
 <h1>홈</h1>
+
+
 
 	<span><a href="${pageContext.request.contextPath }/seller/login">판매자로그인</a></span>
 	<span> &#124; </span>
@@ -47,8 +40,4 @@
 	</c:otherwise>
 </c:choose>
 
-	</main>
-	<footer>
-	</footer>
-</body>
-</html>
+

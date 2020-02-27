@@ -16,6 +16,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <%-- <script src="${pageContext.request.contextPath}/resources/js/goodsInfo.js"></script> --%>
 <script>
+
 $(function(){
 	var goodsOptionVOList = JSON.parse('${jsonGoodsOptionVOList}');
 	var goodsVO = JSON.parse('${jsonGoodsVO}');
@@ -56,6 +57,9 @@ $(function(){
 				var no = $(this).val();
 				var arr = goodsOptionVOList[i].goodsOptionList;
 				var index = arr.findIndex(dto => dto.goods_option_no == no);
+
+				console.log(arr);
+
 				price += arr[index].goods_option_price;
 				title = goodsOptionVOList[i].goods_option_title;
 				content = arr[index].goods_option_content;
@@ -469,7 +473,10 @@ $(function(){
 						<td></td>
 						<td>[${qna.goods_qna_head }] ${qna.goods_qna_content }</td>
 						<td>${qna.goods_qna_writer }</td>
-						<td>${qna.goods_qna_date }</td>
+						<td>
+							<fmt:parseDate value="${qna.goods_qna_date }" var="qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+							<fmt:formatDate value="${qna_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
+						</td>
 						<td></td>
 					</tr>
 					</c:when>
@@ -478,7 +485,10 @@ $(function(){
 						<td>${qna.goods_qna_head }</td>
 						<td>${qna.goods_qna_content }</td>
 						<td>${qna.goods_qna_writer }</td>
-						<td>${qna.goods_qna_date }</td>
+						<td>
+							<fmt:parseDate value="${qna.goods_qna_date }" var="qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+							<fmt:formatDate value="${qna_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
+						</td>
 						<%-- 문의 작성자와 로그인한 member_id가 같을 때 --%>
 						<c:if test="${qna.member_no == member_no && empty qna.goods_qna_status}">
 							<td data-goods_no = "${goodsVO.goods_no }"
@@ -556,13 +566,7 @@ $(function(){
 <section>
 <p>리뷰</p>
 	<table border="1">
-		<tr>
-			<th>글번호</th>
-			<th>작성자</th>
-			<th>작성시간</th>
-			<th></th>
-		</tr>
-<c:forEach var="review" items="${goodsReview }">
+	<c:forEach var="review" items="${goodsReview }">
 		<tr>
 			<td class="star" colspan="4">
 				<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${review.goods_review_star}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
@@ -571,13 +575,24 @@ $(function(){
 		<tr>
 			<td colspan="2">${review.goods_review_writer }</td>
 			<td>${review.goods_review_date }</td>
-			<td><button class="btn_reply">댓글쓰기</button></td>
+			<td>
+				<c:choose>
+		        <c:when test="${member_id !=null }">
+		        	<button class="btn_reply">댓글쓰기</button>
+		        </c:when>
+		        <c:otherwise>
+		        	<a href="${pageContext.request.contextPath}/member/login"><button>댓글쓰기</button></a>	        
+		        </c:otherwise>
+		        </c:choose>
+			</td>
 		</tr>
 		<c:if test="${ not empty filesVO }">
 			<tr>
 				<td colspan="4">
 				<c:forEach var="filesVO" items="${filesVO }">
-					<img src="http://localhost:8080/ordering/member/reviewFile?files_no=${filesVO.files_no}" width=100px; height=100px;>
+					<c:if test="${review.goods_review_no==filesVO.goods_review_no }">
+					<img src="${pageContext.request.contextPath }/member/reviewFile?files_no=${filesVO.files_no}" width=100px; height=100px;>
+					</c:if>
 				</c:forEach>
 				</td>
 			</tr>
@@ -593,10 +608,21 @@ $(function(){
 					<textarea name="goods_review_reply_content" required></textarea>
 					<input type="submit" value="댓글등록">
 				</form>
-				</td>
+			</td>
 		</tr>
 		<tr>
-			<td>
+			<td colspan="4">
+				<c:forEach var="reviewReply" items="${reviewReply }">
+					<c:if test="${review.goods_review_no==reviewReply.goods_review_no }">
+						<span>${reviewReply.goods_review_reply_writer }</span>
+						<span style="float:right;">
+							<fmt:parseDate value="${reviewReply.goods_review_reply_date }" var="reply_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+							<fmt:formatDate value="${reply_date }" pattern="yyyy/MM/dd HH:mm:ss"/>							
+						</span>
+						<p>${reviewReply.goods_review_reply_content }</p>
+						<hr>
+					</c:if>
+				</c:forEach>
 			</td>
 		</tr>
 </c:forEach>

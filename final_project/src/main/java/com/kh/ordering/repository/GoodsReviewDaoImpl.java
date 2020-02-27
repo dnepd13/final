@@ -47,9 +47,9 @@ public class GoodsReviewDaoImpl implements GoodsReviewDao{
 	}
 	
 	@Override // 파일 출력
-	public List<FilesVO> getFilesNo(int goods_no) {
+	public List<FilesVO> getFilesNo(int goods_review_no) {
 				
-		return sqlSession.selectList("review.getFilesNo", goods_no);
+		return sqlSession.selectList("review.getFilesNo", goods_review_no);
 	}
 	
 //	리뷰 댓글	
@@ -60,6 +60,10 @@ public class GoodsReviewDaoImpl implements GoodsReviewDao{
 	@Override
 	public void insertReviewReply(GoodsReviewReplyDto goodsReviewReplyDto) {
 		sqlSession.insert("review.insertReply", goodsReviewReplyDto);
+	}
+	@Override
+	public List<GoodsReviewReplyDto> getListReply(int goods_review_no) {
+		return sqlSession.selectList("review.getListReply", goods_review_no);
 	}
 
 }

@@ -222,6 +222,12 @@
 		update member set member_last_login = sysdate where member_id= #{member_id}
 	</update>
 	
+	<!-- 회원 탈퇴 -->
+	<delete id="delete" parameterType="member">
+		delete member where member_id = #{member_id}
+	</delete>
+	
+	
 	<!-- 회원 상세보기 리스트 -->
 	<select id="memberGetOne" parameterType="member" resultType="member">
 		select * from member where member_no = #{member_no}

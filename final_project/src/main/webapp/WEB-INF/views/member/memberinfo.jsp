@@ -5,7 +5,7 @@
 
 <h1>회원 정보 수정 테이블</h1>
 
-<h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
+<h1><a href="/ordering/member/membermyinfo">마이페이지로 이동</a></h1>
 
 	<h3>회원 아이디:${memberGetOne.member_id}</h3>
 	<h3>회원 이름:${memberGetOne.member_name}</h3>

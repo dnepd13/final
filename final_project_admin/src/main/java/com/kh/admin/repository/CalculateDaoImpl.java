@@ -56,11 +56,22 @@ public class CalculateDaoImpl implements CalculateDao{
 		return sqlSession.selectOne("admin.adjustmentOneCount", vo);
 	}
 
+	@Override
+	public List<AdjustmentFullVO> scheduleCalcul(String seller_id) {
+		return sqlSession.selectList("admin.scheduleCalculate", seller_id);
+	}
 
 	@Override
-	public void insert(CalculateDto calculateDto) {
-		sqlSession.insert("admin.insertCal", calculateDto);
-		
+	public void scheduleCalculateInsert(CalculateDto calculateDto) {
+		sqlSession.insert("admin.scheduleCalculateInsert", calculateDto);
 	}
+
+	@Override
+	public List<String> scheduleCalculateGetSeller() {
+		
+		return sqlSession.selectList("admin.scheduleCalculateGetSeller");
+	}
+
+
 
 }

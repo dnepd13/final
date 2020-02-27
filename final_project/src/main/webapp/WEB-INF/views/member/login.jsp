@@ -48,39 +48,20 @@
 	<div class="container" align="center">
 		<h2>대략 우리 로고</h2>
 		<br>
-		<!-- Nav tabs -->
-		<ul class="nav nav-tabs">
-			<li class="nav-item"><a class="nav-link active"
-				data-toggle="tab" href="#home">일반회원 로그인</a></li>
-			<li class="nav-item"><a class="nav-link" data-toggle="tab"
-				href="#menu1">판매자 로그인</a></li>
-		</ul>
 
-		<!-- Tab panes -->
-		<div class="tab-content login">
-			<div id="home" class="container tab-pane active" style="margin:0 0">
+		
+		<div class="content login">
+			<div id="member_login" class="container" style="margin:0 0">
 				<br>
-					<form action="${pageContext.request.contextPath }/member/login" method="post">
+					<form action="login" method="post">
 					<input type="text" name="member_id" placeholder="아이디"><p></p>						
 					<input type="password" name="member_pw"placeholder="비밀번호"><p></p>						
 					<input type="submit" value="로그인" class="enter">
 				</form>
 			</div>
-			<div id="menu1" class="container tab-pane fade">
-				<br>
-				<form action="${pageContext.request.contextPath }/seller/login" method="post">
-					<input type="text" name="seller_id" placeholder="아이디"><p></p>
-					<input type="password" name="seller_pw" placeholder="비밀번호"><p></p>
-					<input type="submit" value="로그인" class="enter">
-				</form>
-				<p></p>
-				<form action="${pageContext.request.contextPath }/seller/find" method="get">
-					<input type="submit" value="아이디" class="confirm"><p></p><input type="submit" value="비밀번호 찾기" class="confirm">
-				</form>
+	
 		</div>
 	</div>
-	
-</div>
 </body>
 </html>
 

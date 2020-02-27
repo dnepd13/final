@@ -7,6 +7,12 @@
 
 <style>
 	* {box-sizing: border-box;}
+	
+	.articleBox {
+		width: 70%;
+		margin: 0 auto;
+	}
+	
 	table {border-collapse: collapse;}
 	.table_head {
 		background-color: rgb(248,245,240);
@@ -18,23 +24,26 @@
 
 <h4>회원 주문내역페이지 member/orderingList.jsp</h4>
 
+<article class="articleBox">
 <table class="table table-hover" border="1">
-  <thead>
+  <thead align="center">
     <tr class="table_head">
-      <th scope="col">주문번호</th>
-      <th scope="col">주문상품</th>
-      <th scope="col">결제금액</th>
-      <th scope="col"><a href="">결제상태</a></th>
-      <th scope="col">배송상태</th>
+      <th scope="col" width="15%">주문번호</th>
+      <th scope="col" width="40%">주문상품</th>
+      <th scope="col" width="10%">총 수량</th>
+      <th scope="col" width="15%">결제금액<br>(배송비)</th>
+      <th scope="col" width="10%">결제상태</th>
+      <th scope="col" width="10%">배송상태</th>
     </tr>
   </thead>
   <tbody>
   	<c:forEach var="cartInfo" items="${getCartInfo }">
-    <tr>
-      <td scope="row">${cartInfo.partner_order_id }</td>
-      <td><a href="${pageContext.request.contextPath }/member/cartDetails?cart_info_no=${cartInfo.cart_info_no}" >.....외 ${cartInfo.total_quantity } 건</a></td>
-      <td>${cartInfo.total_price }<br>(${cartInfo.total_delivery_price })</td>
-      <td>${cartInfo.cart_info_status }</td>
+    <tr align="center">
+      <td scope="row"><a href="${pageContext.request.contextPath }/member/cartPayInfo?partner_order_id=${cartInfo.partner_order_id }" >${cartInfo.partner_order_id }</a></td>
+      <td align="left"><a href="${pageContext.request.contextPath }/member/cartDetails?cart_info_no=${cartInfo.cart_info_no}" >${cartInfo.item_name }</a></td>
+      <td>${cartInfo.total_quantity}</td>	
+      <td>${cartInfo.total_price } 원<br>(${cartInfo.total_delivery_price } 원)</td>
+      <td><a href="#">${cartInfo.cart_info_status }</a></td>
       <td>${cartInfo.cart_info_addr_status }</td>
     </tr>
     </c:forEach>
@@ -46,7 +55,7 @@
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
 			<li class="page-item">
-     			 <a class="page-link" href="${pageContext.request.contextPath}/member/orderingList?pageNo=${paging.startBlock-1}">&laquo;</a>
+     			 <a class="page-link" href="${pageContext.request.contextPath}/member/cartList?pageNo=${paging.startBlock-1}">&laquo;</a>
    			 </li>
 		</c:if>
 		<c:forEach begin="${paging.startBlock }" end="${paging.finishBlock }" var="p">
@@ -58,15 +67,16 @@
 				</c:when>
 				<c:when test="${p != paging.pno }">
 					<li class="page-item active">
-      					<a class="page-link" href="${pageContext.request.contextPath}/member/orderingList?pageNo=${p}">${p }</a>
+      					<a class="page-link" href="${pageContext.request.contextPath}/member/cartList?pageNo=${p}">${p }</a>
    					 </li>
 				</c:when>
 			</c:choose>
 		</c:forEach>
 		<c:if test="${paging.finishBlock < paging.pagecount}">
 			<li class="page-item">
-     			 <a class="page-link" href="${pageContext.request.contextPath}/member/orderingList?pageNo=${paging.finishBlock+1}">&raquo;</a>
+     			 <a class="page-link" href="${pageContext.request.contextPath}/member/cartList?pageNo=${paging.finishBlock+1}">&raquo;</a>
     		</li>
 		</c:if>
 	</ul>	
 </div>
+</article>

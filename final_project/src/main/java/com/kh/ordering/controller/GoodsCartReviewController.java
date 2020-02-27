@@ -2,6 +2,7 @@ package com.kh.ordering.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -24,7 +25,6 @@ import com.kh.ordering.entity.CartInfoDto;
 import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsReviewDto;
-import com.kh.ordering.entity.GoodsReviewReplyDto;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.GoodsReviewDao;
@@ -32,7 +32,7 @@ import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.service.CartInfoService;
 import com.kh.ordering.service.GoodsReviewService;
-import com.kh.ordering.vo.CartInfoVO;
+import com.kh.ordering.vo.CartDetailsVO;
 import com.kh.ordering.vo.FilesVO;
 import com.kh.ordering.vo.PagingVO;
 
@@ -41,7 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 @RequestMapping("/member")
-public class GoodsReviewController {
+public class GoodsCartReviewController {
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired
@@ -71,15 +71,30 @@ public class GoodsReviewController {
 		model.addAttribute("paging", result);
 		List<CartInfoDto> getCartInfoMember = orderDao.getCartInfoMember(result);
 		model.addAttribute("getCartInfo", getCartInfoMember);
-		
+
 		return "member/cartList";
 	}
-	@GetMapping("/cartDetails")
+	@GetMapping("/cartPayInfo") // 상세 결제정보
+	public String cartPayInfo(Model model,
+													@RequestParam int partner_order_id) {
+		
+		
+		return "member/cartPayInfo";
+	}
+	
+	@GetMapping("/cartDetails") // 상세 상품, 옵션정보
 	public String cartInfoGoods(Model model,
 													@RequestParam int cart_info_no) {
 
-		List<CartInfoVO> getCartGoods = orderDao.getCartGoods(cart_info_no);
+		List<CartDetailsVO> getCartGoods = orderDao.getCartGoods(cart_info_no);
 		model.addAttribute("getCartGoods", getCartGoods);
+
+		List<CartDetailsVO> optionList = new ArrayList<>();
+		for(CartDetailsVO list : getCartGoods) {
+			optionList.addAll(orderDao.getCartOption(list.getCart_info_goods_no())) ;
+			
+			model.addAttribute("getCartOption", optionList);
+		}
 		
 		return "member/cartDetails";
 	}

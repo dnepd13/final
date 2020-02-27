@@ -68,7 +68,7 @@
   </tbody>
 </table>
 
-<div>
+<div class="row justify-content-center">
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
 			<c:choose>

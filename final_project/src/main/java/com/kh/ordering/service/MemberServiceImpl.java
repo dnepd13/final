@@ -2,15 +2,18 @@ package com.kh.ordering.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.GoodsCartDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
+import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.OptionCartDto;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.vo.ItemVO;
@@ -18,9 +21,12 @@ import com.kh.ordering.vo.ItemVOList;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 @Slf4j
 public class MemberServiceImpl implements MemberService{
 
+
+	
 	@Autowired
 	private MemberDao memberDao;
 	
@@ -81,4 +87,8 @@ public class MemberServiceImpl implements MemberService{
 	public void deleteCart(int goods_cart_no) {
 		memberDao.deleteCart(goods_cart_no);
 	}
+
+
+	
+	
 }
