@@ -3,7 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<jsp:include page="/WEB-INF/views/home.jsp"/>
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 
@@ -92,3 +93,5 @@
 	</ul>	
 </div>
 </article>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
