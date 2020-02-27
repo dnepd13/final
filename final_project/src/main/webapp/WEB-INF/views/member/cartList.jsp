@@ -3,13 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+<jsp:include page="/WEB-INF/views/home.jsp"/>
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 
 <style>
 	* {box-sizing: border-box;}
 	
 	.articleBox {
-		width: 70%;
+		width: 60%;
 		margin: 0 auto;
 	}
 	
@@ -17,7 +19,17 @@
 	.table_head {
 		background-color: rgb(248,245,240);
 	}
-	
+/*	부트스트랩 nav */
+	.navbar {
+	    padding: 3px 1rem;
+	}
+	.navbar .nav-link {
+		margin: 5px 0;
+	    padding: 0 2rem;
+	    border-left: 1px solid rgba(255,255,255,0.1);
+	    border-right: 1px solid rgba(0,0,0,0.2);
+	    font-size: 13px;
+	}
 </style>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -28,8 +40,8 @@
 <table class="table table-hover" border="1">
   <thead align="center">
     <tr class="table_head">
-      <th scope="col" width="15%">주문번호</th>
-      <th scope="col" width="40%">주문상품</th>
+      <th scope="col" width="10%">주문번호</th>
+      <th scope="col" width="45%">주문상품</th>
       <th scope="col" width="10%">총 수량</th>
       <th scope="col" width="15%">결제금액<br>(배송비)</th>
       <th scope="col" width="10%">결제상태</th>
