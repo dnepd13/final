@@ -20,6 +20,7 @@ import com.kh.admin.service.BoardService;
 import com.kh.admin.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequestMapping("/admin")
@@ -59,7 +60,7 @@ public class AdminManageController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute AdminDto adminDto) {
 		try {
-			
+			System.out.println(adminDto);
 		adminManage.adminDelete(adminDto);
 		
 		return "redirect:/admin/manage?pno1="+pno1;
@@ -110,5 +111,20 @@ public class AdminManageController {
 		}
 	}
 	
+	@PostMapping("/reset")
+	public String reset(
+			@RequestParam int admin_no,
+			@RequestParam String admin_pw
+			) {
+		
+		AdminDto adminDto = AdminDto.builder()
+													.admin_no(admin_no)
+													.admin_pw(passwordEncoder.encode(admin_pw))
+													.build();
+					
+		adminManage.adminChangePw(adminDto);
+		
+		return "redirect:/admin/manage";
+	}
 	
 }
