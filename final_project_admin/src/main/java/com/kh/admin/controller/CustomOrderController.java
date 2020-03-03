@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.admin.entity.FilesDto;
 import com.kh.admin.repository.CustomOrderDao;
+import com.kh.admin.repository.GoodsFilesDao;
 import com.kh.admin.service.BoardService;
 import com.kh.admin.vo.CustomOrderVO;
 import com.kh.admin.vo.PagingVO;
@@ -26,6 +28,9 @@ public class CustomOrderController {
 	
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private GoodsFilesDao goodsFilesDao;
 	
 	@GetMapping("list")
 	public String list(
@@ -56,6 +61,11 @@ public class CustomOrderController {
 		CustomOrderVO vo = customorderDao.getOne(custom_order_no);
 		log.info("vo={}", vo);
 		model.addAttribute("list", vo);
+		
+		List<FilesDto> file = goodsFilesDao.getCustomOrderFiles(custom_order_no);
+		
+		model.addAttribute("file", file);
+		
 		return "custom/detail";
 	}
 }

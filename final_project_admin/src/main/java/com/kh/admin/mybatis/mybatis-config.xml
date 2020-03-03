@@ -52,6 +52,6 @@
 		<typeAlias type="com.kh.admin.vo.CustomOrderVO" alias="customOrderVO"/>
 
 		<!-- 상품 파일 -->
-		<typeAlias type="com.kh.admin.entity.FilesDto" alias="GoodsFiles"/>
+		<typeAlias type="com.kh.admin.entity.FilesDto" alias="Files"/>
  	</typeAliases>
  </configuration>

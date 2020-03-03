@@ -2,6 +2,8 @@ package com.kh.ordering.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,8 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.ordering.entity.MemberDto;
+import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.repository.DeliveryDao;
 import com.kh.ordering.repository.GoodsOptionDao;
+import com.kh.ordering.repository.MemberDao;
+import com.kh.ordering.repository.Member_AddrDao;
 import com.kh.ordering.service.GoodsOptionService;
 import com.kh.ordering.vo.CartVO;
 import com.kh.ordering.vo.ItemVOList;
@@ -33,6 +39,13 @@ public class OrderController {
 	@Autowired
 	private GoodsOptionService goodsOptionService;
 	
+	@Autowired
+	private HttpSession session;
+	@Autowired
+	private MemberDao memberDao;
+	@Autowired
+	private Member_AddrDao memberAddrDao;
+	
 	@PostMapping("/order")
 	public String order(@ModelAttribute ItemVOList itemVOList, Model model) throws JsonProcessingException {
 		log.info("컨트롤러에서itemVOList={}",itemVOList.getItemVOList());
@@ -46,6 +59,25 @@ public class OrderController {
 		model.addAttribute("jsonCartVOList", mapper.writeValueAsString(cartVOList));
 		
 		return "order/order";
+	}
+	
+	@PostMapping("/custom")
+	public String custom(Model model) {
+		
+		// 회원번호, 회원정보 찾기
+		String member_id = (String)session.getAttribute("member_id");
+		int member_no = memberDao.getNo(member_id);
+		MemberDto member = memberDao.getMember(member_no);
+		model.addAttribute("member", member);
+		
+		Member_AddrDto memberAddr = memberAddrDao.getBasicAddr(member_no);
+		model.addAttribute("memberAddr", memberAddr);
+		
+//		// 회원 포인트 확인(사용가능 포인트)
+//		int memberPoint = memberDao.getPoint(member_no);
+//		model.addAttribute("memberPoint", memberPoint);
+		
+		return "order/custom";
 	}
 	
 }
