@@ -127,13 +127,13 @@ $(function() {
   				<label class="col-form-label" for="inputDefault">이름 : </label>
   				<input type="text" class="form-control"id="inputDefault"name="seller_name"required>
 			  </div>
-			   <!-- 이메 입력창 -->
+			   <!-- 이메일 입력창 -->
 			  <div class="form-group">			 
   				<label class="col-form-label" for="email">이메일 : </label>
   				<input type="email" class="form-control"id="email"name="seller_email"placeholder="이메일 입력" required>
-			  	<input type="button" id="check_email"value="인증번호 보내기">
+			  	<input type="button" class="btn btn-secondary disabled" id="check_email" value="인증번호 보내기">
 				<input type="text" name="cert" placeholder="인증번호 입력">
-				<input type="button" name="check_email_code" id="check_email_code" value="인증코드확인">	
+				<input type="button" class="btn btn-secondary disabled" name="check_email_code" id="check_email_code" value="인증코드확인">	
 			  </div>
 			  <!-- 전화번호 입력창 -->
 			  <div class="form-group">
@@ -172,8 +172,8 @@ $(function() {
 			  </div>
 			  <!--사업장 팩스번호 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">사업장 팩번호 : </label>
-  				<input type="number" class="form-control"id="inputDefault"name="seller_store_"required>
+  				<label class="col-form-label" for="inputDefault">사업장 팩스번호 : </label>
+  				<input type="number" class="form-control"id="inputDefault"name="seller_store_fax"required>
 			  </div>
 			  <!--사업장 은행명 (코드)입력창 -->
 			  <div class="form-group">
@@ -193,13 +193,13 @@ $(function() {
 			  </div>
 			   <!--사업장 은행 주민등록번호 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">사업장 은행 주민등록번 : </label>
+  				<label class="col-form-label" for="inputDefault">사업장 은행 주민등록번호 : </label>
   				<input type="text" class="form-control"id="inputDefault"name="seller_bank_birth"required>
 			  </div>
 			   <!--가입일 숨겨서 온다-->
 			  <input type="hidden" name="seller_agree_date" value="${param.dTime }">
 			   <!--버튼 창 -->
-			   <button type="button" class="btn btn-secondary disabled" onclick="test();">가입하기</button>
+			   <button type="submit" class="btn btn-secondary disabled btn-block" onclick="test();">가입하기</button>
 			  </form>
 			 </div>
 		</div>
