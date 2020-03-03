@@ -7,6 +7,7 @@ import com.kh.ordering.entity.CartInfoGoodsDto;
 import com.kh.ordering.entity.CartInfoOpDto;
 import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.vo.CartDetailsVO;
 import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.OrderVO;
 import com.kh.ordering.vo.PagingVO;
@@ -25,7 +26,8 @@ public interface OrderDao {
 	// 회원 주문내역
 	List<CartInfoDto> getCartInfoMember(PagingVO paging);
 	int getCartInfoCount(int member_no);
-	List<CartInfoVO> getCartGoods(int cart_info_no);
+	List<CartDetailsVO> getCartGoods(int cart_info_no); // 상품상세
+	List<CartDetailsVO> getCartOption(int cart_info_goods_no); // 옵션상세
 	
 	CartOkDto getCartOk(int cart_info_goods_no); // 상품별 구매확정 테이블
 	// 구매확정 상태 업데이트
@@ -33,6 +35,6 @@ public interface OrderDao {
 	// 리뷰등록 상태 업데이트
 	void updateCartReview(int cart_info_goods_no);
 	
-	// 카테고리번호 기준 판매량 top5
+	// 카테고리번호 기준 판매량 top5 판매자 조회
 	List<CartInfoVO> getTopSales(int category_no);
 }

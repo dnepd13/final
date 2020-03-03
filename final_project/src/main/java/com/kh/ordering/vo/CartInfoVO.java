@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class CartInfoVO {
 	
-	private String process_time;
+	private String item_name;
 	
 	private int cart_info_no;
 	private int member_no;
