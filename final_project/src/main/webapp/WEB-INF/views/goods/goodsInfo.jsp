@@ -175,6 +175,7 @@ $(function(){
 		setFinalArea();
 		//버튼 바로 위에 있는 form을 데이터화하여 전송
 		var form = $(this).parent();
+		console.log(form);
 		var url = "../member/addCart";
 //			var data = {이름:값, 이름:값};
 		var data = form.serialize();
@@ -452,7 +453,7 @@ $(function(){
 </style>
 <article>
 <section>
-	<form action="../order/order" method="POST">
+	<form id="info-form" action="../order/order" method="POST">
 	<h1 class="text-center">상품 상세 페이지</h1>
 	<hr>
 	<div class="row justify-content-center">

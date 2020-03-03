@@ -12,73 +12,136 @@
  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
  <script src="${pageContext.request.contextPath}/resources/js/goodsOption.js"></script>
  <script>
- 	 $(function(){
+ $(function(){
 ////////////	카테고리	///////////////////////////////////
- 		 var category_largeList = "${category_largeList}";
-	 	 category_largeList = category_largeList.substring(1, category_largeList.length-1).split(",");
- 		 $.each(category_largeList, function(index, item){
- 			 var option = $("<option value='"+item+"'>"+item+"</option>");
- 			 $(".category_large").append(option);
- 		 });
+	 var category_largeList = "${category_largeList}";
+	 category_largeList = category_largeList.substring(1, category_largeList.length-1).split(",");
+	 $.each(category_largeList, function(index, item){
+		 var option = $("<option value='"+item+"'>"+item+"</option>");
+		 $(".category_large").append(option);
+	 });
+	 
+	 $(".category_large").change(function(){
+		 $(".middleChild").nextAll().remove();
+		 $(".smallChild").nextAll().remove();
+		 var category_name = $(this).val();
+		 var url = "large";
+		 $.ajax({
+			 type: "POST",
+		 	 url: url,
+		 	 data: {"category_name":category_name},
+		 	 success: function(resp){
+		 		 $.each(resp, function(index, item){
+		 			var option = $("<option value='"+item+"'>"+item+"</option>");
+		 			$(".category_middle").append(option);
+		 		 });
+		 	 }
+		 });
+	 });
  		 
- 		 $(".category_large").change(function(){
-	 		 $(".middleChild").nextAll().remove();
-	 		 $(".smallChild").nextAll().remove();
- 			 var category_name = $(this).val();
- 			 var url = "large";
- 			 $.ajax({
- 				 type: "POST",
- 			 	 url: url,
- 			 	 data: {"category_name":category_name},
- 			 	 success: function(resp){
- 			 		 $.each(resp, function(index, item){
- 			 			var option = $("<option value='"+item+"'>"+item+"</option>");
- 			 			$(".category_middle").append(option);
- 			 		 });
- 			 	 }
- 			 });
- 		 });
- 		 
- 		 $(".category_middle").change(function(){
- 			$(".smallChild").nextAll().remove();
-			 var category_name = $(this).val();
-			 var url = "middle";
-			 $.ajax({
-				 type: "POST",
-			 	 url: url,
-			 	 data: {"category_name":category_name},
-			 	 success: function(resp){
-			 		 $.each(resp, function(index, item){
-			 			var option = $("<option value='"+item+"'>"+item+"</option>");
-			 			$(".category_small").append(option);
-			 		 });
-			 	 }
-			 });
- 		 });
- 		 
- 		 $(".category_small").change(function(){
- 			var category_name = $(this).val();
- 			 console.log(category_name);
-			 var url = "small";
-			 $.ajax({
-				 type: "POST",
-			 	 url: url,
-			 	 data: {"category_name":category_name},
-			 	 success: function(resp){
-		 			 $(".category_no").val(resp);
-			 	 }
-			 });
- 		 });
+	 $(".category_middle").change(function(){
+		$(".smallChild").nextAll().remove();
+		 var category_name = $(this).val();
+		 var url = "middle";
+		 $.ajax({
+			 type: "POST",
+		 	 url: url,
+		 	 data: {"category_name":category_name},
+		 	 success: function(resp){
+		 		 $.each(resp, function(index, item){
+		 			var option = $("<option value='"+item+"'>"+item+"</option>");
+		 			$(".category_small").append(option);
+		 		 });
+		 	 }
+		 });
+	 });
+		 
+	 $(".category_small").change(function(){
+		var category_name = $(this).val();
+		 console.log(category_name);
+		 var url = "small";
+		 $.ajax({
+			 type: "POST",
+		 	 url: url,
+		 	 data: {"category_name":category_name},
+		 	 success: function(resp){
+	 			 $(".category_no").val(resp);
+		 	 }
+		 });
+	 });
 //////////////////////////////////////////////////////////////////////		 
  		 
- 		 
-	});
+ 		
+	// 이미지 미리보기
+	var sel_file;
+	
+	$(".goods_main_image").on("change",handleImgFilesSelect);
+	
+	function handleImgFilesSelect(e) {
+		console.log("ok");
+		var files = e.target.files;
+		var filesArr = Array.prototype.slice.call(files);
+		
+		filesArr.forEach(function(f){
+			if(!f.type.match("image.*")){
+				alert("이미지만 가능합니다");
+				return;
+			}
+			
+			sel_file = f;
+			
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				console.log(e.target.result);
+				console.log(e);
+				$(".main_image").attr("src", e.target.result);
+			}
+			reader.readAsDataURL(f);
+		});
+	}
+});
  </script>
 <style>
 ul{
    list-style:none;
    padding-left:0px;
 }
+
+.main_image_box{
+	width: 100%;
+	height: 250px;
+	margin-bottom: 10px;
+}
+
+.main_image_box > img {
+	width: 100%;
+	height: 250px;
+}
+
+.goods_name_box {
+	margin-bottom: 15px;
+}
+
+.goods_price_box {
+	margin: 10px 0px;
+}
+
+.goods_stock_box {
+	margin: 10px 0px;
+}
+
+.goods_status_box {
+	margin: 10px 0px;
+}
+
+.goods_category {
+	margin: 10px 0px;
+}
+
+.goods_content_box {
+	margin: 10px 0px;
+}
+
 </style>
 </head>
 <body>
@@ -90,7 +153,7 @@ ul{
 			<div class="col-lg-8">
 					<div class="row goods_name_area">
 						<div class="col">
-							<div class="input-group">
+							<div class="input-group goods_name_box">
 							  <div class="input-group-prepend">
 							    <span class="input-group-text" id="inputGroup-sizing-default">상품명</span>
 							  </div>
@@ -100,31 +163,33 @@ ul{
 					</div>
 					<div class="row">
 						<div class="col-lg-6">
-<%-- 						<img src="${contextPage.request.contextPath}/resources/img/star-custom.png"/> --%>
+							<div class="main_image_box">
+								<img class="main_image rounded" src="https://placehold.it/291x250/E8117F/ffffff?text=image">
+							</div>
 							<div class="input-group">
 							  <div class="input-group-prepend">
 							    <span class="input-group-text" id="inputGroupFileAddon01">대표사진</span>
 							  </div>
 							  <div class="custom-file">
-							    <input type="file" class="custom-file-input" name="goods_main_image" required>
+							    <input type="file" class="custom-file-input goods_main_image" name="goods_main_image" required>
 							    <label class="custom-file-label" for="inputGroupFile01">파일 찾기</label>
 							  </div>
 							</div>
 						</div>					
 						<div class="col-lg-6">
-						<div class="input- group">
+						<div class="input-group goods_price_box">
 							<div class="input-group-prepend">
 							    <span class="input-group-text">상품가격</span>
 						    </div>
 							<input type="text" class="form-control" name="goods_price" required>
 						</div>
-						<div class="input-group">
+						<div class="input-group goods_stock_box">
 							<div class="input-group-prepend">
 							    <span class="input-group-text" id="inputGroup-sizing-default">상품수량</span>
 						    </div>
 							<input type="text" class="form-control" name="goods_stock" required>
 						</div>	
-						<div class="input-group">
+						<div class="input-group goods_status_box">
 							<div class="input-group-prepend">
 							    <span class="input-group-text">판매여부</span>
 						    </div>
@@ -132,30 +197,41 @@ ul{
 								<option value="Y">Y</option>
 								<option value="N">N</option>
 							</select>
-						</div>		
+						</div>
+						<div class="input-group goods_category">
+							<div class="input-group-prepend">
+							    <span class="input-group-text">대</span>
+							</div>
+							<select class="form-control category_large inline-block" name="category_middle">
+									<option class="largeChild">선택</option>
+							</select>
+						</div>
+						<div class="input-group goods_category">
+							<div class="input-group-prepend">
+							    <span class="input-group-text">중</span>
+							</div>
+							<select class="form-control category_middle" name="category_middle">
+									<option class="middleChild">선택</option>
+							</select>
+						</div>
+						<div class="input-group goods_category">
+							<div class="input-group-prepend">
+							    <span class="input-group-text">소</span>
+							</div>
+							<select class="form-control category_small" name="category_middle">
+									<option class="smallChild">선택</option>
+							</select>
+						</div>
+						<input class="category_no" type="hidden" name="category_no" value="">			
 						</div>	
 					</div>
 					
 					
-				<div class="form-group">
-			      <label for="content">상품 설명</label>
+				<div class="form-group goods_content_box">
+			      <label class="input-group-text" for="content">상품 설명</label>
 			      <textarea class="form-control" id="content" rows="3" name="goods_content"></textarea>
 			    </div>
-				<div class="input-group">
-					<div class="input-group-prepend">
-					    <span class="input-group-text">카테고리</span>
-					</div>
-					<select class="form-control category_large inline-block" name="category_middle">
-							<option class="largeChild">선택</option>
-					</select>
-					<select class="form-control category_middle" name="category_middle">
-							<option class="middleChild">선택</option>
-					</select>
-					<select class="form-control category_small" name="category_middle">
-							<option class="smallChild">선택</option>
-					</select>
-				</div>
-				<input class="category_no" type="hidden" name="category_no" value="">	
+				
 				
 				<div class="form-group">
 			      <label for="">옵션</label><br>
@@ -237,7 +313,6 @@ ul{
 					<h5 class="submit_comment" style="color:red">기본옵션을 추가해주세요</h5>
 					<input class="form-control" class="submit_btn" type="submit" value="등록" disabled>
 				</div>
-			</div>
 		</div>
 	</div>
 	<input type="hidden" name="seller_no" value="${seller_no}">
