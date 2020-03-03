@@ -1,8 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">    
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
+
+<script>
+$(function(){
+	$(".adminPw").hide();
+});
+</script>
+
 <div style="padding-top: 50px;">
 <jsp:include page="../template/header.jsp"></jsp:include>
 </div>
@@ -18,12 +26,13 @@
     <tr>
       <th width="10%">번호</th>
       <th width="15%">아이디</th>
-      <th width="15%">이름</th>
+      <th width="10%">이름</th>
       <th width="15%">이메일</th>
-      <th width="15%">등급</th>
+      <th width="10%">등급</th>
       <th width="10%">가입일</th>
       <th width="10%">마지막 접속일시</th>
       <th width = "10%">삭제</th>
+      <th width="10%)">비밀번호 초기화</th>
     </tr>
   </thead>
   <tbody>
@@ -39,7 +48,14 @@
       <td>
       		<form action="" method="post">
       			<input type="hidden" name="admin_no" value="${list.admin_no }">
-      			<input type="submit" value="삭제">
+      			<button class="btn btn-primary" >삭제</button>
+      		</form>
+      </td>
+      <td>
+      		<form action="reset" method="post">
+      			<input type="hidden" name="admin_no" value="${list.admin_no }">
+      			<input class="adminPw" type="password" name="admin_pw" value="123456789a">
+      			<button class="btn btn-primary" >초기화</button>
       		</form>
       </td>
     </tr>

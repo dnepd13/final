@@ -3,7 +3,10 @@ package com.kh.admin.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +20,7 @@ import com.kh.admin.entity.SellerDto;
 import com.kh.admin.repository.CalculateDao;
 import com.kh.admin.repository.SellerDao;
 import com.kh.admin.service.BoardService;
+import com.kh.admin.service.EmailService;
 import com.kh.admin.vo.BlockSellerVO;
 import com.kh.admin.vo.CalculateVO;
 import com.kh.admin.vo.PagingVO;
@@ -27,6 +31,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping("/seller")
 public class SellerController {
+	
+	@Autowired
+	private EmailService emailService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private BoardService boardService;
@@ -140,6 +150,29 @@ public class SellerController {
 			e.printStackTrace();
 			return "redirect:/seller/manage";
 		}
+	}
+	
+	@PostMapping("/reset")
+	public String reset(
+			@RequestParam int seller_no,
+			@RequestParam String seller_pw,
+			@RequestParam String seller_email
+			) {
+		
+		SellerDto sellerDto = SellerDto.builder()
+									.seller_no(seller_no)
+									.seller_pw(passwordEncoder.encode(seller_pw))
+									.build();
+		System.out.println(sellerDto);
+		sellerDao.sellerChangePw(sellerDto);
+		
+		try {
+			emailService.sendMessage(seller_email);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/seller/manage";
 	}
 	
 	

@@ -94,4 +94,9 @@ public class MemberDaoImpl implements MemberDao{
 		sqlSession.insert("admin.insertAll", list);
 	}
 
+	@Override
+	public void memberChangePw(MemberDto memberDto) {
+		sqlSession.update("admin.resetPw", memberDto);
+	}
+
 }
