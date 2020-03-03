@@ -208,35 +208,57 @@
 	
 	<!-- 로그인 -->
 	<select id="login" parameterType="member" resultType="member">
-		select * from member where member_id=#{member_id}
-			
+			select * from member where member_id = #{member_id}
+
 	</select>
 	
-<!-- 	<select id="getNo" parameterType="String" resultType="member">
-		select member_no from member
-		where
-			member_id=#{member_id}
-	</select> -->
+<!--수정전 정보조회-->
+	<select id="memberGETOne" parameterType="int" resultType="member">
+		select * from member where member_no = #{member_no}
+	</select>
 	
 	<!-- 최종 로그인 변경  -->
 	<update id="lastLogin" parameterType="member">
 		update member set member_last_login = sysdate where member_id= #{member_id}
 	</update>
 	
+	<!-- 회원 탈퇴 -->
+	<delete id="delete" parameterType="member">
+		delete member where member_id = #{member_id}
+	</delete>
+	
+	
 	<!-- 회원 상세보기 리스트 -->
 	<select id="memberGetOne" parameterType="member" resultType="member">
 		select * from member where member_no = #{member_no}
 	</select>
 	
-		<!-- 회원 수정 -->
-	<update id="memberedit" parameterType="member">
-	  update member
-	  set
-	  	member_email = #{member_email},
-	  	member_phone = #{member_phone}
-	  where
-	  	member_no = #{member_no}	
-	</update>
+	
+		<!-- 회원 아이디 검사-->
+	<select id="id_check" parameterType="string" resultType="int">
+		select count(*) from member where member_id =#{member_id}
+	</select>
+	
+	<!-- 회원 아이디 찾기 -->
+	<select id="find_id" parameterType="member" resultType="member">
+		select  member_id from member where member_name=#{member_name} 
+		and member_email=#{member_email}
+	</select>
+
+	<!-- 회원비밀번호 수정입니다. -->
+<update id="memberchange_pw" parameterType="member">
+	update member set member_pw=#{member_pw} where member_id=#{member_id} 
+</update>
+	
+<!--회원정보 수정-->
+ 	<update id="memberedit" parameterType="member">
+ 		update member
+ 		set
+ 			member_email = #{member_email},
+ 			member_phone = #{member_phone}
+ 		where
+ 			member_no = #{member_no}
+ 	</update>
 	
 	
 	<!-- 회원 탈퇴 -->

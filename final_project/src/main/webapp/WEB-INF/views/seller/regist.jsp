@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-    
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
   </script>
   <script>  
@@ -64,16 +63,16 @@ $(function() {
 					//console.log(resp);
 					if(resp == "success"){
 						$("#check_email_code").show();
+						
 					}
 				}
 			
 			});
 		});
-});
 // 		validate-form이 전송되면 /validate로 비동기 요청을 전송
 		$("#check_email_code").click(function(e){
 			e.preventDefault();
-			
+			console.log("string");
 // 			var url = $(this).attr("action"); 
 // 			var method = $(this).attr("method");
 		var data = $(this).serialize();
@@ -82,20 +81,21 @@ $(function() {
 				url:"validate",
 				type:"post",
 				data:{
-					'check_email' :$("input[name='check_email_code']").val()
+					'cert' :$("input[name='cert']").val()
 				},
 				success:function(resp){
 // 					console.log(resp);
-					if(resp == "email_success"){
-						alert("인증 완료");
+					if(resp == "success"){
+						window.alert("인증 완료");
 					}
 					else{
-						alert("인증 실패");
+						window.alert("인증 실패");
 					}
 				}
 			});
 		});
 
+});
 
 </script>
 </head>
@@ -105,15 +105,15 @@ $(function() {
 <h1>회원가입 페이지</h1>
 <form action="regist" method="post">
 <div>
-판매자 아이디 <input type="text" name="seller_id"  id="seller_id" >
+<input type="text" name="seller_id"  id="seller_id" placeholder="판매자 아이디">
   <!--  name = 값 controller에있는파라미터값변수명하고 일치해야함 -->
-                     <input class="test" type="button" id="id_check" value="중복확인" ><br>
+<input class="test" type="button" id="id_check" value="중복확인" ><br>
 </div>
 <div>
-판매자 비밀번호 <input type="text" name="seller_pw"><br><br>
+<input type="text" name="seller_pw" placeholder="판매자 비밀번호"><br><br>
 </div>
 <div>
-판매자 대표자 이름 <input type="text" name="seller_name"><br><br>
+ <input type="text" name="seller_name" placeholder="판매자 대표이름"><br><br>
 </div>
 
 <div >
@@ -125,40 +125,40 @@ $(function() {
 
 </div>
 <div>
-판매자 대표자 전화번호 <input type="tel" name="seller_phone"><br><br>
+<input type="tel" name="seller_phone" placeholder="판매자 대표자 전화번호"><br><br>
 </div>
 <div>
-판매자 주민등록번호/사업자번호 <input type="number" name="seller_birth"><br><br>
+<input type="number" name="seller_birth" placeholder="판매자 사업자번호/주민번호"><br><br>
 </div>
 <div>
-판매자 사업장 우편번호 <input type="text" name="seller_addr_post"><br><br>
+<input type="text" name="seller_addr_post" placeholder="판매자 사업장 우편번호"><br><br>
 </div>
 <div>
-판매자 사업장 기본주소 <input type="text" name="seller_addr_basic"><br><br>
+<input type="text" name="seller_addr_basic" placeholder="판매자 사업장 기본주소"><br><br>
 </div>
 <div>
-판매자 사업장 상세주소 <input type="text" name="seller_addr_extra"><br><br>
+<input type="text" name="seller_addr_extra" placeholder="판매자  사업장 상세주소"><br><br>
 </div>
 <div>
-판매자 사업장 이름 <input type="text" name="seller_store_name"><br><br>
+<input type="text" name="seller_store_name" placeholder="판매자 사업장 이름"><br><br>
 </div>
 <div>
-판매자 사업장 전화번호 <input type="tel" name="seller_store_phone"><br><br>
+<input type="tel" name="seller_store_phone" placeholder="판매자 사업장 전화번호"><br><br>
 </div>
 <div>
-판매자 사업장 팩스번호 <input type="number" name="seller_store_fax"><br><br>
+<input type="number" name="seller_store_fax" placeholder="판매자 사업장 팩스번호"><br><br>
 </div>
 <div>
 </div>
-판매자 사업장 은행명(코드) <input type="text" name="seller_bank_code"><br><br>
+<input type="text" name="seller_bank_code" placeholder="판매자 사업장 은행코드"><br><br>
 <div>
-판매자 사업장 은행계좌번호 <input type="text" name="seller_bank_account"><br><br>
+ <input type="text" name="seller_bank_account" placeholder="판매자 은행계좌번호"><br><br>
 </div>
 <div>
-판매자 사업장 은행예금주 <input type="text" name="seller_bank_username"><br><br>
+<input type="text" name="seller_bank_username" placeholder="판매자 은행 예금주"><br><br>
 </div>
 <div>
-판매자 사업장 은행 주민 등록번호 <input type="text" name="seller_bank_birth"><br><br>
+<input type="text" name="seller_bank_birth" placeholder="판매자 사업장 주민등록번호"><br><br>
 </div>
 
 <input type="hidden" name="seller_agree_date" value="${param.dTime }">

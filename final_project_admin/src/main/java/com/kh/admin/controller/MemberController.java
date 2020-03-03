@@ -47,6 +47,8 @@ public class MemberController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute PagingVO paging
 			) {
+		try {
+			
 		
 		int count;
 		if(paging.getKey()==null) {
@@ -115,6 +117,10 @@ public class MemberController {
 			
 			return "member/manage";
 		}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "member/manage";
+		}
 	}
 	
 	//멤버 상세보기
@@ -123,9 +129,15 @@ public class MemberController {
 			@ModelAttribute MemberDto memberDto,
 			Model model
 			) {
+		try {
+			
 		model.addAttribute("one", memberDao.memberGetOne(memberDto));
 		
 		return "member/memberpage";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "member/memberpage";
+		}
 	}
 	
 	//회원 삭제
@@ -133,9 +145,15 @@ public class MemberController {
 	public String memberDelete(
 			@ModelAttribute MemberDto memberDto
 			) {
+		try {
+			
 		memberDao.memberDelete(memberDto);
 		
 		return "redirect:/member/manage";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/member/manage";
+		}
 	}
 	
 	//회원 별 포인트 조회
@@ -146,6 +164,8 @@ public class MemberController {
 			@RequestParam int member_no,
 			Model model
 			) {
+		try {
+			
 		model.addAttribute("member_id",member_id);
 		MemberPointVO memberPointVO = MemberPointVO.builder().member_no(member_no).build();
 		int result = memberDao.pointSumGet(memberPointVO);
@@ -157,6 +177,10 @@ public class MemberController {
 		List<MemberPointVO> list = memberDao.pointGetOneMemberList(paging);
 		model.addAttribute("list", list);
 		return "member/point";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "member/point";
+		}
 	}
 	
 	//회원 포인트 삭제
@@ -165,6 +189,7 @@ public class MemberController {
 			@RequestParam int member_point_no,
     		@RequestParam int paging_member_no
 			) {
+			
 		MemberDto memberDto = MemberDto.builder().member_no(paging_member_no).build();
 		MemberDto result = memberDao.memberGetOne(memberDto);
 		memberDao.poingDelete(member_point_no);
@@ -177,20 +202,25 @@ public class MemberController {
 			@RequestParam int member_no,
 			Model model
 			) {
+		try {
+			
+		
 		MemberDto memberDto = MemberDto.builder().member_no(member_no).build();
 		MemberDto result = memberDao.memberGetOne(memberDto);
 		model.addAttribute("member", result);
 		
-		
-		 
-		
 		return "member/pointregist";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "member/pointregist";
+		}
 	}
 	
 	@PostMapping("/pointregist")
 	public String pointregist(
 			@ModelAttribute MemberPointVO memberPointVO
 			) {
+			
 		memberDao.pointRegist(memberPointVO);
 		MemberDto memberDto = MemberDto.builder()
 																.member_no(memberPointVO.getMember_no())
@@ -205,7 +235,13 @@ public class MemberController {
 	//---------------------선택해서 포인트 주기 ------------------------------
 	@GetMapping(value="/providepoint", produces = "application/text; charset=utf-8")
 	public String providepoint() {
-		return "member/providepoint";
+		try {
+					
+				return "member/providepoint";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "member/providepoint";
+		}
 	}
 	
 	@PostMapping(value = "/pointAllRegist", produces = "application/text; charset=utf-8")
@@ -216,6 +252,7 @@ public class MemberController {
 			@RequestParam String reason,
 			@RequestParam String lastdate
 			) {
+		
 		log.info("vlaie={}", valueArr.get(0));
 		log.info("point={}", point);
 		log.info("reason={}", reason);

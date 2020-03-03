@@ -39,11 +39,11 @@
  	
  	<!-- 리뷰 파일 출력 -->
  	<select id="getFilesNo" parameterType="int" resultType="FilesVO">
-		select files.files_no from files 
-		    inner join files_goods_review on files_goods_review.files_no = files.files_no
-		    inner join goods_review on goods_review.goods_review_no = files_goods_review.goods_review_no
-		    inner join goods on goods_review.goods_no = goods.goods_no
-		where goods.goods_no =#{goods_no}
+		select files.files_no , files_goods_review.goods_review_no
+			from
+			files inner join files_goods_review on files_goods_review.files_no = files.files_no
+		    		inner join goods_review on goods_review.goods_review_no = files_goods_review.goods_review_no
+		where goods_review.goods_review_no = #{goods_review_no}
 	</select>
 	
 	<select id="getGoodsNoReview" parameterType="int" resultType="int">
@@ -57,7 +57,7 @@
 					values(goods_review_reply_seq.nextval, #{goods_review_no}, #{member_no},
 								#{goods_review_reply_content}, #{goods_review_reply_writer}, sysdate)
 	</insert>
-	<select id="getReplyList">
-		select *from 
+	<select id="getListReply" parameterType="int" resultType="goodsReviewReplyDto">
+		select *from goods_review_reply where goods_review_no=#{goods_review_no} order by goods_review_reply_date asc
 	</select>
  </mapper>

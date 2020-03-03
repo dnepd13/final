@@ -1,6 +1,7 @@
 package com.kh.admin.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CalculateController {
 	
-
 	@Autowired
 	private CalculateDao calculateDao;
 	
@@ -50,6 +50,21 @@ public class CalculateController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute PagingVO paging
 			) {
+		try {
+			
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int month = (Calendar.getInstance().get(Calendar.MONTH));
+		model.addAttribute("year", year);
+		model.addAttribute("month", month+1);
+		
+		if(adjustmentInsertVO.getYear()<1) {
+			adjustmentInsertVO.setYear(year);
+		}
+		if(adjustmentInsertVO.getMonth()<1) {
+			adjustmentInsertVO.setMonth(month);
+		}
+		log.info("ajust={}", adjustmentInsertVO);
+		
 		log.info("v111o={}",paging);
 		int count = calculateDao.calculateCount(adjustmentInsertVO);
 		log.info("count={}", count);
@@ -63,6 +78,10 @@ public class CalculateController {
 		model.addAttribute("list", list);
 		
 		return "calculate/total";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "calculate/total";
+		}
 	}
 	
 	@GetMapping("/detail")
@@ -72,6 +91,17 @@ public class CalculateController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute PagingVO paging
 			) {
+		try {
+			
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int month = (Calendar.getInstance().get(Calendar.MONTH));
+		if(adjustmentInsertVO.getYear()<1) {
+			adjustmentInsertVO.setYear(year);
+		}
+		if(adjustmentInsertVO.getMonth()<1) {
+			adjustmentInsertVO.setMonth(month+1);
+		}
+		
 		int count = calculateDao.oneSellerCount(adjustmentInsertVO);
 		
 		PagingVO vo = boardService.allPaging(pno1, count);
@@ -83,7 +113,9 @@ public class CalculateController {
 		List<AdjustmentFullVO> list = calculateDao.getOneSeller(vo);
 		
 		model.addAttribute("list", list);
-
+		
+		log.info("구매자={}",list.get(0).getMember_id());
+		
 		String bankcode = list.get(0).getSeller_bank_code();
 		String bank = calculrateService.getBankName(bankcode);
 		model.addAttribute("bankname", bank);
@@ -95,7 +127,13 @@ public class CalculateController {
 		model.addAttribute("account", list.get(0).getSeller_bank_account());
 		model.addAttribute("accountname", list.get(0).getSeller_bank_username());		
 		return "calculate/detail";
-
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "calculate/detail";
+		}
 	}
-}
 	
+	
+	
+	
+}

@@ -1,12 +1,20 @@
  package com.kh.ordering.controller;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,20 +25,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh.ordering.entity.GoodsCartDto;
+import com.kh.ordering.entity.CertDto;
+
 import com.kh.ordering.entity.MemberDto;
-import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.entity.Member_PointDto;
+import com.kh.ordering.entity.Member_AddrDto;
+import com.kh.ordering.repository.CertDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.Member_AddrDao;
 import com.kh.ordering.repository.Member_PointDao;
-import com.kh.ordering.service.GoodsOptionService;
+import com.kh.ordering.service.EmailService;
 import com.kh.ordering.service.MemberService;
-import com.kh.ordering.vo.CartVO;
-import com.kh.ordering.vo.ItemVO;
-import com.kh.ordering.vo.ItemVOList;
+import com.kh.ordering.service.Member_AddrService;
+import com.kh.ordering.service.RandomService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,10 +48,19 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 
 	@Autowired
-	private GoodsOptionService goodsOptionService;
+	private CertDao certDao;
+	
+	@Autowired
+	private JavaMailSender sender;
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private RandomService randomService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@Autowired
 	private MemberDao memberDao;
@@ -55,61 +71,16 @@ public class MemberController {
 	@Autowired
 	private Member_AddrDao member_AddrDao;
 	
+
+	
 	@Autowired
-	private PasswordEncoder encoder;
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private SqlSession sqlSession;
 	
-	// 장바구니 (월용) ///////////////////////
-	@GetMapping("/cart")
-	public String cart(HttpSession session, Model model) throws JsonProcessingException {
-		String member_id = (String)session.getAttribute("member_id");
-		
-		List<GoodsCartDto> goodsCartDtoList = memberDao.getGoodsCartList(member_id);
-		List<ItemVO> itemVOList = new ArrayList<>();
-		List<Integer> goodsCartNoList = new ArrayList<>();
-		
-		for(GoodsCartDto goodsCartDto : goodsCartDtoList) {
-			goodsCartNoList.add(goodsCartDto.getGoods_cart_no());
-			
-			ItemVO itemVO = ItemVO.builder()
-					.goods_no(goodsCartDto.getGoods_no())
-					.option_no_list(memberDao.getGoodsOptionNoList(goodsCartDto.getGoods_cart_no()))
-					.price(goodsCartDto.getGoods_cart_price())
-					.quantity(goodsCartDto.getGoods_cart_quantity())
-				.build();
-			itemVOList.add(itemVO);
-		}
-		
-		List<CartVO> cartVOList = goodsOptionService.getCartVOList(itemVOList);
-		
-		
-		
-		model.addAttribute("cartVOList", cartVOList);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		model.addAttribute("jsonCartVOList", mapper.writeValueAsString(cartVOList));
-		model.addAttribute("jsGoodsCartNoList", goodsCartNoList);
-		return "member/cart";
-	}
 	
-	@PostMapping("/addCart")
-	@ResponseBody
-	public String addCart(@ModelAttribute ItemVOList itemVOList, HttpSession session) {
-		memberService.addCart((String)session.getAttribute("member_id"), itemVOList);
-		return "";
-	}
-	
-	@PostMapping("/deleteCart")
-	@ResponseBody
-	public String deleteCart(@RequestParam int goods_cart_no) {
-		memberService.deleteCart(goods_cart_no);
-		return "";
-	}
-	
-	
-	/////////////////////////////////////	
+		
 	
 		//회원 가입하기
 	
@@ -139,7 +110,7 @@ public class MemberController {
 //			String result = encoder.encode(origin);
 //			//멤버에 pw를 넣는다
 //			member.setMember_pw(result);
-			member.setMember_pw(encoder.encode(member.getMember_pw()));
+			member.setMember_pw(passwordEncoder.encode(member.getMember_pw()));
 			
 			
 			//멤버 시퀀스를 회원에게 입력받은 6개의 데이터에 넣고 입력
@@ -154,7 +125,32 @@ public class MemberController {
 			return "redirect:/member/login"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
 		}
 	
+	//회원 탈퇴
+	@GetMapping("memberdelete")
+	public String memberdelete() {
+		
+		return "member/memberdelete";
+	}
 
+	@PostMapping("memberdelete")
+	public String memberdelete(HttpSession session, @ModelAttribute MemberDto memberDto)
+	{
+		String member_id = (String)session.getAttribute("member_id");
+		memberDto.setMember_id(member_id);
+		MemberDto login = memberDao.login(memberDto);
+		
+		boolean correct = passwordEncoder.matches(memberDto.getMember_pw(),login.getMember_pw());
+		
+		if(login == null) {
+			return "redirect:/ordering/member/membermyinfo";
+		}
+		else {
+			session.invalidate();
+			memberDao.memberdelete(login);
+			return "redirect:/";
+		}
+	}
+	
 	
 //	@GetMapping("/registsuccess")
 //	public String registsuccess() {
@@ -182,38 +178,37 @@ public class MemberController {
 	
 	
 	@PostMapping("/login")
-	public String login(@ModelAttribute MemberDto member, HttpSession session) {
-		MemberDto find = memberDao.login(member);
-		log.info("member={}", member);
+	public String login(@ModelAttribute MemberDto member, 
+			HttpSession session ) {
+		
+		try {
+		MemberDto login = memberDao.login(member);
+		log.info("member={}", login);
 		
 		
-		if(find == null) {//아이디가 없으면
+		if(login == null) {//아이디가 없으면
 
 			return "redirect:/member/login?error";
 		}
 		
-		
 		else {//아이디가 있으면 비밀번호 매칭 검사
-		
-			
-		boolean correct = encoder.matches(member.getMember_pw(), find.getMember_pw());
-			log.info("correct={}",correct);
-			if(correct == true) {//비밀번호 일치
+		boolean correct = passwordEncoder.matches(member.getMember_pw(), login.getMember_pw());
+		log.info("correct={}",correct);
+			if(correct) {//비밀번호 일치
 				
-			
 			log.info("로그인 성공");
 			//세션에 회원 정보인  member_id, member_no 를 추가 
-			session.setAttribute("member_id", find.getMember_id());
+			session.setAttribute("member_id", login.getMember_id());
+			session.setAttribute("member_grade", login.getMember_grade());
 //			session.setAttribute("member_no", find.getMember_no());
-			log.info("no ={}",find.getMember_no());
-		
-			
+			log.info("no ={}",login.getMember_no());
+
 			// 최종로그인
 			memberDao.lastLogin(member);
-			log.info("1={}", find);
+			log.info("1={}", login);
 			//필요하다면 쿠키도 생성
 			
-			  session.getAttribute("member_id");
+//			  session.getAttribute("member_id");
 			
 //			String member_id = session.getno("member_id");
 //			  
@@ -223,17 +218,26 @@ public class MemberController {
 			log.info("member={}",member);
 			
 			return "redirect:/";
-		}
-			else {//로그인이 실패 했을 경우 확인을 위한 구문
+		
+			} else {//로그인이 실패 했을 경우 확인을 위한 구문
 			
 			
 			log.info("로그인 실패");
 			return "redirect:/member/login?error";
 		}
 			
-	}
-}
+		}
+		
+		}catch(Exception e) {
+		e.printStackTrace();
+		return "redirect:/?error";
+
 	
+		}
+	}
+		
+		
+
 
 	//회원 로그아웃
 	
@@ -247,6 +251,12 @@ public class MemberController {
 //		session.removeAttribute("member_no");
 		
 		return "redirect:/";
+	}
+	
+	@GetMapping("/style")
+	public String style() {
+		
+		return "member/style";
 	}
 
 	
@@ -274,18 +284,57 @@ public class MemberController {
 		return "member/memberinfo";
 	}
 	
+	//회원 비밀번호 수정
+	@GetMapping("/memberchange_pw")
+	public String memberchange_pw() {
+		
+		return "member/memberchange_pw"; 
+	}
 	
-	
+	@PostMapping("memberchange_pw")
+	public String memberchange_pw(@ModelAttribute MemberDto memberDto, HttpSession session)
+	{
+		String member_id = (String)session.getAttribute("member_id");
+		memberDto.setMember_id(member_id);
+		
+		memberDto.setMember_pw(passwordEncoder.encode(memberDto.getMember_pw()));
+		memberDto.setMember_id(member_id);
+		
+		
+		memberDao.memberchange_pw(memberDto);
+		
+		return "redirect:/member/memberchange_pw_success";
+	}
 	
 	//회원 정보 수정
-	@PostMapping("memberedit")
-	public String memberedit(@RequestParam int member_no,String member_email,String member_phone) {
+	@GetMapping("editmember")
+	public String editmember(@RequestParam int member_no,Model model)
+	{
+	
+		MemberDto member = memberDao.memberGetOne(member_no);
+		model.addAttribute("memberget",member);
 		
-		MemberDto member = MemberDto.builder()
-					.member_no(member_no)
-					.member_email(member_email)
-					.member_phone(member_phone)
-					.build();
+		
+		return "member/editmember";
+	}
+	
+	//회원 정보 수정
+	@PostMapping("editmember")
+	public String editmember(@ModelAttribute MemberDto member) {
+		
+		log.info("memberPost={}", member);
+		
+//		MemberDto member = MemberDto.builder()
+//					.member_no(member_no)
+//					.member_email(member_email)
+//					.member_phone(member_phone)
+//					.build();
+
+		
+
+		
+		log.info("mymember111={}",member);
+		
 		
 		memberDao.memberedit(member);
 		
@@ -309,44 +358,242 @@ public class MemberController {
 //	}
 	
 	
-	
-	
-	
-	
-	
-	//회원 문의,신고 게시판
-	
-	
-	
-	
-	
-	// 배송지  테이블 리스트
-	
-	@GetMapping("/addrinfo")
-	public String addrinfo (HttpSession session,Model model ) {
-		String member_id = (String)session.getAttribute("member_id");
-		int member_no = memberDao.getNo(member_id);
-		//	session에서 no를 저장했을때 사용	int member_no = (int) session.getAttribute("member_no");
+	//회원체크
+	@GetMapping("/membercheck")
+	public String membercheck() {
 		
-		List<Member_AddrDto> list = member_AddrDao.getListAddr(member_no);
-		log.info("list={}",list);
-		
-		model.addAttribute("addrinfo", list);
-		
-		
-		return "member/addrinfo";
+		return "member/membercheck";
 	}
+	
+	
+	
+	
+	
+	
+
+
 
 	
 	
-	//배송지 1/1보기
-//	@GetMapping("/addrpage")
-//	public String addrpage() {
-//		
-//		return "member/addrpage";
-//	}
+//회원 이메일 인증
+	@PostMapping("/send")//jsp로 결과가 나가면 안된다
+	@ResponseBody//내가 반환하는 내용이 곧 결과물
+	public String send(@RequestParam String member_email,HttpSession session) {
+//		String cert ="1236";//세션에 저장된 판매자 이름과 판매자 아이디를 넣어서 서버에 있는 아이디랑 이메일이 같다면 인증번호를 보내라 
+	    System.out.println("member email"+member_email);	 
+		String cert = randomService.generateCertificationNumber(6);
+	    	  session.setAttribute("cert", cert);
+	    	
+	    	  return emailService.sendCert(member_email, cert);
+
+	      }
+	@PostMapping("/validate")//세션에 있는 cert랑 사용자가 입력한 번호랑 같아야한다
+	@ResponseBody
+	public String validate(HttpSession session, @RequestParam String cert) {
+			String value =(String)session.getAttribute("cert");//서버에 저장된 번호를 내놔라 사용자가 입력한 값이 cert로 들어와야한다
+			      session.removeAttribute("cert");//세션값을 지운다 한번쓰면 지워야한다(버려야한다)
+			      if (value.equals(cert)) {  //사용자가 입력한 값이 cert랑 같으면
+
+						return "success";
+			      }
+			      else {
+			    	  	return "fail";
+
+				}
+			}
 	
-	// 배송지 한개 테이블 리스트
+	
+	
+	///아이디 중복검사
+				@GetMapping(value = "/id_check",produces ="application/text; charset=utf-8")
+				@ResponseBody //ajax
+				public String id_check(String member_id, Model model) {
+			 System.out.println("Controller.idCheck() 호출");
+		
+
+		int result = sqlSession.selectOne("member.id_check", member_id);
+			log.info("들어오나");
+			log.info("membercheck={}",member_id);
+			
+			log.info("result={}", result);
+			String a = Integer.toString(result);
+			if(result == 1) {
+				return a;
+			}
+			else {
+				return a;
+			}
+		   } 
+	
+				//-------------------아이디 찾기-------------------------//
+				@GetMapping("/memberfind_id")
+				public String memberfind_id() {
+					return "member/memberfind_id";
+
+				}
+				
+				@PostMapping("/memberfind_id")
+				public String memberfind_id(HttpSession session,@RequestParam String member_email,
+						@RequestParam String member_name,Model model) {
+						log.info("1= {}", member_email);
+						log.info("2= {}", member_name);
+						MemberDto memberDto =MemberDto.builder().member_name(member_name)
+																.member_email(member_email)
+																.build();
+						
+						log.info("memberDto={}",memberDto);
+						
+						MemberDto find_id=memberDao.memberfind_id(memberDto);
+						log.info("2find_id={}",memberDto);
+						log.info("2find_id={}",find_id);
+						model.addAttribute("memberDto",find_id);
+					return "member/find_id_info";
+
+			}
+				@GetMapping("/find_id_info")
+
+				public String find_id_info2(HttpSession session,@RequestParam(value = "member_email",required = false ,defaultValue = "" ) String member_email,
+						@RequestParam (value = "member_name",required = false ,defaultValue = "" ) String member_name,
+							Model model) {
+				String name =(String)session.getAttribute("member_name");
+				String email =(String)session.getAttribute("member_email");
+
+						MemberDto memberDto =MemberDto.builder().member_name(member_name) 
+																				   .member_email(member_email)
+																				   .build();
+						log.info("memberDto={}",memberDto);
+						MemberDto find_id=memberDao.memberfind_id(memberDto);
+							log.info("find_id={}",find_id);
+					//	model.addAttribute("sellerDto",find_id);
+
+					return "member/find_id_info";
+
+				}
+				@PostMapping("/find_id_info")
+
+				public String find_id_info(HttpSession session,@RequestParam(value = "member_email",required = false ,defaultValue = "" ) String member_email,
+						@RequestParam(value = "member_name",required = false ,defaultValue = "" ) String member_name,Model model) {
+				String name =(String)session.getAttribute("member_name");
+					String email =(String)session.getAttribute("member_email");
+						MemberDto memberDto =MemberDto.builder().member_name(member_name) 
+																				   .member_email(member_email)
+																				   .build();
+						log.info("memberDto={}",memberDto);
+						MemberDto find_id=memberDao.memberfind_id(memberDto);
+						log.info("find_id={}",find_id);
+//						model.addAttribute("sellerDto",find_id);
+					return "redirect:/member/login";
+	
+				}
+	
+//	@GetMapping("/input")
+//	public String input() {
+//		return "pw/input";
+//	}
+//
+//	@PostMapping("/input")
+//	public String input(@RequestParam String email) throws MessagingException {
+//		//1. 랜덤번호를 3자리 생성
+//		String cert = randomService.generateCertificationNumber(3);
+//		//2. DB에 랜덤번호/이메일/시각을 저장
+//
+//		certDao.certregist(CertDto.builder().email(email).cert_no(cert).build());
+//	
+//		//3. 이메일 전송
+//		MimeMessage message = sender.createMimeMessage();
+//		MimeMessageHelper helper = 
+//				new MimeMessageHelper(message, true, "UTF-8");
+//
+//		helper.setTo(email);
+//		helper.setSubject("[KH정보교육원] 비밀번호 변경 메일");
+//
+//		String url = "http://localhost:8080/sts21/pw/change?cert="+cert;
+//
+//		StringBuffer buffer = new StringBuffer();
+//		buffer.append("<h1>비밀번호 변경을 위해 하단 링크를 누르세요</h1>");
+//		buffer.append("<h2>");
+//		buffer.append("<a href='");
+//		buffer.append(url);
+//		buffer.append("'>");
+//		buffer.append("이동");
+//		buffer.append("</a>");
+//		buffer.append("</h2>");
+//
+//		helper.setText(buffer.toString(), true);
+//
+//		sender.send(message);
+//
+//		//4. 사용자 화면 전환
+//		
+//		emailService.sendChangePasswordMail(email);
+//		
+//		
+//		return "redirect:member/result";
+//	}
+//	
+//	@GetMapping("/result")
+//	public String result(){
+//		return "member/result";
+//	}
+//
+//	@GetMapping("/change")
+//	public String change(
+//			@RequestParam String cert,
+//			@RequestParam String email,
+//			HttpServletResponse response) { 
+//		boolean enter = certDao.certcheck(email, cert);
+//		log.info("enter = {}", enter);
+//		certDao.certdelete(email);
+//		if(!enter) {
+//			//에러 코드 송출
+//			response.setStatus(403);
+//		}
+//		
+//		return "member/change";
+//	}
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+				// 배송지  테이블 리스트
+
+				@GetMapping("/addrinfo")
+				public String addrinfo (HttpSession session,Model model ) {
+					String member_id = (String)session.getAttribute("member_id");
+					int member_no = memberDao.getNo(member_id);
+					//	session에서 no를 저장했을때 사용	int member_no = (int) session.getAttribute("member_no");
+					
+					List<Member_AddrDto> list = member_AddrDao.getListAddr(member_no);
+					log.info("list={}",list);
+					
+					model.addAttribute("addrinfo", list);
+					
+					
+					return "member/addrinfo";
+				}
+				
+				
+				//배송지 1/1보기
+//				@GetMapping("/addrpage")
+//				public String addrpage() {
+//					
+//					return "member/addrpage";
+//				}
+				
+				// 배송지 한개 테이블 리스트
 	
 	@GetMapping("/addrpage")
 	public String addrpage(@ModelAttribute Member_AddrDto member_AddrDto, Model model) {
@@ -357,9 +604,49 @@ public class MemberController {
 		
 		return "member/addrpage";
 	}
-	
+
+
+	//배송지 정보 수정 테이블
+
+	@GetMapping("/addrupdate")
+	public String addrupdate(@RequestParam int member_addr_no,Model model)
+	{
+
+		Member_AddrDto result = member_AddrDao.addrgetUpdate(member_addr_no);
+		model.addAttribute("addrupdateget",result);
+
+		return "member/addrupdate";
+	}
+
+	//배송지 추가 테이블
+	@PostMapping("/addregist")
+	public String addrregist(@ModelAttribute Member_AddrDto member_AddrDto,
+							HttpSession session, Model model)
+	{
+		String member_id = (String)session.getAttribute("member_id");
+		int member_no = memberDao.getNo(member_id);
+
+		member_AddrDto.setMember_no(member_no);
+
+		member_AddrDao.addrregist(member_AddrDto);
+
+		return "redirect:/addrinfo";
+	}
+
+
+	@PostMapping("/addrupdate")
+	public String addrupdate(@ModelAttribute Member_AddrDto member_AddrDto,Model model)
+	{
+
+
+		member_AddrDao.addrUpdate(member_AddrDto);
+
+		return "redirect:/member/addrinfo";
+	}
+
+
 	// 배송지 한개 테이블 삭제
-	
+
 	@PostMapping("/addrdelete")
 	public String addrdelete(@ModelAttribute Member_AddrDto member_AddrDto, Model model,HttpSession session) {
 		
@@ -417,7 +704,6 @@ public class MemberController {
 	@PostMapping("/insertaddr")
 	public String registaddr(@ModelAttribute Member_AddrDto member_AddrDto,
 								MemberDto member,HttpSession session) {
-
 //		// session값에 있는 아이디를 찾아서 번호를 구해왔고 
 ////		String member_id =(String)session.getAttribute("member");
 ////		int member_no = memberDao.findno("member_id");
@@ -436,7 +722,6 @@ public class MemberController {
 		String member_id = (String)session.getAttribute("member_id");
 		int member_no = memberDao.getNo(member_id);
 		
-
 		
 //		member_AddrDto = Member_AddrDto.builder().member_no(no)
 //				.member_addr_basic(member_AddrDto.getMember_addr_basic())
@@ -450,12 +735,10 @@ public class MemberController {
 		member_AddrDto.setMember_no(member_no);
 			
 		log.info("no={}", member_no);
-
 		
 		member_AddrDao.insertaddr(member_AddrDto);
 //		log.info("member_AddrDto={}",member_AddrDto);
 		return "redirect:/member/insertaddr";
-		
 	}
 		
 	

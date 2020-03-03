@@ -189,7 +189,9 @@ public class MemberDaoImpl implements MemberDao{
 		
 		@Override //로그인
 		public MemberDto login(MemberDto member) {
-			return sqlSession.selectOne("member.login", member);
+			MemberDto login = sqlSession.selectOne("member.login", member);
+
+			return login;
 		}
 
 		//최종 로그인 변동 하기
@@ -198,8 +200,40 @@ public class MemberDaoImpl implements MemberDao{
 		sqlSession.update("member.lastLogin", member);
 			
 		}
+		
+		@Override
+		public MemberDto memberGetOne(int member_no) {
+			MemberDto member = sqlSession.selectOne("member.memberGETOne",member_no);
+			return member;
+		}
 
+		//회원 아이디 찾기
+				@Override
+				public MemberDto memberfind_id(MemberDto memberDto) {
+					MemberDto find_id=sqlSession.selectOne("member.find_id", memberDto);
+					return find_id;
+				}
 
+				@Override
+				public int id_check(String member_id) {
+
+					return 0;
+				}
+
+				//회원 비밀번호 변경
+				@Override
+				public void memberchange_pw(MemberDto memberDto) {
+					sqlSession.update("member.memberchange_pw",memberDto);
+
+				}
+		
+//				@Override
+//				public List<MemberDto> memberGetOne(int member_no) {
+//					// TODO Auto-generated method stub
+//					return null;
+//				}
+		
+				
 		@Override
 		public int getNo(String member_id) {
 			int member_no = sqlSession.selectOne("member.getNo", member_id);
@@ -218,6 +252,14 @@ public class MemberDaoImpl implements MemberDao{
 			sqlSession.update("member.memberedit", member);
 			
 		}
+
+		@Override
+		public void memberdelete(MemberDto memberDto) {
+			sqlSession.delete("member.memberdelete", memberDto);
+			
+		}
+
+	
 
 //		@Override
 //		public List<MemberDto> memberGetOne(int member_no) {

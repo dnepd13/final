@@ -27,6 +27,7 @@
  		<typeAlias type="com.kh.ordering.entity.MemberDto" alias="member"/>
 		<typeAlias type="com.kh.ordering.entity.Member_PointDto" alias="member_PointDto"/>
  		<typeAlias type="com.kh.ordering.entity.Member_AddrDto" alias="member_AddrDto"/>
+ 		<typeAlias type="com.kh.ordering.entity.AdminQnaDto" alias="adminQnaDto"/>
  		
 		<typeAlias type="com.kh.ordering.entity.CustomOrderDto" alias="customOrderDto"/>
 		<typeAlias type="com.kh.ordering.entity.MemberCustomOrderDto" alias="memberCustomDto"/>
@@ -70,6 +71,7 @@
 		
 		<!-- 주문내역 -->
 		<typeAlias type="com.kh.ordering.vo.CartInfoVO" alias="cartInfoVO"/>
+		<typeAlias type="com.kh.ordering.vo.CartDetailsVO" alias="cartDetailsVO"/>
 		<typeAlias type="com.kh.ordering.entity.CartOkDto" alias="cartOkDto"/>
 		
 		<!-- 포인트 -->

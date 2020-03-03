@@ -203,31 +203,7 @@
 			where seller_no=#{seller_no} and member_custom_order_no=#{member_custom_order_no}
 	</delete>
 	
-	<!-- 보낸 견적서 수정 -->
-	<update id="updateCustom" parameterType="customOrderDto">
-		update custom_order set custom_order_title=#{custom_order_title},
-							                        custom_order_content=#{custom_order_content},
-							                        custom_order_price=#{custom_order_price},
-							                        custom_order_hopedate=#{custom_order_hopedate},
-							                        custom_order_date=sysdate
-                where custom_order_no=#{custom_order_no}
-	</update>
-	<!-- 보낸 견적서 삭제 -->
-	<select id="getCustomNo" parameterType="int" resultType="int">
-		select custom_order_no from seller_custom_view
-			where member_alarm_check='N' and seller_custom_order_no=#{seller_custom_order_no}
-	</select>
-	<delete id="deleteResp" parameterType="int">
-		delete from custom_order A
-		    where exists( select 1 from seller_custom_order B
-				                    	where A.custom_order_no = B.custom_order_no
-				                    	and B.custom_order_no=#{custom_order_no})
-	</delete>
-	<delete id="deleteAlarm" parameterType="int">
-		delete member_alarm where seller_custom_order_no= #{seller_custom_order_no}
-	</delete>
-	
-	<!-- 내가 보낸 견적서 목록 / 상세보기 -->
+<!-- 내가 보낸 견적서 목록 / 상세보기 -->
 	<select id="getListResp" parameterType="pagingVO" resultType="CustomOrderVO">
 		select *from(
 		    select rownum rn, RN.*from(
@@ -258,5 +234,29 @@
 		select seller_no from seller where seller_id = #{seller_id}
 	</select>
 
+	<!-- 보낸 견적서 수정 -->
+	<update id="updateCustom" parameterType="customOrderDto">
+		update custom_order set custom_order_title=#{custom_order_title},
+							                        custom_order_content=#{custom_order_content},
+							                        custom_order_price=#{custom_order_price},
+							                        custom_order_hopedate=#{custom_order_hopedate},
+							                        custom_order_date=sysdate
+                where custom_order_no=#{custom_order_no}
+	</update>
+	<!-- 보낸 견적서 삭제 -->
+	<select id="getCustomNo" parameterType="int" resultType="int">
+		select custom_order_no from seller_custom_view
+			where member_alarm_check='N' and seller_custom_order_no=#{seller_custom_order_no}
+	</select>
+	<delete id="deleteResp" parameterType="int">
+		delete from custom_order A
+		    where exists( select 1 from seller_custom_order B
+				                    	where A.custom_order_no = B.custom_order_no
+				                    	and B.custom_order_no=#{custom_order_no})
+	</delete>
+	<delete id="deleteAlarm" parameterType="int">
+		delete member_alarm where seller_custom_order_no= #{seller_custom_order_no}
+	</delete>
+	
  </mapper>
 

@@ -2,11 +2,16 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">    
-<h1>관리문의게시판</h1>
-<h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1><h1><a href="${pageContext.request.contextPath}/board/manageqna">목록으로</a></h1>
-<div class="btn-group-vertical">
-	  <a href="${pageContext.request.contextPath}/board/write"><button type="button" class="btn btn-primary">글쓰기</button></a>
+<div style="padding-top: 50px;">
+<jsp:include page="../template/header.jsp"></jsp:include>
 </div>
+<div class="container-fluid">
+        <div class="row" style="padding: 50px;">
+            <div class="offset-md-1 col-md-10">
+<div class="row justify-content-center"  style="padding: 20px;"><h1>관리문의 게시판</h1></div>
+
+   
+
 <table class="table table-hover">
   <thead>
     <tr>
@@ -38,25 +43,16 @@
   	</c:forEach>
   </tbody>
 </table>
+<div class="offset-md-10 col-md-12">
 
-<form action="manageqna" method="get">
-  <fieldset>
-    <div class="form-group">
-      <label for="exampleSelect1">검색 조건</label>
-      <select class="form-control" name="key" id="exampleSelect1">
-        <option value="admin_qna_title">제목</option>
-        <option value="admin_qna_head">말머리</option>
-      </select>
-    </div>
-    <div class="form-group row">
-      <label for="staticEmail" class="col-sm-2 col-form-label">검색</label>
-      <div class="col-sm-10">
-        <input type="text"  name="search" class="form-control-plaintext" id="staticEmail">
-      </div>
-    </div>
-  </fieldset>
-  <button type="submit" class="btn btn-primary btn-delete" >검색</button>
-</form>
+<div class="btn-group-vertical">
+	  <a href="${pageContext.request.contextPath}/board/write"><button type="button" class="btn btn-primary">글쓰기</button></a>
+</div>
+</div>
+
+
+<div class="row justify-content-center">
+
 
 <div>
 	<ul class="pagination">
@@ -113,3 +109,27 @@
 		</c:if>
 	</ul>
 </div>
+
+</div>
+<form action="manageqna" method="get">
+  <fieldset>
+    <div class="form-group">
+      <label for="exampleSelect1">검색 조건</label>
+      <select class="form-control" name="key" id="exampleSelect1">
+        <option value="admin_qna_title">제목</option>
+        <option value="admin_qna_head">말머리</option>
+      </select>
+    </div>
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">검색</label>
+      <div class="col-sm-10">
+        <input type="text"  name="search" class="form-control-plaintext" id="staticEmail" placeholder="검색어를 입력하세요">
+      </div>
+    </div>
+  </fieldset>
+
+  <button type="submit" class="btn btn-primary btn-delete offset-md-4 col-md-4" >검색</button>
+</form>
+</div>
+        </div>
+    </div>

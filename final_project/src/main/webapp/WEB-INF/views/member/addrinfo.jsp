@@ -2,10 +2,16 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<div class="btn-group-vertical">
+	<a href="${pageContext.request.contextPath}/member/addrregist">
+		<button type="button" class="btn btn-primary">배송추가</button>
+	</a>
+</div>
+
 
 <h1>배송지 상세정보</h1>
 
-<h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
+<h1><a href="${pageContext.request.contextPath}/">홈으로</a></h1>
 
 <table align="center">
 <thead>

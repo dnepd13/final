@@ -3,15 +3,21 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">    
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<h1>정산...</h1>
+<div style="padding-top: 50px;">
+<jsp:include page="../template/header.jsp"></jsp:include>
+</div>
+<div class="container-fluid">
+        <div class="row">
+            <div class="offset-md-1 col-md-10">
 
 
-<h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
+<div class="row justify-content-center"  style="padding: 20px;"><h1>정산 목록</h1></div>
+
 <form action="" method="get">
-	<div><h3>판매자 아이디</h3><input type="text" name="seller_id"></div>
-	<div>
-	<h3>연도 및 월</h3><input type="number" name="year" placeholder="2020년" value="2020">
+	<input type="text" name="seller_id" placeholder="아이디를 입력하세요">
+	<input type="number" name="year" placeholder="2020년" value="2020">
 	<select name="month">
+		<option value="1">월</option>
 		<option>1</option>
 		<option>2</option>
 		<option>3</option>
@@ -25,7 +31,9 @@
 		<option>11</option>
 		<option>12</option>
 	</select>
-	</div>
+	
+	
+	
 	<input type="submit" value="검색">
 </form>
 
@@ -38,9 +46,7 @@
       <th width="15%">수수료(원)</th>
       <th width="15%">정산 금액</th>
       <th width="15%">상세보기</th> 
-
       <th width="10%">정산</th> 
-
     </tr>
   </thead>
   <tbody>
@@ -54,17 +60,15 @@
       <td>
    			<a href="${pageContext.request.contextPath}/calculate/detail?seller_id=${list.seller_id}&year=${param.year}&month=${param.month}"><button type="button" class="btn btn-primary btn-delete" >상세보기</button></a>
       </td>
-
       <td>
    			<a href="#"><button type="button" class="btn btn-primary btn-delete" >정산</button></a>
       </td>
-
     </tr>
 	</c:forEach>
   </tbody>
 </table>
 
-<div>
+<div class="row justify-content-center">
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
 			<c:choose>
@@ -119,3 +123,6 @@
 		</c:if>
 	</ul>
 </div>
+   </div>
+        </div>
+    </div>

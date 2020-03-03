@@ -106,11 +106,14 @@ public class SellerController {
 	      }
 	@PostMapping("/validate")//세션에 있는 cert랑 사용자가 입력한 번호랑 같아야한다
 	@ResponseBody
-	public String validate(HttpSession session, @RequestParam(value = "cert",required = false,defaultValue = "")  String cert) {
+	public String validate(HttpSession session, @RequestParam String cert) {
 			String value =(String)session.getAttribute("cert");//서버에 저장된 번호를 내놔라 사용자가 입력한 값이 cert로 들어와야한다
 			      session.removeAttribute("cert");//세션값을 지운다 한번쓰면 지워야한다(버려야한다)
-			if (value.equals(cert)) {  //사용자가 입력한 값이 cert랑 같으면
-				return "email_success";
+			      	//	System.out.println(cert+"11111111111");
+			      
+			      if (value.equals(cert)) {  //사용자가 입력한 값이 cert랑 같으면
+			
+				return "success";
 			}	
 				else {
 					return "fail";
@@ -174,16 +177,17 @@ public class SellerController {
 		//비밀번호 암호화
 		//아이디 검색을 하고 결과 유무 확인
 			SellerDto find = sellerService.login(sellerDto);
-//			log.info("id={}",find);
-//			log.info("sellerDto={}",sellerDto);
+			System.out.println(sellerDto);
+			log.info("id={}",find);
+			log.info("sellerDto={}",sellerDto);
 		if(find == null) {
-//			log.info("asd={}",find);
+			log.info("asd={}",find);
 				return "redirect:/seller/login?error";
 		}
 		else {//id가  잇으면--->비밀번호 매칭검사
 			boolean correct =passwordEncoder.matches(sellerDto.getSeller_pw(),find.getSeller_pw());
 //			boolean correct = sellerDto.getSeller_pw().equals(find.getSeller_pw());
-//			log.info("current={}",correct);
+			log.info("current={}",correct);
 					if(correct == true) {   //비밀번호일치
 						session.setAttribute("seller_id", find.getSeller_id());
 						return "redirect:/seller/main";				

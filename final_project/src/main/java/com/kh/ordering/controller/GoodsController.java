@@ -30,6 +30,7 @@ import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.entity.GoodsQnaDto;
 import com.kh.ordering.entity.GoodsReviewDto;
+import com.kh.ordering.entity.GoodsReviewFilesDto;
 import com.kh.ordering.entity.GoodsReviewReplyDto;
 import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
@@ -223,8 +224,21 @@ public class GoodsController {
 			// 리뷰
 			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
 			model.addAttribute("goodsReview", goodsReview);
-			List<FilesVO>  filesVO = goodsReviewService.filesList(goods_no);
-			model.addAttribute("filesVO", filesVO);
+			
+			// 리뷰 댓글
+			List<GoodsReviewReplyDto> reviewReply = new ArrayList<>();
+			for(GoodsReviewDto review : goodsReview) {
+				reviewReply.addAll(goodsReviewDao.getListReply(review.getGoods_review_no()));
+				model.addAttribute("reviewReply", reviewReply);
+			}
+			
+			// 리뷰 파일
+			List<FilesVO> reviewFiles = new ArrayList<>();
+			for(GoodsReviewDto review : goodsReview) {
+				reviewFiles.addAll(goodsReviewService.filesList(review.getGoods_review_no()));
+				model.addAttribute("filesVO", reviewFiles);
+			}
+
 		}
 		else if(seller_id!=null){
 			int seller_no = sellerCustomDao.getNo(seller_id);
@@ -237,8 +251,21 @@ public class GoodsController {
 			
 			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
 			model.addAttribute("goodsReview", goodsReview);
-			List<FilesVO>  filesVO = goodsReviewService.filesList(goods_no);
-			model.addAttribute("filesVO", filesVO);
+			
+			// 리뷰 댓글
+			List<GoodsReviewReplyDto> reviewReply = new ArrayList<>();
+			for(GoodsReviewDto review : goodsReview) {
+				reviewReply.addAll(goodsReviewDao.getListReply(review.getGoods_review_no()));
+				model.addAttribute("reviewReply", reviewReply);
+			}
+			
+			// 리뷰 파일
+			List<FilesVO> reviewFiles = new ArrayList<>();
+			for(GoodsReviewDto review : goodsReview) {
+				reviewFiles.addAll(goodsReviewService.filesList(review.getGoods_review_no()));
+				model.addAttribute("filesVO", reviewFiles);
+			}
+			
 		}
 		else {
 			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
@@ -247,9 +274,21 @@ public class GoodsController {
 			model.addAttribute("goodsQna", goodsQna);
 			
 			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
-			model.addAttribute("goodsReview", goodsReview);
-			List<FilesVO>  filesVO = goodsReviewService.filesList(goods_no);
-			model.addAttribute("filesVO", filesVO);
+			model.addAttribute("goodsReview", goodsReview); // 리뷰 목록
+			
+			// 리뷰 댓글
+			List<GoodsReviewReplyDto> reviewReply = new ArrayList<>();
+			for(GoodsReviewDto review : goodsReview) {
+				reviewReply.addAll(goodsReviewDao.getListReply(review.getGoods_review_no()));
+				model.addAttribute("reviewReply", reviewReply);
+			}
+			// 리뷰 파일
+			List<FilesVO> reviewFiles = new ArrayList<>();
+			for(GoodsReviewDto review : goodsReview) {
+				reviewFiles.addAll(goodsReviewService.filesList(review.getGoods_review_no()));
+				model.addAttribute("filesVO", reviewFiles);
+			}
+			
 		}	
 		
 		return "goods/goodsInfo";
@@ -329,7 +368,7 @@ public class GoodsController {
 		return "redirect:goodsInfo?goods_no="+goodsQnaDto.getGoods_no();
 	}
 
-// 리뷰 댓글
+// 리뷰 댓글 등록
 	@PostMapping("/insertReply")
 	public String insertReply(HttpSession session,
 													@ModelAttribute GoodsReviewReplyDto goodsReviewReplyDto,
@@ -346,6 +385,5 @@ public class GoodsController {
 		
 		return "redirect:/goods/goodsInfo?goods_no="+goods_no;
 	}
-	
-	
+
 }

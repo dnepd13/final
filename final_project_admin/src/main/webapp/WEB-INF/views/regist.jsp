@@ -2,12 +2,45 @@
     pageEncoding="UTF-8"%>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
-<h1>관리자 가입</h1>
-<form action="" method="post">
-	아이디<input type="text" name="admin_id"><br>
-	비밀번호<input type="password" name="admin_pw"><br>
-	이름<input type="text" name="admin_name"><br>
-	이메일<input type="text" name="admin_email"><br>
-	<input type="submit" value="관리자가입">
-</form>
-<h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
+<div style="padding-top: 50px;">
+<jsp:include page="template/header.jsp"></jsp:include>
+</div>
+
+
+<div class="container-fluid">
+        <div class="row" style="padding: 50px;">
+            <div class="offset-md-4 col-md-4 ">
+                <div class="row justify-content-center" style="padding: 20px;"><h1>관리자 등록</h1></div>
+                <br><br><br>
+                <form action="" method="post"> 
+                <!-- <form class="form-inline">옆으로 오는 입력 형식 -->
+                    <!--아이디 입력창-->
+                    <div class="form-group">
+                        <label for="id-input">ID : </label>
+                        <input class="form-control" type="text" id="id-input" name="admin_id" required>
+                    </div>
+                    
+                    <!--비밀번호 입력창-->
+                    <div class="form-group">
+                        <label for="pw-input">PW : </label>
+                        <input class="form-control" type="password" id="pw-input" name="admin_pw" required>
+                    </div>
+                    
+                    <!--이름 입력창-->
+                    <div class="form-group">
+                        <label for="pw-input">이름 : </label>
+                        <input class="form-control" type="text" id="pw-input" name="admin_name" required>
+                    </div>
+                    
+                    <!--이메일 입력창-->
+                    <div class="form-group">
+                        <label for="pw-input">이메일 : </label>
+                        <input class="form-control" type="text" id="pw-input" name="admin_email" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">관리자가입</button>
+                </form>
+            </div>
+        </div>
+    </div>
+

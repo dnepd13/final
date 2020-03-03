@@ -1,9 +1,12 @@
 package com.kh.ordering.service;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
+import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.vo.ItemVOList;
 
@@ -23,4 +26,6 @@ public interface MemberService {
 	void addCart(String member_id, ItemVOList itemVOList);
 
 	void deleteCart(int goods_cart_no);
+
+	
 }

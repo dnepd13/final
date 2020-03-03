@@ -5,8 +5,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <h1>사이트매출현황</h1>
+<jsp:include page="../template/header.jsp"></jsp:include>
 <h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
 
+    <hr>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart1);
@@ -119,7 +121,6 @@
     <div id="piechart2" style="width: 500px; height: 500px;"></div>
     <div id="piechart3" style="width: 500px; height: 500px;"></div>
  
-    <hr>
     <h1>오늘의 거래 금액</h1> 
     <h2>${dailySalePrice }원</h2>
     

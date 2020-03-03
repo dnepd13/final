@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.kh.admin.entity.AdminDto;
@@ -16,6 +17,8 @@ public class AdminManageDaoImpl implements AdminManageDao{
 	
 	@Autowired
 	private BoardDao boardDao;
+	
+	
 	
 	//이거 안씀
 	@Override
@@ -43,6 +46,18 @@ public class AdminManageDaoImpl implements AdminManageDao{
 	public void adminDelete(AdminDto adminDto) {
 		sqlSession.delete("admin.delete", adminDto);
 		
+	}
+	@Override
+	public AdminDto adminMy(String id) {
+		return sqlSession.selectOne("admin.amindMy", id);
+	}
+	@Override
+	public AdminDto adminCheckPw(int admin_no) {
+		return sqlSession.selectOne("admin.adminCheckPw", admin_no);
+	}
+	@Override
+	public void adminChangePw(AdminDto adminDto) {
+		sqlSession.update("admin.adminChangePw", adminDto);
 	}
 	
 	

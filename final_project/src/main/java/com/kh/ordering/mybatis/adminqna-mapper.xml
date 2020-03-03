@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+
+
+ <mapper namespace="adminQnaDto">
+
+<select id="QnaSeq" resultType="int">
+	select admin_qna_seq.nextval from dual
+</select>
+
+
+ <!-- 신고 게시글갯수 -->
+  <select id="countBoard" parameterType="int" resultType="int">
+ 	select count(*) from admin_qna where admin_qna_head = '신고' and member_no = #{member_no}
+ </select>
+ <!-- 신고 페이징 -->
+   <select id="getListReport" parameterType="pagingVO" resultType="adminQnaDto">
+ 	select * from(
+			select rownum rn, A.* from (
+				select * from admin_qna where admin_qna_head = '신고' and member_no = #{member_no}
+				connect by prior admin_qna_no=super_no 
+				start with super_no is null 
+				order siblings by group_no asc, admin_qna_no desc
+			)A
+		) where rn between #{start} and #{finish}
+
+ </select>
+
+
+<!-- 신고 게시글 상세보기 -->
+ <select id="adminQnaGetOne" parameterType="adminQnaDto" resultType="adminQnaDto">
+ 	select * from admin_qna where admin_qna_no = #{admin_qna_no}
+ </select>
+
+
+  <!-- 회원 문의 게시글 글쓰기 -->
+ <insert id="qnaregist" parameterType="adminQnaDto">
+ 	insert
+ 	into admin_qna(
+ 	admin_qna_no,
+ 	member_no,
+ 	admin_qna_content,
+ 	admin_qna_title,
+ 	admin_qna_writer,
+ 	admin_qna_date,
+ 	admin_qna_head,
+ 	group_no,
+ 	admin_qna_usertype
+ 	)
+ 	values(
+ 	#{admin_qna_no},
+ 	#{member_no},
+ 	#{admin_qna_content},
+ 	#{admin_qna_title},
+ 	#{admin_qna_writer},
+ 	sysdate,
+ 	'문의',
+ 	#{group_no},
+ 	'회원'
+ 	)
+ </insert>
+
+ <!-- 문의게시글 수정 -->
+ <update id="qnaUpdate" parameterType="adminQnaDto">
+ 	update admin_qna
+ 	set
+ 		admin_qna_title = #{admin_qna_title},
+ 		admin_qna_content = #{admin_qna_content}
+ 	where
+ 		admin_qna_no = #{admin_qna_no}
+
+ </update>
+
+ <select id="qnagetUpdate" parameterType="int" resultType="adminQnaDto">
+	 select * from admin_qna where admin_qna_no = #{admin_qna_no}
+</select>
+
+
+ <!-- 문의 게시글 갯수 보기 -->
+<select id="countqna" parameterType="int" resultType="int">
+	select count(*) from admin_qna where admin_qna_head = '문의' and member_no = #{member_no}
+</select>
+ <!-- 문의  페이징 -->
+ <select id="getListQna" parameterType="pagingVO" resultType="adminQnaDto">
+ 	select * from(
+ 		select rownum rn, A.* from(
+ 			select * from admin_qna where admin_qna_head = '문의' and member_no = #{member_no}
+ 			connect by prior admin_qna_no=super_no 
+				start with super_no is null 
+				order siblings by group_no asc, admin_qna_no desc
+			)A
+		) where rn between #{start} and #{finish}
+ </select>
+
+ <!-- 문의 게시글 상세보기 -->
+ <select id="QnaGetOne" parameterType="adminQnaDto" resultType="adminQnaDto">
+ 	select * from admin_qna where admin_qna_no = #{admin_qna_no}
+ </select>
+	
+<!-- 문의글 삭제 -->	
+<delete id="deleteqna" parameterType="adminQnaDto">
+	delete admin_qna where admin_qna_no = #{admin_qna_no}
+</delete>
+
+ </mapper>  

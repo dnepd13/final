@@ -16,4 +16,6 @@ public class FilesVO {
 	
 	// 파일 출력용 
 	private int files_no;
+	
+	private int goods_review_no;
 }
