@@ -3,7 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
  
  <style>
  	.articleBox {
@@ -18,6 +22,7 @@
 </style>
 
 <h3>member Custom Info Resp.jsp</h3>
+<div class="row-empty-40"></div>
 
 <article class="articleBox">
 
@@ -64,10 +69,10 @@
 			</li>
 	</ul>
 	<div class="card-footer text-muted content_last" align="right">
-		<form action="${pageContext.request.contextPath }/order/custom" method="post">
+		<form action="${pageContext.request.contextPath }/order/custom" method="POST">
 			<input type="hidden" name="seller_custom_order_no" value="${getListInfoResp.seller_custom_order_no }">
 			<input type="submit" value="수락 및 결제하기">
-		&verbar; 
+			&verbar; 
 <%-- 		<a href="${pageContext.request.contextPath }/order/custom" style="font-weight: bold;">수락 및 결제하기</a> &verbar;  --%>
 		<a href="${pageContext.request.contextPath }/member/customListReq">목록으로</a>		
 		</form>
@@ -75,3 +80,6 @@
 </div>
 </article>
 
+<div class="row-empty-40"></div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

@@ -3,11 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <style>
-	.articleBox,
-	.navBox {
+	.articleBox {
 		width: 500px;
 		margin: 0 auto;
 	}
@@ -17,6 +20,7 @@
 </style>
 
 <h4>확인 안 한 견적서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
+<div class="row-empty-40"></div>
 
 <article class="articleBox">
 <table class="table table-hover listBox">
@@ -70,3 +74,7 @@
 	</ul>	
 </div>
 </article>
+
+<div class="row-empty-40"></div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

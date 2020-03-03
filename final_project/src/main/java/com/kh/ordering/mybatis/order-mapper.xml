@@ -56,6 +56,10 @@
 	</select>
  	
  	<!-- 상품별 구매확정 테이블 -->
+ 	<insert id="insertCartOkCustom" parameterType="cartOkDto">
+ 		insert into cart_ok(cart_ok_no, cart_info_custom_no, member_no)
+        					values(cart_ok_seq.nextval, #{cart_info_custom_no}, #{member_no})
+ 	</insert>
 	<select id="getOkList" parameterType="int" resultType="cartOkDto">
 		select cart_ok.* from
 		    cart_ok inner join cart_info_goods A

@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+ <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
  
  <style>
  	.articleBox {
@@ -39,7 +43,7 @@
 
 </script>
 
-<h3>회원 구매자 주문제작 member/customOrder.jsp</h3>
+<div class="row-empty-40"></div>
 
 <!-- 요쳥서 작성페이지: hidden 값은 나중에 회원/판매자에서 정보 가져오기 -->
 <article class="articleBox">
@@ -66,3 +70,7 @@
 	</form>
 </div>
 </article>
+
+<div class="row-empty-40"></div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

@@ -23,6 +23,7 @@ public interface payService {
 	boolean transactionOrder(String partner_order_id) throws Exception;
 	
 	// 주문제작
+	PayReadyReturnVO readyReturnVO(PayReadyVO readyVO, HttpSession session, String jsonOrderVO) throws URISyntaxException, JsonMappingException, JsonProcessingException;
 	KakaoPayReadyVO setCustomReadyVO(String jsonOrderVO) throws JsonMappingException, JsonProcessingException;
-	PayReadyReturnVO readyReturn(PayReadyReturnVO ReadyReturnVO, CustomOrderVO customVO) throws URISyntaxException;
+	KakaoPaySuccessReturnVO approveVO(KakaoPaySuccessReadyVO successReadyVO, HttpSession session) throws URISyntaxException;
 }

@@ -2,6 +2,9 @@ package com.kh.ordering;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.UUID;
+
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
@@ -18,7 +21,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.kh.ordering.repository.MemberDao;
+import com.kh.ordering.service.payService;
 import com.kh.ordering.vo.KakaoPayReadyReturnVO;
+import com.kh.ordering.vo.KakaoPayReadyVO;
 
 import lombok.extern.slf4j.Slf4j;
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -139,6 +144,29 @@ public class MemberCustomTest {
 		//										 url, 요청객체, 응답객체(JSON)
 		KakaoPayReadyReturnVO readyReturnVO =
 								template.postForObject(uri, entity, KakaoPayReadyReturnVO.class);
+		
+		
+
+	}
+	
+	@Autowired
+	private payService payService;
+	
+	@Test
+	public void payReadyTest() throws URISyntaxException {
+		
+		KakaoPayReadyVO readyVO
+								= KakaoPayReadyVO.builder()
+																	.partner_order_id(UUID.randomUUID().toString())
+																	.partner_user_id("200")
+																	.item_name("과자")
+																	.quantity(20)
+																	.total_amount(20000)
+																	.vat_amount(2000)
+																	.tax_free_amount(0)
+																	.build();
+		
+//		KakaoPayReadyReturnVO result = (KakaoPayReadyReturnVO) payService.readyReturnVO(readyVO);
 
 	}
 }

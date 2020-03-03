@@ -55,9 +55,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/goods")
 @Slf4j
 public class GoodsController {
-
-	@Autowired
-	private HttpSession session;
 	
 	@Autowired
 	private FilesDao filesDao;
@@ -189,7 +186,7 @@ public class GoodsController {
 	}
 	
 	@GetMapping("/goodsInfo")
-	public String goodsInfo(@RequestParam int goods_no, Model model,
+	public String goodsInfo(@RequestParam int goods_no, Model model, HttpSession session,
 												@RequestParam(value = "pageNo", required=false, defaultValue="0")String pageNo) throws JsonProcessingException {
 		String jsonGoodsVO = new ObjectMapper().writeValueAsString(goodsService.getGoodsVO(goods_no));
 		String jsonGoodsOptionVOList = new ObjectMapper().writeValueAsString(goodsService.getGoodsOptionVOList(goods_no));

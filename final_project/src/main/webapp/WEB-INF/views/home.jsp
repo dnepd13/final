@@ -8,7 +8,6 @@
 	<span><a href="${pageContext.request.contextPath }/goods/getList">상품List</a></span>
 	<span>&verbar;</span>
 	<span><a href="${pageContext.request.contextPath }/goods/insert">상품등록</a></span>
-	<h1><a href="/ordering/board/memberreport">회원신고게시판</a></h1><br>
 <!-- 바뀐 session의 member_no에서 memeber_id를 구해서 확인  -->
 
 이하 메인이다 

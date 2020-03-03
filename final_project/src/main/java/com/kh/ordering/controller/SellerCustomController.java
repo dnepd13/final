@@ -42,8 +42,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/seller")
 @Slf4j
 public class SellerCustomController {
-	@Autowired
-	private HttpSession session;
 	
 	@Autowired
 	private SellerCustomService sellerCustomService;	
@@ -78,7 +76,7 @@ public class SellerCustomController {
 	}
 		
 	@PostMapping("/customOrder")
-	public String memberCustom(
+	public String memberCustom(HttpSession session,
 														@RequestParam int member_no,
 														@RequestParam int category_no,
 														@ModelAttribute FilesVO files,
@@ -86,17 +84,17 @@ public class SellerCustomController {
 
 		//판매자 견적서 보내기
 		//견적서 작성 --> 주문제작 테이블 데이터 입력 --> 관리테이블 데이터 등록 --> 구매자 알람 테이블 등록
-		sellerCustomService.SellerCustom(member_no, category_no, files, customOrderDto);
+		sellerCustomService.SellerCustom(session, member_no, category_no, files, customOrderDto);
 		return "redirect:/seller/customListResp";
 	}
 	
 //	목록 조회
 	@GetMapping("/customListReq") // 받은 요청서 목록
-	public String getListCustomReq(Model model,
+	public String getListCustomReq(Model model, HttpSession session,
 														@RequestParam(value="pageNo", required=false, defaultValue = "0") String pageNo) {
-		String seller_id="seller";
+
 		// 나중에 세션 ID 수정하기
-//		String seller_id = (String)session.getAttribute("seller_id");
+		String seller_id = (String)session.getAttribute("seller_id");
 		int seller_no = sellerCustomDao.getNo(seller_id);
 
 		PagingVO result= sellerCustomService.customReqPaging(pageNo, seller_no);
@@ -113,9 +111,10 @@ public class SellerCustomController {
 		return "seller/customListReq";
 	}
 	@GetMapping("/customInfoReq") // 받은 요청서 상세
-	public String memberCustomContent(int member_custom_order_no, Model model) {
-		String seller_id="seller";
-//		String seller_id = (String)session.getAttribute("seller_id");
+	public String memberCustomContent(int member_custom_order_no, 
+																		HttpSession session, Model model) {
+
+		String seller_id = (String)session.getAttribute("seller_id");
 		int seller_no = sellerCustomDao.getNo(seller_id);
 		
 		// 판매자 알람 업데이트 후
@@ -136,10 +135,10 @@ public class SellerCustomController {
 	}
 
 	@GetMapping("/customListResp") // 보낸 견적서 목록
-	public String getListCustomMine(Model model,
+	public String getListCustomMine(Model model, HttpSession session,
 														@RequestParam(value="pageNo", required=false, defaultValue = "0") String pageNo) {
-		String seller_id= "seller";
-//		String seller_id = (String)session.getAttribute("seller_id");
+
+		String seller_id = (String)session.getAttribute("seller_id");
 		int seller_no = sellerCustomDao.getNo(seller_id);
 		
 		

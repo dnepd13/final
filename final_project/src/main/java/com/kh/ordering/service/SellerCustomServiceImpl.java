@@ -32,8 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class SellerCustomServiceImpl implements SellerCustomService{
-	@Autowired
-	private HttpSession session;
+	
 	@Autowired
 	private SellerCustomDao sellerCustomDao;
 	@Autowired
@@ -44,14 +43,14 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 //	견적서 등록 service
 	@Transactional
 	@Override
-	public CustomOrderDto SellerCustom(
+	public CustomOrderDto SellerCustom(HttpSession session,
 																@RequestParam int member_no,
 																@RequestParam int category_no,
 																@ModelAttribute FilesVO files,
 																@ModelAttribute CustomOrderDto customOrderDto)
 																throws IllegalStateException, IOException {
-		String seller_id = "seller";
-//		String seller_id=(String)session.getAttribute("seller_id");
+
+		String seller_id=(String)session.getAttribute("seller_id");
 		int seller_no = sellerCustomDao.getNo(seller_id);
 
 		// 견적서 저장하고

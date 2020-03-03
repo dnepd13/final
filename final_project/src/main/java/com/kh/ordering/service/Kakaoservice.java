@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.PayDto;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.OrderDao;
@@ -42,7 +43,7 @@ public class Kakaoservice implements payService {
 	
 	@Autowired
 	private MemberDao memberDao;
-	
+	 
 	@Autowired
 	private PayDao payDao;
 	
@@ -247,19 +248,16 @@ public class Kakaoservice implements payService {
 	
 ///////////////////// 주문제작
 //	결제준비요청
-	@Autowired
-	private HttpSession session;
-	
-	@Override
+	@Override // 결제준비 요청 데이터 set
 	public KakaoPayReadyVO setCustomReadyVO(String jsonOrderVO) throws JsonMappingException, JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		OrderVO orderVO = mapper.readValue(jsonOrderVO, OrderVO.class);
-		
+
 		KakaoPayReadyVO kakaoPayReadyVO
 												= KakaoPayReadyVO.builder()
-																					.partner_order_id(payDao.getPartnerOrderId())
+																					.partner_order_id("C"+payDao.getPartnerOrderId())
 																					.partner_user_id(orderVO.getPartner_user_id())
-																					.item_name(payDao.getItem_name(orderVO))
+																					.item_name(orderVO.getCustomOrderVO().getCustom_order_title())
 																					.quantity(orderVO.getTotal_quantity())
 																					.total_amount(orderVO.getTotal_price())
 																					.vat_amount(orderVO.getTotal_price()/10)
@@ -268,13 +266,20 @@ public class Kakaoservice implements payService {
 		
 		return kakaoPayReadyVO;
 	}
-	
-	@Override
-	public PayReadyReturnVO readyReturn(PayReadyReturnVO ReadyReturnVO, CustomOrderVO customVO) throws URISyntaxException {
+
+	@Override // 결제준비요청 전송, 응답
+	public PayReadyReturnVO readyReturnVO(PayReadyVO readyVO, HttpSession session,
+																					String jsonOrderVO) throws URISyntaxException, JsonMappingException, JsonProcessingException {
 		// 회원정보
 		String member_id = (String)session.getAttribute("member_id");
 		 int member_no = sqlSession.selectOne("member.getNo", member_id);
 		 
+		// PayReadyVO에서 요청할 데이터를 담은 카카오ReadyVO로 다운캐스팅
+		 KakaoPayReadyVO object = (KakaoPayReadyVO) readyVO;
+		 
+		 // 전송도구 = 헤더+바디
+		 RestTemplate template = new RestTemplate();
+
 		// 헤더
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "KakaoAK 53072513ab4d31c036edec9ad0220095");
@@ -284,45 +289,112 @@ public class Kakaoservice implements payService {
 		// 바디
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
 		body.add("cid", "TC0ONETIME");
-		body.add("partner_order_id", "C"+customVO.getSeller_custom_order_no()); // 견적서 번호
+		body.add("partner_order_id", "C"+object.getPartner_order_id()); // 견적서 번호
 		body.add("partner_user_id", member_id);
-		body.add("item_name", customVO.getCustom_order_title()); // 견적서 제목
-		body.add("quantity", "1");
-		body.add("total_amount", String.valueOf(customVO.getCustom_order_price())); // 견적가격
-		body.add("tax_free_amount", "0");
-		body.add("vat_amount", "0");
-		body.add("approval_url", "http://localhost:8080/ordering/member/cartList");
-		body.add("cancel_url", "http://localhost:8080/ordering/member/customListResp");
+		body.add("item_name", object.getItem_name()); // 견적서 제목
+		body.add("quantity", String.valueOf(object.getQuantity()));
+		body.add("total_amount", String.valueOf(object.getTotal_amount())); // 견적가격
+		body.add("tax_free_amount", String.valueOf(object.getTax_free_amount()));
+		body.add("vat_amount", String.valueOf(object.getVat_amount()));
+		body.add("approval_url", "http://localhost:8080/ordering/pay/kakao/customPaySuccess");
+		body.add("cancel_url", "http://localhost:8080/ordering/pay/kakao/customPayCancel");
 		body.add("fail_url", "http://localhost:8080/ordering/member/customInfoResp");
 		
 		HttpEntity<MultiValueMap<String, String>> entity
 																= new HttpEntity<>(body, headers);
 		
-		// 도구 = 헤더+바디
-		RestTemplate template = new RestTemplate();
-		
 		// 요청주소
 		URI uri = new URI("https://kapi.kakao.com/v1/payment/ready");
 		// 요청주소에 전송 및 회신 응답 저장
-		//										 url, 요청객체, 응답객체(JSON)
+		//										                          url, 요청객체, 응답객체(JSON)
 		KakaoPayReadyReturnVO readyReturnVO =
 								template.postForObject(uri, entity, KakaoPayReadyReturnVO.class);
 		
 		
 		// DB에 결제준비 요청 정보 저장 --> PayDto
-		PayDto.builder()
-						.member(member_no)
-						.tid(readyReturnVO.getTid())
-						.cid("TC0ONETIME")
-						.process_time(readyReturnVO.getCreated_at())
-						.item_name(customVO.getCustom_order_title())
-						.partner_order_id("C"+customVO.getSeller_custom_order_no())
-						.partner_user_id(member_id)
-						.quantity(1)
-						.total_amount(customVO.getCustom_order_price())
-						.build();
-		
+		ObjectMapper mapper = new ObjectMapper();
+		OrderVO orderVO = mapper.readValue(jsonOrderVO, OrderVO.class);
+/*		
+		PayDto payDto = PayDto.builder()
+										.cid("TC0ONETIME")
+										.tid(readyReturnVO.getTid())
+										.member(member_no)
+										.partner_order_id(readyVO.getPartner_order_id())
+										.partner_user_id(readyVO.getPartner_user_id())
+										.item_name(readyVO.getItem_name())
+										.process_time(readyReturnVO.getCreated_at())
+										.quantity(readyVO.getQuantity())
+										.total_amount(readyVO.getTotal_amount())
+										.used_point(orderVO.getUsed_point())
+										.vat_amount(readyVO.getTotal_amount()/10)
+										.build();
+	
+		payDao.insertReadyCustom(payDto, orderVO);
+*/		
 		return readyReturnVO;
+	}
+
+	@Override // 요청 성공 후 결제승인
+	public KakaoPaySuccessReturnVO approveVO(KakaoPaySuccessReadyVO successReadyVO,
+																						HttpSession session) throws URISyntaxException {
+		// 회원정보
+		String member_id = (String)session.getAttribute("member_id");
+		int member_no = sqlSession.selectOne("member.getNo", member_id);
+		 
+		// PayReadyVO에서 요청할 데이터를 담은 카카오ReadyVO로 다운캐스팅
+//		 KakaoPayReadyVO object = (KaㄴkaoPayReadyVO) readyVO;
+
+		 // 전송도구 = 헤더+바디
+		 RestTemplate template = new RestTemplate();
+
+		// 헤더
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "KakaoAK 53072513ab4d31c036edec9ad0220095");
+		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE); // 카카오의 응답을 받을 형태
+		 
+		// 바디
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("cid", successReadyVO.getCid());
+		body.add("tid", successReadyVO.getTid());
+		body.add("partner_order_id", successReadyVO.getPartner_order_id());
+		body.add("partner_user_id", successReadyVO.getPartner_user_id());
+		body.add("pg_token", successReadyVO.getPg_token());
+
+		HttpEntity<MultiValueMap<String, String>> entity
+																	= new HttpEntity<>(body, headers);
+		log.info("body={}",body);
+		// 요청주소
+		URI uri = new URI("https://kapi.kakao.com/v1/payment/approve");
+		// 요청주소에 전송 및 회신 응답 저장
+		//										                          url, 요청객체, 응답객체
+		KakaoPaySuccessReturnVO successReturnVO =
+													template.postForObject(uri, entity, KakaoPaySuccessReturnVO.class);
+		log.info("successReturnVO={}", successReturnVO);
+		// DB 승인완료 내용 저장
+/*		PayDto payDto = PayDto.builder()
+													.cid(successReturnVO.getCid())
+													.tid(successReturnVO.getTid())
+													.process_time(successReturnVO.getCreated_at())
+													.item_name(successReturnVO.getItem_name())
+													.partner_order_id(successReturnVO.getPartner_order_id())
+													.partner_user_id(successReturnVO.getPartner_user_id())
+													.quantity(successReturnVO.getQuantity())
+													.total_amount(successReturnVO.getAmount().getTotal())
+													.aid(successReturnVO.getAid())
+													.used_point(successReturnVO.getAmount().getPoint())
+													.vat_amount(successReturnVO.getAmount().getVat())
+													.build();
+		payDao.insertSuccess(payDto);
+
+		// 구매확정테이블 저장
+		CartOkDto cartOkDto = CartOkDto.builder()
+																		.cart_info_custom_no(successReadyVO.getPartner_order_id())
+																		.member_no(member_no)
+																		.build();
+		memberDao.insertCartOkCustom(cartOkDto);
+*/		
+		return successReturnVO;
 	}	
 	
 }

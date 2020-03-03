@@ -3,7 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <style>
 	.custom-checkbox li {
@@ -16,16 +20,6 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <script>
-
-function customCheck(customCheck){
-	var check = document.querySelector("customCheck");
-	console.log(check);
-	for(var i =0 ; i<check.length ; i++){
-		if(check[i] !=customCheck){
-			check[i].checked = false;
-		}
-	}
-};
 
 $(function(){
 
@@ -94,37 +88,45 @@ $(".form_send").submit(function(e){
 // 결제 정보 담기
 function inputOrderInfo(){
 	var orderVO = new Object();
-	var cartVOList = new Array();
+	var customOrderVO = new Object();
 	var total_price = orderingPriceUpdate();
 	var total_quantity = 1;
-	var orderDeliveryVO = new Object();
-	var used_point = getPoint();
+	var orderDeliveryVO = new Object(); // 받는 사람+주소정보
+	var used_point = getPoint(); // 사용된 포인트
 	
-// 	var name = $(".order_addr_area").children(".name").val();
-	var addr_post = $(".order_addr_area").children(".addr_post").val();
-	var addr_basic = $(".order_addr_area").children(".addr_basic").val();
-	var addr_extra = $(".order_addr_area").children(".addr_extra").val();
-	var addr_status = $(".order_addr_area").children(".addr_status").val();
-	
+	var name = $(".order_addr_area").find(".name").val();
+	var addr_post = $(".order_addr_area").find(".addr_post").val();
+	var addr_basic = $(".order_addr_area").find(".addr_basic").val();
+	var addr_extra = $(".order_addr_area").find(".addr_extra").val();
+	var addr_status = $(".order_addr_area").find(".addr_status").val();
+
 	orderDeliveryVO = {
-// 		delivery_name : name,
+		delivery_name : name,
 		cart_info_addr_post : addr_post,
 		cart_info_addr_basic : addr_basic,
 		cart_info_addr_extra : addr_extra,
 		cart_info_addr_status : addr_status
 	};
 	
+	var custom_order_no = "${customVO.custom_order_no}";
+	var custom_order_status = "${customVO.custom_order_status}";
+	var seller_custom_order_no = "${customVO.seller_custom_order_no}";
+	var seller_no = "${customVO.seller_no}";
+	var seller_id ="${customVO.seller_id}";
+	var custom_order_title = $(".custom_order_title").text();
 	
-	jsCartVOList.forEach(function(cartVO, i){
-		if(cartVO != "") {
-			cartVOList.push(cartVO);
-			total_quantity += cartVO.quantity;
-		}
-	});
+	customOrderVO = {
+		custom_order_no : custom_order_no,
+		custom_order_status : custom_order_status,
+		seller_custom_order_no : seller_custom_order_no,
+		seller_id : seller_id,
+		seller_no : seller_no,
+		custom_order_title : custom_order_title
+	};
 	
 	jsonOrderVO = {
-		cartVOList : cartVOList,
-		orderDeliveryVO : orderDeliveryVO, // 구매자 배송지정보
+		customOrderVO : customOrderVO,
+		orderDeliveryVO : orderDeliveryVO,
 		used_point : used_point,
 		total_quantity : total_quantity,
 		total_price : total_price - used_point,
@@ -142,23 +144,23 @@ function inputOrderInfo(){
 
 
 <div class="ordering_area">
-	<div class="order_addr_area">
-		<!-- 회원정보에서 기본 배송지 가져오고, 새로 입력 누르면 ajax 수정 기능처럼 전환하여 데이터 입력 -->
-		<div class="form-group">
-		    <div class="custom-control custom-checkbox">
-		    	<ul>
-		    		<li>
-						<input class="custom-control-input" name="customCheck" id="customCheck1" type="checkbox" checked onclick="customCheck()">
-						<label class="custom-control-label" for="customCheck1">기본 배송지</label>
-					</li>			
-		   			<li>
-				    	<input class="custom-control-input" name="customCheck" id="customCheck2" type="checkbox" onclick="customCheck()">
-						<label class="custom-control-label" for="customCheck2">새로운 배송지</label>
-					</li>
-		   		</ul>
-		    </div>
+	<!-- 회원정보에서 기본 배송지 가져오고, 새로 입력 누르면 ajax 수정 기능처럼 전환하여 데이터 입력 -->
+	<div class="form-group">
+		<div class="custom-control custom-checkbox">
+			<ul>
+				<li>
+					<input class="custom-control-input" name="customCheck" id="customCheck1" type="checkbox" checked onclick="customCheck()">
+					<label class="custom-control-label" for="customCheck1">기본 배송지</label>
+				</li>			
+				<li>
+					<input class="custom-control-input" name="customCheck" id="customCheck2" type="checkbox" onclick="customCheck()">
+					<label class="custom-control-label" for="customCheck2">새로운 배송지</label>
+				</li>
+			</ul>
 		</div>
+	</div>
 		
+	<div class="order_addr_area">
 		<table class="addr_table" border="1">
 			<tr>
 				<td>받는사람</td><td><input class="name" type="text" value="${member.member_name }"></td>
@@ -183,8 +185,10 @@ function inputOrderInfo(){
 	<hr>
 		<h2>선택한 상품 목록</h2>
 		<!-- 상품정보칸 -->
-			상품이름 : ${customVO.custom_order_title}<br>
-			상품가격 : <fmt:formatNumber pattern="###,###,###" type="number">${customVO.custom_order_price}</fmt:formatNumber> 원<br>
+			상품이름 : <span class="custom_order_title">${customVO.custom_order_title}</span><br>
+			상품가격 : <span class="custom_order_price">
+							<fmt:formatNumber pattern="###,###,###" type="number">${customVO.custom_order_price}</fmt:formatNumber></span> 원
+			<br>
 			<br>	
 			수량 : 1 개 <br>
 	</div>
@@ -208,9 +212,10 @@ function inputOrderInfo(){
 	<button class="credit" disabled>신용카드</button>
 	<button class="deposit" disabled>무통장입금</button>
 	<button class="account" disabled>계좌이체</button>
-	<form class="form_send" action="${pageContext.request.contextPath}/pay/kakao/customConfirm" method="POST">
-	<button id="ordering_btn">결제하기</button>
+	<form class="form_send" action="${pageContext.request.contextPath}/pay/kakao/customPay" method="POST">
+		<button id="ordering_btn">결제하기</button>
 	</form>
 </div>	
-	<hr>
 
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

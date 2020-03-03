@@ -20,4 +20,6 @@ public interface PayDao {
 
 	String getPartnerOrderId();
 	
+	void insertReadyCustom(PayDto payDto, OrderVO orderVO);
+	
 }

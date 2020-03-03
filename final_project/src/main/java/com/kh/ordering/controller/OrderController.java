@@ -42,9 +42,7 @@ public class OrderController {
 	
 	@Autowired
 	private GoodsOptionService goodsOptionService;
-	
-	@Autowired
-	private HttpSession session;
+
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired
@@ -68,7 +66,8 @@ public class OrderController {
 	}
 	
 	@PostMapping("/custom") // 결제페이지
-	public String custom(Model model, @RequestParam int seller_custom_order_no) {
+	public String custom(Model model, HttpSession session, 
+										@RequestParam int seller_custom_order_no) {
 
 		// 회원번호, 회원정보 찾기
 		String member_id = (String)session.getAttribute("member_id");
@@ -83,10 +82,10 @@ public class OrderController {
 		int memberPoint = memberDao.getPoint(member_no);
 		model.addAttribute("memberPoint", memberPoint);
 
-		// 견적서 내용==상품 보내기
+		// 견적서 내용(==상품) 보내기
 		CustomOrderVO customOrderVO = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("customVO", customOrderVO);
-
+		
 		return "order/custom";
 	}
 	

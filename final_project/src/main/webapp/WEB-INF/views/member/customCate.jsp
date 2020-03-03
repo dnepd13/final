@@ -3,54 +3,13 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
- 
- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
- 
- <style>
- /*	footer */
-	footer div {
-		bottom: 0;
-		width: 100%;
-		height: 130px;
-		background-color: rgb(248,245,240);
-		padding: 15px 0 ;
-	}
-	.footer_area * {
-		list-style: none;
-		padding: 0;
-	}
-	.footer_area ul {
-		float: left;
-		position: relative;
-		margin: 0 10px;
-	}
-	.footer_title {
-		padding-bottom: 70px ;
-		width: 30%;
-		text-align: right;
-		padding-right: 10px;
-	}
-	.footer_company {
-		width: 30%;
-	}
-	.footer_cs {
-		width: 30%;
-		float: right:
-	}
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
-/*	부트스트랩 nav */
-	.navbar {
-	    padding: 3px 1rem;
-	}
-	.navbar .nav-link {
-		margin: 5px 0;
-	    padding: 0 2rem;
-	    border-left: 1px solid rgba(255,255,255,0.1);
-	    border-right: 1px solid rgba(0,0,0,0.2);
-	    font-size: 13px;
-	}
- 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
+ <style>
 /*	customCate.jsp style*/
  	.articleBox {
  		width: 500px;
@@ -74,11 +33,11 @@
  	.insert_req input[type=submit] {
  		height: 50px;
  	}
- 	.btn_next {
+ 	.btn_custom {
  		border: 1px solid darkgray;
  		background-color: white;
  	}
-	.btn_next:focus {
+	.btn_custom {
  		outline: none;
  	}
  	
@@ -208,9 +167,7 @@
 
  </script>
  
-<h3>member/customoCate.jsp 카테고리 주문제작 페이지</h3>
-
-<br><br>
+<div class="row-empty-40"></div>
 
 <!-- 카테고리 선택페이지 -->
 <article class="articleBox">
@@ -254,8 +211,10 @@
 			<input class="input_req form-control btn btn-primary" type="submit" value="요청서 보내기">
 		</div>
 	</form>
-		<button type="button" class="btn_next" disabled>다음</button>
+		<button type="button" class="btn_next btn_custom" disabled>다음</button>
 </div>
 </article>
+
+<div class="row-empty-40"></div> 
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
