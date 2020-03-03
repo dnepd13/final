@@ -27,9 +27,7 @@
 	<!-- 카테고리 번호 -->
 	<select id="get_category_no" resultType="int" parameterType="CategoryDto">
 	    select category_no from category where 
-		    category_large =#{category_large} 
-		    and category_middle =#{category_middel} 
-		    and category_small = #{category_small} 
+		     category_small = #{category_small} 
 	</select>
 	
 	<!-- 판매자가 등록한 카테고리 조회하기 -->
