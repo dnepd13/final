@@ -7,7 +7,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kh.admin.entity.MemberDto;
 import com.kh.admin.repository.MemberDao;
 import com.kh.admin.service.BoardService;
+import com.kh.admin.service.EmailService;
 import com.kh.admin.vo.BlockMemberVO;
 import com.kh.admin.vo.BlockSellerVO;
 import com.kh.admin.vo.MemberPointVO;
@@ -39,6 +43,12 @@ public class MemberController {
 	
 	@Autowired
 	private MemberDao memberDao;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	//회원 목록 뽑기
 	@GetMapping("/manage")
@@ -270,5 +280,29 @@ public class MemberController {
 		memberDao.memberPointMulti(list);
 		String a = "포인트 적립을 완료했습니다";
 		return a;
+	}
+	
+	@PostMapping("/reset")
+	public String reset(
+			@RequestParam int member_no,
+			@RequestParam String member_pw,
+			@RequestParam String member_email
+			) {
+		
+		MemberDto memberDto = MemberDto.builder()
+										.member_no(member_no)
+										.member_pw(passwordEncoder.encode(member_pw))
+										.build();
+		System.out.println(member_no);
+		System.out.println(member_email);
+		memberDao.memberChangePw(memberDto);
+		
+		try {
+			emailService.sendMessage(member_email);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/member/manage";
 	}
 }
