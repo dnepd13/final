@@ -23,6 +23,7 @@ import com.kh.ordering.entity.PayDto;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.repository.PayDao;
+import com.kh.ordering.vo.CustomOrderVO;
 import com.kh.ordering.vo.KakaoPayReadyReturnVO;
 import com.kh.ordering.vo.KakaoPayReadyVO;
 import com.kh.ordering.vo.KakaoPayRevokeReturnVO;
@@ -243,4 +244,85 @@ public class Kakaoservice implements payService {
 		
 		return kakaoPayReadyVO;
 	}
+	
+///////////////////// 주문제작
+//	결제준비요청
+	@Autowired
+	private HttpSession session;
+	
+	@Override
+	public KakaoPayReadyVO setCustomReadyVO(String jsonOrderVO) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		OrderVO orderVO = mapper.readValue(jsonOrderVO, OrderVO.class);
+		
+		KakaoPayReadyVO kakaoPayReadyVO
+												= KakaoPayReadyVO.builder()
+																					.partner_order_id(payDao.getPartnerOrderId())
+																					.partner_user_id(orderVO.getPartner_user_id())
+																					.item_name(payDao.getItem_name(orderVO))
+																					.quantity(orderVO.getTotal_quantity())
+																					.total_amount(orderVO.getTotal_price())
+																					.vat_amount(orderVO.getTotal_price()/10)
+																					.tax_free_amount(0)
+																				.build();
+		
+		return kakaoPayReadyVO;
+	}
+	
+	@Override
+	public PayReadyReturnVO readyReturn(PayReadyReturnVO ReadyReturnVO, CustomOrderVO customVO) throws URISyntaxException {
+		// 회원정보
+		String member_id = (String)session.getAttribute("member_id");
+		 int member_no = sqlSession.selectOne("member.getNo", member_id);
+		 
+		// 헤더
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "KakaoAK 53072513ab4d31c036edec9ad0220095");
+		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE); // 카카오의 응답을 받을 형태
+		 
+		// 바디
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("cid", "TC0ONETIME");
+		body.add("partner_order_id", "C"+customVO.getSeller_custom_order_no()); // 견적서 번호
+		body.add("partner_user_id", member_id);
+		body.add("item_name", customVO.getCustom_order_title()); // 견적서 제목
+		body.add("quantity", "1");
+		body.add("total_amount", String.valueOf(customVO.getCustom_order_price())); // 견적가격
+		body.add("tax_free_amount", "0");
+		body.add("vat_amount", "0");
+		body.add("approval_url", "http://localhost:8080/ordering/member/cartList");
+		body.add("cancel_url", "http://localhost:8080/ordering/member/customListResp");
+		body.add("fail_url", "http://localhost:8080/ordering/member/customInfoResp");
+		
+		HttpEntity<MultiValueMap<String, String>> entity
+																= new HttpEntity<>(body, headers);
+		
+		// 도구 = 헤더+바디
+		RestTemplate template = new RestTemplate();
+		
+		// 요청주소
+		URI uri = new URI("https://kapi.kakao.com/v1/payment/ready");
+		// 요청주소에 전송 및 회신 응답 저장
+		//										 url, 요청객체, 응답객체(JSON)
+		KakaoPayReadyReturnVO readyReturnVO =
+								template.postForObject(uri, entity, KakaoPayReadyReturnVO.class);
+		
+		
+		// DB에 결제준비 요청 정보 저장 --> PayDto
+		PayDto.builder()
+						.member(member_no)
+						.tid(readyReturnVO.getTid())
+						.cid("TC0ONETIME")
+						.process_time(readyReturnVO.getCreated_at())
+						.item_name(customVO.getCustom_order_title())
+						.partner_order_id("C"+customVO.getSeller_custom_order_no())
+						.partner_user_id(member_id)
+						.quantity(1)
+						.total_amount(customVO.getCustom_order_price())
+						.build();
+		
+		return readyReturnVO;
+	}	
+	
 }

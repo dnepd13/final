@@ -3,11 +3,32 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+
+<style>
+	.custom-checkbox li {
+		list-style: none;
+		float: left;
+		width: 120px;
+	}	
+</style>
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <script>
+
+function customCheck(customCheck){
+	var check = document.querySelector("customCheck");
+	console.log(check);
+	for(var i =0 ; i<check.length ; i++){
+		if(check[i] !=customCheck){
+			check[i].checked = false;
+		}
+	}
+};
+
 $(function(){
-	
+
 	// 배송비, 배송조건, 배송조건금액, 묶음 배송, 묶음 배송 조건
 	// 보내야 할 정보
 	
@@ -18,189 +39,50 @@ $(function(){
 // 	@ 총 금액(상품전체+배송비-포인트+부가세)
 // 	@ 총 배송비
 
-	
-var jsCartVOList = JSON.parse('${jsonCartVOList}');
-	
-// 초기화
-var total_delivery_price = deliveryPriceUpdate();
-var g_total_price = orderingPriceUpdate(total_delivery_price);
-deliveryPriceTagUpdate(total_delivery_price);
-	
-///////// 배송비 업데이트
-function deliveryPriceUpdate() {
-		var setList = new Array();
-		var nonSetList = new Array();
-		var nonFreePriceList = new Array();
-		var total_delivery_price = 0;
-		var isNonFree = false;
-		var setSumPrice = 0;
-		var set_op_price = 0;
-		var op_max_price = 0;
-		
-		// 묶음 배송 검사
-		jsCartVOList.forEach(function(cartVO, i){
-			if(cartVO != ""){
-				if(jsCartVOList[i].deliveryDto.delivery_set_agree == 'Y'){
-					setList.push(jsCartVOList[i]);
-				}  
-				else nonSetList.push(jsCartVOList[i]);
-			}
-		});
-		
-		
-	///// 묶음 배송 Y  ///// 
-	setList.forEach(function(cartVO, i){
-		if(cartVO != ""){
-			// 배송 조건  별 로직
-			switch (setList[i].deliveryDto.delivery_option) {
-			case '무료':	break;
-			
-			// 유료있으면 true
-			case '유료':  
-				isNonFree = true;
-				nonFreePriceList.push(setList[i].deliveryDto.delivery_price);
-			break;
-			
-			case '조건부무료': 
-				// true면 브레이크
-				if(isNonFree) break;
-				else {
-					// 조건부무료 최고 금액 추출
-					if(set_op_price < setList[i].deliveryDto.delivery_set_op_price){
-						set_op_price = setList[i].deliveryDto.delivery_set_op_price;
-					}
-					// 배송비 최고 금액 추출
-					if(op_max_price < setList[i].deliveryDto.delivery_price) {
-						op_max_price = setList[i].deliveryDto.delivery_price;
-					}	
-					// 묶음 상품 금액 합계
-					setSumPrice += (setList[i].price * setList[i].quantity);
-					break;
-				}
-			
-			default:
-				break;
-			}
-		}
-	});
+var g_total_price = orderingPriceUpdate();
 
-	// 묶음 배송 Y 결과 
-	// 유료가 있다면?
-	if(isNonFree) {
-		nonFreePriceList.forEach(function(nonFreePrice, i){
-			if(nonFreePrice != ""){
-				if(total_delivery_price < nonFreePriceList[i]){
-					total_delivery_price = nonFreePriceList[i];
-				}
-			}
-		});
-	} 
-	// 유료와 조건부무료 조건이 없다면?
-	else if(set_op_price == 0) {
-		total_delivery_price = 0;
-	}
-			
-	// 조건부 무료가 있다면?
-	else {
-		// 조건부 무료 최고 금액 < 묶음 상품 합계 금액  ? 0 : 조건부무료 배송비 최고 금액 
-		total_delivery_price = (set_op_price < setSumPrice ? 0 : op_max_price);
-	}
-		
-		
-		
-	///// 묶음 배송 N  ///// 
-	nonSetList.forEach(function(nonSet, i){
-		if(nonSet != ""){
-			switch (nonSetList[i].deliveryDto.delivery_option) {
-			case '무료':	break;
-			case '유료': 
-				total_delivery_price += nonSetList[i].deliveryDto.delivery_price;
-				break;
-			case '조건부무료': 
-				// 상품가격이 
-				if(nonSetList[i].price < nonSetList[i].deliveryDto.delivery_op_price){
-					total_delivery_price += nonSetList[i].deliveryDto.delivery_price;
-				}
-				break;
-			default:
-				break;
-			}
-		}
-	});
-	
-	deliveryPriceTagUpdate(total_delivery_price);
-	
-	return total_delivery_price;
-}
-	
-	
-////////// 삭제 버튼
-$(".delete_btn").click(function(){
-	var index = $(this).parent(".items_area").attr("id");
-	$(this).parent(".items_area").remove();
-	jsCartVOList[index] = "";
-	orderingPriceUpdate(deliveryPriceUpdate());
-	updatePoint();
-});
-	
-	
-	
 ////////// 총금액 업데이트
-function orderingPriceUpdate(total_delivery_price){
-	var ordering_price = 0;
-	var delivery_price = total_delivery_price;
-	var total_price = 0;
+function orderingPriceUpdate(){
+	var total_price = $(".total_price").data("total_price");
 	
-	// 아이템 별 금액 합산
-	jsCartVOList.forEach(function(cartVO, i){
-		if(cartVO != "") total_price += (cartVO.price * cartVO.quantity);
-	});
-	
-	// 총 상품금액 출력	
-	total_price += delivery_price;
+	// 총 상품금액 출력		
 	if(total_price == 0){
 		$(".ordering_btn").attr("disabled", true);
-		deliveryPriceTagUpdate(0);
 	}
 	$(".ordering_price").html(addComma(String(total_price))+" 원");
-	
-	deliveryPriceTagUpdate(delivery_price);
 	return total_price;
 }
 
-///////  포인트
-$(".input_point").blur(function(){
-	updatePoint();
-});
-
-function updatePoint(){
-	var point = getPoint();
-	total_delivery_price = deliveryPriceUpdate();
-	g_total_price = orderingPriceUpdate(total_delivery_price);
-	deliveryPriceTagUpdate(total_delivery_price);
+///////  포인트	
+	$(".input_point").blur(function(){ // 사용포인트 입력 끝나면 updatePoint() 부르기
+		updatePoint();
+	});
 	
-	if(point > 0) {
-		$(".ordering_price").html(addComma(String(g_total_price - point))+" 원");
-	} else {
-		$(".input_point").val(0);
-		$(".ordering_price").html(addComma(String(g_total_price - 0))+" 원");
+	function getPoint(){ // 사용포인트 입력값 getPoint()로 반환
+		return parseInt($(".input_point").val());
 	}
-}
 
-function getPoint(){
-	return parseInt($(".input_point").val());
-}
+	function updatePoint(){
+		
+		var point = getPoint();
+		g_total_price = orderingPriceUpdate();
+		var origin_point = $(".origin_point").data("origin_point");
+		
+		if(point > 0) {
+			$(".ordering_price").html(addComma(String(g_total_price - point))+" 원");
+			$(".origin_point").text(origin_point - point);
+		} else {
+			$(".input_point").val(0);
+			$(".ordering_price").html(addComma(String(g_total_price - 0))+" 원");
+			$(".origin_point").text(origin_point);
+		}
+	}
 
 
 ///////  콤마추가
 function addComma(num){
 	var regexp = /\B(?=(\d{3})+(?!\d))/g;
 	return num.toString().replace(regexp, ',');
-}
-
-///////  배송비 태그 업데이트
-function deliveryPriceTagUpdate(delivery_price){
-	$(".delivery_price").html(delivery_price + "원");
 }
 
 /////// 전송 시 데이터 업데이트
@@ -213,20 +95,19 @@ $(".form_send").submit(function(e){
 function inputOrderInfo(){
 	var orderVO = new Object();
 	var cartVOList = new Array();
-	var total_delivery_price = deliveryPriceUpdate();
-	var total_price = orderingPriceUpdate(total_delivery_price);
-	var total_quantity = 0;
+	var total_price = orderingPriceUpdate();
+	var total_quantity = 1;
 	var orderDeliveryVO = new Object();
 	var used_point = getPoint();
 	
-	var name = $(".order_addr_area").children(".name").val();
+// 	var name = $(".order_addr_area").children(".name").val();
 	var addr_post = $(".order_addr_area").children(".addr_post").val();
 	var addr_basic = $(".order_addr_area").children(".addr_basic").val();
 	var addr_extra = $(".order_addr_area").children(".addr_extra").val();
 	var addr_status = $(".order_addr_area").children(".addr_status").val();
 	
 	orderDeliveryVO = {
-		delivery_name : name,
+// 		delivery_name : name,
 		cart_info_addr_post : addr_post,
 		cart_info_addr_basic : addr_basic,
 		cart_info_addr_extra : addr_extra,
@@ -243,16 +124,17 @@ function inputOrderInfo(){
 	
 	jsonOrderVO = {
 		cartVOList : cartVOList,
-		orderDeliveryVO : orderDeliveryVO,
+		orderDeliveryVO : orderDeliveryVO, // 구매자 배송지정보
 		used_point : used_point,
 		total_quantity : total_quantity,
 		total_price : total_price - used_point,
-		total_delivery_price : total_delivery_price,
-		partner_user_id : "${member_id}" 
+// 		total_delivery_price : total_delivery_price,
+		partner_user_id : "${member.member_id}" 
 	};
 	
 	return JSON.stringify(jsonOrderVO);
 }
+
 
 });
 </script>
@@ -262,70 +144,73 @@ function inputOrderInfo(){
 <div class="ordering_area">
 	<div class="order_addr_area">
 		<!-- 회원정보에서 기본 배송지 가져오고, 새로 입력 누르면 ajax 수정 기능처럼 전환하여 데이터 입력 -->
-		<p>기본배송지</p>
-		받는사람: ${member.member_name } <br>
-		우편번호: ${memberAddr.member_addr_post }
-		기본주소: ${memberAddr.member_addr_basic }
-		상세주소: ${memberAddr.member_addr_extra }
-		연락처: ${member.member_phone } <br>
-		받는사람 : <input class="name" type="text" name="name"> <br>
-		우편번호 : <input class="addr_post" type="text" name="addr_post"> <br>
-		기본주소 : <input class="addr_basic" type="text" name="addr_basic"> <br>
-		상세주소 : <input class="addr_extra" type="text" name="addr_extra"> <br>
-		주소상태 : <input class="addr_status" type="text" name="addr_status"> <br>
-	</div>
-	<hr>
-	<h2>선택한 상품 목록</h2>
-	<c:forEach items="${cartVOList}" var="cartVO" varStatus="status">
-	<div id="${status.index}" class="items_area">
-	<hr>
-	<!-- 상품정보칸 -->
-		상품이름 : ${cartVO.goodsDto.goods_name}<br>
-		상품가격 : <fmt:formatNumber pattern="###,###,###" type="number">${cartVO.goodsDto.goods_price}</fmt:formatNumber> 원<br>
-		
-	<!-- 옵션칸 -->
-		옵션 	: <br>
-		<c:forEach items="${cartVO.option_list}" var="goodsOptionDto">
-			- ${goodsOptionDto.goods_option_title } : 
-			${goodsOptionDto.goods_option_content}  
-			(<fmt:formatNumber pattern="###,###,###" type="number"> ${goodsOptionDto.goods_option_price}</fmt:formatNumber>원)
-			<br>
-		</c:forEach>
-		가격 : <fmt:formatNumber pattern="###,###,###" type="number">${cartVO.price}</fmt:formatNumber> 원<br>	
-		수량 : ${cartVO.quantity} 개 <br>
-		
-	<!-- 배송정보 칸 -->
-		<div class="delivery_area">
-		배송조건 : <span class="item_dOption">${cartVO.deliveryDto.delivery_option}</span>	<br>
-		배송조건금액 : <span class="item_dOp_price">${cartVO.deliveryDto.delivery_op_price}</span><br>
-		묶음배송여부 : <span class="item_dSet_agree">${cartVO.deliveryDto.delivery_set_agree }</span><br>
-		묶음배송금액 : <span class="item_dSet_agree">${cartVO.deliveryDto.delivery_set_op_price }</span><br>
-		배송비 : <span class="item_dPrice">${cartVO.deliveryDto.delivery_price}</span><br>
-		택배사 : <span class="item_dCompany">${cartVO.deliveryDto.delivery_company}</span>
+		<div class="form-group">
+		    <div class="custom-control custom-checkbox">
+		    	<ul>
+		    		<li>
+						<input class="custom-control-input" name="customCheck" id="customCheck1" type="checkbox" checked onclick="customCheck()">
+						<label class="custom-control-label" for="customCheck1">기본 배송지</label>
+					</li>			
+		   			<li>
+				    	<input class="custom-control-input" name="customCheck" id="customCheck2" type="checkbox" onclick="customCheck()">
+						<label class="custom-control-label" for="customCheck2">새로운 배송지</label>
+					</li>
+		   		</ul>
+		    </div>
 		</div>
+		
+		<table class="addr_table" border="1">
+			<tr>
+				<td>받는사람</td><td><input class="name" type="text" value="${member.member_name }"></td>
+			</tr>
+			<tr>
+				<td>연락처</td><td><input type="text" name="" value="${member.member_phone }" placeholder=" '-' 없이 입력"></td>
+			</tr>
+			<tr>
+				<td rowspan="2">
+					주소
+					<input class="addr_status" type="hidden" name="addr_status" value="${memberAddr.member_addr_status }">
+				</td>
+				<td><input class="addr_post" type="text" name="" value="${memberAddr.member_addr_post }"></td>
+				<td><button>우편번호 찾기</button></td>
+			</tr>
+			<tr>
+				<td><input class="addr_basic" type="text" name="" value="${memberAddr.member_addr_basic }"></td>
+				<td><input class="addr_extra" type="text" name="" value="${memberAddr.member_addr_extra }"></td>
+			</tr>
+		</table>
+	
+	<hr>
+		<h2>선택한 상품 목록</h2>
+		<!-- 상품정보칸 -->
+			상품이름 : ${customVO.custom_order_title}<br>
+			상품가격 : <fmt:formatNumber pattern="###,###,###" type="number">${customVO.custom_order_price}</fmt:formatNumber> 원<br>
+			<br>	
+			수량 : 1 개 <br>
+	</div>
 	<!-- 토탈 -->
 		<div class="total_area">
 		총 가격 : 
-			<span class="item_pirce">
+			<span class="total_price" data-total_price="${customVO.custom_order_price}">
 			<fmt:formatNumber pattern="###,###,###" type="number">
-			${cartVO.price*cartVO.quantity}</fmt:formatNumber> 원</span>
-			<input type="hidden" class="hItem_price" value="${cartVO.price*cartVO.quantity}">
+				${customVO.custom_order_price}
+			</fmt:formatNumber></span>원
 		</div>
-		<button class="delete_btn">삭제</button>
-	</div>
-	</c:forEach>
+
 	<hr>
 	<div class="point_area">
-		포인트 사용 가능 금액 : <span>0 포인트</span><br>
+		포인트 사용 가능 금액 : <span class="origin_point" data-origin_point="${memberPoint }">${memberPoint }</span> point<br>
 		포인트 사용 : <input class="input_point" type="text" name="used_point" value="0"> <br>
 	</div>
-	배송비 : <span class="delivery_price">1 원</span>
 	주문 총 가격 : <span class="ordering_price"> 원</span>
 	<hr>
-	<form class="form_send" action="${pageContext.request.contextPath}/pay/kakao/confirm" method="POST">
+	<button class="kakao">KakaoPay</button>
+	<button class="credit" disabled>신용카드</button>
+	<button class="deposit" disabled>무통장입금</button>
+	<button class="account" disabled>계좌이체</button>
+	<form class="form_send" action="${pageContext.request.contextPath}/pay/kakao/customConfirm" method="POST">
 	<button id="ordering_btn">결제하기</button>
 	</form>
-	
+</div>	
 	<hr>
-</div>
 

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
  
@@ -8,6 +9,10 @@
  	.articleBox {
  		width: 500px;
 		margin: 0 auto;
+	}
+		
+	.card-footer input[type=submit]{
+		border: 0;
 	}
 
 </style>
@@ -49,7 +54,9 @@
 	<ul class="list-group list-group-flush">
 		<li class="list-group-item card-text">
 			<h6 class="card-subtitle text-muted">견적가격&Tab;</h6>
-			${getListInfoResp.custom_order_price }
+				<fmt:formatNumber pattern="###,###,###" type="number">
+					${getListInfoResp.custom_order_price }
+				</fmt:formatNumber> 원
 			</li>
 		<li class="list-group-item card-text">
 			<h6 class="card-subtitle text-muted">가능날짜&Tab;</h6>
@@ -57,8 +64,13 @@
 			</li>
 	</ul>
 	<div class="card-footer text-muted content_last" align="right">
-		<a href="#" style="font-weight: bold;">수락 및 결제하기</a> &verbar; 
+		<form action="${pageContext.request.contextPath }/order/custom" method="post">
+			<input type="hidden" name="seller_custom_order_no" value="${getListInfoResp.seller_custom_order_no }">
+			<input type="submit" value="수락 및 결제하기">
+		&verbar; 
+<%-- 		<a href="${pageContext.request.contextPath }/order/custom" style="font-weight: bold;">수락 및 결제하기</a> &verbar;  --%>
 		<a href="${pageContext.request.contextPath }/member/customListReq">목록으로</a>		
+		</form>
 	</div>
 </div>
 </article>

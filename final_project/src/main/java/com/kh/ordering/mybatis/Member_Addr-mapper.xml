@@ -61,8 +61,8 @@
    
    <!-- 기본주소만 검색 -->
    <select id="getBasicAddr" parameterType="int" resultType="member_AddrDto">
-   		select * from member_addr where member_no = #{member_no} 
-   			where member_addr.member_addr_status='기본주소'
+   		select * from member_addr
+   			where member_no = #{member_no} and member_addr.member_addr_status='기본주소'
    </select> 
    
   </mapper>
