@@ -13,4 +13,6 @@ public interface SellerDao {
 	public void sellerDelete(SellerDto sellerDto);
 	public int sellerIdCount(String seller_id);
 	public int sellerGradeCount(String seller_grade);
+	//비밀번호 초기화
+	public void sellerChangePw(SellerDto sellerDto);
 }

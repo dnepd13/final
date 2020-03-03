@@ -3,7 +3,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
 <script>
+	$(function(){
+		$(".memberPw").hide();
+		
+	});
 	function checkAll(){
 		if($("#th_checkAll").is(':checked')){
 			$("input[name=checkRow]").prop("checked",true);
@@ -53,26 +59,46 @@
             <div class="offset-md-1 col-md-10">
 <div class="row justify-content-center"  style="padding: 20px;"><h1>회원 관리 목록</h1></div>
 
-
+<form action="manage" method="get">
+  <fieldset>
+    <div class="form-group">
+      <label for="exampleSelect1">검색 조건</label>
+      <select class="form-control" name="key" id="exampleSelect1">
+        <option value="member_id">아이디</option>
+        <option value="member_name">이름</option>
+        <option value="member_grade">등급</option>
+      </select>
+    </div>
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">검색</label>
+      <div class="col-sm-10">
+        <input type="text"  name="search" class="form-control-plaintext" id="staticEmail" placeholder="검색어를 입력하세요">
+      </div>
+    </div>
+  </fieldset>
+  
+  <button type="submit" class="btn btn-primary offset-md-4 col-md-4" >검색</button>
+</form>
 <table class="table table-hover">
   <thead>
     <tr>
       <th width="9%"><input type="checkbox" name="checkAll" id="th_checkAll" onclick="checkAll();"></th>
-      <th width="10%">아이디</th>
-      <th width="10%">이름</th>
+      <th width="5%">아이디</th>
+      <th width="5%">이름</th>
       <th width="10%">이메일</th>
       <th width="10%">연락처</th>
-      <th width="10%">등급</th>
+      <th width="2%">등급</th>
       <th width="10%">가입일</th>
       <th width="15%">마지막 접속일시</th>
       <th width = "8%">상세보기</th>
       <th width = "8%">차단</th>
+      <th width="15%">비밀번호초기화</th>
     </tr>
   </thead>
   <tbody>
     <c:forEach var="list" items="${list}">
     <tr class="table-light">
-    	<th class="center"><input type="checkbox" id="checkRow" name="checkRow" value="${list.member_no }"  style="width:20px;height:20px;"></th>
+    <th class="center"><input type="checkbox" id="checkRow" name="checkRow" value="${list.member_no }"  style="width:20px;height:20px;"></th>
       <th scope="row">${list.member_id}</th>
       <td>${list.member_name}</td>
       <td>${list.member_email}</td>
@@ -89,15 +115,24 @@
       <c:choose>
       	<c:when test="${list.block_no > 0 }">
       		<td>
-      		<a href="${pageContext.request.contextPath}/unlock?member_no=${list.member_no}"><button type="button" class="btn btn-danger">차단해제</button></a>
+      		<a href="${pageContext.request.contextPath}/unlock?member_no=${list.member_no}"><button type="button" class="btn btn-danger">해제</button></a>
 			</td>      
       	</c:when>
       	<c:otherwise>
 		      <td>
-		      	<a href="${pageContext.request.contextPath}/block?member_no=${list.member_no}"><button type="button" class="btn btn-primary">차단하기</button></a>
+		      	<a href="${pageContext.request.contextPath}/block?member_no=${list.member_no}"><button type="button" class="btn btn-primary">차단</button></a>
 		      </td>
       	</c:otherwise>
       </c:choose>
+      <td>
+      		<form action="reset" method="post" class="resetForm">
+      			<input type="hidden" name="member_no" value="${list.member_no }">
+      			<input type="hidden" name="member_email" value="${list.member_email }">
+      			<input class="memberPw" type="password" name="member_pw" value="123456789a">
+      			<button class="btn btn-primary reset" >초기화</button>
+      		</form>
+      </td>
+      
     </tr>
 	</c:forEach>
   </tbody>
@@ -168,26 +203,7 @@
 	<button type="button" class="btn btn-primary btn-regist offset-md-4 col-md-4" >포인트등록</button><br>
 </form>
 
-<form action="manage" method="get">
-  <fieldset>
-    <div class="form-group">
-      <label for="exampleSelect1">검색 조건</label>
-      <select class="form-control" name="key" id="exampleSelect1">
-        <option value="member_id">아이디</option>
-        <option value="member_name">이름</option>
-        <option value="member_grade">등급</option>
-      </select>
-    </div>
-    <div class="form-group row">
-      <label for="staticEmail" class="col-sm-2 col-form-label">검색</label>
-      <div class="col-sm-10">
-        <input type="text"  name="search" class="form-control-plaintext" id="staticEmail" placeholder="검색어를 입력하세요">
-      </div>
-    </div>
-  </fieldset>
-  
-  <button type="submit" class="btn btn-primary offset-md-4 col-md-4" >검색</button>
-</form>
+
 
 </div>
         </div>

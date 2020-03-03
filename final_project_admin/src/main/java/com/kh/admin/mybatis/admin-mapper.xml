@@ -124,6 +124,15 @@
 		select * from seller where seller_no = #{seller_no}
 	</select>
 	
+	<!-- 판매자 비밀번호 변경 -->
+	<update id="resetSellerPw" parameterType="sellerDto">
+		update seller 
+			set 
+				seller_pw = #{seller_pw}
+			where 
+				seller_no = #{seller_no}
+	</update>
+	
 	<!-- 판매자 삭제 -->
 	<delete id="sellerDelete" parameterType="sellerDto">
 		delete seller where seller_no = #{seller_no}
@@ -195,6 +204,15 @@
 	<delete id="categoryDelete" parameterType="int">
 		delete category where category_no = #{category_no}
 	</delete>
+	
+	<!-- 회원 비밀번호 리셋 -->
+	<update id="resetPw" parameterType="memberDto">
+		update member 
+			set
+				member_pw = #{member_pw}
+			where
+				member_no = #{member_no}
+	</update>
 	
 	<!-- 회원 리스트 -->
 	<select id="memberGetList" parameterType="Paging" resultType="blockMemberDto">

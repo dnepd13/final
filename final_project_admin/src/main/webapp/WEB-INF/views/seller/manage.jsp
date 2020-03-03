@@ -2,6 +2,23 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" ></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
+<script>
+$(function(){
+	$(".sellerPw").hide();
+	$(".reset").click(function(){
+		if(confirm("회원의 비밀번호를 초기화하시겠습니까?")){
+			$(".resetForm").submit();
+		}
+		else{
+		}
+	});
+	
+});
+</script>
+
 <div style="padding-top: 50px;">
 	<jsp:include page="../template/header.jsp"></jsp:include>
 </div>
@@ -14,15 +31,16 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th width="11%">아이디</th>
-      <th width="11%">이름</th>
-      <th width="11%">이메일</th>
-      <th width="11%">연락처</th>
-      <th width="11%">등급</th>
-      <th width="11%">가입일</th>
-      <th width="11%">마지막 접속일시</th>
-      <th width="11%">상세보기</th>
-      <th width="12%">차단
+      <th width="10%">아이디</th>
+      <th width="10%">이름</th>
+      <th width="10%">이메일</th>
+      <th width="10%">연락처</th>
+      <th width="10%">등급</th>
+      <th width="10%">가입일</th>
+      <th width="10%">마지막 접속일시</th>
+      <th width="10%">상세보기</th>
+      <th width="10%">차단
+      <th width="10%">비밀번호초기화</th>
       </th>
     </tr>
   </thead>
@@ -54,6 +72,16 @@
 		      </td>
       	</c:otherwise>
       </c:choose>
+      
+       <td>
+      		<form action="reset" method="post" class="resetForm">
+      			<input type="hidden" name="seller_no" value="${list.seller_no }">
+      			<input type="hidden" name="member_email" value="${list.seller_email }">
+      			<input class="sellerPw" type="password" name="seller_pw" value="123456789a">
+      			<button class="btn btn-primary reset" type="button">초기화</button>
+      		</form>
+      </td>
+      
     </tr>
 	</c:forEach>
   </tbody>
