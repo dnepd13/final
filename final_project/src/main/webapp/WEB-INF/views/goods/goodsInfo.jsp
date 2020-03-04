@@ -415,8 +415,7 @@ $(function(){
 	    });
 	    	    
 });
-<<<<<<< HEAD
-=======
+
 
 
 ///////// 문의,리뷰게시판 tab
@@ -439,25 +438,7 @@ $(function(){
 		event.currentTarget.className += "active"; // 이벤트로 클릭한 탭 활성화
 	};
 
->>>>>>> refs/remotes/origin/master
 </script>
-
-<<<<<<< HEAD
-<style>
-/*	qna style */
-	.qna {
-		width: 80%
-	}
-	.qna_member textarea {
-		resize: none;
-		width: 100%;
-	}
-	.qna_seller textarea,
-	.updateQ textarea {
-		resize: none;
-		width: 100%;
-	}
-</style>
 <style>
 .final_price, .final_qtt {
 	font-size: 1.5rem;
@@ -642,58 +623,7 @@ $(function(){
 	<hr>
 	<br>
 </section>
-=======
-<h1>상품 상세 페이지</h1>
-
-<p>상품 상세 내용(goods_content)</p>
-<p>${goodsVO.goods_content}</p>
-<span>평점: </span>
-<hr>
-<br>
-
-<span>
-	<c:choose>
-		<c:when test="${member_id !=null }">
-			<a href="${pageContext.request.contextPath}/member/customOrder?seller_no=${goodsVO.seller_no }">1:1 요청서</a>
-		</c:when>
-		<c:otherwise>
-			<a href="${pageContext.request.contextPath}/member/login">1:1 요청서</a>
-		</c:otherwise>
-	</c:choose>
-</span>
-
-<hr>
-<form action="../order/order" method="POST">
-<!-- 옵션 선택하는 부분----------------------------------------->
-<h1>옵션선택</h1>
-<div class="option_area">
-	<c:forEach items="${goodsOptionVOList}" var="goodsOptionVO" varStatus="status">
-		<span>${goodsOptionVO.goods_option_title} : </span>
-		<select class=options>
-			<option value="">선택</option>
-			<c:forEach items="${goodsOptionVO.goodsOptionList}" var="goodsOptionDto">
-				<option value="${goodsOptionDto.goods_option_no}">${goodsOptionDto.goods_option_content}(${goodsOptionDto.goods_option_price})</option>			
-			</c:forEach>
-		</select>
-		<br>
-	</c:forEach>
-</div>
-<!-- --------------------------------------------------- -->
-<hr>
-<div class="selected_area">
-	<h1>상품+옵션 선택 내용</h1>
-</div>
-
-<input class="submit_ordering" type="submit" value="주문하기" disabled>
-<button class="add_cart_btn" disabled>장바구니</button>
-</form>
-<hr>
-<div class="total_area">
-<h1>총 상품금액(수량)</h1>
-<span class="final_price">0원 </span><span class="final_qtt">(0개)</span>
-</div>
-<hr>
->>>>>>> refs/remotes/origin/master
+</article>
 <!-- --------------------------------------------------- -->
 <div class="tab">
 <!-- 	<button class="tab_links active" onclick="tabView(event, 'tab1')">문의하기</button> -->
@@ -857,35 +787,19 @@ $(function(){
     </div>
 <hr>
 </section>	
+</article>
 <!-- ----------------------------------------------------------------------- -->
-<<<<<<< HEAD
-<section>
-<p>리뷰</p>
-	<table border="1">
-		<tr>
-			<th>글번호</th>
-			<th>작성자</th>
-			<th>작성시간</th>
-			<th></th>
-		</tr>
-<c:forEach var="review" items="${goodsReview }">
-=======
+
 <section id="tab3" class="tab_content">
 	<div class="row-empty-20"></div>
 	<c:forEach var="review" items="${goodsReview }">
 	<table class="reviewBox">
->>>>>>> refs/remotes/origin/master
 		<tr>
 			<td class="star" colspan="3">
 				<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${review.goods_review_star}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
 			</td>
 		</tr>
 		<tr>
-<<<<<<< HEAD
-			<td colspan="2">${review.goods_review_writer }</td>
-			<td>${review.goods_review_date }</td>
-			<td><button class="btn_reply">댓글쓰기</button></td>
-=======
 			<td width="150px">${review.goods_review_writer }</td>
 			<td width="" align="right">
 				<fmt:parseDate value="${review.goods_review_date }" var="review_date" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -901,7 +815,6 @@ $(function(){
 		        </c:otherwise>
 		        </c:choose>
 			</td>
->>>>>>> refs/remotes/origin/master
 		</tr>
 		<c:if test="${ not empty filesVO }">
 			<tr>
@@ -926,13 +839,6 @@ $(function(){
 				</form>
 				</td>
 		</tr>
-<<<<<<< HEAD
-		<tr>
-			<td>
-			</td>
-		</tr>
-</c:forEach>
-=======
 		<c:if test="${ not empty reviewReply }">
 			<tr>
 				<td colspan="3">
@@ -951,11 +857,9 @@ $(function(){
 				</td>
 			</tr>
 		</c:if>
->>>>>>> refs/remotes/origin/master
 	</table>
 	<br>
 	</c:forEach>
 </section>
-</article>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
