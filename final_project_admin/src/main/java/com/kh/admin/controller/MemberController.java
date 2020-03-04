@@ -293,8 +293,6 @@ public class MemberController {
 										.member_no(member_no)
 										.member_pw(passwordEncoder.encode(member_pw))
 										.build();
-		System.out.println(member_no);
-		System.out.println(member_email);
 		memberDao.memberChangePw(memberDto);
 		
 		try {

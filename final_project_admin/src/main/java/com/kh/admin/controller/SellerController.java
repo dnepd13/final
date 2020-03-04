@@ -163,7 +163,6 @@ public class SellerController {
 									.seller_no(seller_no)
 									.seller_pw(passwordEncoder.encode(seller_pw))
 									.build();
-		System.out.println(sellerDto);
 		sellerDao.sellerChangePw(sellerDto);
 		
 		try {

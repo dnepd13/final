@@ -22,12 +22,14 @@ import com.kh.admin.entity.AdminDto;
 import com.kh.admin.entity.AdminQnaBoardDto;
 import com.kh.admin.entity.BlockDto;
 import com.kh.admin.entity.CategoryDto;
+import com.kh.admin.entity.CompanyInfoDto;
 import com.kh.admin.entity.GradeBenefitDto;
 import com.kh.admin.entity.MemberDto;
 import com.kh.admin.entity.PremiumDto;
 import com.kh.admin.entity.SellerDto;
 import com.kh.admin.repository.AdminDao;
 import com.kh.admin.repository.CategoryDao;
+import com.kh.admin.repository.CompanyInfoDao;
 import com.kh.admin.repository.GoodsDao;
 import com.kh.admin.repository.GradeBenefitDao;
 import com.kh.admin.repository.MemberDao;
@@ -76,6 +78,9 @@ public class AdminController {
 	
 	@Autowired
 	private SalesDao salesDao;
+	
+	@Autowired
+	private CompanyInfoDao companyInfoDao;
 	
 	//---------------------------濡쒓렇�씤李�----------------------------------
 	@GetMapping("/")
@@ -635,14 +640,27 @@ public class AdminController {
 	
 	//---------------------�궗�씠�듃 湲곕낯�젙蹂� �꽕�젙--------------------------
 	@GetMapping("/basicpagesetting")
-	public String basicpagesetting() {
+	public String basicpagesetting(
+			Model model
+			) {
 		try {
+			model.addAttribute("list", companyInfoDao.get());
 			
 		return "basicpagesetting";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "basicpagesetting";
 		}
+	}
+	
+	@PostMapping("/basicpagesetting")
+	public String basicpagesetting(
+			@ModelAttribute CompanyInfoDto companyInfoDto
+			) {
+		
+		companyInfoDao.update(companyInfoDto);
+		
+		return "redirect:/basicpagesetting";
 	}
 	
 	//---------------------�뿤�뜑-------------------------

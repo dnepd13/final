@@ -1121,6 +1121,24 @@
 		    left outer join category C on co.custom_order_category = c.category_no
 		where CO.custom_order_no = #{custom_order_no}
 	</select>
+	
+	<!-- 회사 정보 불러오기 -->
+	<select id="getCompanyInfo" resultType="companyInfoDto">
+		select * from companyinfo
+	</select>
+	
+	<!-- 회사 정보 수정하기 -->
+	<update id="updateCompanyInfo" parameterType="companyInfoDto">
+		update companyinfo
+			set
+			co_name = #{co_name},
+			co_ceo = #{co_ceo},
+			co_location = #{co_location},
+			co_call = #{co_call},
+			co_email = #{co_email},
+			co_termsofuse = #{co_termsofuse},
+			co_privacy = #{co_privacy}
+	</update>
  </mapper> 
 	
  
