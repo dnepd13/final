@@ -91,7 +91,10 @@
 			<span>
 			${member_id } 님에게 보낸 견적서
 			</span>
-			<span style="float:right;">${getListInfoResp.custom_order_date }</span><br>
+			<span style="float:right;">
+				<fmt:parseDate value="${getListInfoResp.custom_order_date }" var="custom_order_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+				<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
+			</span><br>
 			<span style="float:right;">${getListInfoResp.custom_order_status }</span>
 		</h6>
 	</div>

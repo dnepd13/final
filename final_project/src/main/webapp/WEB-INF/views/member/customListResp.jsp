@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
@@ -55,8 +56,14 @@
 					<p><a href="customInfoResp?seller_custom_order_no=${sellerResp.seller_custom_order_no }">
 								${sellerResp.custom_order_title }</a>
 					</p>
-					<span>${sellerResp.custom_order_date }</span>
-		<%-- 			<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span> --%>
+					<span>
+						<fmt:parseDate value="${sellerResp.custom_order_date }" var="custom_order_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+						<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
+					</span>
+					<c:set var="check" value="${sellerResp.custom_order_status }"/>
+					<c:if test="${functions : contains(check, '진행중') }">
+						<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span>
+					</c:if>
 				</td>
 		</c:forEach>
 	</c:otherwise>

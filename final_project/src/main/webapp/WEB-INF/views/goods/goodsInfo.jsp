@@ -563,7 +563,7 @@ $(function(){
 					<th>문의내용</th>
 					<th>작성자</th>
 					<th>작성일</th>
-					<th></th>
+					
 				</tr>
 			</thead>
 			<tbody>
@@ -665,6 +665,8 @@ $(function(){
 </section>	
 <!-- ----------------------------------------------------------------------- -->
 <section id="tab3" class="tab_content">
+	<div class="row-empty-20"></div>
+	<p>&mid; 리뷰 &mid;</p>
 	<div class="row-empty-20"></div>
 	<c:forEach var="review" items="${goodsReview }">
 	<table class="reviewBox">

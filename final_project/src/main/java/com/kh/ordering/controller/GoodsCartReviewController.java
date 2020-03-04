@@ -33,6 +33,7 @@ import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.service.CartInfoService;
 import com.kh.ordering.service.GoodsReviewService;
 import com.kh.ordering.vo.CartDetailsVO;
+import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.FilesVO;
 import com.kh.ordering.vo.PagingVO;
 
@@ -78,6 +79,10 @@ public class GoodsCartReviewController {
 	public String cartPayInfo(Model model,
 													@RequestParam String partner_order_id) {
 		
+		List<CartInfoVO> payDetails = orderDao.getCartPay(partner_order_id);
+		log.info("payDetails={}",payDetails);
+		
+		model.addAttribute("payDetails", payDetails.get(0));
 		
 		return "member/cartDetailPay";
 	}

@@ -203,6 +203,10 @@ public class OrderDaoImpl implements OrderDao {
 	public int getCartInfoCount(int member_no) {
 		return sqlSession.selectOne("order.getCartInfoCount", member_no);
 	}
+	@Override // 결제상세
+	public List<CartInfoVO> getCartPay(String partner_order_id) {
+		return sqlSession.selectList("order.getCartPay", partner_order_id);
+	}
 	@Override // 주문번호에 대한 상품 상세
 	public List<CartDetailsVO> getCartGoods(int cart_info_no) {
 		return sqlSession.selectList("order.getCartGoods", cart_info_no);

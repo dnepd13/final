@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
@@ -72,7 +73,10 @@
 					</a>
 				</p>
 				<p>
-					<span>${sellerCustom.custom_order_date }</span>
+					<span>
+						<fmt:parseDate value="${sellerCustom.custom_order_date }" var="custom_order_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+						<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
+					</span>
 					<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteResp(${sellerCustom.seller_custom_order_no })">&times;</button></span>
 				</p>
 			</td>

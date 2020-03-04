@@ -290,7 +290,7 @@ public class Kakaoservice implements payService {
 
 		// 헤더
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", "KakaoAK 53072513ab4d31c036edec9ad0220095");
+		headers.add("Authorization", "KakaoAK df1490a82355dcdc6183933334d252ee");
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 		headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE); // 카카오의 응답을 받을 형태
 		 
@@ -358,7 +358,7 @@ public class Kakaoservice implements payService {
 		 
 		// 헤더
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", "KakaoAK 53072513ab4d31c036edec9ad0220095");
+		headers.add("Authorization", "KakaoAK df1490a82355dcdc6183933334d252ee");
 		headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE+"; charset=utf-8");
 		headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE); // 카카오의 응답을 받을 형태
 		 
