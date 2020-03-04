@@ -2,8 +2,13 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
  
  <style>
  	.articleBox {
@@ -98,7 +103,8 @@
 // 		}
 	});
 </script>
-    
+  
+<div class="row-empty-40"></div>    
 <article class="articleBox">
 
 <div class="card mb-3">
@@ -134,7 +140,9 @@
 	<ul class="list-group list-group-flush">
 		<li class="list-group-item card-text">
 			<h6 class="card-subtitle text-muted">희망가격&Tab;</h6>
-			${getListInfoReq.custom_order_price}
+				<fmt:formatNumber pattern="###,###,###" type="number">
+					${getListInfoReq.custom_order_price}
+				</fmt:formatNumber> 원
 			</li>
 		<li class="list-group-item card-text">
 			<h6 class="card-subtitle text-muted">희망날짜&Tab;</h6>
@@ -187,3 +195,7 @@
 </div>
 
 </article>
+
+<div class="row-empty-40"></div> 
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

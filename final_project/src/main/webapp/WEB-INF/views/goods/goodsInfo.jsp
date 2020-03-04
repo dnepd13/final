@@ -4,6 +4,72 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
+<style>
+/* tab */
+	.tab {
+		border: 2px solid rgb(248,245,240);
+		text-align: center;
+		height: 40px;
+		padding: 10px 0;
+	}
+	.tab span {
+		padding: 0 100px;
+	}
+
+/*	qna style */
+	.articleBox {
+		width: 80%;
+		margin: 0 auto;
+	}
+	.qnaBox,
+	.reviewBox {
+		width: 90%;
+		margin: 0 auto;
+	}
+	
+	/*문의작성 Modal*/
+	.modal {
+ 		display: none;
+ 		z-index: 1;
+ 		top: 0;
+ 		bottom: 0;
+ 		letf: 0;
+ 		right: 0;
+ 		background-color: rgba(0,0,0,0.3);
+ 	}
+ 	.modal-body {
+ 		width: 90%;
+ 		margin: 0 auto;
+ 	}
+	
+	.qna_member textarea,
+	.qna_seller textarea,
+	.updateQ textarea,
+	.reviewBox textarea {
+		resize: none;
+		width: 100%;
+		height: 80px;
+	}
+	.reviewBox {
+		border: 1px solid darkgray;
+	}
+	.reviewBox td {
+		padding: 12px;
+	}
+	.replyBox {
+		border: 1px solid lightgray;
+		margin: 2px;
+		padding: 5px;
+	}
+	
+</style>
+
 <!-- 별점 script -->
 <style></style>
     <script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
@@ -211,19 +277,17 @@ $(function(){
 
 ////////////////////문의게시판 영역///////////////
 $(function(){
-// '문의하기' 보여주기
-            var qna_member = document.querySelector(".qna_member");
+// '문의하기' Modal
+			var qna_member = document.querySelector(".qna_member");
             
             $(".btn_q").click(function(){
-                if($(this).text()=="문의하기"){
-                    qna_member.style.display="block";
-                    $(this).text("취소");
-                }
-                else{
-                    qna_member.style.display="none";
-                    $(this).text("문의하기");
-                }
+                qna_member.style.display="block";
             });
+            
+            $(".qna_member").find(".close").click(function(){
+            	qna_member.style.display="none";
+            });
+            
 	// 문의 작성
 			$(".qna_member").find("form").submit(function(e){
 				e.preventDfault();
@@ -354,27 +418,32 @@ $(function(){
 	        }
 	        
 	    });
-	    
+	    	    
 });
+
+
+///////// 문의,리뷰게시판 tab
+	function tabView(event, tabName){
+
+		// tab_content 숨김처리
+		var tab_content = document.querySelector(".tab_content");
+
+		for(var i=0 ; i<tab_content.length ; i++){
+			tab_content[i].style.display = "none";
+		}
+		
+		// tab 불러와서 초기화
+		var tab_links = document.querySelector(".tab_links");
+		for(var i=0 ; i<tab_links.length ; i++){
+			tab_links[i].className = tab_links[i].className.replace(" active", "");
+		}
+		
+		document.getElementById(tabName).style.display = "block"; // 해당 tab_content만 보여주기
+		event.currentTarget.className += "active"; // 이벤트로 클릭한 탭 활성화
+	};
 
 </script>
 
-<style>
-/*	qna style */
-	.qna {
-		width: 80%
-	}
-	.qna_member textarea {
-		resize: none;
-		width: 100%;
-	}
-	.qna_seller textarea,
-	.updateQ textarea {
-		resize: none;
-		width: 100%;
-	}
-</style>
-<article>
 <h1>상품 상세 페이지</h1>
 
 <p>상품 상세 내용(goods_content)</p>
@@ -426,38 +495,70 @@ $(function(){
 </div>
 <hr>
 <!-- --------------------------------------------------- -->
-<section>
-<p>상품 문의</p>
-	<div class="qna">
+<div class="tab">
+<!-- 	<button class="tab_links active" onclick="tabView(event, 'tab1')">문의하기</button> -->
+<!-- 	<button class="tab_links" onclick="tabView(event, 'tab2')">리뷰</button> -->
+	<span><a href="#">상품정보</a></span>&verbar;
+	<span><a href="#tab2">문의하기</a></span>&verbar;
+	<span><a href="#tab3">리뷰</a></span>
+</div>
+
+<article class="articleBox">
+<section id="tab2" class="tab_content">
+	<div class="row-empty-20"></div>
+	<div class="qnaBox">
+		
 		<c:choose>
         <c:when test="${member_id !=null }">
-        		<button class="btn_q">문의하기 </button>
+        	<button class="btn_q btn_custom">문의하기 </button>
         </c:when>
         <c:otherwise>
-        	<a href="${pageContext.request.contextPath}/member/login"><button>문의하기</button></a>	        
+        	<a href="${pageContext.request.contextPath}/member/login"><button class="btn_custom">문의하기</button></a>	        
         </c:otherwise>
         </c:choose>
-        
-		<div class="qna_member" style="display:none;"> <!-- 회원 입력 -->
-			<form action="insertQ" method="post">
-				<input type="hidden" name="seller_no" value="${goodsVO.seller_no }">
-				<input type="hidden" name="goods_no" value="${goodsVO.goods_no }">
-				<select name="goods_qna_head" required>
-					<option value="상품문의">상품문의</option>
-					<option value="배송문의">배송문의</option>
-				</select>
-				<br>
-				글내용<br>
-				<textarea name="goods_qna_content" required></textarea><br>
-				<input type="submit" value="문의하기">
-			</form>
-				<p> &middot; 개인정보(주민번호, 연락처, 주소, 계좌번호, 카드번호 등)가 타인에게 노출되지 않도록 주의해 주시기 바랍니다.</p>
-				<p> &middot; 문의와 관련없는 비방, 광고, 불건전한 내용 등이 포함될 경우 사전동의 없이 삭제될 수 있습니다.</p>
+		<hr>
+		
+        <fieldset>
+        <div class="modal qna_member" style="display:none;">  <!-- 회원 입력 -->
+			<div class="modal-dialog" role="document">
+		        <form action="insertQ" method="post">
+					<div class="modal-content">
+						<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          			<span aria-hidden="true">&times;</span>
+			        		</button>
+						</div>
+						<div class="modal-body">
+								<input type="hidden" name="seller_no" value="${goodsVO.seller_no }">
+								<input type="hidden" name="goods_no" value="${goodsVO.goods_no }">
+								<select name="goods_qna_head" class="form-control" required>
+									<option value="상품문의">상품문의</option>
+									<option value="배송문의">배송문의</option>
+								</select>
+								<br>
+								<textarea name="goods_qna_content" class="form-control" required></textarea><br>
+								<br>
+								<h6> &middot; 개인정보(주민번호, 연락처, 주소, 계좌번호, 카드번호 등)가 타인에게 노출되지 않도록 주의해 주시기 바랍니다.</h6>
+								<h6> &middot; 문의와 관련없는 비방, 광고, 불건전한 내용 등이 포함될 경우 사전동의 없이 삭제될 수 있습니다.</h6>
+			      		</div>
+			      		<div class="modal-footer">
+							<input type="submit" value="문의하기" class="btn_custom">
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
 	
-		<table> <!-- 문의 목록 -->
+		<table style="width:100%;" border="1" class="table table-hover"> <!-- 문의 목록 -->
+			<colgroup>
+				<col width="13%"/>
+				<col width="50%"/>
+				<col width="10%"/>
+				<col width="15%"/>
+				<col width="12%"/>
+			</colgroup>
 			<thead>
-				<tr>
+				<tr align="center">
 					<th></th>
 					<th>문의내용</th>
 					<th>작성자</th>
@@ -494,19 +595,19 @@ $(function(){
 							<td data-goods_no = "${goodsVO.goods_no }"
 									data-goods_qna_no="${qna.goods_qna_no }"
 									data-member_no="${qna.member_no }">
-									<button class="btn_update">수정</button>
-									<button class="btn_delete">삭제</button>
+									<button class="btn_update btn_clean">수정</button>
+									<button class="btn_delete btn_clean">삭제</button>
 							</td>
 						</c:if>
 						<%-- 상품의 seller_no와 로그인한 seller_no가 같을 때 --%>
 						<c:if test="${not empty seller_no && goodsVO.seller_no == seller_no }" >
 							<c:if test="${empty qna.goods_qna_status }">
-								<td><button class="btn_a">답변하기</button></td>
+								<td><button class="btn_a btn_clean">답변하기</button></td>
 							</c:if>
 						</c:if>
 						<c:set var="status" value="${qna.goods_qna_status}"></c:set>
 						<c:if test="${functions : contains(status, '답변완료') }">
-								<td>답변완료</td>
+							<td>답변완료</td>
 						</c:if>
 					</tr>
 					</c:otherwise>
@@ -520,8 +621,8 @@ $(function(){
 							<input type="hidden" name="goods_qna_groupno" value="${qna.goods_qna_groupno }">
 							<input type="hidden" name="goods_qna_no" value="${qna.goods_qna_no }">
 							<br>
-							<textarea name="goods_qna_content" required></textarea><br>
-							<input type="submit" value="답변하기">
+							<textarea class="form-control" name="goods_qna_content" required></textarea><br>
+							<input type="submit" value="답변하기" class="btn_custom">
 						</form>
 					</td>
 				</tr>
@@ -529,7 +630,7 @@ $(function(){
 				</c:forEach>
 			</tbody>
 		</table>
-
+		</fieldset>
 		<!-- 내비게이터 -->
 		<div>
 			<ul class="pagination">
@@ -563,32 +664,35 @@ $(function(){
 <hr>
 </section>	
 <!-- ----------------------------------------------------------------------- -->
-<section>
-<p>리뷰</p>
-	<table border="1">
+<section id="tab3" class="tab_content">
+	<div class="row-empty-20"></div>
 	<c:forEach var="review" items="${goodsReview }">
+	<table class="reviewBox">
 		<tr>
-			<td class="star" colspan="4">
+			<td class="star" colspan="3">
 				<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${review.goods_review_star}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">${review.goods_review_writer }</td>
-			<td>${review.goods_review_date }</td>
-			<td>
+			<td width="150px">${review.goods_review_writer }</td>
+			<td width="" align="right">
+				<fmt:parseDate value="${review.goods_review_date }" var="review_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+				<fmt:formatDate value="${review_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
+			</td>
+			<td width="100px" align="right">
 				<c:choose>
 		        <c:when test="${member_id !=null }">
-		        	<button class="btn_reply">댓글쓰기</button>
+		        	<button class="btn_reply btn_clean">댓글쓰기</button>
 		        </c:when>
 		        <c:otherwise>
-		        	<a href="${pageContext.request.contextPath}/member/login"><button>댓글쓰기</button></a>	        
+		        	<a href="${pageContext.request.contextPath}/member/login"><button class="btn_clean">댓글쓰기</button></a>	        
 		        </c:otherwise>
 		        </c:choose>
 			</td>
 		</tr>
 		<c:if test="${ not empty filesVO }">
 			<tr>
-				<td colspan="4">
+				<td colspan="3">
 				<c:forEach var="filesVO" items="${filesVO }">
 					<c:if test="${review.goods_review_no==filesVO.goods_review_no }">
 						<img src="${pageContext.request.contextPath }/member/reviewFile?files_no=${filesVO.files_no}" width=100px; height=100px;>
@@ -598,35 +702,41 @@ $(function(){
 			</tr>
 		</c:if>
 		<tr>
-			<td colspan="4">${review.goods_review_content }</td>
+			<td colspan="3">${review.goods_review_content }</td>
 		</tr>
 		<tr class="reply" style="display:none;">
-			<td colspan="4">
+			<td colspan="3">
 				<form action="insertReply" method="post">
 					<input type="hidden" name="goods_review_no" value="${review.goods_review_no }">
 					<input type="hidden">
-					<textarea name="goods_review_reply_content" required></textarea>
-					<input type="submit" value="댓글등록">
+					<textarea name="goods_review_reply_content" class="form-control" required></textarea>
+					<br>
+					<input type="submit" value="댓글등록" class="btn_custom">
 				</form>
 			</td>
 		</tr>
-		<tr>
-			<td colspan="4">
-				<c:forEach var="reviewReply" items="${reviewReply }">
-					<c:if test="${review.goods_review_no==reviewReply.goods_review_no }">
-						<span>${reviewReply.goods_review_reply_writer }</span>
-						<span style="float:right;">
-							<fmt:parseDate value="${reviewReply.goods_review_reply_date }" var="reply_date" pattern="yyyy-MM-dd HH:mm:ss"/>
-							<fmt:formatDate value="${reply_date }" pattern="yyyy/MM/dd HH:mm:ss"/>							
-						</span>
-						<p>${reviewReply.goods_review_reply_content }</p>
-						<hr>
-					</c:if>
-				</c:forEach>
-			</td>
-		</tr>
-</c:forEach>
+		<c:if test="${ not empty reviewReply }">
+			<tr>
+				<td colspan="3">
+					<c:forEach var="reviewReply" items="${reviewReply }">
+						<div class="replyBox">
+							<c:if test="${review.goods_review_no==reviewReply.goods_review_no }">
+								<span>${reviewReply.goods_review_reply_writer }</span>
+								<span style="float:right;">
+									<fmt:parseDate value="${reviewReply.goods_review_reply_date }" var="reply_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+									<fmt:formatDate value="${reply_date }" pattern="yyyy/MM/dd HH:mm:ss"/>							
+								</span>
+								<p>${reviewReply.goods_review_reply_content }</p>
+							</c:if>
+						</div>
+					</c:forEach>
+				</td>
+			</tr>
+		</c:if>
 	</table>
-<hr>
+	<br>
+	</c:forEach>
 </section>
 </article>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

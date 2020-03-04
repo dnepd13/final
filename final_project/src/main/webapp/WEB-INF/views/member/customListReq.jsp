@@ -3,14 +3,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <style>
-	.articleBox,
-	.navBox {
+	.articleBox {
 		width: 500px;
 		margin: 0 auto;
 	}
+	.dataEmpty {
+		height: 300px;
+	}
+	
 	.delete {
 		float: right;
 	}
@@ -60,23 +67,40 @@
 
 <h4>확인 안 한 견적서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
 
+<div class="row-empty-40"></div>
+
 <article class="articleBox">
 <table class="table table-hover listBox">
-<c:forEach var="memberCustom" items="${getListReq }">
-	<tr>
-		<td>
-			cateNo: <span>${memberCustom.custom_order_category }</span><br>
-			<p><a href="customInfoReq?member_custom_order_no=${memberCustom.member_custom_order_no }">
-				${memberCustom.custom_order_title }
-				</a>
-			</p>
-			<p>
-				<span>${memberCustom.custom_order_date }</span>
-				<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span>
-			</p>
-		</td>
-	</tr>
-</c:forEach>
+<c:choose>
+	<c:when test="${ empty getListReq }">
+		<tr class="dataEmpty">
+			<td>
+				<div class="row-empty-40"></div><div class="row-empty-40"></div>
+				<div align="center" style="padding: 10px;">
+					보낸 요청서가 없습니다.
+				</div><div class="row-empty-40"></div><div class="row-empty-40"></div><div class="row-empty-40"></div>
+				<p align="right"><a href="${pageContext.request.contextPath }/member/customCate"><button class="btn_custom">요청서 보내기</button></a></p>
+			</td>
+		</tr>
+	</c:when>
+	<c:otherwise>
+		<c:forEach var="memberCustom" items="${getListReq }">
+			<tr>
+				<td>
+					cateNo: <span>${memberCustom.custom_order_category }</span><br>
+					<p><a href="customInfoReq?member_custom_order_no=${memberCustom.member_custom_order_no }">
+						${memberCustom.custom_order_title }
+						</a>
+					</p>
+					<p>
+						<span>${memberCustom.custom_order_date }</span>
+						<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span>
+					</p>
+				</td>
+			</tr>
+		</c:forEach>
+	</c:otherwise>
+</c:choose>
 </table>
 
 <!-- 내비게이터 -->
@@ -109,3 +133,7 @@
 	</ul>	
 </div>
 </article>
+
+<div class="row-empty-40"></div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

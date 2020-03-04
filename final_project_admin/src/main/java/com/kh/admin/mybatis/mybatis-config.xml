@@ -53,5 +53,8 @@
 
 		<!-- 상품 파일 -->
 		<typeAlias type="com.kh.admin.entity.FilesDto" alias="Files"/>
+ 	
+ 		<!-- 사이트 정보 -->
+ 		<typeAlias type="com.kh.admin.entity.CompanyInfoDto" alias="companyInfoDto"/>
  	</typeAliases>
  </configuration>

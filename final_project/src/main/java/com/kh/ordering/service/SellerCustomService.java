@@ -23,4 +23,5 @@ public interface SellerCustomService {
 	PagingVO customReqPaging(String pageNo, int seller_no);
 	// 보낸 견적서 목록 내비게이터
 	PagingVO customRespPaging(String pageNo, int seller_no);
+
 }
