@@ -52,8 +52,8 @@
   <tbody>
   	<c:forEach var="cartInfo" items="${getCartInfo }">
     <tr align="center">
-      <td scope="row"><a href="${pageContext.request.contextPath }/member/cartPayInfo?partner_order_id=${cartInfo.partner_order_id }" >${cartInfo.partner_order_id }</a></td>
-      <td align="left"><a href="${pageContext.request.contextPath }/member/cartDetails?cart_info_no=${cartInfo.cart_info_no}" >${cartInfo.item_name }</a></td>
+      <td scope="row"><a href="${pageContext.request.contextPath }/member/cartDetailPay?partner_order_id=${cartInfo.partner_order_id }" >${cartInfo.partner_order_id }</a></td>
+      <td align="left"><a href="${pageContext.request.contextPath }/member/cartDetailGoods?cart_info_no=${cartInfo.cart_info_no}" >${cartInfo.item_name }</a></td>
       <td>${cartInfo.total_quantity}</td>	
       <td>${cartInfo.total_price } 원<br>(${cartInfo.total_delivery_price } 원)</td>
       <td><a href="#">${cartInfo.cart_info_status }</a></td>

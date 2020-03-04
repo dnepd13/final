@@ -7,9 +7,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,10 +19,12 @@ import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.repository.DeliveryDao;
 import com.kh.ordering.repository.GoodsOptionDao;
+import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.Member_AddrDao;
 import com.kh.ordering.service.GoodsOptionService;
 import com.kh.ordering.vo.CartVO;
+import com.kh.ordering.vo.CustomOrderVO;
 import com.kh.ordering.vo.ItemVOList;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,13 +42,13 @@ public class OrderController {
 	
 	@Autowired
 	private GoodsOptionService goodsOptionService;
-	
-	@Autowired
-	private HttpSession session;
+
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired
 	private Member_AddrDao memberAddrDao;
+	@Autowired
+	private MemberCustomDao memberCustomDao;
 	
 	@PostMapping("/order")
 	public String order(@ModelAttribute ItemVOList itemVOList, Model model) throws JsonProcessingException {
@@ -61,9 +65,10 @@ public class OrderController {
 		return "order/order";
 	}
 	
-	@PostMapping("/custom")
-	public String custom(Model model) {
-		
+	@PostMapping("/custom") // 결제페이지
+	public String custom(Model model, HttpSession session, 
+										@RequestParam int seller_custom_order_no) {
+
 		// 회원번호, 회원정보 찾기
 		String member_id = (String)session.getAttribute("member_id");
 		int member_no = memberDao.getNo(member_id);
@@ -72,10 +77,14 @@ public class OrderController {
 		
 		Member_AddrDto memberAddr = memberAddrDao.getBasicAddr(member_no);
 		model.addAttribute("memberAddr", memberAddr);
-		
+
 //		// 회원 포인트 확인(사용가능 포인트)
-//		int memberPoint = memberDao.getPoint(member_no);
-//		model.addAttribute("memberPoint", memberPoint);
+		int memberPoint = memberDao.getPoint(member_no);
+		model.addAttribute("memberPoint", memberPoint);
+
+		// 견적서 내용(==상품) 보내기
+		CustomOrderVO customOrderVO = memberCustomDao.customOrderVO1(seller_custom_order_no);
+		model.addAttribute("customVO", customOrderVO);
 		
 		return "order/custom";
 	}

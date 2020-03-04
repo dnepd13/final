@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 public class CartOkDto {
 	private int cart_ok_no;
 	private int member_no;
-	private int cart_info_no;
+	private int cart_info_goods_no;
+	private String cart_info_custom_no;
 	
 	private String cart_ok_date;
 	private String cart_ok_status;
