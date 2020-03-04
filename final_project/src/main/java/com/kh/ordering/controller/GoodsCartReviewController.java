@@ -74,15 +74,15 @@ public class GoodsCartReviewController {
 
 		return "member/cartList";
 	}
-	@GetMapping("/cartPayInfo") // 상세 결제정보
+	@GetMapping("/cartDetailPay") // 상세 결제정보
 	public String cartPayInfo(Model model,
-													@RequestParam int partner_order_id) {
+													@RequestParam String partner_order_id) {
 		
 		
-		return "member/cartPayInfo";
+		return "member/cartDetailPay";
 	}
 	
-	@GetMapping("/cartDetails") // 상세 상품, 옵션정보
+	@GetMapping("/cartDetailGoods") // 상세 상품, 옵션정보
 	public String cartInfoGoods(Model model,
 													@RequestParam int cart_info_no) {
 
@@ -96,7 +96,7 @@ public class GoodsCartReviewController {
 			model.addAttribute("getCartOption", optionList);
 		}
 		
-		return "member/cartDetails";
+		return "member/cartDetailGoods";
 	}
 	
 //	구매확정, 리뷰등록 등 상태변화 update

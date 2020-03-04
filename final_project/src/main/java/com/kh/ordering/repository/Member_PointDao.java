@@ -20,5 +20,5 @@ public interface Member_PointDao {
 	// 포인트 적립 추가
 	void insertPoint(Member_PointDto membePointDto);
 	// 포인트 사용 추가
-	void usePoint(Member_PointDto memberPointDto);
+	void usedPoint(Member_PointDto memberPointDto);
 }

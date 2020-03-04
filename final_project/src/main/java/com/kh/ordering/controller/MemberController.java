@@ -151,8 +151,6 @@ public class MemberController {
 			//멤버 시퀀스를  저장한다
 			member.setMember_no(seq);
 			
-			System.out.println(member);
-		
 			//memberDto에 들어가 있는 pw를 암호화 한다(bcrypt)
 			
 //			//멤버의 pw를 가져오고

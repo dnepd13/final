@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <style>
 	.articleBox,
@@ -10,6 +11,10 @@
 		width: 500px;
 		margin: 0 auto;
 	}
+	.dataEmpty {
+		height: 300px;
+	}
+	
 	.delete {
 		float: right;
 	}
@@ -46,21 +51,35 @@
 
 <article class="articleBox">
 <table class="table table-hover listBox">
-<c:forEach var="sellerCustom" items="${getListResp }">
-	<tr>
-		<td>
-			<p>
-				<a href="customInfoResp?seller_custom_order_no=${sellerCustom.seller_custom_order_no }">
-						${sellerCustom.custom_order_title }
-				</a>
-			</p>
-			<p>
-				<span>${sellerCustom.custom_order_date }</span>
-				<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteResp(${sellerCustom.seller_custom_order_no })">&times;</button></span>
-			</p>
-		</td>
-	</tr>
-</c:forEach>
+<c:choose>
+	<c:when test="${ empty getListResp }">
+		<tr class="dataEmpty">
+			<td>
+				<div class="row-empty-40"></div><div class="row-empty-40"></div>
+				<div align="center" style="padding: 10px;">
+					보낸 견적서가 없습니다.
+				</div><div class="row-empty-40"></div><div class="row-empty-40"></div><div class="row-empty-40"></div>
+			</td>
+		</tr>
+	</c:when>
+	<c:otherwise>
+	<c:forEach var="sellerCustom" items="${getListResp }">
+		<tr>
+			<td>
+				<p>
+					<a href="customInfoResp?seller_custom_order_no=${sellerCustom.seller_custom_order_no }">
+							${sellerCustom.custom_order_title }
+					</a>
+				</p>
+				<p>
+					<span>${sellerCustom.custom_order_date }</span>
+					<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteResp(${sellerCustom.seller_custom_order_no })">&times;</button></span>
+				</p>
+			</td>
+		</tr>
+	</c:forEach>
+	</c:otherwise>
+</c:choose>
 </table>
 
 <div class="navBox">
@@ -92,3 +111,7 @@
 	</ul>
 </div>
 </article>
+
+<div class="row-empty-40"></div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

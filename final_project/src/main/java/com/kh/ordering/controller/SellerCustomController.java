@@ -65,8 +65,7 @@ public class SellerCustomController {
 	
 // 주문제작 견적서 작성
 	@GetMapping("/customOrder")
-	public String memberCustom(HttpSession session,
-															@RequestParam int member_no,
+	public String memberCustom(@RequestParam int member_no,
 															@RequestParam(value="category_no", required=false, defaultValue="0") int category_no,
 															Model model) {
 
@@ -93,7 +92,7 @@ public class SellerCustomController {
 	@GetMapping("/customListReq") // 받은 요청서 목록
 	public String getListCustomReq(Model model, HttpSession session,
 														@RequestParam(value="pageNo", required=false, defaultValue = "0") String pageNo) {
-		
+
 		// 나중에 세션 ID 수정하기
 		String seller_id = (String)session.getAttribute("seller_id");
 		int seller_no = sellerCustomDao.getNo(seller_id);
@@ -112,8 +111,9 @@ public class SellerCustomController {
 		return "seller/customListReq";
 	}
 	@GetMapping("/customInfoReq") // 받은 요청서 상세
-	public String memberCustomContent(HttpSession session, int member_custom_order_no, Model model) {
-		
+	public String memberCustomContent(int member_custom_order_no, 
+																		HttpSession session, Model model) {
+
 		String seller_id = (String)session.getAttribute("seller_id");
 		int seller_no = sellerCustomDao.getNo(seller_id);
 		

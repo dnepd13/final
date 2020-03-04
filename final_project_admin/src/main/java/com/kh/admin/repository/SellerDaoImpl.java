@@ -51,4 +51,9 @@ public class SellerDaoImpl implements SellerDao{
 		return sqlSession.selectOne("admin.sellerGradeCount", seller_grade);
 	}
 
+	@Override
+	public void sellerChangePw(SellerDto sellerDto) {
+		sqlSession.update("admin.resetSellerPw", sellerDto);
+	}
+
 }

@@ -124,6 +124,15 @@
 		select * from seller where seller_no = #{seller_no}
 	</select>
 	
+	<!-- 판매자 비밀번호 변경 -->
+	<update id="resetSellerPw" parameterType="sellerDto">
+		update seller 
+			set 
+				seller_pw = #{seller_pw}
+			where 
+				seller_no = #{seller_no}
+	</update>
+	
 	<!-- 판매자 삭제 -->
 	<delete id="sellerDelete" parameterType="sellerDto">
 		delete seller where seller_no = #{seller_no}
@@ -195,6 +204,15 @@
 	<delete id="categoryDelete" parameterType="int">
 		delete category where category_no = #{category_no}
 	</delete>
+	
+	<!-- 회원 비밀번호 리셋 -->
+	<update id="resetPw" parameterType="memberDto">
+		update member 
+			set
+				member_pw = #{member_pw}
+			where
+				member_no = #{member_no}
+	</update>
 	
 	<!-- 회원 리스트 -->
 	<select id="memberGetList" parameterType="Paging" resultType="blockMemberDto">
@@ -1103,6 +1121,24 @@
 		    left outer join category C on co.custom_order_category = c.category_no
 		where CO.custom_order_no = #{custom_order_no}
 	</select>
+	
+	<!-- 회사 정보 불러오기 -->
+	<select id="getCompanyInfo" resultType="companyInfoDto">
+		select * from companyinfo
+	</select>
+	
+	<!-- 회사 정보 수정하기 -->
+	<update id="updateCompanyInfo" parameterType="companyInfoDto">
+		update companyinfo
+			set
+			co_name = #{co_name},
+			co_ceo = #{co_ceo},
+			co_location = #{co_location},
+			co_call = #{co_call},
+			co_email = #{co_email},
+			co_termsofuse = #{co_termsofuse},
+			co_privacy = #{co_privacy}
+	</update>
  </mapper> 
 	
  

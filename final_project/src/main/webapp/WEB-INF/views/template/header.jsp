@@ -8,13 +8,14 @@
 <title>Insert title here</title>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 
 <style>
 	* {box-sizing: border-box;}
 	.basic_color {
 		color: rgb(248,245,240);
 	}
-	.row-empty {
+	.row-empty-20 {
    		height: 20px;
 	}
 	
@@ -55,37 +56,6 @@
 	.nav_login a:link { color: black; text-decoration: none;}
     .nav_login a:visited { color: black; text-decoration: none;}
     .nav_login a:hover { color: rgb(142,140,132); text-decoration: underline;}
-	
-/*	footer */
-	footer div {
-		bottom: 0;
-		width: 100%;
-		height: 130px;
-		background-color: rgb(248,245,240);
-		padding: 15px 0 ;
-	}
-	.footer_area * {
-		list-style: none;
-		padding: 0;
-	}
-	.footer_area ul {
-		float: left;
-		position: relative;
-		margin: 0 10px;
-	}
-	.footer_title {
-		padding-bottom: 70px ;
-		width: 30%;
-		text-align: right;
-		padding-right: 10px;
-	}
-	.footer_company {
-		width: 30%;
-	}
-	.footer_cs {
-		width: 30%;
-		float: right:
-	}
 
 /*	부트스트랩 nav */
 	.navbar {
@@ -113,7 +83,7 @@
 		<li class="right_line main_line">회원가입
 			<ul class="sub_line" style="border: 1px solid lightgray;">
 				<li class=""><a href="${pageContext.request.contextPath }/member/regist">일반회원</a></li>
-				<li class=""><a href="#">판매자</a></li>
+				<li class=""><a href="${pageContext.request.contextPath }/seller/regist">판매자</a></li>
 			</ul>
 		</li>
 		<li class="right_line main_line">로그인
@@ -136,10 +106,10 @@
 	</c:otherwise>
 </c:choose>
 
-<div class="row-empty"></div>
+<div class="row-empty-20"></div>
 <hr class="basic_color">
-<div class="row-empty"></div>
+<div class="row-empty-20"></div>
 
 <h1 align="center">홈</h1>
 
-<div class="row-empty"></div>
+<div class="row-empty-20"></div>

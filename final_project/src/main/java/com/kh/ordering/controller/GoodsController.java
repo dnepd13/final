@@ -56,7 +56,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/goods")
 @Slf4j
 public class GoodsController {
-
+	
 	@Autowired
 	private SellerDao sellerDao;
 	
@@ -191,8 +191,7 @@ public class GoodsController {
 	}
 	
 	@GetMapping("/goodsInfo")
-	public String goodsInfo(HttpSession session,
-												@RequestParam int goods_no, Model model,
+	public String goodsInfo(@RequestParam int goods_no, Model model, HttpSession session,
 												@RequestParam(value = "pageNo", required=false, defaultValue="0")String pageNo) throws JsonProcessingException {
 		String jsonGoodsVO = new ObjectMapper().writeValueAsString(goodsService.getGoodsVO(goods_no));
 		String jsonGoodsOptionVOList = new ObjectMapper().writeValueAsString(goodsService.getGoodsOptionVOList(goods_no));
@@ -217,60 +216,12 @@ public class GoodsController {
 		if(member_id!=null) { // 판매자 로그인 상태일 때 세션에서 seller_id 가져와서 비교		
 			int member_no = memberDao.getNo(member_id);
 			model.addAttribute("member_no",member_no);
-			
-			// 문의
-			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
-			model.addAttribute("paging", result);			
-			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
-			model.addAttribute("goodsQna", goodsQna);
-			
-			// 리뷰
-			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
-			model.addAttribute("goodsReview", goodsReview);
-			
-			// 리뷰 댓글
-			List<GoodsReviewReplyDto> reviewReply = new ArrayList<>();
-			for(GoodsReviewDto review : goodsReview) {
-				reviewReply.addAll(goodsReviewDao.getListReply(review.getGoods_review_no()));
-				model.addAttribute("reviewReply", reviewReply);
-			}
-			
-			// 리뷰 파일
-			List<FilesVO> reviewFiles = new ArrayList<>();
-			for(GoodsReviewDto review : goodsReview) {
-				reviewFiles.addAll(goodsReviewService.filesList(review.getGoods_review_no()));
-				model.addAttribute("filesVO", reviewFiles);
-			}
-
 		}
 		else if(seller_id!=null){
 			int seller_no = sellerCustomDao.getNo(seller_id);
-			model.addAttribute("seller_no", seller_no);	
-			
-			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
-			model.addAttribute("paging", result);			
-			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
-			model.addAttribute("goodsQna", goodsQna);
-			
-			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
-			model.addAttribute("goodsReview", goodsReview);
-			
-			// 리뷰 댓글
-			List<GoodsReviewReplyDto> reviewReply = new ArrayList<>();
-			for(GoodsReviewDto review : goodsReview) {
-				reviewReply.addAll(goodsReviewDao.getListReply(review.getGoods_review_no()));
-				model.addAttribute("reviewReply", reviewReply);
-			}
-			
-			// 리뷰 파일
-			List<FilesVO> reviewFiles = new ArrayList<>();
-			for(GoodsReviewDto review : goodsReview) {
-				reviewFiles.addAll(goodsReviewService.filesList(review.getGoods_review_no()));
-				model.addAttribute("filesVO", reviewFiles);
-			}
-			
+			model.addAttribute("seller_no", seller_no);				
 		}
-		else {
+
 			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
 			model.addAttribute("paging", result);			
 			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
@@ -291,9 +242,7 @@ public class GoodsController {
 				reviewFiles.addAll(goodsReviewService.filesList(review.getGoods_review_no()));
 				model.addAttribute("filesVO", reviewFiles);
 			}
-			
-		}	
-		
+					
 		return "goods/goodsInfo";
 	}
 	

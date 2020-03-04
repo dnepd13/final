@@ -123,4 +123,36 @@ public class PayDaoImpl implements PayDao{
 		return sqlSession.selectOne("pay.getPartnerOrderId").toString() ;
 	}
 	
+	@Override
+	public void insertReadyCustom(PayDto payDto, OrderVO orderVO) {
+		
+		sqlSession.insert("pay.ready",payDto);
+		
+		int cart_info_no = sqlSession.selectOne("pay.getSequenceCartInfo");
+		
+		CartInfoDto cartInfoDto = CartInfoDto.builder()
+									.cart_info_no(cart_info_no)
+									.member_no(payDto.getMember())
+									.non_no(0)
+									.delivery_name(orderVO.getOrderDeliveryVO().getDelivery_name())
+									.cart_info_addr_post(orderVO.getOrderDeliveryVO().getCart_info_addr_post())
+									.cart_info_addr_basic(orderVO.getOrderDeliveryVO().getCart_info_addr_basic())
+									.cart_info_addr_extra(orderVO.getOrderDeliveryVO().getCart_info_addr_extra())
+									.cart_info_addr_status(orderVO.getOrderDeliveryVO().getCart_info_addr_status())
+									.used_point(orderVO.getUsed_point())
+									.total_quantity(orderVO.getTotal_quantity())
+									.total_price(orderVO.getTotal_price())
+									.total_delivery_price(0)
+									.partner_order_id(payDto.getPartner_order_id())
+									.cart_info_status("결제준비완료")
+								.build();
+		
+		sqlSession.insert("pay.insertCartInfo", cartInfoDto);
+	}
+	
+	@Override
+	public CartInfoDto getCartInfoDto(String partner_order_id) {
+		return sqlSession.selectOne("pay.getCartInfo", partner_order_id);
+	}
+	
 }
