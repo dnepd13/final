@@ -8,11 +8,13 @@
 <div class="continer-fluid">
 	<div class="row"  style="padding:50px;">
 		<div class="offset-md-4 col-md-4 ">
-	 	 <div class="row justify-content-center" style="padding: 20px;"><h1>판매자 회원가입</h1></div>
+	 	 <div class="row justify-content-center" style="padding: 20px;"><h1>판매자 포토폴리오 등록</h1></div>
          <br><br><br> 
-    	<form action="portfolio" method="post"enctype="multipart/form-data">
-    
-        <input type="file" name="files_no" multiple>
+    	<form action="portfolio_insert" method="post"enctype="multipart/form-data">
+      	<div>
+        <input type="file" name="files" multiple><br><br>
+        </div>
+        <button type="submit" class="btn btn-secondary disabled">업로드하기</button>
     
    	    </form>
       </div>
