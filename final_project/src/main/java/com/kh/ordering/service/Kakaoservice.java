@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -309,6 +310,7 @@ public class Kakaoservice implements payService {
 
 		HttpEntity<MultiValueMap<String, String>> entity
 																= new HttpEntity<>(body, headers);
+
 		
 		// 요청주소
 		URI uri = new URI("https://kapi.kakao.com/v1/payment/ready");
@@ -353,10 +355,11 @@ public class Kakaoservice implements payService {
 		 // 전송도구 = 헤더+바디
 		 RestTemplate template = new RestTemplate();
 
+		 
 		// 헤더
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "KakaoAK 53072513ab4d31c036edec9ad0220095");
-		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE+"; charset=utf-8");
 		headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE); // 카카오의 응답을 받을 형태
 		 
 		// 바디
@@ -372,6 +375,7 @@ public class Kakaoservice implements payService {
 		
 		// 요청주소
 		URI uri = new URI("https://kapi.kakao.com/v1/payment/approve");
+    
 		// 요청주소에 전송 및 회신 응답 저장
 		//										                          url, 요청객체, 응답객체
 		KakaoPaySuccessReturnVO successReturnVO =
@@ -416,6 +420,7 @@ public class Kakaoservice implements payService {
 		memberCustomDao.updateCustomStatus(custom_order_no);
 		
 		return successReturnVO;
+
 	}	
 	
 }
