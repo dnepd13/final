@@ -756,7 +756,7 @@ $(function(){
 		</table>
 		</fieldset>
 		<!-- 내비게이터 -->
-		<div>
+		<div class="row justify-content-center">
 			<ul class="pagination">
 				<c:if test="${paging.startBlock > 1 }">
 					<li class="page-item">

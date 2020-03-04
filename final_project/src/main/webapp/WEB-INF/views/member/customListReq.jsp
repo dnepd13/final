@@ -108,7 +108,7 @@
 </table>
 
 <!-- 내비게이터 -->
-<div class="navBox">
+<div class="row justify-content-center">
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
 			<li class="page-item">
