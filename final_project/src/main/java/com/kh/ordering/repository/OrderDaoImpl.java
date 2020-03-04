@@ -100,7 +100,7 @@ public class OrderDaoImpl implements OrderDao {
 		// 포인트 검사, 감소
 		if (!memberDao.minusPointOrder(member_no, orderVO.getUsed_point())) {
 			payService.revoke(orderDao.getOrdering_no(partner_order_id));
-			System.out.println("포인트부족	");
+			System.out.println("포인트부족");
 			throw new Exception();
 		}
 		
@@ -168,7 +168,12 @@ public class OrderDaoImpl implements OrderDao {
 
 		return goodsOptionDtoList;
 	}
-
+	
+	@Override
+	public int getCartInfoNo(String partner_order_id) {
+		return sqlSession.selectOne("order.getCartInfoNo", partner_order_id);
+	}
+	
 	@Override
 	public int getOrdering_no(String partner_order_id) {
 		return sqlSession.selectOne("order.getOrdering_no", partner_order_id);
@@ -229,5 +234,5 @@ public class OrderDaoImpl implements OrderDao {
 	public List<CartInfoVO> getTopSales(int category_no) {
 		return sqlSession.selectList("order.getTopSales", category_no);
 	}
-
+	
 }

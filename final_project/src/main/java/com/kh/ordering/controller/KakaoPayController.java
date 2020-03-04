@@ -109,9 +109,10 @@ public class KakaoPayController {
 
 		KakaoPaySuccessReturnVO result = payService.approve(data);
 		
-		 payService.transactionOrder(data.getPartner_order_id());
+		payService.transactionOrder(data.getPartner_order_id());
 		 
-		 return "redirect:/pay/kakao/result";
+		int cart_info_no = orderDao.getCartInfoNo(data.getPartner_order_id());
+		return "redirect:/member/cartDetails?cart_info_no="+cart_info_no;
 	}
 	
 	@GetMapping("/result")

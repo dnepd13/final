@@ -98,7 +98,7 @@ public class GoodsController {
 	// 파일 다운로드
 	@GetMapping("/mainImageDown")
 	public ResponseEntity<ByteArrayResource> mainImageDown(@RequestParam int files_no) throws IOException{
-		File dir = new File("C:/upload");
+		File dir = new File("D:/upload/kh2d");
 		File target = new File(dir, "goodsMain" + files_no);
 		byte[] data = FileUtils.readFileToByteArray(target);
 		
@@ -142,7 +142,7 @@ public class GoodsController {
 		// 물리 저장 처리
 		//파일 저장 : 저장을 할 가상의 파일 객체가 필요
 		//저장경로 : D:/upload
-		File dir = new File("C:/upload");
+		File dir = new File("D:/upload/kh2d");
 		dir.mkdirs();//디렉터리 생성
 		
 		File target = new File(dir, "goodsMain" + files_no);
@@ -206,9 +206,12 @@ public class GoodsController {
 		
 		
 		// 적립금
-		int rate = memberDao.getGradeBenefitRate(memberDao.getMemberGrade(memberDao.getNo((String)session.getAttribute("member_id"))));
+		int rate = 1;
+		if((String)session.getAttribute("member_id") != null) {
+			rate = memberDao.getGradeBenefitRate(memberDao.getMemberGrade(memberDao.getNo((String)session.getAttribute("member_id"))));
+		}
 		model.addAttribute("rate", rate);
-//	문의, 리뷰 게시판 ...... 세션아이디 없어도 들어갈 수 있게 ..........ㅎ....
+		//	문의, 리뷰 게시판 ...... 세션아이디 없어도 들어갈 수 있게 ..........ㅎ....
 		String member_id=(String)session.getAttribute("member_id");
 		String seller_id = (String)session.getAttribute("seller_id");
 		if(member_id!=null) { // 판매자 로그인 상태일 때 세션에서 seller_id 가져와서 비교		

@@ -78,7 +78,6 @@
 	$(".goods_main_image").on("change",handleImgFilesSelect);
 	
 	function handleImgFilesSelect(e) {
-		console.log("ok");
 		var files = e.target.files;
 		var filesArr = Array.prototype.slice.call(files);
 		
@@ -92,13 +91,30 @@
 			
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				console.log(e.target.result);
-				console.log(e);
 				$(".main_image").attr("src", e.target.result);
 			}
 			reader.readAsDataURL(f);
 		});
+		$(".main_label").text("선택 완료!");
 	}
+	
+	$(".main_image").click(function(){
+		$(".goods_main_image").click();
+	});
+	
+	$("#inputGroupFile02").change(function(){
+		$(".content_label").text("선택 완료!");	
+	});
+	
+	$(".set_op_price").hide();
+	
+	$(".delivery_set_agree").change(function(){
+		if($(this).val() == 'Y'){
+			$(".set_op_price").show();
+		} else {
+			$(".set_op_price").hide();
+		}
+	});
 });
  </script>
 <style>
@@ -110,36 +126,40 @@ ul{
 .main_image_box{
 	width: 100%;
 	height: 250px;
-	margin-bottom: 10px;
+	margin: 15px 0px;
 }
 
 .main_image_box > img {
 	width: 100%;
 	height: 250px;
+	cursor: pointer;
 }
 
 .goods_name_box {
 	margin-bottom: 15px;
 }
 
-.goods_price_box {
+.content_image_col{
+	padding-left: 0px;
+}
+
+.input-group {
 	margin: 10px 0px;
 }
 
-.goods_stock_box {
-	margin: 10px 0px;
+.submit_area{
+	margin: 30px;
 }
 
-.goods_status_box {
-	margin: 10px 0px;
+#submit_btn{
+	height: 40px;
+	font-size: 1rem;
 }
 
-.goods_category {
-	margin: 10px 0px;
-}
-
-.goods_content_box {
-	margin: 10px 0px;
+.delivery_title .delivery_title{
+	padding-left: 30px;
+	border-top: 1px solid #171717;
+	border-bottom: 2px solid #171717;
 }
 
 </style>
@@ -148,9 +168,11 @@ ul{
 
 <form action="insert" method="post" enctype="Multipart/form-data">
 	<div class="container">
-		<h1 class="text-center">상품 등록 페이지</h1>
 		<div class="row justify-content-center">
 			<div class="col-lg-8">
+				<div class="goods_title">
+					<h3>상품 등록</h3>
+				</div>
 					<div class="row goods_name_area">
 						<div class="col">
 							<div class="input-group goods_name_box">
@@ -164,7 +186,7 @@ ul{
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="main_image_box">
-								<img class="main_image rounded" src="https://placehold.it/291x250/E8117F/ffffff?text=image">
+								<img class="main_image rounded" src="https://placehold.it/291x250/F8F5F0/495057?text=Main-image">
 							</div>
 							<div class="input-group">
 							  <div class="input-group-prepend">
@@ -172,7 +194,7 @@ ul{
 							  </div>
 							  <div class="custom-file">
 							    <input type="file" class="custom-file-input goods_main_image" name="goods_main_image" required>
-							    <label class="custom-file-label" for="inputGroupFile01">파일 찾기</label>
+							    <label class="custom-file-label main_label" for="inputGroupFile01">파일 찾기</label>
 							  </div>
 							</div>
 						</div>					
@@ -193,7 +215,7 @@ ul{
 							<div class="input-group-prepend">
 							    <span class="input-group-text">판매여부</span>
 						    </div>
-							<select name="goods_status" class="form-control">
+							<select name="goods_status" class="form-control" required>
 								<option value="Y">Y</option>
 								<option value="N">N</option>
 							</select>
@@ -202,30 +224,38 @@ ul{
 							<div class="input-group-prepend">
 							    <span class="input-group-text">대</span>
 							</div>
-							<select class="form-control category_large inline-block" name="category_middle">
-									<option class="largeChild">선택</option>
+							<select class="form-control category_large inline-block" name="category_middle" required>
+									<option class="largeChild" value="">선택</option>
 							</select>
 						</div>
 						<div class="input-group goods_category">
 							<div class="input-group-prepend">
 							    <span class="input-group-text">중</span>
 							</div>
-							<select class="form-control category_middle" name="category_middle">
-									<option class="middleChild">선택</option>
+							<select class="form-control category_middle" name="category_middle" required>
+									<option class="middleChild" value="">선택</option>
 							</select>
 						</div>
 						<div class="input-group goods_category">
 							<div class="input-group-prepend">
 							    <span class="input-group-text">소</span>
 							</div>
-							<select class="form-control category_small" name="category_middle">
-									<option class="smallChild">선택</option>
+							<select class="form-control category_small" name="category_middle" required>
+									<option class="smallChild"  value="">선택</option>
 							</select>
+						</div>
+						<div class="input-group content_image">
+							<div class="input-group-prepend">
+								<span class="input-group-text">상품사진</span>
+							</div>
+							<div class="custom-file">
+								<input id="inputGroupFile02" class="custom-file-input" type="file" multiple="multiple" name="goods_content_image">
+								<label class="custom-file-label content_label" for="inputGroupFile02">파일 찾기</label>	
+							</div>
 						</div>
 						<input class="category_no" type="hidden" name="category_no" value="">			
 						</div>	
 					</div>
-					
 					
 				<div class="form-group goods_content_box">
 			      <label class="input-group-text" for="content">상품 설명</label>
@@ -241,78 +271,89 @@ ul{
 			    </div>	
 				
 				
-				<p>상품사진</p>
-				<input type="file" multiple="multiple" name="goods_content_image">
+			<div class="row delivery_area">
+				<div class="col-lg-12 delivery_title">
+					<h3>배송 정보 입력</h3>
+				</div>
+				<div class="col-lg-6">
+					<div class="input-group">
+						<div class="input-group-prepend">
+						    <span class="input-group-text">배송여부</span>
+						</div>
+						<select class="form-control" name="delivery_agree" required>
+							<option value="Y">Y</option>
+							<option value="N">N</option>
+						</select>
+					</div>
+					<div class="input-group">
+						<div class="input-group-prepend">
+						    <span class="input-group-text">묶음배송여부</span>
+						</div>
+						<select class="form-control delivery_set_agree" name="delivery_set_agree" required>
+							<option value="">선택</option>
+							<option value="Y">Y</option>
+							<option value="N">N</option>
+						</select>
+					</div>
+					<div class="input-group set_op_price">
+						<div class="input-group-prepend">
+						    <span class="input-group-text">묶음배송 조건금액</span>
+						</div>
+						<input class="form-control" required type="text" name="delivery_set_op_price">
+					</div>
+					<div class="input-group">
+						<div class="input-group-prepend">
+						    <span class="input-group-text">반품 배송비</span>
+						</div>
+						<input class="form-control" required type="text" name="delivery_return_price">
+					</div>
+				</div>
 				
-				<h1>배송 정보 입력</h1>
-				<div class="input-group">
-					<div class="input-group-prepend">
-					    <span class="input-group-text">배송여부</span>
+				<div class="col-lg-6">
+					<div class="input-group">
+						<div class="input-group-prepend">
+						    <span class="input-group-text">택배회사</span>
+						</div>	
+						<select class="form-control" name="delivery_company" required>
+							<option value="">선택</option>
+							<option value="우체국">우체국</option>
+							<option value="한진">한진</option>
+							<option value="로젠">로젠</option>
+						</select>
 					</div>
-					<select class="form-control" name="delivery_agree">
-						<option value="Y">Y</option>
-						<option value="N">N</option>
-					</select>
-				</div>
-				
-				<div class="input-group">
-					<div class="input-group-prepend">
-					    <span class="input-group-text">묶음배송여부</span>
+					<div class="input-group">
+						<div class="input-group-prepend">
+						    <span class="input-group-text">배송조건</span>
+						</div>
+						<select class="delivery_option form-control" name="delivery_option" required>
+							<option value="">선택</option>
+							<option value="무료">무료</option>
+							<option value="유료">유료</option>
+							<option value="조건부무료">조건부무료</option>
+						</select>
 					</div>
-					<select class="form-control" name="delivery_set_agree">
-						<option value="Y">Y</option>
-						<option value="N">N</option>
-					</select>
-				</div>
-				<div class="input-group">
-					<div class="input-group-prepend">
-					    <span class="input-group-text">묶음배송 조건금액</span>
+					<div class="input-group delivery_price">
+						<div class="input-group-prepend">
+						    <span class="input-group-text">배송비</span>
+						</div>
+							<input class="form-control" required type="text" name="delivery_price" value="0">
 					</div>
-					<input class="form-control" required type="text" name="delivery_set_op_price">
-				</div>
-				<div class="input-group">
-					<div class="input-group-prepend">
-					    <span class="input-group-text">택배회사</span>
-					</div>	
-					<select class="form-control" name="delivery_company">
-						<option>선택</option>
-						<option value="우체국">우체국</option>
-						<option value="한진">한진</option>
-						<option value="로젠">로젠</option>
-					</select>
-				</div>
-				<div class="input-group">
-					<div class="input-group-prepend">
-					    <span class="input-group-text">배송조건</span>
+					<div class="input-group delivery_op_price">
+						<div class="input-group-prepend">
+						    <span class="input-group-text">조건부 무료 금액</span>
+						</div>
+							<input class="form-control" required type="text" name="delivery_op_price" value="0">
 					</div>
-					<select class="delivery_option form-control" name="delivery_option">
-						<option>선택</option>
-						<option value="무료">무료</option>
-						<option value="유료">유료</option>
-						<option value="조건부무료">조건부무료</option>
-					</select>
 				</div>
-				<div class="input-group delivery_price">
-					<div class="input-group-prepend">
-					    <span class="input-group-text">배송비</span>
-					</div>
-						<input class="form-control" required type="text" name="delivery_price" value="0">
-				</div>
-				<div class="input-group delivery_op_price">
-					<div class="input-group-prepend">
-					    <span class="input-group-text">조건부 무료 금액</span>
-					</div>
-						<input class="form-control" required type="text" name="delivery_op_price" value="0">
-				</div>
-				<div class="input-group">
-					<div class="input-group-prepend">
-					    <span class="input-group-text">반품 배송비</span>
-					</div>
-					<input class="form-control" required type="text" name="delivery_return_price">
-				</div>
+			  </div>
+			  <div class="row justify-content-center">
+				  <div class="col-lg-6 text-center submit_area">
 					<h5 class="submit_comment" style="color:red">기본옵션을 추가해주세요</h5>
-					<input class="form-control" class="submit_btn" type="submit" value="등록" disabled>
-				</div>
+<!-- 					<input class="form-control" id="submit_btn" class="submit_btn" type="submit" value="등록" disabled> -->
+					<button class="btn btn-secondary btn-block" id="submit_btn" type="submit" disabled>등록</button>
+				  </div>
+			  </div>
+			</div>
 		</div>
 	</div>
 	<input type="hidden" name="seller_no" value="${seller_no}">

@@ -10,7 +10,8 @@ var count = 0;
           e.preventDefault();
           createOption(index++);
           count++;
-          $(".submit_btn").attr("disabled", false);
+          console.log(count);
+          $("#submit_btn").attr("disabled", false);
           $(".submit_comment").hide();
         });
         
@@ -39,7 +40,7 @@ var count = 0;
   });
 
 function createOption(index) {
-	var div = $("<div class='div input-group'></div>");
+	var div = $("<div class='div input-group option_box'></div>");
 	div.appendTo(".optionArea");
     var input_title = $("<input class='form-control' placeholder='옵션그룹이름' required>")
 	  .attr("type", "text")
@@ -59,18 +60,18 @@ function createOption(index) {
 	
 	var input_status = $("<select class='form-control' required>")
 	  .attr("name", "goodsOptionList[" + index + "].goods_option_status")
-	  .append("<option>판매여부</option>")
+	  .append("<option value=''>판매여부</option>")
 	  .append("<option value='Y'>Y</option>")
 	  .append("<option value='N'>N</option>");
 	
 	// 삭제 버튼
-	var deletebtn = $("<button class='delbtn'>삭제</button>");
+	var deletebtn = $("<button class='delbtn btn btn-secondary btn-sm'>삭제</button>");
 	deletebtn.click(function(e){
 		e.preventDefault();
-		$(this).parent(div).remove();
+		$(this).parents(".option_box").remove();
 		count--;
 		if(count<1){
-			$(".submit_btn").attr("disabled",true);
+			$("#submit_btn").attr("disabled", true);
 			$(".submit_comment").show();
 		}
 	});
