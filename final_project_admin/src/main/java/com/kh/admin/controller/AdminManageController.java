@@ -60,7 +60,6 @@ public class AdminManageController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute AdminDto adminDto) {
 		try {
-			System.out.println(adminDto);
 		adminManage.adminDelete(adminDto);
 		
 		return "redirect:/admin/manage?pno1="+pno1;

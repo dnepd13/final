@@ -9,10 +9,6 @@
       <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
           <!--대표 브랜드 로고-->
         <a href="${pageContext.request.contextPath}/home" class="navbar-brand">ODERING</a>
-        <!--접이식 버튼-->
-        <button class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
         <!--실제 메뉴-->
         <div class="collapse navbar-collapse">
@@ -20,6 +16,7 @@
             <c:if test="${admin_grade == '총괄관리자' }">
 			     <li class="nav-item"><a href="${pageContext.request.contextPath}/regist" class="nav-link">관리자가입</a></li class="nav-item">
 			     <li class="nav-item"><a href="${pageContext.request.contextPath}/admin/manage" class="nav-link">관리자관리</a></li>
+	            <li class="nav-item"><a href="${pageContext.request.contextPath}/basicpagesetting" class="nav-link">사이트 기본 정보 관리</a></li>
 			</c:if>
 			<c:if test="${admin_grade ==  '일반관리자'}">
 				<li class="nav-item"><a href="${pageContext.request.contextPath}/admin/my" class="nav-link">내정보</a></li>
@@ -33,7 +30,6 @@
             <li class="nav-item"><a href="${pageContext.request.contextPath}/blocklist" class="nav-link">차단된 회원 목록</a></li>
             <li class="nav-item"><a href="${pageContext.request.contextPath}/goods/list" class="nav-link">상품 목록</a></li>
             <li class="nav-item"><a href="${pageContext.request.contextPath}/custom/list" class="nav-link">주문제작</a></li>
-            <li class="nav-item"><a href="${pageContext.request.contextPath}/basicpagesetting" class="nav-link">사이트 기본 정보 관리</a></li>
             <li class="nav-item"><a href="${pageContext.request.contextPath}/calculate/total" class="nav-link">정산</a></li>
             <li class="nav-item"><a href="${pageContext.request.contextPath}/logout" class="nav-link">로그아웃</a></li>
           
