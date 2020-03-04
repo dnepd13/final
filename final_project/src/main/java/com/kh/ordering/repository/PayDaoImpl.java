@@ -150,4 +150,9 @@ public class PayDaoImpl implements PayDao{
 		sqlSession.insert("pay.insertCartInfo", cartInfoDto);
 	}
 	
+	@Override
+	public CartInfoDto getCartInfoDto(String partner_order_id) {
+		return sqlSession.selectOne("pay.getCartInfo", partner_order_id);
+	}
+	
 }

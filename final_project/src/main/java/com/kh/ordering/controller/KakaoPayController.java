@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.ordering.entity.GoodsOptionDto;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
@@ -165,6 +166,10 @@ public class KakaoPayController {
 		session.setAttribute("tid", result.getTid()); // 응답의 tid
 		session.setAttribute("readyVO", readyVO); // 결제요청 데이터
 		
+		ObjectMapper mapper = new ObjectMapper();
+		OrderVO orderVO = mapper.readValue(jsonOrderVO, OrderVO.class);
+		session.setAttribute("custom_order_no", orderVO.getCustomOrderVO().getCustom_order_no());
+		
 		// 응답 데이터 중 결제를 위한 주소가 들어있는 페이지로 redirect
 		return "redirect:"+result.getNext_redirect_pc_url();
 	}
@@ -175,8 +180,10 @@ public class KakaoPayController {
 		String tid = (String)session.getAttribute("tid");
 		KakaoPayReadyVO readyVO = (KakaoPayReadyVO) session.getAttribute("readyVO");
 		
+		int custom_order_no = (Integer)session.getAttribute("custom_order_no");
 		session.removeAttribute("tid");
 		session.removeAttribute("readyVO");
+		session.removeAttribute("custom_order_no");
 		
 		// 결제 승인처리
 		// KakaoPaySuccessReadyVO를 받아서 KakaoPaySuccessReturnVO 반환
@@ -189,11 +196,8 @@ public class KakaoPayController {
 																					.pg_token(pg_token)
 																					.build();
 
-		KakaoPaySuccessReturnVO result = payService.approveVO(successReadyVO, session);
-
-		payService.transactionOrder(successReadyVO.getPartner_order_id());
+		KakaoPaySuccessReturnVO result = payService.approveVO(successReadyVO, session, custom_order_no);
 		
-		log.info("주문번호partner_order_id={}", readyVO.getPartner_order_id());
 		model.addAttribute("patner_order_id", readyVO.getPartner_order_id());
 		
 		return "pay/customPaySuccess";

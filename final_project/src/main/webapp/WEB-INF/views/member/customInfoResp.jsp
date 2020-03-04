@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
@@ -70,10 +71,12 @@
 	</ul>
 	<div class="card-footer text-muted content_last" align="right">
 		<form action="${pageContext.request.contextPath }/order/custom" method="POST">
+			<c:set var="status" target="${getListInfoResp.custom_order_status }"/>
+			<c:if test="${functions: contains(status, '진행중') }">
 			<input type="hidden" name="seller_custom_order_no" value="${getListInfoResp.seller_custom_order_no }">
-			<input type="submit" value="수락 및 결제하기">
-			&verbar; 
-<%-- 		<a href="${pageContext.request.contextPath }/order/custom" style="font-weight: bold;">수락 및 결제하기</a> &verbar;  --%>
+			<input type="submit" class="btn_clean" value="수락 및 결제하기">
+			&verbar;
+			</c:if> 
 		<a href="${pageContext.request.contextPath }/member/customListReq">목록으로</a>		
 		</form>
 	</div>

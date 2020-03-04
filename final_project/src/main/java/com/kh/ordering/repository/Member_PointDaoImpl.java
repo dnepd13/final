@@ -42,8 +42,8 @@ public class Member_PointDaoImpl implements Member_PointDao{
 		sqlSession.insert("member_PointDto.insertPoint",membePointDto);
 	}
 	@Override // 포인트 사용추가
-	public void usePoint(Member_PointDto memberPointDto) {
-		sqlSession.insert("member_PointDto.usePoint", memberPointDto);
+	public void usedPoint(Member_PointDto memberPointDto) {
+		sqlSession.insert("member_PointDto.usedPoint", memberPointDto);
 	}
 	
 

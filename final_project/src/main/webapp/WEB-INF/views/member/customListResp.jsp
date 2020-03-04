@@ -14,6 +14,10 @@
 		width: 500px;
 		margin: 0 auto;
 	}
+	.dataEmpty {
+		height: 300px;
+	}
+	
 	.new {
 		float: right;
 	}
@@ -24,24 +28,39 @@
 
 <article class="articleBox">
 <table class="table table-hover listBox">
-<c:forEach var="sellerResp" items="${getListResp }">
-	<tr>
-		<td>
-			<p><span>${sellerResp.seller_id } 님이 보낸 견적서입니다.</span>
-				<span class="new" style="color: red">
-					<c:set var="check" value="${sellerResp.member_alarm_check }"/>
-					<c:if test="${functions : contains(check, 'N') }">
-						new
-					</c:if>
-				</span>
-			</p>
-			<p><a href="customInfoResp?seller_custom_order_no=${sellerResp.seller_custom_order_no }">
-						${sellerResp.custom_order_title }</a>
-			</p>
-			<span>${sellerResp.custom_order_date }</span>
-<%-- 			<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span> --%>
-		</td>
-</c:forEach>
+<c:choose>
+	<c:when test="${ empty getListResp }">
+		<tr class="dataEmpty">
+			<td>
+				<div class="row-empty-40"></div><div class="row-empty-40"></div>
+				<div align="center" style="padding: 10px;">
+					받은 견적서가 없습니다.
+				</div><div class="row-empty-40"></div><div class="row-empty-40"></div><div class="row-empty-40"></div>
+				<p align="right"><a href="${pageContext.request.contextPath }/member/customCate"><button class="btn_custom">요청서 보내기</button></a></p>
+			</td>
+		</tr>
+	</c:when>
+	<c:otherwise>
+		<c:forEach var="sellerResp" items="${getListResp }">
+			<tr>
+				<td>
+					<p><span>${sellerResp.seller_id } 님이 보낸 견적서입니다.</span>
+						<span class="new" style="color: red">
+							<c:set var="check" value="${sellerResp.member_alarm_check }"/>
+							<c:if test="${functions : contains(check, 'N') }">
+								new
+							</c:if>
+						</span>
+					</p>
+					<p><a href="customInfoResp?seller_custom_order_no=${sellerResp.seller_custom_order_no }">
+								${sellerResp.custom_order_title }</a>
+					</p>
+					<span>${sellerResp.custom_order_date }</span>
+		<%-- 			<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span> --%>
+				</td>
+		</c:forEach>
+	</c:otherwise>
+</c:choose>
 </table>
 
 <!-- 내비게이터 -->

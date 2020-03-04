@@ -14,6 +14,10 @@
 		width: 500px;
 		margin: 0 auto;
 	}
+	.dataEmpty {
+		height: 300px;
+	}
+	
 	.delete {
 		float: right;
 	}
@@ -67,21 +71,36 @@
 
 <article class="articleBox">
 <table class="table table-hover listBox">
-<c:forEach var="memberCustom" items="${getListReq }">
-	<tr>
-		<td>
-			cateNo: <span>${memberCustom.custom_order_category }</span><br>
-			<p><a href="customInfoReq?member_custom_order_no=${memberCustom.member_custom_order_no }">
-				${memberCustom.custom_order_title }
-				</a>
-			</p>
-			<p>
-				<span>${memberCustom.custom_order_date }</span>
-				<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span>
-			</p>
-		</td>
-	</tr>
-</c:forEach>
+<c:choose>
+	<c:when test="${ empty getListReq }">
+		<tr class="dataEmpty">
+			<td>
+				<div class="row-empty-40"></div><div class="row-empty-40"></div>
+				<div align="center" style="padding: 10px;">
+					보낸 요청서가 없습니다.
+				</div><div class="row-empty-40"></div><div class="row-empty-40"></div><div class="row-empty-40"></div>
+				<p align="right"><a href="${pageContext.request.contextPath }/member/customCate"><button class="btn_custom">요청서 보내기</button></a></p>
+			</td>
+		</tr>
+	</c:when>
+	<c:otherwise>
+		<c:forEach var="memberCustom" items="${getListReq }">
+			<tr>
+				<td>
+					cateNo: <span>${memberCustom.custom_order_category }</span><br>
+					<p><a href="customInfoReq?member_custom_order_no=${memberCustom.member_custom_order_no }">
+						${memberCustom.custom_order_title }
+						</a>
+					</p>
+					<p>
+						<span>${memberCustom.custom_order_date }</span>
+						<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span>
+					</p>
+				</td>
+			</tr>
+		</c:forEach>
+	</c:otherwise>
+</c:choose>
 </table>
 
 <!-- 내비게이터 -->
