@@ -76,7 +76,7 @@ public class GoodsCartReviewController {
 	}
 	@GetMapping("/cartDetailPay") // 상세 결제정보
 	public String cartPayInfo(Model model,
-													@RequestParam int partner_order_id) {
+													@RequestParam String partner_order_id) {
 		
 		
 		return "member/cartDetailPay";

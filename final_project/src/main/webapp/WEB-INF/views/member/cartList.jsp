@@ -35,7 +35,8 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-<h4>회원 주문내역페이지 member/orderingList.jsp</h4>
+<div class="row-empty-40"></div>
+<div class="row-empty-40"></div>
 
 <article class="articleBox">
 <table class="table table-hover" border="1">
@@ -46,18 +47,16 @@
       <th scope="col" width="10%">총 수량</th>
       <th scope="col" width="15%">결제금액<br>(배송비)</th>
       <th scope="col" width="10%">결제상태</th>
-      <th scope="col" width="10%">배송상태</th>
     </tr>
   </thead>
   <tbody>
   	<c:forEach var="cartInfo" items="${getCartInfo }">
     <tr align="center">
-      <td scope="row"><a href="${pageContext.request.contextPath }/member/cartDetailPay?partner_order_id=${cartInfo.partner_order_id }" >${cartInfo.partner_order_id }</a></td>
+      <td scope="row">${cartInfo.partner_order_id }</td>
       <td align="left"><a href="${pageContext.request.contextPath }/member/cartDetailGoods?cart_info_no=${cartInfo.cart_info_no}" >${cartInfo.item_name }</a></td>
       <td>${cartInfo.total_quantity}</td>	
       <td>${cartInfo.total_price } 원<br>(${cartInfo.total_delivery_price } 원)</td>
-      <td><a href="#">${cartInfo.cart_info_status }</a></td>
-      <td>${cartInfo.cart_info_addr_status }</td>
+      <td><a href="${pageContext.request.contextPath }/member/cartDetailPay?partner_order_id=${cartInfo.partner_order_id }">${cartInfo.cart_info_status }</a></td>
     </tr>
     </c:forEach>
   </tbody>
@@ -93,5 +92,8 @@
 	</ul>	
 </div>
 </article>
+
+<div class="row-empty-40"></div>
+<div class="row-empty-40"></div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

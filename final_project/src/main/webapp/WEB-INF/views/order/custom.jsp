@@ -166,19 +166,19 @@ function inputOrderInfo(){
 				<td>받는사람</td><td><input class="name" type="text" value="${member.member_name }"></td>
 			</tr>
 			<tr>
-				<td>연락처</td><td><input type="text" name="" value="${member.member_phone }" placeholder=" '-' 없이 입력"></td>
+				<td>연락처</td><td><input type="text" name="member_phone" value="${member.member_phone }" placeholder=" '-' 없이 입력"></td>
 			</tr>
 			<tr>
 				<td rowspan="2">
 					주소
-					<input class="addr_status" type="hidden" name="addr_status" value="${memberAddr.member_addr_status }">
+					<input class="addr_status" type="hidden" name="addr_status" value="기본주소">
 				</td>
-				<td><input class="addr_post" type="text" name="" value="${memberAddr.member_addr_post }"></td>
+				<td><input class="addr_post" type="text" name="addr_post" value="${memberAddr.member_addr_post }"></td>
 				<td><button>우편번호 찾기</button></td>
 			</tr>
 			<tr>
-				<td><input class="addr_basic" type="text" name="" value="${memberAddr.member_addr_basic }"></td>
-				<td><input class="addr_extra" type="text" name="" value="${memberAddr.member_addr_extra }"></td>
+				<td><input class="addr_basic" type="text" name="addr_basic" value="${memberAddr.member_addr_basic }"></td>
+				<td><input class="addr_extra" type="text" name="addr_extra" value="${memberAddr.member_addr_extra }"></td>
 			</tr>
 		</table>
 	

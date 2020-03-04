@@ -92,6 +92,11 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 		return sqlSession.selectOne("member.customRespTest", member_no);
 	}
 	
+	@Override // 견적서 결제하면 주문제작 상태 업데이트
+	public void updateCustomStatus(int custom_order_no) {
+		sqlSession.update("member.updateCustomStatus", custom_order_no);
+	}
+	
 	// 내가 보낸 요청서 보기
 	@Override // 목록
 	public List<CustomOrderVO> getListReq(PagingVO paging) {	
