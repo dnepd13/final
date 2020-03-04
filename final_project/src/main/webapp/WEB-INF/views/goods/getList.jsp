@@ -61,60 +61,6 @@ $(function(){
 	padding: 5px;
 }
 </style>
-
-<!-- Best -->
-<!-- <div class="best_area"> -->
-<!--   <h2>인기 상품</h2> -->
-<!--   <div class="container"> -->
-<!--   	<div class="row justify-content-center"> -->
-<!--   		<div class="col-md-2"> -->
-<!--   			ㅇ -->
-<!--   		</div> -->
-<!--   		<div class="col-md-2"> -->
-<!--   			ㅇ -->
-<!--   		</div> -->
-<!--   		<div class="col-md-2"> -->
-<!--   			ㅇ -->
-<!--   		</div> -->
-<!--   		<div class="col-md-2"> -->
-<!--   			ㅇ -->
-<!--   		</div> -->
-<!--   		<div class="col-md-2"> -->
-<!--   			ㅇ -->
-<!--   		</div> -->
-<!--   	</div> -->
-<!--   </div> -->
-<!-- </div> -->
-
-<!-- <!-- 신규 --> -->
-<!-- <div class="new_area"> -->
-<!--   <h2>신규 상품</h2> -->
-<!--   <div class="container"> -->
-<!--   	<div class="row justify-content-center"> -->
-<!--   		<div class="col-md-2"> -->
-<!--   			ㅇ -->
-<!--   		</div> -->
-<!--   		<div class="col-md-2"> -->
-<!--   			ㅇ -->
-<!--   		</div> -->
-<!--   		<div class="col-md-2"> -->
-<!--   			ㅇ -->
-<!--   		</div> -->
-<!--   		<div class="col-md-2"> -->
-<!--   			ㅇ -->
-<!--   		</div> -->
-<!--   		<div class="col-md-2"> -->
-<!--   			ㅇ -->
-<!--   		</div> -->
-<!--   	</div> -->
-<!--   </div> -->
-<!-- </div> -->
-
-<!--   <select name="align"> -->
-<!--   	<option>정렬</option> -->
-<!--   	<option value="price_asc">높은 가격순</option> -->
-<!--   	<option value="price_desc">낮은 가격순</option> -->
-<!--   </select> -->
 <hr>
 <div class="best_area">
   <p class="h2 text-center">인기 상품 목록</p>
