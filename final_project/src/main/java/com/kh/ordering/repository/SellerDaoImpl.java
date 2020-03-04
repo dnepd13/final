@@ -104,6 +104,9 @@ public class SellerDaoImpl implements SellerDao {
 		return find_id;
 	}
 
-
-
+	//아이디로 번호 찾기
+	@Override
+	public int getSellerNo(String seller_id) {
+		return sqlSession.selectOne("seller.getSellerNo", seller_id);
+	}
 }

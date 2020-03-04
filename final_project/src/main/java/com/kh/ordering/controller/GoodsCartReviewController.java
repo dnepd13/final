@@ -80,7 +80,6 @@ public class GoodsCartReviewController {
 													@RequestParam String partner_order_id) {
 		
 		List<CartInfoVO> payDetails = orderDao.getCartPay(partner_order_id);
-		log.info("payDetails={}",payDetails);
 		
 		model.addAttribute("payDetails", payDetails.get(0));
 		

@@ -229,7 +229,11 @@
 		        on b.custom_order_no = c.custom_order_no
 		where c.seller_custom_order_no=#{seller_custom_order_no}
 	</select>
-	
+
+	<select id="getSellerNo" parameterType="String" resultType="int">
+		select seller_no from seller where seller_id = #{seller_id}
+	</select>
+
 	<!-- 보낸 견적서 수정 -->
 	<update id="updateCustom" parameterType="customOrderDto">
 		update custom_order set custom_order_title=#{custom_order_title},

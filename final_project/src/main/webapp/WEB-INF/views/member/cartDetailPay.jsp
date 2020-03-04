@@ -27,6 +27,14 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <script>
+	function payConfirm(){
+		if(confirm("결제를 취소하시겠습니까?")){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 </script>
 
 결제 상세정보 cartDetailPay.jsp
@@ -62,10 +70,9 @@
 			<td>결제상태</td>
 			<td>${payDetails.cart_info_status } 
 					<fmt:parseDate value="${payDetails.process_time }" var="process_time" pattern="yyyy-MM-dd HH:mm:ss"/>
-					(<fmt:formatDate value="${process_time }" pattern="yyyy/MM/dd HH:mm:ss"/>)
+					(<fmt:formatDate value="${process_time }" pattern="yyyy/MM/dd HH:mm:ss"/>)  orderingNo=${payDetails.ordering_no}
 				<a href="${pageContext.request.contextPath }/pay/kakao/revoke?ordering_no=${payDetails.ordering_no}">
-					<button class="btn btn-warning payCancel" style="float:right;"
-								onsubmit="return confirm('상품명: ${payDetails.item_name }&NewLine;결제금액: ${payDetails.total_amount } 원 &NewLine;결제를 취소하시겠습니까?');">
+					<button class="btn btn-warning payCancel" style="float:right;" onclick="payConfirm();">
 						결제취소</button>
 				</a>
 			</td>

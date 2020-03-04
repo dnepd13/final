@@ -22,6 +22,7 @@ public interface OrderDao {
 	int getMember_no(String partner_order_id);
 	int getOrdering_no(String partner_order_id);
 	boolean updatePointAndStock(String partner_order_id) throws Exception;
+	int getCartInfoNo(String partner_order_id);
 	
 	// 회원 주문내역
 	List<CartInfoDto> getCartInfoMember(PagingVO paging);

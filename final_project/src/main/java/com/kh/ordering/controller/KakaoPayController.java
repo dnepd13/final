@@ -64,12 +64,12 @@ public class KakaoPayController {
 	@PostMapping("/test")
 	public String test(@RequestParam String orderVO, Model model) {
 		model.addAttribute("orderVO", orderVO);
-		return "pay/test";
+		return "pay/kakao/test";
 	}
 	
 	@GetMapping("/confirm")
 	public String confirm() {
-		return "pay/confirm";
+		return "pay/kakao/confirm";
 	}
 	
 	@PostMapping("/confirm")
@@ -88,7 +88,7 @@ public class KakaoPayController {
 		} 
 		catch (URISyntaxException e) {
 			e.printStackTrace();
-			return "redirect:/pay/confirm";
+			return "redirect:/pay/kakao/confirm";
 		}
 		
 	}
@@ -105,10 +105,6 @@ public class KakaoPayController {
 		session.removeAttribute("tid");
 		session.removeAttribute("ready");
 		
-		log.info("pg_token = {}", pg_token);
-		log.info("tid = {}", tid);
-		log.info("vo = {}", vo);
-		
 		KakaoPaySuccessReadyVO data = KakaoPaySuccessReadyVO.builder()
 												.cid("TC0ONETIME")
 												.tid(tid)
@@ -119,9 +115,15 @@ public class KakaoPayController {
 
 		KakaoPaySuccessReturnVO result = payService.approve(data);
 		
-		 payService.transactionOrder(data.getPartner_order_id());
+		payService.transactionOrder(data.getPartner_order_id());
 		 
-		 return "redirect:/pay/success";
+		int cart_info_no = orderDao.getCartInfoNo(data.getPartner_order_id());
+		return "redirect:/member/cartDetails?cart_info_no="+cart_info_no;
+	}
+	
+	@GetMapping("/result")
+	public String result() {
+		return "pay/success"; 
 	}
 	
 	@GetMapping("/list")
@@ -212,9 +214,10 @@ public class KakaoPayController {
 	
 	@GetMapping("/customPayRevoke")
 	public String customPayRevoke(@RequestParam int ordering_no) throws URISyntaxException {
+			PayDto payDto = payDao.get(ordering_no);
+		
+			KakaoPayRevokeReturnVO revokeReturnVO = payService.customRevokeVO(payDto);
 
-			KakaoPayRevokeReturnVO revokeReturnVO = payService.revoke(ordering_no);
-			
-		return "";
+		return "redirect:member/cartDetailPay?partner_order_id="+payDto.getPartner_order_id();
 	}
 }

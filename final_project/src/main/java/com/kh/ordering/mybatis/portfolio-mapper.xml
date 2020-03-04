@@ -5,13 +5,13 @@
 
 <mapper namespace="portfolio">
  <!-- 포트폴리오 파일 등록 -->
-	<!-- <insert id="insert">
+ <insert id="insert">
 		insert into portfolio values(
          #{files_no},
-         #{seller_no},
+         #{seller_no}
 
 	)
-	</insert> -->
+	</insert>
 
 
 

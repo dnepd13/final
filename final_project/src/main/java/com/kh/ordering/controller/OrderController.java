@@ -1,5 +1,6 @@
 package com.kh.ordering.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.repository.DeliveryDao;
+import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.MemberDao;
@@ -34,6 +36,9 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/order")
 public class OrderController {
+	
+	@Autowired
+	private GoodsDao goodsDao;
 	
 	@Autowired
 	private GoodsOptionDao goodsOptionDao;
@@ -52,7 +57,7 @@ public class OrderController {
 	private MemberCustomDao memberCustomDao;
 	
 	@PostMapping("/order")
-	public String order(@ModelAttribute ItemVOList itemVOList, Model model) throws JsonProcessingException {
+	public String order(@ModelAttribute ItemVOList itemVOList, Model model, HttpSession session) throws JsonProcessingException {
 		log.info("컨트롤러에서itemVOList={}",itemVOList.getItemVOList());
 		List<CartVO> cartVOList = goodsOptionService.getCartVOList(itemVOList.getItemVOList());
 		// 상품 1개 배송 정보
@@ -62,6 +67,22 @@ public class OrderController {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		model.addAttribute("jsonCartVOList", mapper.writeValueAsString(cartVOList));
+		
+		String member_id = (String)session.getAttribute("member_id");
+		
+		// 포인트
+		if(member_id != null) {
+			model.addAttribute("user_point", memberDao.getPoint(member_id));
+		} else {
+			model.addAttribute("user_point", 0);
+		}
+		
+		// 파일
+		List<Integer> filesList = new ArrayList<>();
+		for (CartVO cartVO : cartVOList) {
+			filesList.add(goodsDao.getGoodsMainImage(cartVO.getGoodsDto().getGoods_no()));
+		}
+		model.addAttribute("filesList", filesList);
 		
 		return "order/order";
 	}
@@ -86,7 +107,7 @@ public class OrderController {
 		// 견적서 내용(==상품) 보내기
 		CustomOrderVO customOrderVO = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("customVO", customOrderVO);
-		
+		log.info("customOrderVO={}",customOrderVO);
 		return "order/custom";
 	}
 	

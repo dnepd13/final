@@ -83,7 +83,7 @@
 		<li class="right_line main_line">회원가입
 			<ul class="sub_line" style="border: 1px solid lightgray;">
 				<li class=""><a href="${pageContext.request.contextPath }/member/regist">일반회원</a></li>
-				<li class=""><a href="#">판매자</a></li>
+				<li class=""><a href="${pageContext.request.contextPath }/seller/regist">판매자</a></li>
 			</ul>
 		</li>
 		<li class="right_line main_line">로그인

@@ -75,9 +75,11 @@
 	<div class="card-footer text-muted content_last" align="right">
 		<form action="${pageContext.request.contextPath }/order/custom" method="POST">
 			<input type="hidden" name="seller_custom_order_no" value="${getListInfoResp.seller_custom_order_no }">
+			<c:if test="${getListInfoResp.custom_order_status=='진행중'}">
 			<input type="submit" class="btn_clean" value="수락 및 결제하기">
-			&verbar; 
-		<a href="${pageContext.request.contextPath }/member/customListReq">목록으로</a>		
+			&verbar;
+			</c:if> 
+			<a href="${pageContext.request.contextPath }/member/customListResp">목록으로</a>		
 		</form>
 	</div>
 </div>
