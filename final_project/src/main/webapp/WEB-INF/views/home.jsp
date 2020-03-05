@@ -15,6 +15,7 @@
 	<span><a href="${pageContext.request.contextPath }/goods/insert">상품등록</a></span>
 <!-- 바뀐 session의 member_no에서 memeber_id를 구해서 확인  -->
 
+
 <!-- 로그인 내용  -->
 <c:choose>
 	<c:when test="${member_id == null}">
