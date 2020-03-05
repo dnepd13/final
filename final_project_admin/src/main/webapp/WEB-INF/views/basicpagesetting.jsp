@@ -6,7 +6,7 @@
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
             <div class="offset-md-1 col-md-10">
-<div class="row justify-content-center"  style="padding: 20px;"><h1>사이트 기본정보</h1></div>
+<div class="row justify-content-center"  style="padding: 20px;"><h1>사이트 기본정보 관리</h1></div>
 <form action="" method="post">
   <fieldset>
     <div class="form-group row">
