@@ -67,6 +67,9 @@
 		margin: 2px;
 		padding: 5px;
 	}
+	.reply_content {
+		margin: 10px 0
+	}
 	
 </style>
 
@@ -404,7 +407,7 @@ $(function(){
 	    $(".btn_reply").click(function(){
 	    	
 	        if($(this).text()=="댓글쓰기"){
-	        	$(this).parents().next().next(".reply").show();
+	        	$(this).parents().next(".reply").show();
 	            $(this).text("취소");
 	        }
 	        else{
@@ -797,7 +800,7 @@ $(function(){
 	<c:forEach var="review" items="${goodsReview }">
 	<table class="reviewBox">
 		<tr>
-			<td class="star" colspan="3">
+			<td class="star" colspan="2">
 				<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${review.goods_review_star}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
 			</td>
 		</tr>
@@ -807,58 +810,62 @@ $(function(){
 				<fmt:parseDate value="${review.goods_review_date }" var="review_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 				<fmt:formatDate value="${review_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
 			</td>
-			<td width="100px" align="right">
-				<c:choose>
-		        <c:when test="${member_id !=null }">
-		        	<button class="btn_reply btn_clean">댓글쓰기</button>
-		        </c:when>
-		        <c:otherwise>
-		        	<a href="${pageContext.request.contextPath}/member/login"><button class="btn_clean">댓글쓰기</button></a>	        
-		        </c:otherwise>
-		        </c:choose>
-			</td>
 		</tr>
 		<c:if test="${ not empty filesVO }">
 			<tr>
-				<td colspan="3">
+				<td colspan="2">
 				<c:forEach var="filesVO" items="${filesVO }">
+				<c:if test="${review.goods_review_no==filesVO.goods_review_no }">
 					<img src="http://localhost:8080/ordering/member/reviewFile?files_no=${filesVO.files_no}" width=100px; height=100px;>
+				</c:if>
 				</c:forEach>
 				</td>
 			</tr>
 		</c:if>
 		<tr>
-			<td colspan="3">${review.goods_review_content }</td>
+			<td colspan="2">${review.goods_review_content }</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<c:choose>
+		        <c:when test="${member_id !=null }">
+		        	&or;<button class="btn_reply btn_clean">댓글쓰기</button>
+		        </c:when>
+		        <c:otherwise>
+		        	&or;<a href="${pageContext.request.contextPath}/member/login"><button class="btn_clean">댓글쓰기</button></a>	        
+		        </c:otherwise>
+		        </c:choose>
+			</td>
 		</tr>
 		<tr class="reply" style="display:none;">
-			<td colspan="3">
+			<td colspan="2">
 				<form action="insertReply" method="post">
 					<input type="hidden" name="goods_review_no" value="${review.goods_review_no }">
 					<input type="hidden">
 					<textarea name="goods_review_reply_content" class="form-control" required></textarea>
 					<br>
-					<input type="submit" value="댓글등록" class="btn_custom">
+					<p align="right"><input type="submit" value="댓글등록" class="btn_custom"></p>					
 				</form>
 				</td>
 		</tr>
-		<c:if test="${ not empty reviewReply }">
+		<c:forEach var="reviewReply" items="${reviewReply }">
+			<c:if test="${review.goods_review_no==reviewReply.goods_review_no }">
 			<tr>
-				<td colspan="3">
-					<c:forEach var="reviewReply" items="${reviewReply }">
-						<div class="replyBox">
-							<c:if test="${review.goods_review_no==reviewReply.goods_review_no }">
-								<span>${reviewReply.goods_review_reply_writer }</span>
-								<span style="float:right;">
-									<fmt:parseDate value="${reviewReply.goods_review_reply_date }" var="reply_date" pattern="yyyy-MM-dd HH:mm:ss"/>
-									<fmt:formatDate value="${reply_date }" pattern="yyyy/MM/dd HH:mm:ss"/>							
-								</span>
-								<p>${reviewReply.goods_review_reply_content }</p>
-							</c:if>
-						</div>
-					</c:forEach>
+				<td colspan="2" style="padding: 0 0;">
+					<div class="replyBox">
+							<span>${reviewReply.goods_review_reply_writer }</span>
+							<span style="float:right;">
+								<fmt:parseDate value="${reviewReply.goods_review_reply_date }" var="reply_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+								<fmt:formatDate value="${reply_date }" pattern="yyyy/MM/dd HH:mm:ss"/>							
+							</span>
+							<div class="reply_content">${reviewReply.goods_review_reply_content }</div>
+
+					</div>
 				</td>
 			</tr>
-		</c:if>
+			</c:if>
+		</c:forEach>
+
 	</table>
 	<br>
 	</c:forEach>

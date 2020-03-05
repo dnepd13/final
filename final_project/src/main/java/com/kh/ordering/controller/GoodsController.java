@@ -236,6 +236,7 @@ public class GoodsController {
 				reviewReply.addAll(goodsReviewDao.getListReply(review.getGoods_review_no()));
 				model.addAttribute("reviewReply", reviewReply);
 			}
+			
 			// 리뷰 파일
 			List<FilesVO> reviewFiles = new ArrayList<>();
 			for(GoodsReviewDto review : goodsReview) {

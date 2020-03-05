@@ -28,7 +28,7 @@
 
 <script>
 	function payConfirm(){
-		if(confirm("결제를 취소하시겠습니까?")){
+		if(confirm("결제를 취소하시겠습니까? 취소하실 정보를 다시 한 번 확인해주세요.")){
 			return true;
 		}
 		else{

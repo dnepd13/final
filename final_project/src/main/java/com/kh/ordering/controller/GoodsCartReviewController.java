@@ -121,7 +121,7 @@ public class GoodsCartReviewController {
 		goodsReviewService.insertReview(session, files, cart_info_goods_no, goodsReviewDto);
 		
 		
-		return "redirect:/member/cartDetails?cart_info_no="+cart_info_no;
+		return "redirect:/member/cartDetailGoods?cart_info_no="+cart_info_no;
 	}
 
 	// 파일 이미지 다운로드

@@ -55,7 +55,7 @@
  	}
  	.insert_review textarea{
  		resize: none;
- 		height: 300px;
+ 		height: 250px;
  	}
 
 </style>
