@@ -20,7 +20,7 @@
 	<c:when test="${member_id == null}">
 		<form role="form" method="post" autocomplete="off" action="/member/login">
 			<p><a href="/ordering/member/login">일반회원 로그인</a></p>
-			<p><a href="/ordering/member/regist">회원가입</a></p>
+			<p><a href="/ordering/member/regist_agree">회원가입</a></p>
 		</form>
 		<span><a href="${pageContext.request.contextPath }/goods/getList">상품List</a></span>
 		<p><a href="/ordering/member/login">요청서 보내기</a>

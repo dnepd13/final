@@ -1,9 +1,7 @@
  package com.kh.ordering.controller;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -80,10 +78,24 @@ public class MemberController {
 	private SqlSession sqlSession;
 	
 	
+		//회원 가입전 동의서 받기
+		@GetMapping("/regist_agree")
+		public String regist_agree() {
+			return "member/regist_agree";
+		}
 		
-	
+		@PostMapping("/regist_agree")
+		public String regist_agree(@ModelAttribute MemberDto memberDto, Model model) {
+			
+			SimpleDateFormat matter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);
+			Date currentTime = new Date();
+			String dTime = matter.format(currentTime);
+			model.addAttribute("dtime",dTime);
+			
+			return "redirect:/member/regist";
+		}
+		
 		//회원 가입하기
-	
 		@GetMapping("/regist")
 		public String regist() {
 		return "member/regist";
@@ -124,7 +136,55 @@ public class MemberController {
 			
 			return "redirect:/member/login"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
 		}
+		//판매자 이메일 인증
+		@PostMapping("/send")//jsp로 결과가 나가면 안된다
+		@ResponseBody//내가 반환하는 내용이 곧 결과물
+		public String send(@RequestParam String member_email,HttpSession session) {
+//			String cert ="1236";//세션에 저장된 판매자 이름과 판매자 아이디를 넣어서 서버에 있는 아이디랑 이메일이 같다면 인증번호를 보내라 
+		    System.out.println("member email"+member_email);	 
+			String cert = randomService.generateCertificationNumber(6);
+		    	  session.setAttribute("cert", cert);
+		    	  return emailService.sendCert(member_email, cert);
+		    	  
+		      }
+		@PostMapping("/validate")//세션에 있는 cert랑 사용자가 입력한 번호랑 같아야한다
+		@ResponseBody
+		public String validate(HttpSession session, @RequestParam String cert) {
+				String value =(String)session.getAttribute("cert");//서버에 저장된 번호를 내놔라 사용자가 입력한 값이 cert로 들어와야한다
+				      session.removeAttribute("cert");//세션값을 지운다 한번쓰면 지워야한다(버려야한다)
+				      	//	System.out.println(cert+"11111111111");
+				      
+				      if (value.equals(cert)) {  //사용자가 입력한 값이 cert랑 같으면
+				
+					return "success";
+				}	
+					else {
+						return "fail";
+						
+			}
+}
+		
+		///아이디 중복검사
+		@GetMapping(value = "/id_check",produces ="application/text; charset=utf-8")
+		@ResponseBody //ajax
+		public String id_check(String member_id, Model model) {
+	 System.out.println("Controller.idCheck() 호출");
+
+
+	 int result = sqlSession.selectOne("member.id_check", member_id);
+	log.info("들어오나");
+	log.info("membercheck={}",member_id);
 	
+	log.info("result={}", result);
+	String a = Integer.toString(result);
+	if(result == 1) {
+		return a;
+	}
+	else {
+		return a;
+	}
+   } 	
+		
 	//회원 탈퇴
 	@GetMapping("memberdelete")
 	public String memberdelete() {
@@ -368,62 +428,7 @@ public class MemberController {
 	
 	
 	
-	
-	
 
-
-
-	
-	
-//회원 이메일 인증
-	@PostMapping("/send")//jsp로 결과가 나가면 안된다
-	@ResponseBody//내가 반환하는 내용이 곧 결과물
-	public String send(@RequestParam String member_email,HttpSession session) {
-//		String cert ="1236";//세션에 저장된 판매자 이름과 판매자 아이디를 넣어서 서버에 있는 아이디랑 이메일이 같다면 인증번호를 보내라 
-	    System.out.println("member email"+member_email);	 
-		String cert = randomService.generateCertificationNumber(6);
-	    	  session.setAttribute("cert", cert);
-	    	
-	    	  return emailService.sendCert(member_email, cert);
-
-	      }
-	@PostMapping("/validate")//세션에 있는 cert랑 사용자가 입력한 번호랑 같아야한다
-	@ResponseBody
-	public String validate(HttpSession session, @RequestParam String cert) {
-			String value =(String)session.getAttribute("cert");//서버에 저장된 번호를 내놔라 사용자가 입력한 값이 cert로 들어와야한다
-			      session.removeAttribute("cert");//세션값을 지운다 한번쓰면 지워야한다(버려야한다)
-			      if (value.equals(cert)) {  //사용자가 입력한 값이 cert랑 같으면
-
-						return "success";
-			      }
-			      else {
-			    	  	return "fail";
-
-				}
-			}
-	
-	
-	
-	///아이디 중복검사
-				@GetMapping(value = "/id_check",produces ="application/text; charset=utf-8")
-				@ResponseBody //ajax
-				public String id_check(String member_id, Model model) {
-			 System.out.println("Controller.idCheck() 호출");
-		
-
-		int result = sqlSession.selectOne("member.id_check", member_id);
-			log.info("들어오나");
-			log.info("membercheck={}",member_id);
-			
-			log.info("result={}", result);
-			String a = Integer.toString(result);
-			if(result == 1) {
-				return a;
-			}
-			else {
-				return a;
-			}
-		   } 
 	
 				//-------------------아이디 찾기-------------------------//
 				@GetMapping("/memberfind_id")

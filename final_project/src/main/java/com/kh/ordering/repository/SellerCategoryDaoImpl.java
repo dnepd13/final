@@ -11,6 +11,13 @@ import com.kh.ordering.entity.SellerCategoryDto;
 public class SellerCategoryDaoImpl implements SellerCategoryDao{
 	@Autowired
 	private SqlSession sqlSession;
+	//-------------------------판매자id로 판매자 번호 구하기----------------//
+		@Override
+		public int getNo(String seller_id) {
+			// seller_id 나중에 세션에서 가져와서 바꾸기
+			int seller_no = sqlSession.selectOne("seller.getNo", seller_id);
+		    return seller_no;
+		}
 	
 	//-------------------------판매자 카테고리 관리----------------//
 	@Override
@@ -56,5 +63,6 @@ public class SellerCategoryDaoImpl implements SellerCategoryDao{
 		
 		return sqlSession.selectList("seller_category.get_category_name_list",list);
 	}
+
 
 }

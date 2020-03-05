@@ -66,4 +66,3 @@
 	<input type="text" name="cert" placeholder="인증번호 입력">
 	<input type="submit" value="인증하기">
 </form>
-
