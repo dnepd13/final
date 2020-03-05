@@ -14,21 +14,6 @@
 부트스트랩 nav가 너무 두꺼운거 같아서 좀 건드렸더니 다른 페이지에서 불렀을 때 변경한걸로 적용 안되는 경우도 있더라구요 ..
 홈이랑 크기가 다르면 header style에서 부트스트랩 style 가져가시면 되여.. 괜히건드렸나 ......음..<br>
 누가 있어보이게 만들어주세요 .. 저는 글렀어요 ...
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
-<div class="row-empty">d</div><div class="row-empty">d</div>
+
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

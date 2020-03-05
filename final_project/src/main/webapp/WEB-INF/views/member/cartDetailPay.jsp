@@ -71,7 +71,7 @@
 			<td>${payDetails.cart_info_status } 
 					<fmt:parseDate value="${payDetails.process_time }" var="process_time" pattern="yyyy-MM-dd HH:mm:ss"/>
 					(<fmt:formatDate value="${process_time }" pattern="yyyy/MM/dd HH:mm:ss"/>)  orderingNo=${payDetails.ordering_no}
-				<a href="${pageContext.request.contextPath }/pay/kakao/revoke?ordering_no=${payDetails.ordering_no}">
+				<a href="${pageContext.request.contextPath }/pay/kakao/customPayRevoke?ordering_no=${payDetails.ordering_no}">
 					<button class="btn btn-warning payCancel" style="float:right;" onclick="payConfirm();">
 						결제취소</button>
 				</a>
@@ -84,4 +84,5 @@
 
 <div class="row-empty-40"></div>
 <div class="row-empty-40"></div>
+
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

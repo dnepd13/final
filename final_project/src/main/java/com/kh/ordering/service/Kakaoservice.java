@@ -245,7 +245,7 @@ public class Kakaoservice implements payService {
 
 		// 헤더
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", "KakaoAK df1490a82355dcdc6183933334d252ee");
+		headers.add("Authorization", "KakaoAK 53072513ab4d31c036edec9ad0220095");
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 		headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE); // 카카오의 응답을 받을 형태
 
@@ -270,7 +270,7 @@ public class Kakaoservice implements payService {
 		// 요청주소에 전송 및 회신 응답 저장
 		// url, 요청객체, 응답객체(JSON)
 		KakaoPayReadyReturnVO readyReturnVO = template.postForObject(uri, entity, KakaoPayReadyReturnVO.class);
-
+		
 		// DB에 결제준비 요청 정보 저장 --> PayDto
 		ObjectMapper mapper = new ObjectMapper();
 		OrderVO orderVO = mapper.readValue(jsonOrderVO, OrderVO.class);
@@ -308,7 +308,7 @@ public class Kakaoservice implements payService {
 
 		// 헤더
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", "KakaoAK df1490a82355dcdc6183933334d252ee");
+		headers.add("Authorization", "KakaoAK 53072513ab4d31c036edec9ad0220095");
 		headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE+"; charset=utf-8");
 		headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE); // 카카오의 응답을 받을 형태
 
@@ -358,13 +358,15 @@ public class Kakaoservice implements payService {
 
 	}
 
-	@Override
+	@Override // 주문제작 결제취소
 	public KakaoPayRevokeReturnVO customRevokeVO(PayDto payDto) throws URISyntaxException {
-
+		
+		log.info("payDto={}",payDto);
+		
 		RestTemplate template = new RestTemplate();
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", "KakaoAK df1490a82355dcdc6183933334d252ee");
+		headers.add("Authorization", "KakaoAK 53072513ab4d31c036edec9ad0220095");
 		headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + "; charset=utf-8");
 		headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
 
@@ -378,7 +380,13 @@ public class Kakaoservice implements payService {
 		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
 		
 		URI uri = new URI("https://kapi.kakao.com/v1/payment/cancel");
-
+		
+		log.info("body={}",body);
+		log.info("url={}", uri);
+		log.info("entity={}",entity);
+		log.info("KakaoPayReadyReturnVO.class", KakaoPayRevokeReturnVO.class);
+		
+				
 		KakaoPayRevokeReturnVO revokeReturnVO
 										= template.postForObject(uri, entity, KakaoPayRevokeReturnVO.class);
 
