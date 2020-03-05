@@ -16,6 +16,16 @@
 <div class="offset-md-3 col-md-6">
 <h1>${param.seller_id }님의 ${list.goods_name} 상품입니다</h2>
 </div>
+
+<div class="row justify-content-center" style="padding: 20px;">
+<h3>상품 사진</h3>
+</div>
+<div class="row justify-content-center" style="padding: 15px;" >
+<c:forEach var="filesVO" items="${file }">
+	<img src="http://localhost:8080/admin/goods/download?files_no=${filesVO.files_no }" width=150px; height=150px;>
+</c:forEach>
+</div>
+
 	<table class="table table-hover">
   <thead>
     <tr>
@@ -40,16 +50,9 @@
     </tr>
   </tbody>
 </table>
-<div class="row justify-content-center" style="padding: 50px;">
-<h3>상품 사진</h3>
-</div>
-<div class="row justify-content-center" style="padding: 30px;" >
-<c:forEach var="filesVO" items="${file }">
-	<img src="http://localhost:8080/admin/goods/download?files_no=${filesVO.files_no }" width=150px; height=150px;>
-</c:forEach>
-</div>
 
-<div class="row justify-content-center" style="padding: 30px;">
+
+<div class="row justify-content-center" style="padding: 50px;">
 <h1>${list.goods_name} 상품의 옵션</h2><br>
 </div>
 
