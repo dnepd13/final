@@ -66,6 +66,7 @@
 		border: 1px solid lightgray;
 		margin: 2px;
 		padding: 5px;
+		border-radius: 5px;
 	}
 	.reply_content {
 		margin: 10px 0
@@ -721,7 +722,7 @@ $(function(){
 						<c:if test="${qna.member_no == member_no && empty qna.goods_qna_status}">
 							<td data-goods_no = "${goodsVO.goods_no }"
 									data-goods_qna_no="${qna.goods_qna_no }"
-									data-member_no="${qna.member_no }">
+									data-member_no="${qna.member_no }" style="border-right: none;">
 									<button class="btn_update btn_clean">수정</button>
 									<button class="btn_delete btn_clean">삭제</button>
 							</td>
@@ -758,7 +759,7 @@ $(function(){
 			</tbody>
 		</table>
 		</fieldset>
-		<!-- 내비게이터 -->
+		<!-- 페이징 내비게이터 -->
 		<div class="row justify-content-center">
 			<ul class="pagination">
 				<c:if test="${paging.startBlock > 1 }">
@@ -787,6 +788,7 @@ $(function(){
 				</c:if>
 			</ul>	
 		</div>
+		<!-- 내비게이터 영역 끝 -->
     </div>
 </div>	
 <hr>
@@ -825,7 +827,8 @@ $(function(){
 		<tr>
 			<td colspan="2">${review.goods_review_content }</td>
 		</tr>
-		<tr>
+		<!-- 리뷰댓글 영역 시작 -->
+		<tr> 
 			<td colspan="2">
 				<c:choose>
 		        <c:when test="${member_id !=null }">
@@ -851,7 +854,7 @@ $(function(){
 		<c:forEach var="reviewReply" items="${reviewReply }">
 			<c:if test="${review.goods_review_no==reviewReply.goods_review_no }">
 			<tr>
-				<td colspan="2" style="padding: 0 0;">
+				<td colspan="2" style="padding: 0 12px;">
 					<div class="replyBox">
 							<span>${reviewReply.goods_review_reply_writer }</span>
 							<span style="float:right;">
@@ -859,16 +862,45 @@ $(function(){
 								<fmt:formatDate value="${reply_date }" pattern="yyyy/MM/dd HH:mm:ss"/>							
 							</span>
 							<div class="reply_content">${reviewReply.goods_review_reply_content }</div>
-
 					</div>
 				</td>
 			</tr>
 			</c:if>
 		</c:forEach>
-
+		<!-- 리뷰댓글영역 끝 -->
 	</table>
 	<br>
 	</c:forEach>
+	<!-- 페이징 내비게이터 -->
+		<div class="row justify-content-center">
+			<ul class="pagination">
+				<c:if test="${paging.startBlock > 1 }">
+					<li class="page-item">
+		     			 <a class="page-link" href="${pageContext.request.contextPath}/goods/goodsInfo?goods_no=${goodsVO.goods_no}&reviewPage=${paging.startBlock-1}">&laquo;</a>
+		   			 </li>
+				</c:if>
+				<c:forEach begin="${paging.startBlock }" end="${paging.finishBlock }" var="p">
+					<c:choose>
+						<c:when test="${p == paging.pno }">
+							<li class="page-item active">
+		   					   <a class="page-link" >${p }</a>
+		   					 </li>
+						</c:when>
+						<c:when test="${p != paging.pno }">
+							<li class="page-item active">
+		      					<a class="page-link" href="${pageContext.request.contextPath}/goods/goodsInfo?goods_no=${goodsVO.goods_no}&reviewPage=${p}">${p }</a>
+		   					 </li>
+						</c:when>
+					</c:choose>
+				</c:forEach>
+				<c:if test="${paging.finishBlock < paging.pagecount}">
+					<li class="page-item">
+		     			 <a class="page-link" href="${pageContext.request.contextPath}/goods/goodsInfo?goods_no=${goodsVO.goods_no}&reviewPage=${paging.finishBlock+1}">&raquo;</a>
+		    		</li>
+				</c:if>
+			</ul>	
+		</div>
+		<!-- 내비게이터 영역 끝 -->
 </div>
 
 </article>

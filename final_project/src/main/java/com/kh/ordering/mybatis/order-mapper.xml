@@ -36,6 +36,8 @@
 		    )RN
 		)where rn between #{start} and #{finish}
  	</select>
+ 	<!-- 회원번호를 기준으로 일반상품 결제목록 가져오기 -->
+ 	
  	<select id="getCartInfoCount" parameterType="int" resultType="int">
  		select count(*) from cart_info where member_no=#{member_no} and cart_info_status='결제완료' or cart_info_status='결제취소'
  	</select>

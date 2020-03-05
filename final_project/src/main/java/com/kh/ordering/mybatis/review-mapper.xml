@@ -27,9 +27,17 @@
  	
  	<!-- 리뷰출력 -->
  	<select id="getReview" parameterType="int" resultType="goodsReviewDto">
- 		select A.*, b.seller_no from
-		    goods_review A inner join goods B
-		        on A.goods_no = B.goods_no where B.goods_no=#{goods_no}
+ 		select *from(
+		    select rownum rn, RN.* from(
+		        select A.*, b.seller_no
+		            from goods_review A inner join goods B
+		                on A.goods_no = B.goods_no where B.goods_no=#{goods_no}
+		    )RN
+		)where rn between #{start} and #{finish}
+ 	</select>
+ 	<!-- 리뷰개수 -->
+ 	<select id="getCount" parameterType="int" resultType="int">
+ 		select count(*) from goods_review where goods_no =#{goods_no}
  	</select>
  	
  	<!-- 상품 리뷰 평점 -->

@@ -192,7 +192,8 @@ public class GoodsController {
 	
 	@GetMapping("/goodsInfo")
 	public String goodsInfo(@RequestParam int goods_no, Model model, HttpSession session,
-												@RequestParam(value = "pageNo", required=false, defaultValue="0")String pageNo) throws JsonProcessingException {
+												@RequestParam(value = "pageNo", required=false, defaultValue="0")String pageNo,
+												@RequestParam(value = "reviewPage", required=false, defaultValue="0")String reviewPage) throws JsonProcessingException {
 		String jsonGoodsVO = new ObjectMapper().writeValueAsString(goodsService.getGoodsVO(goods_no));
 		String jsonGoodsOptionVOList = new ObjectMapper().writeValueAsString(goodsService.getGoodsOptionVOList(goods_no));
 		
@@ -227,7 +228,9 @@ public class GoodsController {
 			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
 			model.addAttribute("goodsQna", goodsQna);
 			
-			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
+			PagingVO page = goodsReviewService.goodsReviewPaging(reviewPage, goods_no);
+			model.addAttribute("reviewPage", page);
+			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(page);
 			model.addAttribute("goodsReview", goodsReview); // 리뷰 목록
 			
 			// 리뷰 댓글
