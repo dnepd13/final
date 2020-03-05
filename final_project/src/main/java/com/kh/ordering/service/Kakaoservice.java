@@ -362,7 +362,6 @@ public class Kakaoservice implements payService {
 	public KakaoPayRevokeReturnVO customRevokeVO(PayDto payDto) throws URISyntaxException {
 		
 		log.info("payDto={}",payDto);
-		
 		RestTemplate template = new RestTemplate();
 
 		HttpHeaders headers = new HttpHeaders();
@@ -376,7 +375,7 @@ public class Kakaoservice implements payService {
 		body.add("cancel_amount", String.valueOf(payDto.getTotal_amount()));
 		body.add("cancel_tax_free_amount", "0");
 		body.add("cancel_available_amount", String.valueOf(payDto.getTotal_amount()));
-
+		
 		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
 		
 		URI uri = new URI("https://kapi.kakao.com/v1/payment/cancel");
@@ -386,7 +385,6 @@ public class Kakaoservice implements payService {
 		log.info("entity={}",entity);
 		log.info("KakaoPayReadyReturnVO.class", KakaoPayRevokeReturnVO.class);
 		
-				
 		KakaoPayRevokeReturnVO revokeReturnVO
 										= template.postForObject(uri, entity, KakaoPayRevokeReturnVO.class);
 
