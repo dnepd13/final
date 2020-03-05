@@ -3,8 +3,7 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 
-<div class="row-empty-40"></div>
-<footer>
+<footer style="height:20%;">
 <div class="footer_area">
 	<ul class="footer_title">
 		<li><strong>ORDERING</strong></li>
@@ -23,6 +22,6 @@
 	</ul>
 </div>
 </footer>
-
+</section>
 </body>
 </html>

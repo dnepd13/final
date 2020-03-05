@@ -135,7 +135,7 @@
 		update cart_info set cart_info_status = '결제완료' where partner_order_id = #{partner_order_id}
 	</update>
 	
-	
+	<!-- 주문제작 결제 시 회원 포인트 차감 업데이트 용으로 사용한 select -->
 	<select id="getCartInfo" parameterType="String" resultType="cartInfoDto">
 		select *from cart_info where partner_order_id=#{partner_order_id}
 	</select>

@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.entity.PayDto;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.repository.MemberDao;
@@ -152,9 +153,11 @@ public class KakaoPayController {
 		return "pay/cancel";
 	}
 	
-//////////주문제작
-//	결제준비 요청-응답
-	@PostMapping("/customPay")
+	
+	
+//	주문제작
+
+	@PostMapping("/customPay") // 결제준비 요청-응답
 	public String customPay(@RequestParam String jsonOrderVO, HttpSession session) throws URISyntaxException, JsonMappingException, JsonProcessingException {
 		
 		// 결제준비 요청 데이터(뷰에서 넘어온 jsonOrderVO)를 받아서 카카오페이 요청 데이터에 set
@@ -176,7 +179,7 @@ public class KakaoPayController {
 		return "redirect:"+result.getNext_redirect_pc_url();
 	}
 	
-	@GetMapping("/customPaySuccess")
+	@GetMapping("/customPaySuccess") // 결제승인 요청-응답
 	public String customPaySuccess(@RequestParam String pg_token, HttpSession session,
 																Model model) throws Exception {
 		String tid = (String)session.getAttribute("tid");
@@ -204,8 +207,17 @@ public class KakaoPayController {
 		
 		return "pay/customPaySuccess";
 	}
-	@GetMapping("/customPayCancel")
+	@GetMapping("/customPayCancel") // 결제취소
 	public String customPayCancel(){
 		return "pay/customPayCancel";
+	}
+	
+	@GetMapping("/customPayRevoke")
+	public String customPayRevoke(@RequestParam int ordering_no) throws URISyntaxException {
+			PayDto payDto = payDao.get(ordering_no);
+		
+			KakaoPayRevokeReturnVO revokeReturnVO = payService.customRevokeVO(payDto);
+
+		return "redirect:member/cartDetailPay?partner_order_id="+payDto.getPartner_order_id();
 	}
 }

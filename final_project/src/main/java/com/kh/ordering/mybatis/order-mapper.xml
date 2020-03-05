@@ -24,20 +24,31 @@
 		select member_no from cart_info where partner_order_id = #{partner_order_id}
 	</select>
 	
-	<!-- 회원번호를 기준으로 주문/결제내역(ordering+cart_info) 가져오기 -->
+	<!-- 회원번호를 기준으로 주문/결제내역(ordering+cart_info) 목록 가져오기 -->
 	<select id="getCartInfoMember" parameterType="int" resultType="cartInfoVO">
 		select *from(
 		    select rownum rn, RN.*from(
 		        select distinct A.*, ordering.item_name
 				    from
 				        cart_info A inner join ordering on A.partner_order_id = ordering.partner_order_id
-				    where A.member_no=#{member_no}
+				    where A.member_no=#{member_no} and cart_info_status='결제완료' or cart_info_status='결제취소'
 				    order by a.cart_info_no desc
 		    )RN
 		)where rn between #{start} and #{finish}
  	</select>
  	<select id="getCartInfoCount" parameterType="int" resultType="int">
- 		select count(*) from cart_info where member_no=#{member_no}
+ 		select count(*) from cart_info where member_no=#{member_no} and cart_info_status='결제완료' or cart_info_status='결제취소'
+ 	</select>
+ 	<!-- 결제내용 상세페이지 -->
+ 	<select id="getCartPay" parameterType="String" resultType="cartInfoVO">
+ 		select ordering.ordering_no, ordering.process_time, ordering.item_name, ordering.ordering_status,
+	        ordering.total_amount, ordering.tax_free_amount, ordering.vat_amount,
+	        cart_info.*
+	    from cart_info
+	    	inner join ordering
+	            on cart_info.partner_order_id = ordering.partner_order_id
+	    where cart_info.partner_order_id=#{partner_order_id}
+	    order by ordering.ordering_no desc
  	</select>
  	
  	<!-- cart_info_no에 대한 상품 주문내역 -->

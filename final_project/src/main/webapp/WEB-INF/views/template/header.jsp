@@ -5,13 +5,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>order-링</title>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 
 <style>
-	* {box-sizing: border-box;}
+	* {box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;}
+	html,
+	body{
+		margin: 0;
+		height: 100%;
+	}
+	.wrap {
+		min-height: 100%;
+		position: relative;
+		padding-bottom: 150px;
+	}
+	
 	.basic_color {
 		color: rgb(248,245,240);
 	}
@@ -24,6 +37,7 @@
 		list-style: none;
 		margin: 0 0;
 		box-sizing: border-box;
+		overflow: hidden;
 	}
 	.nav_login .left_line {
 		float: left;
@@ -32,6 +46,11 @@
 	.nav_login .right_line {
 		float: right;
 		padding: 5px 20px;
+	}
+	@media screen and (max-width:720px){
+		.nav_login .left_line {
+			display: none;
+		}
 	}
 	/* 로그인 nav 서브메뉴 스타일 */
 	.nav_login .sub_line {
@@ -68,6 +87,7 @@
 	    border-right: 1px solid rgba(0,0,0,0.2);
 	    font-size: 13px;
 	}
+
 </style>
 
 </head>
@@ -112,4 +132,4 @@
 
 <h1 align="center">홈</h1>
 
-<div class="row-empty-20"></div>
+
