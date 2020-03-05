@@ -1,32 +1,103 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-    <h1>회원 마이페이지</h1>
-    
- <h1><a href="/ordering/">홈으로 이동</a></h1>
- <br><br>
-    
-<h1><a href="${pageContext.request.contextPath}/member/cartList">주문/배송 내역</a></h1>
-<br><br>
-<h1><a href="">교환/환불/취소</a></h1>
-<br>
- <h1><a href="/ordering/member/style">style</a></h1>
-<br>
-<h1><a href="${pageContext.request.contextPath}/member/pointinfo">포인트 조회</a></h1>
-<br>
-<h1><a href="${pageContext.request.contextPath}/member/memberinfo">내 정보 상세조회/수정</a></h1>
-<br>
-<h1><a href="">비밀번호 변경</a></h1>
-<br>
-<h1><a href="${pageContext.request.contextPath}/member/memberdelete">회원 탈퇴</a></h1>
-<br>
-<h1><a href="${pageContext.request.contextPath}/board/memberqna">회원 문의게시판</a></h1>
-<br>
-<h1><a href="${pageContext.request.contextPath}/board/memberrepert">회원 신고게시판</a></h1>
-<br>
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
-<h1><a href="${pageContext.request.contextPath}/member/addrinfo">내 배송지 관리</a></h1>
-<br><br>
-<h1><a href="${pageContext.request.contextPath}/member/customListReq">보낸 요청서</a></h1>
-<h1><a href="${pageContext.request.contextPath}/member/customListResp">받은 견적서</a></h1>
-<h1><a href="${pageContext.request.contextPath}/member/memberinfo">회원 상세보기</a></h1>    
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
+<style>
+ 	aside { 
+ 		float : left; 
+ 		padding: 30px; 
+		width: 200px;
+ 	}	 
+ 	aside ul { 
+ 		list-style: none; 
+ 		padding : 0; 
+ 	}
+	
+	.aside-title {
+		border: 2px solid black;
+		margin: 5px;
+		padding: 10px;
+	}
+	.aside-grade {
+		border: 2px solid black;
+		margin: 5px;
+		padding: 10px;
+	}
+	.aside-content {
+		border: 2px solid black;
+		margin: 5px;
+		padding: 10px;
+	}
+	
+	aside::after {
+		content: "";
+		display: block;
+		clear: both;
+	}
+	
+	.infoPage-area {
+		width: 80%;
+		padding: 30px;
+		margin-right:
+		float: right; 
+		border: 1px dotted gray;
+	}
+	.infoPage-content {
+		border: 1px solid black;
+	}
+</style>
+
+<aside>
+	<div class="aside-title">
+		마이페이지
+	</div>
+	<div class="aside-grade">
+		회원등급
+	</div>
+	<div class="aside-content">
+		<ul>
+			<li><a href="${pageContext.request.contextPath}/member/cartList">주문/배송</a><li>
+			<li><a href="#">교환/환불</a><li>
+		</ul>
+		<ul>
+			<li>주문제작
+				<ul>
+					<li><a href="${pageContext.request.contextPath}/member/customListReq">받은 견적서</a></li>
+					<li><a href="${pageContext.request.contextPath}/member/customListResp">보낸 요청서</a></li>
+				</ul>
+			</li>
+		</ul>
+		<ul>
+			<li><a href="${pageContext.request.contextPath}/member/memberinfo">내 정보</a>
+				<ul>
+					<li><a href="">비밀번호 변경</a></li>
+					<li><a href="${pageContext.request.contextPath}/member/pointinfo">포인트 조회</a></li>
+					<li><a href="${pageContext.request.contextPath}/member/addrinfo">배송지 관리</a></li>
+				</ul>
+			</li>
+		</ul>
+		<ul>
+			<li><a href="${pageContext.request.contextPath}/board/memberqna">문의하기</a></li>
+			<li><a href="${pageContext.request.contextPath}/board/memberrepert">신고하기</a></li>
+		</ul>
+		<ul>
+			<li><a href="${pageContext.request.contextPath}/member/memberdelete">회원탈퇴</a></li>
+		</ul>
+		<ul>
+			<li><a href="/ordering/member/style">style</a></li>
+		</ul>
+	</div>
+</aside>
+
+<div class="infoPage-area">
+	<div class="infoPage-content">
+		현재포인트
+	</div>
+</div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
