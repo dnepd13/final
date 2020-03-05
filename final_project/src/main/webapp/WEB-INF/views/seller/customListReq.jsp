@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
@@ -77,7 +78,10 @@
 			<p><a href="customInfoReq?member_custom_order_no=${memberReq.member_custom_order_no }">
 						${memberReq.custom_order_title }</a>
 			</p>
-			<span>${memberReq.custom_order_date }</span>
+			<span>
+				<fmt:parseDate value="${memberReq.custom_order_date }" var="custom_order_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+				<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
+			</span>
 			<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberReq.member_custom_order_no })">&times;</button></span>
 		</td>
 	</tr>
@@ -86,7 +90,7 @@
 </c:choose>
 </table>
 
-<div class="navBox">
+<div class="row justify-content-center">
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
 			<li class="page-item">

@@ -693,7 +693,7 @@ $(function(){
 					<th>문의내용</th>
 					<th>작성자</th>
 					<th>작성일</th>
-					<th></th>
+					
 				</tr>
 			</thead>
 			<tbody>
@@ -756,7 +756,7 @@ $(function(){
 		</table>
 		</fieldset>
 		<!-- 내비게이터 -->
-		<div>
+		<div class="row justify-content-center">
 			<ul class="pagination">
 				<c:if test="${paging.startBlock > 1 }">
 					<li class="page-item">
@@ -790,7 +790,9 @@ $(function(){
 </article>
 <!-- ----------------------------------------------------------------------- -->
 
-<section id="tab3" class="tab_content">
+<section id="tab3" class="tab_content articleBox">
+	<div class="row-empty-20"></div>
+	<p class="reviewBox" style="border:0;">&mid; 리뷰 &mid;</p>
 	<div class="row-empty-20"></div>
 	<c:forEach var="review" items="${goodsReview }">
 	<table class="reviewBox">
@@ -861,5 +863,7 @@ $(function(){
 	<br>
 	</c:forEach>
 </section>
+
+<div class="row-empty-40"></div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

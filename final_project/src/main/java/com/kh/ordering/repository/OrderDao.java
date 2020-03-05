@@ -27,6 +27,7 @@ public interface OrderDao {
 	// 회원 주문내역
 	List<CartInfoDto> getCartInfoMember(PagingVO paging);
 	int getCartInfoCount(int member_no);
+	List<CartInfoVO> getCartPay(String partner_order_id); // 결제상세
 	List<CartDetailsVO> getCartGoods(int cart_info_no); // 상품상세
 	List<CartDetailsVO> getCartOption(int cart_info_goods_no); // 옵션상세
 	

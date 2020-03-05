@@ -27,6 +27,14 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <script>
+	function payConfirm(){
+		if(confirm("결제를 취소하시겠습니까?")){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 </script>
 
 결제 상세정보 cartDetailPay.jsp
@@ -35,34 +43,37 @@
 	<table class="table detailPayBox" border="1">
 		<tr>
 			<th>주문번호</th>
-			<td>cart_info.partner_order_id</td>
+			<td>${payDetails.partner_order_id }</td>
 		</tr>
 		<tr>
 			<th>상품명</th>
-			<td>ordering.item_name</td>
+			<td>${payDetails.item_name }</td>
 		</tr>
 		<tr>
 			<th>배송지</th>
-			<td><h6>cart_info.delivary_name</h6><hr>
-					<h6>(cart_info.cart_info_addr_post)</h6>
-					<h6>cart_info.cart_info_addr_basic &mid; cart_info.cart_info_addr_extra</h6>
+			<td><h6>${payDetails.delivery_name }</h6><hr>
+					<h6>(${payDetails.cart_info_addr_post })</h6>
+					<h6>${payDetails.cart_info_addr_basic } &mid; ${payDetails.cart_info_addr_extra }</h6>
 			</td>
 		</tr>
 		<tr>
 			<th rowspan="3">결제금액</th>
-			<td>ordering.total_amount(ordering.vat_amount)</td>
+			<td>${payDetails.total_amount } 원 ( VAT ${payDetails.vat_amount } 원)</td>
 		</tr>
 		<tr>
-			<td>사용 포인트 cart_info.used_point</td>
+			<td>사용 포인트 ${payDetails.used_point } point</td>
 		</tr>
 		<tr>
-			<td>배송비 cart_info.total_delivary_price</td>
+			<td>배송비 ${payDetails.total_delivery_price } 원</td>
 		</tr>
 		<tr>
 			<td>결제상태</td>
-			<td>cart_info.cart_info_status (ordering.process_time)
-				<a href="${pageContext.request.contextPath }/pay/kakao/revokeCustom">
-					<button class="btn btn-warning payCancel" style="float:right;">결제취소</button>
+			<td>${payDetails.cart_info_status } 
+					<fmt:parseDate value="${payDetails.process_time }" var="process_time" pattern="yyyy-MM-dd HH:mm:ss"/>
+					(<fmt:formatDate value="${process_time }" pattern="yyyy/MM/dd HH:mm:ss"/>)  orderingNo=${payDetails.ordering_no}
+				<a href="${pageContext.request.contextPath }/pay/kakao/customPayRevoke?ordering_no=${payDetails.ordering_no}">
+					<button class="btn btn-warning payCancel" style="float:right;" onclick="payConfirm();">
+						결제취소</button>
 				</a>
 			</td>
 		</tr>
@@ -73,4 +84,5 @@
 
 <div class="row-empty-40"></div>
 <div class="row-empty-40"></div>
+
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
