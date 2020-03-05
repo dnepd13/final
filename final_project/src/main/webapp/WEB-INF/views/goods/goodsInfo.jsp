@@ -634,7 +634,7 @@ $(function(){
 </div>
 
 <article class="articleBox">
-<section id="tab2" class="tab_content">
+<div id="tab2" class="tab_content">
 	<div class="row-empty-20"></div>
 	<div class="qnaBox">
 		
@@ -785,12 +785,12 @@ $(function(){
 			</ul>	
 		</div>
     </div>
+</div>	
 <hr>
-</section>	
-</article>
+
 <!-- ----------------------------------------------------------------------- -->
 
-<section id="tab3" class="tab_content articleBox">
+<div id="tab3" class="tab_content">
 	<div class="row-empty-20"></div>
 	<p class="reviewBox" style="border:0;">&mid; 리뷰 &mid;</p>
 	<div class="row-empty-20"></div>
@@ -862,7 +862,9 @@ $(function(){
 	</table>
 	<br>
 	</c:forEach>
-</section>
+</div>
+
+</article>
 
 <div class="row-empty-40"></div>
 

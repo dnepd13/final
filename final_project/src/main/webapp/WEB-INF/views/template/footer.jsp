@@ -3,7 +3,7 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 
-<footer style="height:20%;">
+<footer>
 <div class="footer_area">
 	<ul class="footer_title">
 		<li><strong>ORDERING</strong></li>

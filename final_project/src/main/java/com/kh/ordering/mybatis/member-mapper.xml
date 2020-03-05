@@ -107,6 +107,10 @@
 	<update id="updateCustomStatus" parameterType="int">
 		update custom_order set custom_order_status='결제완료' where custom_order_no=#{custom_order_no}
 	</update>
+	<!--견적서 결제하면 주문제작 상태 업데이트 -->
+	<update id="updateCustomCancel" parameterType="int">
+		update custom_order set custom_order_status='결제취소' where custom_order_no=#{custom_order_no}
+	</update>
 	
 	<!-- 구매자가 보낸 요청서 총 개수(목적:페이징) -->
 	<select id="customReqCount" parameterType="int" resultType="int">

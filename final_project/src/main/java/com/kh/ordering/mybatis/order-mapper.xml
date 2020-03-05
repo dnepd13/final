@@ -71,6 +71,10 @@
 	</select>
  	
  	<!-- 상품별 구매확정 테이블 -->
+ 	<insert id="insertCartOk" parameterType="cartOkDto">
+ 		insert into cart_ok(cart_ok_no, cart_info_goods_no, member_no)
+        					values(cart_ok_seq.nextval, #{cart_info_goods_no}, #{member_no})
+ 	</insert>
  	<insert id="insertCartOkCustom" parameterType="cartOkDto">
  		insert into cart_ok(cart_ok_no, cart_info_custom_no, member_no)
         					values(cart_ok_seq.nextval, #{cart_info_custom_no}, #{member_no})
@@ -83,7 +87,7 @@
 		        on cart_ok.cart_info_custom_no = B.cart_info_no
 			where A.cart_info_goods_no=#{cart_info_goods_no} or cart_ok.cart_info_custom_no=#{cart_info_custom_no}
 	</select>
-	
+
 	<!-- 구매확정 시 상태 업데이트 -->
 	<update id="updateCartOk" parameterType="int">
 		update cart_ok set cart_ok_status='구매확정', cart_ok_date=sysdate

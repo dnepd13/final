@@ -70,11 +70,13 @@
 			<td>결제상태</td>
 			<td>${payDetails.cart_info_status } 
 					<fmt:parseDate value="${payDetails.process_time }" var="process_time" pattern="yyyy-MM-dd HH:mm:ss"/>
-					(<fmt:formatDate value="${process_time }" pattern="yyyy/MM/dd HH:mm:ss"/>)  orderingNo=${payDetails.ordering_no}
-				<a href="${pageContext.request.contextPath }/pay/kakao/customPayRevoke?ordering_no=${payDetails.ordering_no}">
-					<button class="btn btn-warning payCancel" style="float:right;" onclick="payConfirm();">
-						결제취소</button>
-				</a>
+					(<fmt:formatDate value="${process_time }" pattern="yyyy/MM/dd HH:mm:ss"/>)
+					<c:if test="${payDetails.cart_info_status == '결제완료'}">
+					<a href="${pageContext.request.contextPath }/pay/kakao/customPayRevoke?ordering_no=${payDetails.ordering_no}">
+						<button class="btn btn-warning payCancel" style="float:right;" onclick="payConfirm();">
+							결제취소</button>
+					</a>
+					</c:if>
 			</td>
 		</tr>
 	</table>
