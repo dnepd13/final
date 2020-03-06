@@ -7,6 +7,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/goodsOption.js"></script>
 <script>
  $(function(){
+	 
 ////////////	카테고리	///////////////////////////////////
 	 var category_largeList = "${category_largeList}";
 	 category_largeList = category_largeList.substring(1, category_largeList.length-1).split(",");
