@@ -9,11 +9,6 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-<div style="padding-top: 50px;">
-<jsp:include page="template/header.jsp"></jsp:include>
-</div>
-<div class="row justify-content-center"  style="padding: 20px;"><h1>홈</h1></div>
-
 <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart1);
@@ -120,12 +115,25 @@
         chart1.draw(data1, options1);
       }
     </script>
+    
+<aside>
+<div>
+<jsp:include page="template/header.jsp"></jsp:include>
+</div>
+</aside>
 
+<section class="admin" style="padding-left: 250px;">
+	<article>
+<div class="row justify-content-center"  style="padding-top: 50px; padding-right:10px">
+
+<img src="${pageContext.request.contextPath}/resources/file/오더링.png" width=400px; height=200px;>
+
+</div>
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
-            <div class="offset-md-1 col-md-11">
+            <div class="offset-md-1 col-md-10">
 
-	<div style="margin: auto; padding: 10px;"class="container">
+	<div class="container">
         <div class="row">
           <div class="col-lg">
            		<div class="card bg-primary mb-3" style="max-width: 20rem;">
@@ -157,10 +165,10 @@
 
 	 <div class="container">
         <div class="row">
-          <div class="col-lg"  id="chart_div1" style="width: 500px; height: 500px;">
+          <div class="col-lg"  id="chart_div1" style="width: 50%; height: 500px;">
             One of three columns
           </div>
-          <div class="col-lg" id="chart_div2" style="width: 500px; height: 500px;">
+          <div class="col-lg" id="chart_div2" style="width: 50%; height: 500px;">
             One of three columns
         </div>
       </div>
@@ -168,13 +176,13 @@
     
     <div class="container">
         <div class="row">
-          <div id="piechart" style="width: 380px; height: 500px;">
+          <div id="piechart" style="width: 33.3%; height: 400px;">
             One of three columns
           </div>
-          <div id="piechart2" style="width: 380px; height: 500px;">
+          <div id="piechart2" style="width: 33.3%; height: 400px;">
             One of three columns
         </div>
-        <div id="piechart3" style="width: 380px; height: 500px;">
+        <div id="piechart3" style="width: 33.3%; height: 400px;">
             One of three columns
         </div>
       </div>
@@ -250,4 +258,5 @@
    </div>
         </div>
     </div>
-
+</article>
+</section>

@@ -8,10 +8,14 @@
 	}	
 </style>
 
-<div style="padding-top: 50px;">
+<aside>
+<div>
 <jsp:include page="../template/header.jsp"></jsp:include>
 </div>
+</aside>
 
+<section class="admin" style="padding-left: 250px;">
+	<article>
 
 <div class="container-fluid">
         <div class="row">
@@ -132,3 +136,4 @@
    </div>
         </div>
     </div>
+</article></section>

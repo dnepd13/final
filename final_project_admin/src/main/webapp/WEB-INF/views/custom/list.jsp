@@ -3,13 +3,19 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">    
 
-<div style="padding-top: 50px;">
-	<jsp:include page="../template/header.jsp"></jsp:include>
+<aside>
+<div>
+<jsp:include page="../template/header.jsp"></jsp:include>
 </div>
+</aside>
+
+<section class="admin" style="padding-left: 250px;">
+	<article>
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
             <div class="offset-md-1 col-md-10">
+<div class="row justify-content-center"  style="padding: 20px;"><h1>주문제작 목록</h1></div>
 
 <table class="table table-hover">
   <thead>
@@ -132,6 +138,6 @@
 		</div>
 	</div>
 </div>
-
+</article></section>
 
 

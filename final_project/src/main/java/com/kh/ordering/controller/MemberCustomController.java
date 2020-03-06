@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
+import com.kh.ordering.entity.SellerCategoryDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
 import com.kh.ordering.entity.SellerDto;
 import com.kh.ordering.repository.CategoryDao;
@@ -70,9 +71,22 @@ public class MemberCustomController {
 	private SellerDao sellerDao;
 	
 //	주문제작 요청서 작성
-	@PostMapping("/pick")
+	@PostMapping("/sellerPick") // 판매자찾기
 	@ResponseBody
-	public List<CartInfoVO> sellerPick(@RequestParam(value = "category_name", required=false) String category_name) {
+	public List<SellerCategoryDto> sellerPick(@RequestParam(value = "category_name", required=false) String category_name) {
+		
+		// small 카테고리 이름으로 카테고리 정보 가져오기
+		CategoryDto categoryDto = categoryDao.get(category_name); 
+		// 카테고리 정보의 카테고리 번호와 그에 해당하는 판매자 정보 가져와서 보내기
+		int category_no = categoryDto.getCategory_no();
+		
+//		List<SellerCategoryDto> getSellerNo = categoryDao.getSellerNo(category_no);
+		
+		return categoryDao.getSellerNo(category_no);
+	}
+	@PostMapping("/bestPick") // 추천판매자
+	@ResponseBody
+	public List<CartInfoVO> bestPick(@RequestParam(value = "category_name", required=false) String category_name) {
 		
 		// small 카테고리 이름으로 카테고리 정보 가져오기
 		CategoryDto categoryDto = categoryDao.get(category_name); 
@@ -148,9 +162,6 @@ public class MemberCustomController {
 		
 		PagingVO result = memberCustomService.customRespPaging(pageNo, member_no);
 		model.addAttribute("paging", result);
-		
-		// 알람 check N count 개수		
-		model.addAttribute("customAlarm", memberCustomDao.customAlarm(member_no));
 
 		// 1:1 받은 견적서
 		List<CustomOrderVO> list = memberCustomDao.getListResp(result);

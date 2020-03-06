@@ -176,10 +176,10 @@ function orderingPriceUpdate(total_delivery_price){
 
 ///////  포인트
 $(".input_point").blur(function(){
-	if($(this).val() < ${user_point}){
+	if($(this).val() < Number("${user_point}")){
 		updatePoint();
 	} else {
-		$(this).val(${user_point})
+		$(this).val(Number("${user_point}"))
 		updatePoint();
 	}
 });
@@ -192,11 +192,11 @@ function updatePoint(){
 	
 	if(point > -1 && g_total_price >= point) {
 		$(".ordering_price").html(addComma(String(g_total_price - point))+" 원");
-		$(".max_point").html(${user_point}-point);
+		$(".max_point").html(addComma((Number("${user_point}"))-point));
 	} else {
-		$(".input_point").val(g_total_price);
+		$(".input_point").val(0);
 		$(".ordering_price").html(addComma(String(g_total_price - 0))+" 원");
-		$(".max_point").html(${user_point});
+		$(".max_point").html(addComma(Number("${user_point}")));
 	}
 }
 
@@ -425,6 +425,10 @@ function inputOrderInfo(){
 
 </style>
 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
 <form class="form_send" action="${pageContext.request.contextPath}/pay/kakao/confirm" method="POST">
 <div class="ordering_area row justify-content-center">
@@ -547,7 +551,10 @@ function inputOrderInfo(){
 	</div>
 </div>
 </form>
+<<<<<<< HEAD
 
 <div class="row-empty-40"></div>
 
+=======
+>>>>>>> refs/remotes/origin/master
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

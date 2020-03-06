@@ -19,18 +19,6 @@
 	    src:url("../font/Notosan/NotoSansCJKkr-Black.otf");
 */
 
-/* 헤더 메뉴 부트스트랩 수정 */
-	.navbar {
-	    padding: 3px 1rem;
-	}
-	.navbar .nav-link {
-		margin: 5px 0;
-	    padding: 0 2rem;
-	    border-left: 1px solid rgba(255,255,255,0.1);
-	    border-right: 1px solid rgba(0,0,0,0.2);
-	    font-size: 13px;
-	}
-
 /*	footer */
 	footer {
 		bottom: 0;

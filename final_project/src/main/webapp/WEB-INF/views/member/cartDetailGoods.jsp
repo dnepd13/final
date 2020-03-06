@@ -8,6 +8,7 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 
 <style>
 	* {box-sizing: border-box;}
@@ -109,8 +110,6 @@
     });
     </script>
 
-
-<h4>회원 주문상품 상세 member/cartDetails.jsp</h4>
 
 <article class="articleBox">
 <div class="cartGoods">

@@ -6,14 +6,16 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <style>
 	.articleBox {
-		width: 500px;
+		width: 60%;
 		margin: 0 auto;
+		padding-top: 5rem;
 	}
 	.dataEmpty {
 		height: 300px;
@@ -24,10 +26,7 @@
 	}
 </style>
 
-<h4>확인 안 한 견적서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
-<div class="row-empty-40"></div>
-
-<article class="articleBox">
+<article class="articleBox infoPage-area">
 <table class="table table-hover listBox">
 <c:choose>
 	<c:when test="${ empty getListResp }">

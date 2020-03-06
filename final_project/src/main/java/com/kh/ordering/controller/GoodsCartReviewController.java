@@ -89,8 +89,9 @@ public class GoodsCartReviewController {
 	@GetMapping("/cartDetailGoods") // 상세 상품, 옵션정보
 	public String cartInfoGoods(Model model,
 													@RequestParam int cart_info_no) {
-
+		
 		List<CartDetailsVO> getCartGoods = orderDao.getCartGoods(cart_info_no);
+		log.info("cargGoods={}", getCartGoods.size());
 		model.addAttribute("getCartGoods", getCartGoods);
 
 		List<CartDetailsVO> optionList = new ArrayList<>();

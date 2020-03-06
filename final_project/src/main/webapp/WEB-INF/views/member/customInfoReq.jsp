@@ -6,14 +6,16 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
  
  <style>
  	.articleBox {
- 		width: 500px;
+ 		width: 60%;
 		margin: 0 auto;
+		padding-top: 5rem;
 	}
 
 /*수정 modal 내부 input 스타일 */	
@@ -104,7 +106,6 @@
 	});
 </script>
   
-<div class="row-empty-40"></div>    
 <article class="articleBox">
 
 <div class="card mb-3">
