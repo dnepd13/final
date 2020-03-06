@@ -2,9 +2,15 @@
     pageEncoding="UTF-8"%>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
-<div style="padding-top: 50px;">
+
+<aside>
+<div>
 <jsp:include page="template/header.jsp"></jsp:include>
 </div>
+</aside>
+
+<section class="admin" style="padding-left: 250px;">
+	<article>
 
 
 <div class="container-fluid">
@@ -43,4 +49,4 @@
             </div>
         </div>
     </div>
-
+</article></section>

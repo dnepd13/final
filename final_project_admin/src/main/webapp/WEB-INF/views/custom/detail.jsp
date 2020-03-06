@@ -3,9 +3,14 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">    
 
-<div style="padding-top: 50px;">
-	<jsp:include page="../template/header.jsp"></jsp:include>
+<aside>
+<div>
+<jsp:include page="../template/header.jsp"></jsp:include>
 </div>
+</aside>
+
+<section class="admin" style="padding-left: 250px;">
+	<article>
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
@@ -73,7 +78,7 @@
 	<img src="http://localhost:8080/admin/goods/download?files_no=${filesVO.files_no }" width=150px; height=150px;>
 </c:forEach>
 </div>
-
+</div></div></div></article></section>
 <!-- <div class="row justify-content-center" style="padding: 50px;"> -->
 
 <!-- <h3>상품 사진</h3> -->
