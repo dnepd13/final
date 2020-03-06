@@ -13,7 +13,7 @@
  
  <style>
  	.articleBox {
- 		width: 60%;
+ 		width: width: 500px;;
 		margin: 0 auto;
 		padding-top: 5rem;
 	}

@@ -86,7 +86,6 @@
 		<c:forEach var="memberCustom" items="${getListReq }">
 			<tr>
 				<td>
-					cateNo: <span>${memberCustom.custom_order_category }</span><br>
 					<p><a href="customInfoReq?member_custom_order_no=${memberCustom.member_custom_order_no }">
 						${memberCustom.custom_order_title }
 						</a>

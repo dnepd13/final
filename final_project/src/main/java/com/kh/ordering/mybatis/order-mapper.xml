@@ -36,7 +36,10 @@
 		    )RN
 		)where rn between #{start} and #{finish}
  	</select>
- 	<!-- 회원번호를 기준으로 일반상품 결제목록 가져오기 -->
+ 	<!-- cartinfo No 단일조회 가져오기 -->
+ 	<select id="getCartInfoDto" parameterType="int" resultType="cartInfoDto">
+ 		select *from cart_info where cart_info_no=#{cart_info_no}
+ 	</select>
  	
  	<select id="getCartInfoCount" parameterType="int" resultType="int">
  		select count(*) from cart_info where member_no=#{member_no} and cart_info_status='결제완료' or cart_info_status='결제취소'
@@ -71,6 +74,10 @@
 		                          				  inner join goods_option C on B.goods_option_no = c.goods_option_no
 		    where a.cart_info_goods_no=#{cart_info_goods_no}
 	</select>
+ 	
+ 	<select id="getCustomOrder" parameterType="int" resultType="customOrderDto">
+ 		select *from custom_order where custom_order_no = #{custom_order_no}
+ 	</select>
  	
  	<!-- 상품별 구매확정 테이블 -->
  	<insert id="insertCartOk" parameterType="cartOkDto">

@@ -60,12 +60,12 @@
 		<ul>
 			<li>주문제작
 				<ul>
-					<li><a href="${pageContext.request.contextPath}/member/customListReq">
+					<li><a href="${pageContext.request.contextPath}/member/customListResp">
 							받은 견적서 
 							</a>
 							<span class="badge badge-pill badge-info">${customAlarm}</span>
 							</li>
-					<li><a href="${pageContext.request.contextPath}/member/customListResp">보낸 요청서</a></li>
+					<li><a href="${pageContext.request.contextPath}/member/customListReq">보낸 요청서</a></li>
 				</ul>
 			</li>
 		</ul>

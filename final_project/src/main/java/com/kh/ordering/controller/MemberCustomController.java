@@ -3,6 +3,7 @@ package com.kh.ordering.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -165,8 +166,8 @@ public class MemberCustomController {
 
 		// 1:1 받은 견적서
 		List<CustomOrderVO> list = memberCustomDao.getListResp(result);
-		model.addAttribute("getListResp", list);		
-		
+		model.addAttribute("getListResp", list);
+
 		return "member/customListResp";
 	}
 	@GetMapping("/customInfoResp") // 받은 견적서 상세
@@ -197,12 +198,9 @@ public class MemberCustomController {
 		PagingVO result = memberCustomService.customReqPaging(pageNo, member_no);
 		model.addAttribute("paging", result);
 		
-		// 알람 check N count 개수		
-		model.addAttribute("customAlarm", memberCustomDao.customAlarm(member_no));
-		
 		// 내가 보낸 요청서		
 		List<CustomOrderVO> list = memberCustomDao.getListReq(result);
-		model.addAttribute("getListReq", list);
+		model.addAttribute("getListReq", list);		
 		
 		return "member/customListReq";
 	}
