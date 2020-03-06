@@ -50,18 +50,16 @@ $(function(){
 }
 
 .goods_name{
-	font-size: 1rem;
+	font-size: 1.1rem;
 	font-weight: bold;
 }
 
 .goods_price{
 	font-size: 1rem;
-	padding: 5px;
 }
 
 .goods_content{
 	font-size: 1rem;
-	padding: 5px;
 }
 
 .best_area {
@@ -89,7 +87,7 @@ $(function(){
   	<c:forEach var="goodsFileVO" items="${listBest}">
   		<div class="col-sm-4 goods_box">
   			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
-  				<img class="" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
+  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
   			</a>
 	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
 	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>

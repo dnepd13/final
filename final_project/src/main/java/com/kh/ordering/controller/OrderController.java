@@ -58,7 +58,11 @@ public class OrderController {
 	
 	@PostMapping("/order")
 	public String order(@ModelAttribute ItemVOList itemVOList, Model model, HttpSession session) throws JsonProcessingException {
-		log.info("컨트롤러에서itemVOList={}",itemVOList.getItemVOList());
+		
+		if(session.getAttribute("member_id") == null) {
+			return "redirect:/member/login";
+		}
+		
 		List<CartVO> cartVOList = goodsOptionService.getCartVOList(itemVOList.getItemVOList());
 		// 상품 1개 배송 정보
 		// 배송 정보 리스트로 보내야 함

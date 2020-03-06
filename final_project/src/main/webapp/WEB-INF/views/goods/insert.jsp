@@ -2,17 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
     
-<!DOCTYPE html>
-<html>
-<head>
- <meta charset="UTF-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <meta http-equiv="X-UA-Compatible" content="ie=edge" />
- <script src="https://code.jquery.com/jquery-latest.js"></script>
- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
- <script src="${pageContext.request.contextPath}/resources/js/goodsOption.js"></script>
- <script>
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<script src="${pageContext.request.contextPath}/resources/js/goodsOption.js"></script>
+<script>
  $(function(){
+	 
 ////////////	카테고리	///////////////////////////////////
 	 var category_largeList = "${category_largeList}";
 	 category_largeList = category_largeList.substring(1, category_largeList.length-1).split(",");
@@ -162,10 +157,17 @@ ul{
 	border-bottom: 2px solid #171717;
 }
 
-</style>
-</head>
-<body>
+.section1 {
+	margin: 30px 0px;
+}
 
+</style>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
+<section class="section1">
 <form action="insert" method="post" enctype="Multipart/form-data">
 	<div class="container">
 		<div class="row justify-content-center">
@@ -299,7 +301,7 @@ ul{
 						<div class="input-group-prepend">
 						    <span class="input-group-text">묶음배송 조건금액</span>
 						</div>
-						<input class="form-control" required type="text" name="delivery_set_op_price">
+						<input class="form-control" required type="text" name="delivery_set_op_price" value="0">
 					</div>
 					<div class="input-group">
 						<div class="input-group-prepend">
@@ -362,6 +364,5 @@ ul{
 	<input type="hidden" name="goods_discount_finish" value="2020-02-25" required>
 
 </form>
-
-</body>
-</html>
+</section>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
