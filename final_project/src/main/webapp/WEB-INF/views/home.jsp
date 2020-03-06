@@ -79,6 +79,7 @@ $(function(){
 </style>
 <!-- 바뀐 session의 member_no에서 memeber_id를 구해서 확인  -->
 
+
 <div class="best_area">
   <div class="container">
   	<div class="row">
