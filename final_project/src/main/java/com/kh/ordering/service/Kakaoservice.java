@@ -2,6 +2,7 @@ package com.kh.ordering.service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.ordering.entity.CartInfoDto;
+import com.kh.ordering.entity.CartInfoGoodsDto;
 import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.entity.PayDto;
@@ -136,8 +138,10 @@ public class Kakaoservice implements payService {
 		// 결제 완료 요청
 		KakaoPaySuccessReturnVO returnVO = template.postForObject(uri, entity, KakaoPaySuccessReturnVO.class);
 
+		int member_no = orderDao.getMember_no(returnVO.getPartner_order_id());
+		
 //		log.info("2번");
-		PayDto payDto = PayDto.builder().cid(returnVO.getCid()).tid(returnVO.getTid())
+		PayDto payDto = PayDto.builder().cid(returnVO.getCid()).tid(returnVO.getTid()).member(member_no)
 				.process_time(returnVO.getCreated_at()).item_name(returnVO.getItem_name())
 				.partner_order_id(returnVO.getPartner_order_id()).partner_user_id(returnVO.getPartner_user_id())
 				.quantity(returnVO.getQuantity()).total_amount(returnVO.getAmount().getTotal()).aid(returnVO.getAid())
@@ -146,7 +150,16 @@ public class Kakaoservice implements payService {
 		payDao.insertSuccess(payDto);
 
 		// 구매확정 테이블에 추가
-//		memberDao.insert
+		int cart_info_no = orderDao.getCartInfoNo(returnVO.getPartner_order_id());
+		List<CartInfoGoodsDto> cartInfoGoods  = orderDao.getCartInfoGoods(cart_info_no);
+		for(int i=0 ; i<cartInfoGoods.size() ; i++) {
+			
+			int cart_info_goods_no = cartInfoGoods.get(i).getCart_info_goods_no();
+
+			CartOkDto cartOkDto = CartOkDto.builder().cart_info_goods_no(cart_info_goods_no)
+					.member_no(member_no).build();
+			memberDao.insertCartOk(cartOkDto);
+		}
 
 		return returnVO;
 	}
@@ -184,7 +197,7 @@ public class Kakaoservice implements payService {
 		KakaoPayRevokeReturnVO returnVO = template.postForObject(uri, entity, KakaoPayRevokeReturnVO.class);
 		log.info("returnVO={}", returnVO);
 
-		PayDto payDto2 = PayDto.builder().aid(returnVO.getAid()).tid(returnVO.getTid()).cid(returnVO.getCid())
+		PayDto payDto2 = PayDto.builder().aid(returnVO.getAid()).tid(returnVO.getTid()).cid(returnVO.getCid()).member(orderDao.getMember_no(payDto.getPartner_order_id()))
 				.partner_order_id(returnVO.getPartner_order_id()).partner_user_id(returnVO.getPartner_user_id())
 				.process_time(returnVO.getCanceled_at()).item_name(returnVO.getItem_name())
 				.quantity(returnVO.getQuantity()).total_amount(-1 * returnVO.getCanceled_amount().getTotal()).build();
@@ -221,7 +234,8 @@ public class Kakaoservice implements payService {
 		ObjectMapper mapper = new ObjectMapper();
 		OrderVO orderVO = mapper.readValue(jsonOrderVO, OrderVO.class);
 
-		KakaoPayReadyVO kakaoPayReadyVO = KakaoPayReadyVO.builder().partner_order_id("C" + payDao.getPartnerOrderId())
+		KakaoPayReadyVO kakaoPayReadyVO = KakaoPayReadyVO.builder()
+				.partner_order_id(payDao.getPartnerOrderId()+"C" + orderVO.getCustomOrderVO().getCustom_order_no())
 				.partner_user_id(orderVO.getPartner_user_id())
 				.item_name(orderVO.getCustomOrderVO().getCustom_order_title()).quantity(orderVO.getTotal_quantity())
 				.total_amount(orderVO.getTotal_price()).vat_amount(orderVO.getTotal_price() / 10).tax_free_amount(0)
@@ -294,11 +308,8 @@ public class Kakaoservice implements payService {
 	}
 
 	@Override // 요청 성공 후 결제승인
-	public KakaoPaySuccessReturnVO approveVO(KakaoPaySuccessReadyVO successReadyVO, HttpSession session,
-			int custom_order_no) throws URISyntaxException {
-		// 회원정보
-		String member_id = (String) session.getAttribute("member_id");
-		int member_no = sqlSession.selectOne("member.getNo", member_id);
+	public KakaoPaySuccessReturnVO approveVO(KakaoPaySuccessReadyVO successReadyVO, 
+																						HttpSession session) throws URISyntaxException {
 
 		// PayReadyVO에서 요청할 데이터를 담은 카카오ReadyVO로 다운캐스팅
 //		 KakaoPayReadyVO object = (KaㄴkaoPayReadyVO) readyVO;
@@ -329,6 +340,9 @@ public class Kakaoservice implements payService {
 		// url, 요청객체, 응답객체
 		KakaoPaySuccessReturnVO successReturnVO = template.postForObject(uri, entity, KakaoPaySuccessReturnVO.class);
 
+		// 회원정보
+		int member_no = orderDao.getMember_no(successReturnVO.getPartner_order_id());
+		
 		// DB 승인완료 내용 저장
 		PayDto payDto = PayDto.builder().cid(successReturnVO.getCid()).tid(successReturnVO.getTid()).member(member_no)
 				.process_time(successReturnVO.getCreated_at()).item_name(successReturnVO.getItem_name())
@@ -348,11 +362,17 @@ public class Kakaoservice implements payService {
 		CartInfoDto cartInfoDto = payDao.getCartInfoDto(successReadyVO.getPartner_order_id());
 		int used_point = cartInfoDto.getUsed_point();
 		Member_PointDto memberPointDto = Member_PointDto.builder().member_no(member_no)
-				.member_point_change(-1 * used_point).member_point_content("상품구매").build();
+				.member_point_change(-1 * used_point).member_point_content("상품 구매에 사용").build();
 		memberPointDao.usedPoint(memberPointDto);
 
 		// 주문제작 상태 update
+		// 문자열 잘라서 넣기
+		String custom_order = successReadyVO.getPartner_order_id().substring(successReadyVO.getPartner_order_id().lastIndexOf("C")+1);
+		int custom_order_no = Integer.parseInt(custom_order); 
 		memberCustomDao.updateCustomStatus(custom_order_no);
+		
+		// 구매에 따른 회원 포인트 적립
+		memberDao.registOrderPoint(member_no, successReturnVO.getAmount().getTotal());
 
 		return successReturnVO;
 
@@ -360,8 +380,7 @@ public class Kakaoservice implements payService {
 
 	@Override // 주문제작 결제취소
 	public KakaoPayRevokeReturnVO customRevokeVO(PayDto payDto) throws URISyntaxException {
-		
-		log.info("payDto={}",payDto);
+
 		RestTemplate template = new RestTemplate();
 
 		HttpHeaders headers = new HttpHeaders();
@@ -380,18 +399,16 @@ public class Kakaoservice implements payService {
 		
 		URI uri = new URI("https://kapi.kakao.com/v1/payment/cancel");
 		
-		log.info("body={}",body);
-		log.info("url={}", uri);
-		log.info("entity={}",entity);
-		log.info("KakaoPayReadyReturnVO.class", KakaoPayRevokeReturnVO.class);
-		
 		KakaoPayRevokeReturnVO revokeReturnVO
 										= template.postForObject(uri, entity, KakaoPayRevokeReturnVO.class);
 
+		int member_no = orderDao.getMember_no(payDto.getPartner_order_id());
+		
 		PayDto payDto2 = PayDto.builder()
 														.aid(revokeReturnVO.getAid())
 														.tid(revokeReturnVO.getTid())
 														.cid(revokeReturnVO.getCid())
+														.member(member_no)
 														.partner_order_id(revokeReturnVO.getPartner_order_id())
 														.partner_user_id(revokeReturnVO.getPartner_user_id())
 														.process_time(revokeReturnVO.getCanceled_at())
@@ -400,6 +417,19 @@ public class Kakaoservice implements payService {
 														.total_amount(-1 * revokeReturnVO.getCanceled_amount().getTotal())
 														.build();
 		payDao.insertRevoke(payDto2);
+		
+		// 포인트 취소
+		int used_point = orderDao.getCartInfo(payDto.getPartner_order_id()).getUsed_point();
+		MemberPointVO memberPointVO = MemberPointVO.builder()
+				.member_no(orderDao.getMember_no(payDto.getPartner_order_id())).member_point_change(used_point)
+				.member_point_status("적립").member_point_content("결제 취소").build();
+
+		memberDao.registPoint(memberPointVO);
+		
+		// 주문제작 상태 update
+		String custom_order = revokeReturnVO.getPartner_order_id().substring(revokeReturnVO.getPartner_order_id().lastIndexOf("C")+1);
+		int custom_order_no = Integer.parseInt(custom_order); 
+		memberCustomDao.updateCustomCancel(custom_order_no);
 		
 		return revokeReturnVO;
 	}

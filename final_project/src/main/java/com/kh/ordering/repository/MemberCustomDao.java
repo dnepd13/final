@@ -37,6 +37,8 @@ public interface MemberCustomDao {
 	MemberCustomAlarmDto getMemberAlarm(int seller_custom_order_no);
 	//결제한 견적서 주문제작 status업데이트
 	void updateCustomStatus(int custom_order_no);
+	//결제취소 업데이트
+	void updateCustomCancel(int custom_order_no);
 	
 	// 수정
 	void updateCustom(CustomOrderDto customOrderDto);

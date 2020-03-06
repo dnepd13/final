@@ -116,6 +116,7 @@ public class PayDaoImpl implements PayDao{
 	@Override
 	public void insertRevoke(PayDto payDto2) {
 		sqlSession.insert("pay.revoke", payDto2);
+		sqlSession.update("pay.updateStatusRevoke",payDto2.getPartner_order_id());
 	}
 	
 	@Override

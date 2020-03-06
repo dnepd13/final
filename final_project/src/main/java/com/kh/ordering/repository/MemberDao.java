@@ -44,8 +44,8 @@ public interface MemberDao {
 	
 	
 //////// 회원구매확정 (ordering, cart_info 테이블 관련)
-// 주문제작 구매확정
-	void insertCartOkCustom(CartOkDto cartOkDto);
+	void insertCartOkCustom(CartOkDto cartOkDto); // 일반상품
+	void insertCartOk(CartOkDto cartOkDto); // 주문제작
 	
 //회원 정보 가입
 

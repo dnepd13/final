@@ -72,21 +72,14 @@
 		clear: both;
 	}
 	
+	/* 로고이미지 */
+	.logo-area {
+		margin: 20px 0;
+	}
+	
 	.nav_login a:link { color: black; text-decoration: none;}
     .nav_login a:visited { color: black; text-decoration: none;}
     .nav_login a:hover { color: rgb(142,140,132); text-decoration: underline;}
-
-/*	부트스트랩 nav */
-	.navbar {
-	    padding: 3px 1rem;
-	}
-	.navbar .nav-link {
-		margin: 5px 0;
-	    padding: 0 2rem;
-	    border-left: 1px solid rgba(255,255,255,0.1);
-	    border-right: 1px solid rgba(0,0,0,0.2);
-	    font-size: 13px;
-	}
 
 </style>
 
@@ -128,8 +121,9 @@
 
 <div class="row-empty-20"></div>
 <hr class="basic_color">
-<div class="row-empty-20"></div>
 
-<h1 align="center">홈</h1>
-
-
+<div class="logo-area" align="center">
+	<a class="" href="${pageContext.request.contextPath }">
+  		<img src="${pageContext.request.contextPath}/resources/img/logo-ordering.png" style="width:auto; height: 100px;'">
+  	</a>
+</div>

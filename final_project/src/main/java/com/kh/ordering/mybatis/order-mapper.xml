@@ -36,6 +36,11 @@
 		    )RN
 		)where rn between #{start} and #{finish}
  	</select>
+ 	<!-- cartinfo No 단일조회 가져오기 -->
+ 	<select id="getCartInfoDto" parameterType="int" resultType="cartInfoDto">
+ 		select *from cart_info where cart_info_no=#{cart_info_no}
+ 	</select>
+ 	
  	<select id="getCartInfoCount" parameterType="int" resultType="int">
  		select count(*) from cart_info where member_no=#{member_no} and cart_info_status='결제완료' or cart_info_status='결제취소'
  	</select>
@@ -70,7 +75,15 @@
 		    where a.cart_info_goods_no=#{cart_info_goods_no}
 	</select>
  	
+ 	<select id="getCustomOrder" parameterType="int" resultType="customOrderDto">
+ 		select *from custom_order where custom_order_no = #{custom_order_no}
+ 	</select>
+ 	
  	<!-- 상품별 구매확정 테이블 -->
+ 	<insert id="insertCartOk" parameterType="cartOkDto">
+ 		insert into cart_ok(cart_ok_no, cart_info_goods_no, member_no)
+        					values(cart_ok_seq.nextval, #{cart_info_goods_no}, #{member_no})
+ 	</insert>
  	<insert id="insertCartOkCustom" parameterType="cartOkDto">
  		insert into cart_ok(cart_ok_no, cart_info_custom_no, member_no)
         					values(cart_ok_seq.nextval, #{cart_info_custom_no}, #{member_no})
@@ -81,18 +94,18 @@
 		        on cart_ok.cart_info_goods_no = A.cart_info_goods_no
 		        		left join cart_info B
 		        on cart_ok.cart_info_custom_no = B.cart_info_no
-			where A.cart_info_goods_no=#{cart_info_goods_no} or cart_ok.cart_info_custom_no=#{cart_info_custom_no}
+			where A.cart_info_goods_no=#{cart_info_goods_no}
 	</select>
-	
+
 	<!-- 구매확정 시 상태 업데이트 -->
 	<update id="updateCartOk" parameterType="int">
 		update cart_ok set cart_ok_status='구매확정', cart_ok_date=sysdate
-			where cart_info_goods_no=#{cart_info_goods_no} or cart_info_custom_no=#{cart_info_custom_no}
+			where cart_info_goods_no=#{cart_info_goods_no}
 	</update>
 	<!-- 리뷰등록 시 상태 업데이트 -->
 	<update id="updateCartReview" parameterType="int">
 		update cart_ok set cart_ok_status='리뷰등록'
-			where cart_info_goods_no=#{cart_info_goods_no} or cart_info_custom_no=#{cart_info_custom_no}
+			where cart_info_goods_no=#{cart_info_goods_no}
 	</update>
 	
 	<!-- 카테고리번호를 통한 최근 한달 이내, 판매량 Top5 판매자 -->

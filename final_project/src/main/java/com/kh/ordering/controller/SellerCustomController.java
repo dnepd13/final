@@ -85,7 +85,12 @@ public class SellerCustomController {
 		//판매자 견적서 보내기
 		//견적서 작성 --> 주문제작 테이블 데이터 입력 --> 관리테이블 데이터 등록 --> 구매자 알람 테이블 등록
 		sellerCustomService.SellerCustom(session, member_no, category_no, files, customOrderDto);
-		return "redirect:/seller/customListResp";
+		return "redirect:/seller/customSuccess";
+	}
+//	작성 완료시 안내 페이지
+	@GetMapping("/customSuccess")
+	public String getSuccess() {
+		return "seller/customSuccess";
 	}
 	
 //	목록 조회

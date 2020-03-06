@@ -9,6 +9,7 @@ import com.kh.ordering.entity.GoodsReviewDto;
 import com.kh.ordering.entity.GoodsReviewFilesDto;
 import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.vo.FilesVO;
+import com.kh.ordering.vo.PagingVO;
 
 public interface GoodsReviewService {
 	GoodsReviewDto insertReview(HttpSession session, FilesVO files,
@@ -16,4 +17,5 @@ public interface GoodsReviewService {
 															GoodsReviewDto goodsReviewDto)
 															throws IllegalStateException, IOException;
 	List<FilesVO> filesList(int goods_review_no); //파일 출력을 위한 파일no
+	PagingVO goodsReviewPaging(String reviewPage, int goods_no);
 }

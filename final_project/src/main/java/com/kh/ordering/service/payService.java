@@ -26,6 +26,6 @@ public interface payService {
 	// 주문제작
 	PayReadyReturnVO readyReturnVO(PayReadyVO readyVO, HttpSession session, String jsonOrderVO) throws URISyntaxException, JsonMappingException, JsonProcessingException;
 	KakaoPayReadyVO setCustomReadyVO(String jsonOrderVO) throws JsonMappingException, JsonProcessingException;
-	KakaoPaySuccessReturnVO approveVO(KakaoPaySuccessReadyVO successReadyVO, HttpSession session, int custom_order_no) throws URISyntaxException;
+	KakaoPaySuccessReturnVO approveVO(KakaoPaySuccessReadyVO successReadyVO, HttpSession session) throws URISyntaxException;
 	KakaoPayRevokeReturnVO customRevokeVO(PayDto payDto) throws URISyntaxException;
 }

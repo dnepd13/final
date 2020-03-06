@@ -26,6 +26,7 @@ import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.repository.CertDao;
 import com.kh.ordering.repository.GoodsDao;
+import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.Member_AddrDao;
 import com.kh.ordering.repository.Member_PointDao;
@@ -44,7 +45,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/member")
 @Slf4j
 public class MemberController {
-
+	@Autowired
+	private MemberCustomDao memberCustomDao;
+	
 	@Autowired
 	private CertDao certDao;
 	
@@ -816,9 +819,14 @@ public class MemberController {
 		
 	
 		//회원 로그인후 마이페이지
-		
 		@GetMapping("/membermyinfo")
-		public String membermyinfo() {
+		public String membermyinfo(HttpSession session, Model model) {
+			
+			String member_id = (String)session.getAttribute("member_id");
+			int member_no = memberDao.getNo(member_id);
+			
+			// 회원 신규 견적서 알람 check N count 개수		
+			model.addAttribute("customAlarm", memberCustomDao.customAlarm(member_no));
 			
 			return "member/membermyinfo";
 		}

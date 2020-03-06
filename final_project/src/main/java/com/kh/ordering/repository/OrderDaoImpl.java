@@ -11,6 +11,7 @@ import com.kh.ordering.entity.CartInfoDto;
 import com.kh.ordering.entity.CartInfoGoodsDto;
 import com.kh.ordering.entity.CartInfoOpDto;
 import com.kh.ordering.entity.CartOkDto;
+import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.GoodsOptionDto;
 import com.kh.ordering.service.payService;
 import com.kh.ordering.vo.CartDetailsVO;
@@ -207,6 +208,11 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public int getCartInfoCount(int member_no) {
 		return sqlSession.selectOne("order.getCartInfoCount", member_no);
+		
+	}
+	@Override
+	public CartInfoDto getCartInfoDto(int cart_info_no) {
+		return sqlSession.selectOne("order.getCartInfoDto", cart_info_no);
 	}
 	@Override // 결제상세
 	public List<CartInfoVO> getCartPay(String partner_order_id) {
@@ -221,6 +227,11 @@ public class OrderDaoImpl implements OrderDao {
 		return sqlSession.selectList("order.getCartOption", cart_info_goods_no);
 	}
 
+	@Override // 주문제작 상세
+	public CustomOrderDto getCustomOrderDto(int custom_order_no) {
+		return sqlSession.selectOne("order.getCustomOrder", custom_order_no);
+	}
+	
 	@Override // 상품별 구매확정 테이블
 	public CartOkDto getCartOk(int cart_info_goods_no) {
 		return sqlSession.selectOne("order.getOkList", cart_info_goods_no);
