@@ -96,6 +96,10 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	public void updateCustomStatus(int custom_order_no) {
 		sqlSession.update("member.updateCustomStatus", custom_order_no);
 	}
+	@Override
+	public void updateCustomCancel(int custom_order_no) {
+		sqlSession.update("member.updateCustomCancel", custom_order_no);
+	}
 	
 	// 내가 보낸 요청서 보기
 	@Override // 목록

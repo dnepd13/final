@@ -23,11 +23,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.ordering.entity.CartInfoDto;
 import com.kh.ordering.entity.CartOkDto;
+import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsReviewDto;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.GoodsReviewDao;
+import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.service.CartInfoService;
@@ -43,6 +45,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping("/member")
 public class GoodsCartReviewController {
+	@Autowired
+	private MemberCustomDao memberCustomDao;
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired
@@ -86,18 +90,39 @@ public class GoodsCartReviewController {
 		return "member/cartDetailPay";
 	}
 	
+	@GetMapping("/cartDetailCustom")
+	public String cartInfoCustom(Model model, int cart_info_no) {
+		// partner_order_id에서 custom_no를 구하고
+		CartInfoDto cartInfoDto = orderDao.getCartInfoDto(cart_info_no);
+		// member_custom_order_no를 구해서
+		String partner_order_id=cartInfoDto.getPartner_order_id();
+		int custom_order_no = Integer.parseInt(partner_order_id.substring(partner_order_id.lastIndexOf("C")+1));
+		CustomOrderDto customOrder = orderDao.getCustomOrderDto(custom_order_no);
+
+		// 페이지로 넘기기
+		model.addAttribute("customOrder", customOrder);
+		return "member/cartDetailCustom";
+	}
 	@GetMapping("/cartDetailGoods") // 상세 상품, 옵션정보
 	public String cartInfoGoods(Model model,
 													@RequestParam int cart_info_no) {
-
+		
 		List<CartDetailsVO> getCartGoods = orderDao.getCartGoods(cart_info_no);
-		model.addAttribute("getCartGoods", getCartGoods);
 
-		List<CartDetailsVO> optionList = new ArrayList<>();
-		for(CartDetailsVO list : getCartGoods) {
-			optionList.addAll(orderDao.getCartOption(list.getCart_info_goods_no())) ;
+		if(getCartGoods.size()==0) {
+
+			return "redirect:/member/cartDetailCustom?cart_info_no="+cart_info_no;
+		}
+		else {
+			model.addAttribute("getCartGoods", getCartGoods);
+
+			List<CartDetailsVO> optionList = new ArrayList<>();
+			for(CartDetailsVO list : getCartGoods) {
+				optionList.addAll(orderDao.getCartOption(list.getCart_info_goods_no())) ;
+				
+				model.addAttribute("getCartOption", optionList);
+			}
 			
-			model.addAttribute("getCartOption", optionList);
 		}
 		
 		return "member/cartDetailGoods";
@@ -121,7 +146,7 @@ public class GoodsCartReviewController {
 		goodsReviewService.insertReview(session, files, cart_info_goods_no, goodsReviewDto);
 		
 		
-		return "redirect:/member/cartDetails?cart_info_no="+cart_info_no;
+		return "redirect:/member/cartDetailGoods?cart_info_no="+cart_info_no;
 	}
 
 	// 파일 이미지 다운로드

@@ -120,29 +120,53 @@
 			 });
  		 });
  		 
+ 		var urlSeller = "${pageContext.request.contextPath}/member/sellerPick";
  		 $(".category_small").change(function(){
    			var category_name = $(this).val();
+   			
+   			$.ajax({
+ 				 type: "POST",
+ 			 	 url: urlSeller,
+ 			 	 data: {"category_name":category_name},
+ 			 	 success: function(resp){
 
-  			 var url = "${pageContext.request.contextPath}/member/pick";
+					if(resp.length==0){
+						var p = $("<p>현재 카테고리의 요청서를 허용한 판매자가 없습니다.</p>");
+						$(".sellerList").append(p);
+						
+						var btn_next = document.querySelector(".btn_next");
+	  			 		 $(btn_next).attr("disabled", true);
+					}
+					else{
+						var btn_next = document.querySelector(".btn_next");
+	  			 		 $(btn_next).attr("disabled", false);
+					}
+				}
+   			});
+ 		 
+  			 var url = "${pageContext.request.contextPath}/member/bestPick";
   			 $.ajax({
   				 type: "POST",
   			 	 url: url,
   			 	 data: {"category_name":category_name},
   			 	 success: function(resp){
 
-					var p = $("<p><a href='#' title='최근 한 달간 판매량 순'>&check; 추천 판매자</a>를 선택하시면 1:1 개인요청서로 전환됩니다.</p>");
-					$(".sellerList").append(p); 
-	  			 		
-					$.each(resp, function(index, item){
-						var seller = $("<a href='${pageContext.request.contextPath}/member/customOrder?seller_no="+item.seller_no+"'>"+item.seller_id+"</a><br>");
-						$(".sellerList").append(seller);
-					});
+					if(resp.length>0){
+						var p = $("<p><a href='#' title='최근 한 달간 판매량 순'>&check; 추천 판매자</a>를 선택하시면 1:1 개인요청서로 전환됩니다.</p>");
+						$(".sellerList").append(p); 
+		  			 		
+						$.each(resp, function(index, item){
+							var seller = $("<a href='${pageContext.request.contextPath}/member/customOrder?seller_no="+item.seller_no+"'>"+item.seller_id+"</a><br>");
+							$(".sellerList").append(seller);
+						});
 
-  			 		 var btn_next = document.querySelector(".btn_next");
-  			 		 $(btn_next).attr("disabled", false);
+	  			 		 var btn_next = document.querySelector(".btn_next");
+	  			 		 $(btn_next).attr("disabled", false);
+					}
   			 		 
   			 	 }
   			 });
+  			 
  		 });
  	///////////////// 요청서 입력창 스타일 제어
  		$(".btn_next").click(function(){

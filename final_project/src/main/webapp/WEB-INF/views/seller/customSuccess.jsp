@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
+
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
@@ -24,11 +22,11 @@
 <div class="redirect-box row justify-content-center">
 
 <div class="redirect-content">
-	<h4 align="center">요청이 완료되었습니다.</h4><br>
+	<h4 align="center">견적서를 전송하였습니다.</h4><br>
 	<div class="row-empty-40"><br>
-	<span><a href="${pageContext.request.contextPath }">메인으로</a></span>
+	<span><a href="${pageContext.request.contextPath }/seller/management">메인으로</a></span>
 	 &verbar; 
-	<span><a href="${pageContext.request.contextPath }/member/customListReq">보낸 요청서 확인하기</a></span>
+	<span><a href="${pageContext.request.contextPath }/seller/customListResp">보낸 견적서 확인하기</a></span>
 	</div>
 </div>
 

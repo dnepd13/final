@@ -7,6 +7,7 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
@@ -28,7 +29,7 @@
 
 <script>
 	function payConfirm(){
-		if(confirm("결제를 취소하시겠습니까?")){
+		if(confirm("결제를 취소하시겠습니까? 취소하실 정보를 다시 한 번 확인해주세요.")){
 			return true;
 		}
 		else{
@@ -70,11 +71,13 @@
 			<td>결제상태</td>
 			<td>${payDetails.cart_info_status } 
 					<fmt:parseDate value="${payDetails.process_time }" var="process_time" pattern="yyyy-MM-dd HH:mm:ss"/>
-					(<fmt:formatDate value="${process_time }" pattern="yyyy/MM/dd HH:mm:ss"/>)  orderingNo=${payDetails.ordering_no}
-				<a href="${pageContext.request.contextPath }/pay/kakao/customPayRevoke?ordering_no=${payDetails.ordering_no}">
-					<button class="btn btn-warning payCancel" style="float:right;" onclick="payConfirm();">
-						결제취소</button>
-				</a>
+					(<fmt:formatDate value="${process_time }" pattern="yyyy/MM/dd HH:mm:ss"/>)
+					<c:if test="${payDetails.cart_info_status == '결제완료'}">
+					<a href="${pageContext.request.contextPath }/pay/kakao/customPayRevoke?ordering_no=${payDetails.ordering_no}">
+						<button class="btn btn-warning payCancel" style="float:right;" onclick="payConfirm();">
+							결제취소</button>
+					</a>
+					</c:if>
 			</td>
 		</tr>
 	</table>

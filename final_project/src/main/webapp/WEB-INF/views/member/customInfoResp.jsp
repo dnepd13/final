@@ -6,14 +6,16 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
  
  <style>
  	.articleBox {
- 		width: 500px;
+ 		width: width: 500px;;
 		margin: 0 auto;
+		padding-top: 5rem;
 	}
 		
 	.card-footer input[type=submit]{
@@ -21,9 +23,6 @@
 	}
 
 </style>
-
-<h3>member Custom Info Resp.jsp</h3>
-<div class="row-empty-40"></div>
 
 <article class="articleBox">
 
