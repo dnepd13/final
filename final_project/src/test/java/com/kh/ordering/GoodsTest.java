@@ -130,8 +130,16 @@ public class GoodsTest {
 //	}
 	
 	// 판매자 상품 목록 불러오기
+//	@Test
+//	public void getGoodsVOListTest() {
+//		log.info("{}", goodsDao.getGoodsVOList(287));
+//	}
+	
+	// 컨텐트 이미지 테스트
 	@Test
-	public void getGoodsVOListTest() {
-		log.info("{}", goodsDao.getGoodsVOList(287));
+	public void getContentImageTest() {
+		log.info("#############{}",goodsDao.getContentImage(205));
+		
 	}
+	
 }

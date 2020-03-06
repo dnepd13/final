@@ -40,11 +40,18 @@ public class GoodsDaoImpl implements GoodsDao{
 //		
 //	}
 	
+	// 메인 이미지 파일번호 가져오기
 	@Override
 	public int getGoodsMainImage(int goods_no) {
 		if(sqlSession.selectOne("goods.getGoodsMainImage", goods_no) != null)
 		return sqlSession.selectOne("goods.getGoodsMainImage", goods_no);
 		else return 0;
+	}
+	
+	// 컨텐트 이미지 파일번호 가져오기
+	@Override
+	public List<Integer> getContentImage(int goods_no) {
+		return sqlSession.selectList("goods.getContentImage", goods_no);
 	}
 	
 	@Override
