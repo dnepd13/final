@@ -19,8 +19,8 @@
 
 <div class="container-fluid">
         <div class="row">
-            <div class="offset-md-4 col-md-4 ">
-                <div class="row justify-content-center"><h1>관리자 로그인</h1></div>
+            <div class="offset-md-3 col-md-6 ">
+                <div class="row justify-content-center" style="padding-top:100px;"><h1>관리자 로그인</h1></div>
                 <br><br><br>
                 <form action="" method="post"> 
                 <!-- <form class="form-inline">옆으로 오는 입력 형식 -->

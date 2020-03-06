@@ -50,12 +50,17 @@
 	});
 </script>
 
-<div style="padding-top: 50px;">
+<aside>
+<div>
 <jsp:include page="../template/header.jsp"></jsp:include>
 </div>
+</aside>
+
+<section class="admin" style="padding-left: 250px;">
+	<article>
 
 <div class="container-fluid">
-        <div class="row" style="padding: 50px;">
+        <div class="row" >
             <div class="offset-md-1 col-md-10">
 <div class="row justify-content-center"  style="padding: 20px;"><h1>회원 관리 목록</h1></div>
 
@@ -208,3 +213,4 @@
 </div>
         </div>
     </div>
+    </article></section>
