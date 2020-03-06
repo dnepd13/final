@@ -60,7 +60,7 @@
 	<article>
 
 <div class="container-fluid">
-        <div class="row" >
+        <div class="row" style="padding: 50px;">
             <div class="offset-md-1 col-md-10">
 <div class="row justify-content-center"  style="padding: 20px;"><h1>회원 관리 목록</h1></div>
 

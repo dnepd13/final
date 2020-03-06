@@ -124,7 +124,11 @@
 
 <section class="admin" style="padding-left: 250px;">
 	<article>
-<div class="row justify-content-center"  style="padding-top: 20px; padding-right:10px"><h1>홈</h1></div>
+<div class="row justify-content-center"  style="padding-top: 50px; padding-right:10px">
+
+<img src="${pageContext.request.contextPath}/resources/file/오더링.png" width=400px; height=200px;>
+
+</div>
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
             <div class="offset-md-1 col-md-10">
@@ -161,10 +165,10 @@
 
 	 <div class="container">
         <div class="row">
-          <div class="col-lg"  id="chart_div1" style="width: 470px; height: 500px;">
+          <div class="col-lg"  id="chart_div1" style="width: 50%; height: 500px;">
             One of three columns
           </div>
-          <div class="col-lg" id="chart_div2" style="width: 470px; height: 500px;">
+          <div class="col-lg" id="chart_div2" style="width: 50%; height: 500px;">
             One of three columns
         </div>
       </div>
@@ -172,13 +176,13 @@
     
     <div class="container">
         <div class="row">
-          <div id="piechart" style="width: 33.3%; height: 500px;">
+          <div id="piechart" style="width: 33.3%; height: 400px;">
             One of three columns
           </div>
-          <div id="piechart2" style="width: 33.3%; height: 500px;">
+          <div id="piechart2" style="width: 33.3%; height: 400px;">
             One of three columns
         </div>
-        <div id="piechart3" style="width: 33.3%; height: 500px;">
+        <div id="piechart3" style="width: 33.3%; height: 400px;">
             One of three columns
         </div>
       </div>

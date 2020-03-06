@@ -13,7 +13,7 @@
 <section class="admin" style="padding-left: 250px;">
 	<article>
 <div class="container-fluid">
-        <div class="row">
+        <div class="row"  style="padding: 50px;">
             <div class="offset-md-1 col-md-10">
 
 

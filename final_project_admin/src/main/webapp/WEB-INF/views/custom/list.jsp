@@ -15,6 +15,7 @@
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
             <div class="offset-md-1 col-md-10">
+<div class="row justify-content-center"  style="padding: 20px;"><h1>주문제작 목록</h1></div>
 
 <table class="table table-hover">
   <thead>

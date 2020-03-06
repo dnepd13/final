@@ -20,7 +20,11 @@
 <div class="container-fluid">
         <div class="row">
             <div class="offset-md-3 col-md-6 ">
-                <div class="row justify-content-center" style="padding-top:100px;"><h1>관리자 로그인</h1></div>
+            	
+                <div class="row justify-content-center" style="padding-top:20px;">
+               	<img style="padding-left:20px;" src="${pageContext.request.contextPath}/resources/file/오더링.png" width=400px; height=200px;>
+                <h1>관리자 로그인</h1>
+                </div>
                 <br><br><br>
                 <form action="" method="post"> 
                 <!-- <form class="form-inline">옆으로 오는 입력 형식 -->
