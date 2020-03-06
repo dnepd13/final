@@ -520,11 +520,15 @@ $(function(){
 .options {
 	width: 40%;
 }
+
+.goods_info_section{
+	margin: 30px 0px;
+}
+
 </style>
 <article>
-<section>
+<section class="goods_info_section">
 	<form id="form_box" action="../order/order" method="POST">
-	<h1 class="text-center">상품 상세 페이지</h1>
 	<hr>
 	<div class="row justify-content-center">
 	<div class="detail_area col-lg-8">

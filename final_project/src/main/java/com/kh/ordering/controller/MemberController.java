@@ -25,6 +25,7 @@ import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.repository.CertDao;
+import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.Member_AddrDao;
 import com.kh.ordering.repository.Member_PointDao;
@@ -68,7 +69,8 @@ public class MemberController {
 	@Autowired
 	private Member_AddrDao member_AddrDao;
 	
-	
+	@Autowired
+	private GoodsDao goodsDao;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -109,6 +111,14 @@ public class MemberController {
 		ObjectMapper mapper = new ObjectMapper();
 		model.addAttribute("jsonCartVOList", mapper.writeValueAsString(cartVOList));
 		model.addAttribute("jsGoodsCartNoList", goodsCartNoList);
+		
+		// 파일
+		List<Integer> filesList = new ArrayList<>();
+		for (CartVO cartVO : cartVOList) {
+			filesList.add(goodsDao.getGoodsMainImage(cartVO.getGoodsDto().getGoods_no()));
+		}
+		model.addAttribute("filesList", filesList);
+		
 		return "member/cart";
 	}
 

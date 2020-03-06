@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-장바구니페이지
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"/>
 
 <script>
 $(function(){
@@ -27,7 +27,11 @@ var jsGoodsCartNoList = JSON.parse('${jsGoodsCartNoList}');
 var total_delivery_price = deliveryPriceUpdate();
 var g_total_price = orderingPriceUpdate(total_delivery_price);
 deliveryPriceTagUpdate(total_delivery_price);
-	
+
+if(g_total_price == 0) {
+	$("#submit_btn").attr("disabled", true);
+}
+
 ///////// 배송비 업데이트
 function deliveryPriceUpdate() {
 		var setList = new Array();
@@ -139,8 +143,8 @@ function deliveryPriceUpdate() {
 ////////// 삭제 버튼
 $(".delete_btn").click(function(){
 	// jsCartVOList에서 삭제하기 전에 디비에서 삭제
-	var index = $(this).parent(".items_area").attr("id");
-	$(this).parent(".items_area").remove();
+	var index = $(this).parents(".items_area").attr("id");
+	$(this).parents(".items_area").remove();
 	var url = "deleteCart";
 	$.ajax({
 		type: "POST",
@@ -198,6 +202,10 @@ function setFinalArea(){
 	
 	$(".final_price").html(addComma(fPrice) + "원");
 	$(".final_qtt").html(" ("+fQuantity+")개");
+	
+	if(fPrice == 0) {
+		$("#submit_btn").attr("disabled", true);
+	}
 }
 
 function addComma(num){
@@ -212,60 +220,215 @@ function deliveryPriceTagUpdate(delivery_price){
 
 });
 </script>
+<style>
+.ordering_area {
+	margin: 30px 0px;
+}
 
+.addr_table{
+	border-top: 2px solid #171717;
+	border-bottom: 1px solid #171717;
+}
+
+.cart_table {
+	border-top: 2px solid #171717;
+	border-bottom: 1px solid #171717;
+}
+
+.col-lg-8 {
+	margin: 25px 0px;
+}
+
+.cart_table_title {
+	border-bottom: 1px solid #171717;
+}
+
+.addr_table > tbody > tr > th {
+	text-align: center;
+}
+
+.addr_table > tbody > tr > td {
+	width: 75%;
+	padding: 8px;
+}
+
+.table > tbody > tr > td > input {
+	padding-left: 20px;
+	border: none;
+	background-color: #F2F2F2;
+	width: 250px;
+	height: 30px;
+}
+
+.addr_status {
+	width: 250px;
+	height: 30px;
+	padding: 0px 12px;
+}
+
+.goods_info {
+	width: 35%;
+}
+
+.delete_btn_area {
+	width: 10%;
+}
+
+.total_table {
+	border-top: 2px solid #171717;
+	border-bottom: 1px solid #171717;
+}
+
+.total_table > tbody > tr > th {
+	text-align: right;
+	width: 20%;
+}
+
+.total_table > tbody > tr > td {
+	width: 70%;
+	padding-left: 20px;
+}
+
+.find_btn {
+	margin-bottom: 5px;
+}
+
+#ordering_btn {
+	height: 40px;
+	font-size: 1rem;
+}
+
+.goods_image {
+	width: 10%;
+	height: 100%;
+}
+
+.goods_image > img {
+	width: 100%;
+	height: auto;
+}
+
+.op_info {
+	margin-top: 10px;
+}
+
+.items_area {
+	border-bottom: 1px solid #171717;
+}
+
+.info {
+	padding-left: 10px;
+}
+
+.delivery_price {
+	font-size: 1rem;
+}
+
+.ordering_price {
+	font-size: 1rem;
+}
+
+.submit_area {
+	margin: 15px 0px;
+}
+
+.cart_area {
+	margin: 15px 0px;
+}
+
+#submit_btn {
+	margin: 20px 0px;
+	height: 40px;
+	font-size: 1rem;
+}
+
+.submit_box {
+	padding: 15px;
+}
+
+</style>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
 <form action="../order/order" method="POST">
-<div class="ordering_area">
-	<hr>
-	<h2>장바구니 목록</h2>
-	<c:forEach items="${cartVOList}" var="cartVO" varStatus="status">
-	<div id="${status.index}" class="items_area">
-	<input type="hidden" name="itemVOList[${status.index}].price" value="${cartVO.price}">
-	<input type="hidden" name="itemVOList[${status.index}].quantity" value="${cartVO.quantity}">
-	<input type="hidden" name="itemVOList[${status.index}].goods_no" value="${cartVO.goodsDto.goods_no}">
-	<hr>
-	<!-- 상품정보칸 -->
-		상품이름 : ${cartVO.goodsDto.goods_name}<br>
-		상품가격 : <fmt:formatNumber pattern="###,###,###" type="number">${cartVO.goodsDto.goods_price}</fmt:formatNumber> 원<br>
-		
-	<!-- 옵션칸 -->
-		옵션 	: <br>
-		<c:forEach items="${cartVO.option_list}" var="goodsOptionDto">
-		<input type="hidden" name="itemVOList[${status.index}].option_no_list" value="${goodsOptionDto.goods_option_no}">
-			- ${goodsOptionDto.goods_option_title } : 
-			${goodsOptionDto.goods_option_content}  
-			(<fmt:formatNumber pattern="###,###,###" type="number"> ${goodsOptionDto.goods_option_price}</fmt:formatNumber>원)
-			<br>
-		</c:forEach>
-		가격 : <fmt:formatNumber pattern="###,###,###" type="number">${cartVO.price}</fmt:formatNumber> 원<br>	
-		수량 : ${cartVO.quantity} 개 <br>
-		
-	<!-- 배송정보 칸 -->
-		<div class="delivery_area">
-		배송조건 : <span class="item_dOption">${cartVO.deliveryDto.delivery_option}</span>	<br>
-		배송조건금액 : <span class="item_dOp_price">${cartVO.deliveryDto.delivery_op_price}</span><br>
-		묶음배송여부 : <span class="item_dSet_agree">${cartVO.deliveryDto.delivery_set_agree }</span><br>
-		묶음배송금액 : <span class="item_dSet_agree">${cartVO.deliveryDto.delivery_set_op_price }</span><br>
-		배송비 : <span class="item_dPrice">${cartVO.deliveryDto.delivery_price}</span><br>
-		택배사 : <span class="item_dCompany">${cartVO.deliveryDto.delivery_company}</span>
+<div class="ordering_area row justify-content-center">
+	<div class="col-lg-8 cart_area">
+		<div class="cart_title">
+			<h3>장바구니</h3>
 		</div>
-	<!-- 토탈 -->
-		<div class="total_area">
-		총 가격 : 
-			<span class="item_pirce">
-			<fmt:formatNumber pattern="###,###,###" type="number">
-			${cartVO.price*cartVO.quantity}</fmt:formatNumber> 원</span>
-			<input type="hidden" class="hItem_price" value="${cartVO.price*cartVO.quantity}">
-		</div>
-		<button class="delete_btn">삭제</button>
+		<table class="table table-borderless cart_table">
+			<tr class="cart_table_title">
+				<th colspan="3" scope="col" class="align-middle text-center" style="width: 33%">상품정보</th>
+				<th scope="col" class="align-middle text-center" style="width: 13%">수량</th>
+				<th scope="col" class="align-middle text-center" style="width: 20%">가격</th>
+				<th scope="col" class="align-middle text-center" style="width: 20%">총 가격</th>
+				<th scope="col" class="align-middle text-center" style="width: 13%">-</th>
+			</tr>
+			<c:forEach items="${cartVOList}" var="cartVO" varStatus="status">
+				<tr id="${status.index}" class="items_area">
+					<td>
+						<input type="hidden" name="itemVOList[${status.index}].price" value="${cartVO.price}">
+						<input type="hidden" name="itemVOList[${status.index}].quantity" value="${cartVO.quantity}">
+						<input type="hidden" name="itemVOList[${status.index}].goods_no" value="${cartVO.goodsDto.goods_no}">
+					</td>
+					<td class="goods_image align-middle" style="width: 20%">
+						<img src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${filesList[status.index]}">
+					</td> 
+					<td class="goods_info align-middle">
+						<div class="align-middle info">
+							<h5>${cartVO.goodsDto.goods_name}</h5>
+							 - 가격 : <fmt:formatNumber pattern="###,###,###" type="number">${cartVO.goodsDto.goods_price}</fmt:formatNumber> 원<br>
+							<h6 class="op_info">#옵션정보</h6>
+							<c:forEach items="${cartVO.option_list}" var="goodsOptionDto">
+								<input type="hidden" name="itemVOList[${status.index}].option_no_list" value="${goodsOptionDto.goods_option_no}">
+								- ${goodsOptionDto.goods_option_title } : 
+								${goodsOptionDto.goods_option_content}  
+								(<fmt:formatNumber pattern="###,###,###" type="number"> ${goodsOptionDto.goods_option_price}</fmt:formatNumber>원)<br>
+							</c:forEach>
+						</div>
+					</td>
+					<td class="goods_quantity align-middle text-center">${cartVO.quantity} 개 </td>
+					<td class="goods_price align-middle text-center"><fmt:formatNumber pattern="###,###,###" type="number">${cartVO.price}</fmt:formatNumber> 원</td>
+					<td class="goods_total align-middle text-center">
+						<div class="total_area align-middle text-center">
+							<div class="total_area">
+								<span class="item_pirce">
+								<fmt:formatNumber pattern="###,###,###" type="number">
+								${cartVO.price*cartVO.quantity}</fmt:formatNumber> 원</span>
+								<input type="hidden" class="hItem_price" value="${cartVO.price*cartVO.quantity}">
+							</div>
+						</div>
+					</td>
+					<td class="align-middle text-center delete_btn_area">
+						<button class="delete_btn btn btn-secondary">X</button>
+					</td>
+				</tr>
+			</c:forEach>
+		</table>
 	</div>
-	</c:forEach>
-	<hr>
-	배송비 : <span class="delivery_price">1 원</span>
-	주문 총 가격 : <span class="ordering_price"> 원</span>
-	<hr>
-	<input type="submit" value="주문하기">
-	
-	<hr>
+	<div class="col-lg-8 submit_area">
+		<div class="row justify-content-center submit_box">
+			<div class="col-lg-12 total_title">
+				<h3>총 결제 금액</h3>
+			</div>
+			<table class="table table-borderless total_table">
+			<tbody>
+				<tr>
+					<th scope="row">배송비</th>
+					<td><span class="delivery_price">1 원</span></td>
+				</tr>
+				<tr>
+					<th scope="row">총 가격</th>
+					<td><span class="ordering_price"> 원</span></td>
+				</tr>
+			</tbody>
+		</table>
+			<div class="col-lg-5 text-center"><input id="submit_btn" class="btn btn-secondary btn-block submit_btn" type="submit" value="주문하기"></div>
+		</div>
+	</div>
 </div>
 </form>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
