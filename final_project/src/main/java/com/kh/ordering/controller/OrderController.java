@@ -107,7 +107,7 @@ public class OrderController {
 		// 견적서 내용(==상품) 보내기
 		CustomOrderVO customOrderVO = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("customVO", customOrderVO);
-		
+
 		return "order/custom";
 	}
 	

@@ -121,7 +121,10 @@
 			 		</c:otherwise>
 		 		</c:choose>
 			</span>
-			<span style="float:right;">${getListInfoReq.custom_order_date}</span><br>
+			<span style="float:right;">
+				<fmt:parseDate value="${getListInfoReq.custom_order_date}" var="custom_order_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+				<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
+			</span><br>
 			<span style="float:right;">${getListInfoReq.custom_order_status }</span>
 		</h6>
 	</div>

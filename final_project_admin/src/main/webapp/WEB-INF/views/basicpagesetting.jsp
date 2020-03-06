@@ -6,7 +6,7 @@
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
             <div class="offset-md-1 col-md-10">
-<div class="row justify-content-center"  style="padding: 20px;"><h1>사이트 기본정보</h1></div>
+<div class="row justify-content-center"  style="padding: 20px;"><h1>사이트 기본정보 관리</h1></div>
 <form action="" method="post">
   <fieldset>
     <div class="form-group row">
@@ -16,27 +16,27 @@
       </div>
     </div>
     <div class="form-group row">
-      <label for="staticEmail" class="col-sm-2 col-form-label">대표</label>
+      <label for="staticEmail1" class="col-sm-2 col-form-label">대표</label>
       <div class="col-sm-10">
-        <input type="text" name="co_ceo" class="form-control-plaintext" id="staticEmail" placeholder="${list.co_ceo }" value="${list.co_ceo }">
+        <input type="text" name="co_ceo" class="form-control-plaintext" id="staticEmail1" placeholder="${list.co_ceo }" value="${list.co_ceo }">
       </div>
     </div>
     <div class="form-group row">
-      <label for="staticEmail" class="col-sm-2 col-form-label">위치</label>
+      <label for="staticEmail2" class="col-sm-2 col-form-label">위치</label>
       <div class="col-sm-10">
-        <input type="text" name="co_location" class="form-control-plaintext" id="staticEmail" placeholder="${list.co_location }" value="${list.co_location }">
+        <input type="text" name="co_location" class="form-control-plaintext" id="staticEmail2" placeholder="${list.co_location }" value="${list.co_location }">
       </div>
     </div>
     <div class="form-group row">
-      <label for="staticEmail" class="col-sm-2 col-form-label">연락처</label>
+      <label for="staticEmail3" class="col-sm-2 col-form-label">연락처</label>
       <div class="col-sm-10">
-        <input type="text" name="co_call" class="form-control-plaintext" id="staticEmail" placeholder="${list.co_call }" value="${list.co_call }">
+        <input type="text" name="co_call" class="form-control-plaintext" id="staticEmail3" placeholder="${list.co_call }" value="${list.co_call }">
       </div>
     </div>
     <div class="form-group row">
-      <label for="staticEmail" class="col-sm-2 col-form-label">이메일</label>
+      <label for="staticEmail4" class="col-sm-2 col-form-label">이메일</label>
       <div class="col-sm-10">
-        <input type="text" name="co_email" class="form-control-plaintext" id="staticEmail" placeholder="${list.co_email }" value="${list.co_email }">
+        <input type="text" name="co_email" class="form-control-plaintext" id="staticEmail4" placeholder="${list.co_email }" value="${list.co_email }">
       </div>
     </div>
     <div class="form-group">

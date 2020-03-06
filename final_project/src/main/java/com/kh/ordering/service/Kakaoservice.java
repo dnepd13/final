@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -271,16 +270,23 @@ public class Kakaoservice implements payService {
 		// 요청주소에 전송 및 회신 응답 저장
 		// url, 요청객체, 응답객체(JSON)
 		KakaoPayReadyReturnVO readyReturnVO = template.postForObject(uri, entity, KakaoPayReadyReturnVO.class);
-
+		
 		// DB에 결제준비 요청 정보 저장 --> PayDto
 		ObjectMapper mapper = new ObjectMapper();
 		OrderVO orderVO = mapper.readValue(jsonOrderVO, OrderVO.class);
 
-		PayDto payDto = PayDto.builder().cid("TC0ONETIME").tid(readyReturnVO.getTid()).member(member_no)
-				.partner_order_id(readyVO.getPartner_order_id()).partner_user_id(readyVO.getPartner_user_id())
-				.item_name(readyVO.getItem_name()).process_time(readyReturnVO.getCreated_at())
-				.quantity(readyVO.getQuantity()).total_amount(readyVO.getTotal_amount())
-				.used_point(orderVO.getUsed_point()).vat_amount(readyVO.getTotal_amount() / 10).build();
+		PayDto payDto = PayDto.builder()
+													.cid("TC0ONETIME")
+													.tid(readyReturnVO.getTid())
+													.member(member_no)
+													.partner_order_id(readyVO.getPartner_order_id())
+													.partner_user_id(readyVO.getPartner_user_id())
+													.item_name(readyVO.getItem_name())
+													.process_time(readyReturnVO.getCreated_at())
+													.quantity(readyVO.getQuantity())
+													.total_amount(readyVO.getTotal_amount())
+													.used_point(orderVO.getUsed_point())
+													.vat_amount(readyVO.getTotal_amount() / 10).build();
 
 		payDao.insertReadyCustom(payDto, orderVO);
 
@@ -303,7 +309,7 @@ public class Kakaoservice implements payService {
 		// 헤더
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "KakaoAK 53072513ab4d31c036edec9ad0220095");
-		headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + "; charset=utf-8");
+		headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE+"; charset=utf-8");
 		headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE); // 카카오의 응답을 받을 형태
 
 		// 바디
@@ -350,6 +356,52 @@ public class Kakaoservice implements payService {
 
 		return successReturnVO;
 
+	}
+
+	@Override // 주문제작 결제취소
+	public KakaoPayRevokeReturnVO customRevokeVO(PayDto payDto) throws URISyntaxException {
+		
+		log.info("payDto={}",payDto);
+		RestTemplate template = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "KakaoAK 53072513ab4d31c036edec9ad0220095");
+		headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + "; charset=utf-8");
+		headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
+
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+		body.add("cid", payDto.getCid());
+		body.add("tid", payDto.getTid());
+		body.add("cancel_amount", String.valueOf(payDto.getTotal_amount()));
+		body.add("cancel_tax_free_amount", "0");
+		body.add("cancel_available_amount", String.valueOf(payDto.getTotal_amount()));
+		
+		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
+		
+		URI uri = new URI("https://kapi.kakao.com/v1/payment/cancel");
+		
+		log.info("body={}",body);
+		log.info("url={}", uri);
+		log.info("entity={}",entity);
+		log.info("KakaoPayReadyReturnVO.class", KakaoPayRevokeReturnVO.class);
+		
+		KakaoPayRevokeReturnVO revokeReturnVO
+										= template.postForObject(uri, entity, KakaoPayRevokeReturnVO.class);
+
+		PayDto payDto2 = PayDto.builder()
+														.aid(revokeReturnVO.getAid())
+														.tid(revokeReturnVO.getTid())
+														.cid(revokeReturnVO.getCid())
+														.partner_order_id(revokeReturnVO.getPartner_order_id())
+														.partner_user_id(revokeReturnVO.getPartner_user_id())
+														.process_time(revokeReturnVO.getCanceled_at())
+														.item_name(revokeReturnVO.getItem_name())
+														.quantity(revokeReturnVO.getQuantity())
+														.total_amount(-1 * revokeReturnVO.getCanceled_amount().getTotal())
+														.build();
+		payDao.insertRevoke(payDto2);
+		
+		return revokeReturnVO;
 	}
 
 }

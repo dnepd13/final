@@ -75,6 +75,63 @@
 			})
 		});
 		
+		
+		
+		$(".btn").click(function(){
+			var premiumprice = $(".preminumPrice").val();
+			var premiumrate = $(".preminumRate").val();
+			console.log("premiumprice"+premiumprice);
+			var tr = $('.table').find('tr').length;
+			console.log(tr);
+			if(tr == 1 ){
+				$(".premiumForm").submit();
+			}
+			else{
+			$(".premium").each(function(){
+				var premium = $(this).text();
+				console.log("premium"+premium);
+				
+				
+				
+				if(premiumprice == parseInt(premium)){
+					window.alert("이미 존재하는 값입니다");
+					return false
+				}
+				else{
+					if(premiumprice > parseInt($(this).text())){
+						console.log(premiumprice);
+						console.log($(this).text());
+						var thisrate = parseInt($(this).next().text());
+						var nextrate = parseInt($(this).parent().prev().children(".rate").text());
+						
+						console.log($(this).next().text());
+						console.log($(this).parent().prev().children(".rate").text());
+						console.log(premiumrate);
+						if(premiumrate < parseInt(thisrate)){
+							if($(this).parent().prev().children(".rate").length == 0){
+								$(".premiumForm").submit();
+								return false;
+							}
+							else if(premiumrate > nextrate){
+								$(".premiumForm").submit();
+								return false;
+							}
+							else{
+								window.alert("수수료율이나 수수료 조건을 다시 입력하세요");
+								return false;
+							}
+						}
+						else{
+							window.alert("수수료를 다시 입력해주세요.");
+							return false;
+						}
+					}
+				}
+			 });
+			}
+			
+		});
+		
 	});
 </script>
 
@@ -89,14 +146,14 @@
 <h1>수수료 관리창</h1>
 </div>
 
-<form action="" method="post">
-	<input type="number" name="premium_price" placeholder="수수료조건" required="required">
-	<input type="number" name="premium_rate" placeholder="수수료율" required="required">
-	<input type="submit" value="등록">	
+<form class="premiumForm" action="" method="post">
+	<input class="preminumPrice" type="number" name="premium_price" placeholder="수수료조건" required="required">
+	<input class="preminumRate" type="number" name="premium_rate" placeholder="수수료율" required="required">
+	<input class="btn" type="button" value="등록">	
 </form>
 <table class="table table-hover">
   <thead>
-    <tr>
+    <tr class="em">
       <th width="40%">수수료 조건(원)</th>
       <th width="40%">수수료(%)</th>
       <th width="20%">수정 및 삭제</th>
@@ -104,9 +161,9 @@
   </thead>
   <tbody>
   <c:forEach var="list" items="${list }">
-    <tr>
-      <th scope="row">${list.premium_price }</th>
-      <td>${list.premium_rate }</td>
+    <tr class="em">
+      <th scope="row" class="premium">${list.premium_price }</th>
+      <td class="rate">${list.premium_rate }</td>
       <td data-premium-no="${list.premium_no}" >
    			<button type="button" class="btn-modify" >수정</button>
    			<button type="button" class="btn-delete" >삭제</button>
