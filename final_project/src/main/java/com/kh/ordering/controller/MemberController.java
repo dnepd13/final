@@ -494,17 +494,13 @@ public class MemberController {
 				@PostMapping("/memberfind_id")
 				public String memberfind_id(HttpSession session,@RequestParam String member_email,
 						@RequestParam String member_name,Model model) {
-						log.info("1= {}", member_email);
-						log.info("2= {}", member_name);
+
 						MemberDto memberDto =MemberDto.builder().member_name(member_name)
 																.member_email(member_email)
 																.build();
 						
-						log.info("memberDto={}",memberDto);
-						
 						MemberDto find_id=memberDao.memberfind_id(memberDto);
-						log.info("2find_id={}",memberDto);
-						log.info("2find_id={}",find_id);
+
 						model.addAttribute("memberDto",find_id);
 					return "member/find_id_info";
 
@@ -520,9 +516,9 @@ public class MemberController {
 						MemberDto memberDto =MemberDto.builder().member_name(member_name) 
 																				   .member_email(member_email)
 																				   .build();
-						log.info("memberDto={}",memberDto);
+
 						MemberDto find_id=memberDao.memberfind_id(memberDto);
-							log.info("find_id={}",find_id);
+
 					//	model.addAttribute("sellerDto",find_id);
 
 					return "member/find_id_info";
