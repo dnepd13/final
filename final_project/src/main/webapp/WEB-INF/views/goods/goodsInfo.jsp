@@ -15,12 +15,24 @@
 /* tab */
 	.tab {
 		border: 2px solid rgb(248,245,240);
+		background: white;
 		text-align: center;
-		height: 40px;
+		width: 100%;
+		height: 50px;
 		padding: 10px 0;
+		z-index: 1;
 	}
 	.tab span {
 		padding: 0 100px;
+	}
+	.tab_fixed {
+		top: 0;
+		position: fixed;
+	}
+	@media screen and (max-width: 1000px){
+		.tab {
+			width: 1000px;
+		}
 	}
 
 /*	qna style */
@@ -38,7 +50,7 @@
 	/*문의작성 Modal*/
 	.modal {
  		display: none;
- 		z-index: 1;
+ 		z-index: 2;
  		top: 0;
  		bottom: 0;
  		letf: 0;
@@ -325,8 +337,23 @@ $(function(){
 	
 }); 
 
-////////////////////문의게시판 영역///////////////
+
+////////////////////문의, 리뷰 영역///////////////
 $(function(){
+// 탭매뉴
+		$(document).ready(function(){
+			var tabOffset = $(".tab").offset();
+			$(window).scroll(function(){
+				if($(document).scrollTop() > tabOffset.top){
+					$(".tab").addClass("tab_fixed");
+				}
+				else {
+					$(".tab").removeClass("tab_fixed");
+				}
+			});
+			
+		});
+	
 // '문의하기' Modal
 			var qna_member = document.querySelector(".qna_member");
             
@@ -1014,7 +1041,7 @@ $(function(){
 	<br>
 	</c:forEach>
 	<!-- 페이징 내비게이터 -->
-		<div class="row justify-content-center">
+		<div class="row justify-content-center" style="z-index: 0">
 			<ul class="pagination">
 				<c:if test="${paging.startBlock > 1 }">
 					<li class="page-item">
