@@ -25,9 +25,10 @@
 
 /*	qna style */
 	.articleBox {
-		width: 80%;
+		width: 1000px;
 		margin: 0 auto;
 	}
+	
 	.qnaBox,
 	.reviewBox {
 		width: 90%;
@@ -788,11 +789,12 @@ $(function(){
 					<th>문의내용</th>
 					<th>작성자</th>
 					<th>작성일</th>
-					
+					<th>상태</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach var="qna" items="${goodsQna }">
+				<!-- 답변이면 depth 효과 -->
 				<c:choose>
 					<c:when test="${qna.goods_qna_superno != 0 }">
 					<tr> <!-- 판매자 답변 목록 -->
@@ -809,25 +811,29 @@ $(function(){
 						<td>${qna.goods_qna_content }</td>
 						<td>${qna.goods_qna_writer }</td>
 						<td>${qna.goods_qna_date }</td>
-						<%-- 문의 작성자와 로그인한 member_id가 같을 때 --%>
-						<c:if test="${qna.member_no == member_no && empty qna.goods_qna_status}">
-							<td data-goods_no = "${goodsVO.goods_no }"
-									data-goods_qna_no="${qna.goods_qna_no }"
-									data-member_no="${qna.member_no }" style="border-right: none;">
-									<button class="btn_update btn_clean">수정</button>
-									<button class="btn_delete btn_clean">삭제</button>
-							</td>
-						</c:if>
-						<%-- 상품의 seller_no와 로그인한 seller_no가 같을 때 --%>
-						<c:if test="${not empty seller_no && goodsVO.seller_no == seller_no }" >
-							<c:if test="${empty qna.goods_qna_status }">
-								<td><button class="btn_a btn_clean">답변하기</button></td>
-							</c:if>
-						</c:if>
+						<%-- 문의 작성자와 로그인한 member_id가 같을 때 / 상품 판매자와 로그인한 seller_id가 같을 때 --%>
 						<c:set var="status" value="${qna.goods_qna_status}"></c:set>
-						<c:if test="${functions : contains(status, '답변완료') }">
-							<td>답변완료</td>
-						</c:if>
+						<c:choose>
+							<c:when test="${qna.member_no == member_no && empty qna.goods_qna_status}">
+								<td data-goods_no = "${goodsVO.goods_no }"
+										data-goods_qna_no="${qna.goods_qna_no }"
+										data-member_no="${qna.member_no }" style="border-right: none;">
+										<button class="btn_update btn_clean">수정</button>
+										<button class="btn_delete btn_clean">삭제</button>
+								</td>
+							</c:when>
+							<c:when test="${not empty seller_no && goodsVO.seller_no == seller_no }" >
+								<c:if test="${empty qna.goods_qna_status }">
+									<td><button class="btn_a btn_clean">답변하기</button></td>
+								</c:if>
+							</c:when>
+							<c:when test="${functions : contains(status, '답변완료') }">
+								<td>답변완료</td>
+							</c:when>
+							<c:otherwise>
+								<td></td>
+							</c:otherwise>
+						</c:choose>
 					</tr>
 					</c:otherwise>
 				</c:choose>
@@ -884,7 +890,7 @@ $(function(){
 </div>	
 <hr>
 
-<!-- ----------------------------------------------------------------------- -->
+<!-- 리뷰 ----------------------------------------------------------------------- -->
 
 <div id="tab3" class="tab_content">
 	<div class="row-empty-20"></div>
