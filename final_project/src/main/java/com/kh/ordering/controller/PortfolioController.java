@@ -50,7 +50,7 @@ public String portfolio_insert(HttpSession session,
 								@ModelAttribute SellerDto sellerDto,				
 								@ModelAttribute PortfolioDto portfolioDto)
 										throws IllegalStateException,IOException {
-		System.out.println(session);
+		
            System.out.println(files);
 	sellerService.Portfolio_insert(session,files,sellerDto,portfolioDto);
 	 

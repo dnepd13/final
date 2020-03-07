@@ -867,6 +867,14 @@ $(function(){
 							</span>
 							<div class="reply_content">${reviewReply.goods_review_reply_content }</div>
 					</div>
+					<c:if test="${reviewReply.member_no == member_no}">
+							<p data-goods_no = "${goodsVO.goods_no }"
+									data-goods_qna_no="${reviewReply.goods_review_reply_no }"
+									data-member_no="${reviewReply.member_no }" style="border-right: none;">
+									<button class="btn_reviewUpdate btn_clean">수정</button>
+									<button class="btn_reviewDelete btn_clean">삭제</button>
+							</p>
+					</c:if>
 				</td>
 			</tr>
 			</c:if>
