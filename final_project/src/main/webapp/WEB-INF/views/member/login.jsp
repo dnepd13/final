@@ -1,27 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>order-링</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-</head>
+
 <style>
-	.container {
-		width: 50%;
+	.login-area {
+		width: 500px;
+		margin: 0 auto;
+		padding-top: 50px;
 	}
 	.login input[type=text],
 	.login input[type=password],
@@ -30,38 +23,28 @@
 		border: 1px solid lightgray;
 		border-radius: 5px;
  	}
- 	.login .enter {
- 		background-color: rgb(234,234,234);
- 		outline: none;
- 		border: 0;
- 	}
- 	.login .confirm {
- 		background-color: white;
- 		outline: none;
- 		border: 0;
- 	}
  	
 </style>
-<body>
-	<br>
-	
-	<div class="container" align="center">
-		<h2>대략 우리 로고</h2>
-		<br>
 
-		
-		<div class="content login">
-			<div id="member_login" class="container" style="margin:0 0">
-				<br>
-					<form action="login" method="post">
-					<input type="text" name="member_id" placeholder="아이디"><p></p>						
-					<input type="password" name="member_pw"placeholder="비밀번호"><p></p>						
-					<input type="submit" value="로그인" class="enter">
-				</form>
+<div class="login-area">
+	<form action="login" method="post">
+		<fieldset>
+	    	<div class="form-group">
+				<label for="exampleInputId">ID:</label>
+				<input type="text" name="member_id"  id="exampleInputId" class="form-control"placeholder="ID" required>
+	 			<div class="row-empty-20"></div>
+	 			<label for="exampleInputPassword1">PW:</label>
+				<input type="password" name="member_pw" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+				<div class="row-empty-20"></div>
+				<input type="submit" value="로그인" class="enter btn btn-secondary" style="width:100%;">
 			</div>
+	  </fieldset>
+	</form>
+	<a href="${pageContext.request.contextPath }/member/memberfind_id">
+		<button class="btn btn-secondary" style="width:48%;">아이디찾기</button>
+	</a>
 	
-		</div>
-	</div>
-</body>
-</html>
+	<button class="btn btn-secondary" style="width:48%; float:right;">비밀번호찾기</button>
+</div>
 
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
