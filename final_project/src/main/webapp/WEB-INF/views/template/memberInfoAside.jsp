@@ -7,8 +7,8 @@
 <style>
  	aside { 
  		float : left; 
- 		padding: 30px; 
-		width: 200px;
+ 		padding: 30px 60px;
+		width: 300px;
  	}	 
  	aside ul { 
  		list-style: none; 

@@ -13,9 +13,16 @@
 	* {box-sizing: border-box;}
 	
 	.articleBox {
-		width: 60%;
-		margin: 0 auto;
+		width: 1000px;
+		margin-left: 300px;
 		padding-top: 5rem;
+		position: relative;
+	}
+	@media screen and (min-width:1360px){
+		.articleBox {
+			width: 60%;
+			margin: 0 auto;
+		}
 	}
 	
 	table {border-collapse: collapse;}

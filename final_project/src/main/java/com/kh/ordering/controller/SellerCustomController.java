@@ -209,13 +209,12 @@ public class SellerCustomController {
 		int seller_no = sellerCustomDao.getNo(seller_id); 
 		
 		model.addAttribute("seller_no", seller_no);
-		// 판매자 알람 delete 컬럼 Y로 업데이트
-		SellerCustomAlarmDto sellerCustomAlarmDto 
-				= 	SellerCustomAlarmDto.builder()
-															.member_custom_order_no(member_custom_order_no)
-															.seller_no(seller_no)
-															.build();
-		sellerCustomDao.deleteCustomReq(sellerCustomAlarmDto);
+		
+		// 판매자 알람 delete 컬럼 Y로 업데이트 --> 추후 구매자도 요청서를 삭제할 수 있도록
+		sellerCustomDao.updateAlarm(seller_no, member_custom_order_no);
+		
+		// 알람테이블 삭제
+		sellerCustomDao.deleteCustomReq(seller_no, member_custom_order_no);
 		return "seller/customListReq";
 	}
 	@GetMapping("/deleteResp")	 // 보낸 견적서 삭제

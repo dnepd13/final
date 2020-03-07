@@ -107,7 +107,7 @@
 	<update id="updateCustomStatus" parameterType="int">
 		update custom_order set custom_order_status='결제완료' where custom_order_no=#{custom_order_no}
 	</update>
-	<!--견적서 결제하면 주문제작 상태 업데이트 -->
+	<!--견적서 결제 취소 주문제작 상태 업데이트 -->
 	<update id="updateCustomCancel" parameterType="int">
 		update custom_order set custom_order_status='결제취소' where custom_order_no=#{custom_order_no}
 	</update>
@@ -128,7 +128,7 @@
 	<!-- 보낸 1:1 요청서 삭제 -->
 	<select id="getCustomNo" parameterType="int" resultType="int">
 		select custom_order_no from member_custom_view
-				where seller_alarm_check='N' and member_custom_order_no=#{member_custom_order_no}
+				where seller_alarm_delete='Y' or seller_alarm_check='N'and member_custom_order_no=#{member_custom_order_no}
 	</select>
 	<delete id="deleteReq" parameterType="int">
 		delete from custom_order A

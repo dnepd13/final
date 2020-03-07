@@ -38,7 +38,7 @@ public interface SellerCustomDao {
 	List<SellerCustomAlarmDto> getSellerAlarm(int member_custom_order_no);
 	
 	//받은 요청서 삭제
-	void deleteCustomReq(SellerCustomAlarmDto sellerAlarmDto);
+	void deleteCustomReq(int seller_no, int member_custom_order_no);
 	//보낸 견적서 삭제
 	int getCustomNo(int seller_custom_order_no);
 	void deleteCustomResp(int custom_order_no);

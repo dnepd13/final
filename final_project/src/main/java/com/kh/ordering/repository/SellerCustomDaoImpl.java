@@ -121,8 +121,15 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	
 //	받은 요청서 삭제
 	@Override
-	public void deleteCustomReq(SellerCustomAlarmDto sellerAlarmDto) {
-		sqlSession.delete("seller.deleteReq", sellerAlarmDto);
+	public void deleteCustomReq(int seller_no, int member_custom_order_no) {
+		SellerCustomAlarmDto sellerAlarmDto =
+								SellerCustomAlarmDto.builder()
+																		.seller_no(seller_no)
+																		.member_custom_order_no(member_custom_order_no)
+																		.build();
+		int seller_alarm_no = sqlSession.selectOne("seller.getAlarmNo", sellerAlarmDto);
+		sqlSession.update("seller.updateAlarmDelete", seller_alarm_no);
+//		sqlSession.delete("seller.deleteReq", seller_alarm_no);
 	}
 	
 //	보낸 견적서 삭제

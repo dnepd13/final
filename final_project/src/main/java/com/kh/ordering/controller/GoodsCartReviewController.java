@@ -106,7 +106,7 @@ public class GoodsCartReviewController {
 													@RequestParam int cart_info_no) {
 		
 		List<CartDetailsVO> getCartGoods = orderDao.getCartGoods(cart_info_no);
-
+		log.info("getCartGoods.size()={}",getCartGoods.size());
 		if(getCartGoods.size()==0) {
 
 			return "redirect:/member/cartDetailCustom?cart_info_no="+cart_info_no;

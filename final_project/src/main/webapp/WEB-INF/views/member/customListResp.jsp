@@ -13,10 +13,17 @@
 
 <style>
 	.articleBox {
-		width: 60%;
-		margin: 0 auto;
+		width: 1000px;
+		margin-left: 300px;
 		padding-top: 5rem;
 	}
+	@media screen and (min-width:1360px){
+		.articleBox {
+			width: 60%;
+			margin: 0 auto;
+		}
+	}
+	
 	.dataEmpty {
 		height: 300px;
 	}

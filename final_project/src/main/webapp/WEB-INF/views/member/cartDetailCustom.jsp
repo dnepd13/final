@@ -15,10 +15,16 @@
 	* {box-sizing: border-box;}
 	
 	.articleBox {
-		width: 60%;
+		width: 1000px;
+		margin-left: 300px;
 		height: 500px;
 		padding-top: 5rem;
-		margin: 0 auto;
+	}
+	@media screen and (min-width:1360px){
+		.articleBox {
+			width: 60%;
+			margin: 0 auto;
+		}
 	}
 	
 	table {
