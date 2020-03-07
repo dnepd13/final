@@ -116,6 +116,26 @@ public class GoodsController {
 				.body(resource);
 	}
 	
+	@GetMapping("/contentImageDown")
+	public ResponseEntity<ByteArrayResource> contentImageDown(@RequestParam int files_no) throws IOException{
+		File dir = new File("D:/upload/kh2d");
+		File target = new File(dir, "goodsContent" + files_no);
+		byte[] data = FileUtils.readFileToByteArray(target);
+		
+		if(data==null) {
+			return ResponseEntity.notFound().build();
+		}
+		ByteArrayResource resource = new ByteArrayResource(data);
+		
+		FilesDto filesDto = filesDao.getFiles(files_no);
+		
+		return ResponseEntity.ok()
+				.contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.contentLength(filesDto.getFiles_size())
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+URLEncoder.encode(filesDto.getFiles_savename(),"UTF-8")+"\"")
+				.body(resource);
+	}
+	
 	
 	@GetMapping("/insert")
 	public String insert(Model model, HttpSession session) {
@@ -153,7 +173,9 @@ public class GoodsController {
 			goods_content_image[i].transferTo(tg);
 		}
 		
-		return "redirect:getList";
+		int page_no = goodsDao.getSequence();
+		
+		return "redirect:goodsInfo?goods_no=" + page_no;
 	}
 	
 	@GetMapping("/get")
@@ -204,7 +226,9 @@ public class GoodsController {
 		
 		model.addAttribute("files_no", goodsDao.getGoodsMainImage(goods_no));
 		
-		
+		if(goodsDao.getContentImage(goods_no).size()>0) {
+			model.addAttribute("content_image", goodsDao.getContentImage(goods_no));
+		}
 		// 적립금
 		int rate = 1;
 		if((String)session.getAttribute("member_id") != null) {

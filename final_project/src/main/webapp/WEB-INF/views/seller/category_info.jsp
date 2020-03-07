@@ -22,6 +22,8 @@
     <h3>판매자 아이디: ${seller_id}</h3>
     <c:forEach var ="list" items="${category_list}">
     		<h3>${list.category_no}</h3>
+    		<h3>${list.category_large}</h3>
+    		<h3>${list.category_middle}</h3>
     		<h3>${list.category_small}</h3>
     </c:forEach>
     

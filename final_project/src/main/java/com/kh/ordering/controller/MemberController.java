@@ -128,8 +128,6 @@ public class MemberController {
 	@PostMapping("/addCart")
 	@ResponseBody
 	public String addCart(@ModelAttribute ItemVOList itemVOList, HttpSession session) {
-		log.info("dddddddddddd{}", itemVOList);
-		log.info("idddddddddddd{}", (String)session.getAttribute("member_id"));
 		memberService.addCart((String)session.getAttribute("member_id"), itemVOList);
 		return "";
 	}

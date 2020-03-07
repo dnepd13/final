@@ -5,7 +5,13 @@
  
 
 <mapper namespace="goods">
-
+	
+	<select id="getContentImage" parameterType="int" resultType="int">
+		select FG.files_no from (select files_no from files_goods where goods_no = #{goods_no}) FG
+		inner join files F on F.files_no = FG.files_no
+		where files_savename like '%Content%'
+	</select>
+	
 	<!-- 파일번호 조회 -->
 	<select id="getGoodsMainImage" parameterType="int" resultType="int">
 		select FG.files_no from (select files_no from files_goods where goods_no = #{goods_no}) FG

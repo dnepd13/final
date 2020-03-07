@@ -8,63 +8,69 @@
   
   <script>  
   $(function() {
-	  $(".buttontest").attr("disabled", true);
-      $(".test").click(function() {
-    		console.log("되는건가");
+	 // $(".buttontest").attr("disabled", true);
+      $("#id_check").click(function() {
+    		//console.log("되는건가");
             var seller_id = $("input[name=seller_id]").val();
-            console.log(seller_id);
-            	if(seller_id.length < 1){
-            		alert("아이디를 입력하세요");
-            	}
-            	else{
+           // console.log(seller_id);
+            //	if(seller_id.length < 1){
+            //		alert("아이디를 입력하세요");
+            	//}
+            	//else{
             		
                      $.ajax({
                               url : "id_check",
                               type : "get",
+                              contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                               data : {
                                  'seller_id' : seller_id
                               },
                               success : function(resp) { //resp = 위코드가 성공적으로 컨트롤러에 다녀왔을때 가져온 값
 									console.log(resp);                              		
                               		if(resp == 0){
-                              			window.alert("사용 가능한 아이디 입니다");
-										$(".buttontest").attr("disabled", false);
+                              			window.alert("사용 가능한 아이디 입니다")
+									//	$(".buttontest").attr("disabled", false);
+										$('#idcheck2').val("Y");
                               		}
                               		else{
-                              			window.alert("중복된 아이디 입니다");
+                              			window.alert("중복된 아이디 입니다")
+                              			$('#idcheck2').val("N");
                               			
                               		}
                                  }
                                  
                         
                               });
-            	}
+            	//}
     });
    });
 // 		.validate-form은 처음에 숨기고 이메일 전송시만 표시
 $(function() {
-		$("#check_email_code").hide();
+	//	$("#check_email_code").hide();
 		
 // 		.email-form이 전송되면 send 주소로 비동기 신호를 전송(ajax)
-		$("#check_email").click(function(e){
-			e.preventDefault();
+		$("#check_email").click(function(){
+		//	e.preventDefault();
 			
-			$(this).find("input[type=button]").prop("disabled", true);
-			$(this).find("input[type=button]").val("인증번호 발송중...");
+		//	$(this).find("input[type=button]").prop("disabled", true);
+		//	$(this).find("input[type=button]").val("인증번호 발송중...");
 			
-			var url = $(this).attr("action"); 
-			var method = $(this).attr("method");
-			var data = $("#email").val();
-			console.log(data)
+		//	var url = $(this).attr("action"); 
+		//	var method = $(this).attr("method");
+		//	var data = $("#email").val();
+		//	console.log(data)
 			$.ajax({
 				url: "send",
 				type:"post",
-				data:{'seller_email' :data
-					
+				data: {
+					'seller_id' : $("input[name='seller_id']").val(),
+					'seller_email' : $("input[name='seller_email']").val()				
 				},
-				success:function(resp){
+				success:function(data){
 					//console.log(resp);
-					if(resp == "success"){
+					if(data == "success"){
+						$("#check_email").hide();
+						$("input[name='cert").show();
 						$("#check_email_code").show();
 						
 					}
@@ -73,12 +79,12 @@ $(function() {
 			});
 		});
 // 		validate-form이 전송되면 /validate로 비동기 요청을 전송
-		$("#check_email_code").click(function(e){
-			e.preventDefault();
-			console.log("string");
+		$("#check_email_code").click(function(){
+		//	e.preventDefault();
+		//	console.log("string");
 // 			var url = $(this).attr("action"); 
 // 			var method = $(this).attr("method");
-		var data = $(this).serialize();
+	//	var data = $(this).serialize();
 			
 			$.ajax({
 				url:"validate",
@@ -86,20 +92,102 @@ $(function() {
 				data:{
 					'cert' :$("input[name='cert']").val()
 				},
-				success:function(resp){
+				success:function(data){
 // 					console.log(resp);
-					if(resp == "success"){
+					if(data == "success"){
+						$("#check_email").hide();
+						$("input[name='cert").hide();
+						$("#check_email_code").hide();
 						window.alert("인증 완료");
+						$('#check_email_code2').val("Y");
+						
 					}
 					else{
+						$("#check_email").show();
+						$("input[name='cert").hide();
+						$("#check_email_code").hide();
 						window.alert("인증 실패");
+						$('#check_email_code2').val("N");
 					}
 				}
 			});
 		});
-
 });
-
+function test() {
+	if ($('input[name="seller_id"]').val() == "") {
+		window.alert("아이디를 입력해주요");
+		return false;
+	}
+	var idcheck2 = $('#idcheck2').val();
+	if(idcheck2 = 1){
+		alert("아이디 중복체크를 해주세요.");
+		return false;
+		}
+	if ($('input[name="seller_pw"]').val() == "") {
+		alert("비밀번호를 입력해주요");
+		return false;
+	}
+	if ($('input[name="seller_name"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	var checkemailcode2 = $('#checkemailcode2').val();
+	if(checkemailcode2 != 'Y'){
+		alert("이메일 인증이 필요합니다.");
+		return false;
+		}
+	if ($('input[name="seller_phone"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	if ($('input[name="seller_birth"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	if ($('input[name="seller_addr_post"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	if ($('input[name="seller_addr_basic"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	if ($('input[name="seller_addr_extra"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	if ($('input[name="seller_store_name"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	if ($('input[name="seller_store_phone"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	if ($('input[name="seller_store_fax"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	if ($('input[name="seller_bank_code"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	if ($('input[name="seller_bank_account"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	if ($('input[name="seller_bank_username"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	if ($('input[name="seller_bank_borth"]').val() == "") {
+		alert("이를을 입력해주요");
+		return false;
+	}
+	
+		$("#frm").submit();
+	}
+	
 </script>
 </head>
 <body>
@@ -112,95 +200,104 @@ $(function() {
 		 <!-- <form class="form-inline">옆으로 오는 입력 형식 -->
               <!--아이디 입력창-->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">ID : </label>
+  				<label class="col-form-label">ID : </label>
   				<input type="text" class="form-control" name="seller_id"required>
 			  	 <!--  name = 값 controller에있는파라미터값변수명하고 일치해야함 -->
-			  	<input class="test" type="button" id="id_check" value="중복확인" ><br>
+			  	<input type="button"class="btn btn-secondary disabled" id="id_check" value="중복확인" ><br>
+			  	 <input type="hidden"name="idcheck2" value="N">
 			  </div>
               <!-- 비밀번호 입력창 -->
                <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">PW : </label>
-  				<input type="password" class="form-control"id="inputDefault"name="seller_pw"required>
+  				<label class="col-form-label" >PW : </label>
+  				<input type="password" class="form-control" name="seller_pw"required>
 			  </div>
 			  <!-- 이름 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">이름 : </label>
-  				<input type="text" class="form-control"id="inputDefault"name="seller_name"required>
+  				<label class="col-form-label">이름 : </label>
+  				<input type="text" class="form-control"name="seller_name"required>
 			  </div>
 			   <!-- 이메일 입력창 -->
 			  <div class="form-group">			 
   				<label class="col-form-label" for="email">이메일 : </label>
   				<input type="email" class="form-control"id="email"name="seller_email"placeholder="이메일 입력" required>
 			  	<input type="button" class="btn btn-secondary disabled" id="check_email" value="인증번호 보내기">
-				<input type="text" name="cert" placeholder="인증번호 입력">
-				<input type="button" class="btn btn-secondary disabled" name="check_email_code" id="check_email_code" value="인증코드확인">	
+				<input type="text" name="cert" placeholder="인증번호 입력" style="display: none;">
+				<input type="button" class="btn btn-secondary disabled" name="check_email_code" id="check_email_code" value="인증번호확인"style="display: none;">
+				<input type="hidden"name="checkemailcode2" value="N">	
+				<!-- <p id="msg">이메일 인증에 실패하였습니다</p> -->
 			  </div>
 			  <!-- 전화번호 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">전화번호 : </label>
-  				<input type="tel" class="form-control"id="inputDefault"name="seller_phone"required>
+  				<label class="col-form-label">전화번호 : </label>
+  				<input type="tel" class="form-control" name="seller_phone"required>
 			  </div>
 			  <!--주민등록번호/사업자번호 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">주민등록번호 또는 사업자번호 : </label>
-  				<input type="number" class="form-control"id="inputDefault"name="seller_birth"required>
+  				<label class="col-form-label">사업자번호 : </label>
+  				<input type="number" class="form-control" name="seller_birth"required>
 			  </div>
 			  <!--사업장 우편번호 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">사업장 우편번호 : </label>
-  				<input type="text" class="form-control"id="inputDefault"name="seller_addr_post"required>
+  				<label class="col-form-label">사업장 우편번호 : </label>
+  				<input type="text" class="form-control" name="seller_addr_post"required>
 			  </div>
 			  <!--사업장 기본주소 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">사업장 기본주소 : </label>
-  				<input type="text" class="form-control"id="inputDefault"name="seller_addr_basic"required>
+  				<label class="col-form-label">사업장 기본주소 : </label>
+  				<input type="text" class="form-control" name="seller_addr_basic"required>
 			  </div>
 			  <!--사업장 상세주소 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">사업장 상세주소 : </label>
-  				<input type="text" class="form-control"id="inputDefault"name="seller_addr_extra"required>
+  				<label class="col-form-label">사업장 상세주소 : </label>
+  				<input type="text" class="form-control" name="seller_addr_extra"required>
 			  </div>
 			  <!--사업장 이름 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">사업장 이름 : </label>
-  				<input type="text" class="form-control"id="inputDefault"name="seller_store_name"required>
+  				<label class="col-form-label">사업장 이름 : </label>
+  				<input type="text" class="form-control"name="seller_store_name"required>
 			  </div>
 			  <!--사업장 전화번호 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">사업장 전화번호 : </label>
-  				<input type="tel" class="form-control"id="inputDefault"name="seller_store_phone"required>
+  				<label class="col-form-label">사업장 전화번호 : </label>
+  				<input type="tel" class="form-control" name="seller_store_phone"required>
 			  </div>
 			  <!--사업장 팩스번호 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">사업장 팩스번호 : </label>
-  				<input type="number" class="form-control"id="inputDefault"name="seller_store_fax"required>
+  				<label class="col-form-label">사업장 팩스번호 : </label>
+  				<input type="number" class="form-control" name="seller_store_fax"required>
 			  </div>
 			  <!--사업장 은행명 (코드)입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">사업장 은행 : </label>
-  				<input type="text" class="form-control"id="inputDefault"name="seller_bank_code"required>
+  				<label class="col-form-label">사업장 은행 : </label>
+  				<input type="text" class="form-control"name="seller_bank_code"required>
 			  </div>
 			  <!--사업장 은행계좌번호 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">사업장 은행 계좌번호 : </label>
-  				<input type="text" class="form-control"id="inputDefault"name="seller_bank_account"required>
+  				<label class="col-form-label">사업장 은행 계좌번호 : </label>
+  				<input type="text" class="form-control"name="seller_bank_account"required>
 			  </div>
 			 
 			  <!--사업장 은행 예금주 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">사업장 은행 예금주 : </label>
-  				<input type="text" class="form-control"id="inputDefault"name="seller_bank_username"required>
+  				<label class="col-form-label">사업장 은행 예금주 : </label>
+  				<input type="text" class="form-control" name="seller_bank_username"required>
 			  </div>
 			   <!--사업장 은행 주민등록번호 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label" for="inputDefault">사업장 은행 주민등록번호 : </label>
-  				<input type="text" class="form-control"id="inputDefault"name="seller_bank_birth"required>
+  				<label class="col-form-label">사업장 은행 주민등록번호 : </label>
+  				<input type="text" class="form-control" name="seller_bank_birth"required>
 			  </div>
 			   <!--가입일 숨겨서 온다-->
-			  <input type="hidden" name="seller_agree_date" value="${param.dTime }">
+			  <div class="form-group">
+			  	<input type="hidden" name="seller_agree_date" value="${param.dTime }">
+			  </div>
 			   <!--버튼 창 -->
-			   <button type="submit" class="btn btn-secondary disabled btn-block" onclick="test();">가입하기</button>
-			  </form>
-			 </div>
+			  <div class="form-group">
+			   	<button type="button" class="btn btn-secondary disabled btn-block" onclick="test()">가입하기</button>
+			  </div>
+			 </form>
+		   </div>
 		</div>
-    </div>
+   </div>
+ </body>
+   

@@ -73,12 +73,20 @@
 	}
 	
 </style>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript" src="http://kenwheeler.github.io/slick/slick/slick.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://kenwheeler.github.io/slick/slick/slick.css" />
+<link rel="stylesheet" type="text/css" href="http://kenwheeler.github.io/slick/slick/slick-theme.css" />
+
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/slick/slick-theme.css"> --%>
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/slick/slick.css"> --%>
+<%-- <script src="${pageContext.request.contextPath}/resources/slick/slick.min.js"></script> --%>
 
 <!-- 별점 script -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"/>
 <script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
     window.addEventListener("load", function(){
         Hakademy.PointManager.factory(".star-wrap");
@@ -86,6 +94,26 @@
 </script>
 <script>
 $(function(){
+	
+	//슬라이드
+	$("#contentImage_slide").slick({
+		autoplay : false,
+		dots: true,
+		speed : 300 /* 이미지가 슬라이딩시 걸리는 시간 */,
+		infinite: true,
+		autoplaySpeed: 3000 /* 이미지가 다른 이미지로 넘어 갈때의 텀 */,
+		arrows: false,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		fade: false
+	});
+	
+	$(".contentImage_box").click(function(){
+		var img = $(this).children(".contentImage").attr("src");
+		$(".mainImage").attr("src", img);
+	});
+	
+	
 	var goodsOptionVOList = JSON.parse('${jsonGoodsOptionVOList}');
 	var goodsVO = JSON.parse('${jsonGoodsVO}');
 	var VOindex = 0;
@@ -239,8 +267,17 @@ $(function(){
 		
 	});
 	// 장바구니
-	$(".add_cart_btn").click(function(e){
+	$(".add_cart_btn").click(function(e){		
+		
 		e.preventDefault();
+		
+<%-- 		var member_id = "<%=session.getAttribute("member_id")%>"; --%>
+		
+// 		if(member_id == null){
+// 			var url = "${pageContext.request.contextPath}" + "/member/login";
+// 			$(location).attr('href', url);
+// 		}
+		
 		setFinalArea();
 		//버튼 바로 위에 있는 form을 데이터화하여 전송
 		var form = $(this).parents("#form_box");
@@ -276,6 +313,7 @@ $(function(){
 	}
 	
 }); 
+
 ////////////////////문의게시판 영역///////////////
 $(function(){
 // '문의하기' Modal
@@ -443,6 +481,10 @@ $(function(){
 	};
 
 </script>
+
+<script>
+
+</script>
 <style>
 .final_price, .final_qtt {
 	font-size: 1.5rem;
@@ -492,10 +534,17 @@ $(function(){
 .contentImage_box {
 	width: 100%;
 	height: 100px;
+	cursor: pointer;
+	outline: none;
 }
+
+.contentImage_box:focus {
+	outline: none;
+}
+
 .contentImage_box > img {
-	width: 150px;
-	height: 100px;
+	width: 95%;
+	height: auto;
 	margin: 5px;
 }
 .options {
@@ -529,6 +578,11 @@ $(function(){
 	margin: 30px 0px;
 }
 
+.contentImage_box {
+	margin: 5px;
+}
+
+
 </style>
 <article>
 <section class="goods_info_section">
@@ -539,12 +593,17 @@ $(function(){
 		<div class="row">
 			<div class="col-lg-6">
 				<div class="mainImage_box">
-					<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${files_no}">
+					<img class="rounded mainImage" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${files_no}">
 				</div>
+				<div id="contentImage_slide" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}'>
+					<div class="contentImage_box">
+						<img class="rounded contentImage" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${files_no}">
+					</div>
+				<c:forEach var="content_files" items="${content_image}">
 				<div class="contentImage_box">
-					<c:forEach var="content_files" items="content_files_list">
-						<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${files_no}">
-					</c:forEach>
+						<img class="rounded contentImage" src="${pageContext.request.contextPath}/goods/contentImageDown?files_no=${content_files}">
+				</div>
+				</c:forEach>
 				</div>
 			</div>		
 			<div class="col-lg-6">
