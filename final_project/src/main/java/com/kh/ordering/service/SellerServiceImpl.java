@@ -75,7 +75,7 @@ private SellerCategoryDao sellerCategoryDao;
 		//세션에서 판매자 아이디를 가져와서 판매자 카테고리 다오에서 넘버를 꺼내서 온다
 		 String seller_id=(String)session.getAttribute("seller_id");
 		int seller_no=sellerCategoryDao.getNo(seller_id);
-				log.info("seller_id[]"+seller_id);
+				log.info("seller_no[]"+seller_no);
 		
 		// 파일이 있다면 파일 테이블에 파일 등록하고
 				File dir  = new File("D:/upload/kh2d");//파일을 넣을 폴더 경로
