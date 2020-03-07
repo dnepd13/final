@@ -423,13 +423,12 @@ function inputOrderInfo(){
 	padding-left: 10px;
 }
 
+.section1 {
+	margin:70px 0px;
+}
 </style>
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
-
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-
+<section class="section1">
 <form class="form_send" action="${pageContext.request.contextPath}/pay/kakao/confirm" method="POST">
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 order_addr_area justify-content-center">
@@ -551,10 +550,7 @@ function inputOrderInfo(){
 	</div>
 </div>
 </form>
-<<<<<<< HEAD
-
+</section>
 <div class="row-empty-40"></div>
 
-=======
->>>>>>> refs/remotes/origin/master
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

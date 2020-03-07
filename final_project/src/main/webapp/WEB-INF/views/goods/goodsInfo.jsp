@@ -72,6 +72,9 @@
 		margin: 10px 0
 	}
 	
+.section1 {
+	margin:70px 0px;
+}
 </style>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
@@ -140,6 +143,11 @@ $(function(){
 		// 옵션 전체 선택했을 때
 		if(selectedAll){
 			count++;
+			if(goodsVO.goods_stock < 1) {
+				count=0;
+				window.alert("품절된 상품입니다.");
+				return;
+			}
 			$(".submit_ordering").attr("disabled",false);
 			$(".add_cart_btn").attr("disabled",false);
 			
@@ -571,12 +579,9 @@ $(function(){
 }
 
 .options {
-	width: 40%;
+	width: 50%;
 }
 
-.goods_info_section{
-	margin: 30px 0px;
-}
 
 .contentImage_box {
 	margin: 5px;
@@ -585,7 +590,7 @@ $(function(){
 
 </style>
 <article>
-<section class="goods_info_section">
+<section class="section1">
 	<form id="form_box" action="../order/order" method="POST">
 	<hr>
 	<div class="row justify-content-center">
@@ -643,7 +648,14 @@ $(function(){
 							<select class="options form-control">
 								<option value="">선택</option>
 								<c:forEach items="${goodsOptionVO.goodsOptionList}" var="goodsOptionDto">
-									<option value="${goodsOptionDto.goods_option_no}">${goodsOptionDto.goods_option_content}(${goodsOptionDto.goods_option_price})</option>
+									<c:choose>
+										<c:when test="${goodsOptionDto.goods_option_stock>0}">
+											<option value="${goodsOptionDto.goods_option_no}">${goodsOptionDto.goods_option_content}(${goodsOptionDto.goods_option_price}원)(남은수량:${goodsOptionDto.goods_option_stock}개)</option>
+										</c:when>
+										<c:otherwise>
+											<option disabled value="${goodsOptionDto.goods_option_no}">[품절]${goodsOptionDto.goods_option_content}(${goodsOptionDto.goods_option_price}원)(남은수량:${goodsOptionDto.goods_option_stock}개)</option>
+										</c:otherwise>
+									</c:choose>
 								</c:forEach>
 							</select>
 							<hr>

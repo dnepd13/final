@@ -74,6 +74,14 @@ $(function(){
 	margin: 50px 0px;
 }
 
+.soldout {
+	text-decoration: line-through;
+}
+
+.badge {
+	margin-left: 10px;
+}
+
 </style>
 <!-- 바뀐 session의 member_no에서 memeber_id를 구해서 확인  -->
 
@@ -82,19 +90,35 @@ $(function(){
   <div class="container">
   	<div class="row">
 	 <div class="col-12">
-		 <h1 class="text-center">Best</h1>
+		 <h1 class="title">인기 상품</h1>
 	 </div>
   	<c:forEach var="goodsFileVO" items="${listBest}">
-  		<div class="col-sm-4 goods_box">
-  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
-  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
-  			</a>
-	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
-	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
-	  		<p class="goods_price">
-	  			<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber>
-	  		</p>
-  		</div>
+  	 	<c:choose>
+  	 		<c:when test="${goodsFileVO.goodsDto.goods_stock>0}">
+		  		<div class="col-sm-4 goods_box">
+		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
+		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
+		  			</a>
+			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
+			  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+			  		<p class="goods_price">
+			  			<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber>
+			  		</p>
+		  		</div>
+  	 		</c:when>
+  	 		<c:otherwise>
+  	 			<div class="col-sm-4 goods_box soldout">
+		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
+		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
+		  			</a>
+			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
+			  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+			  		<p class="goods_price">
+			  			<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber>
+			  		</p>
+		  		</div>
+  	 		</c:otherwise>
+  		</c:choose>
 	</c:forEach>
   	</div>
   </div>
@@ -104,18 +128,33 @@ $(function(){
   <div class="container">
   	<div class="row">
   	<div class="col-12">
-		 <h1 class="text-center">New</h1>
+		 <h1 class="title">새로운 상품</h1>
 	 </div>
   	<c:forEach var="goodsFileVO" items="${listNew}">
-  		<div class="col-lg-4 goods_box">
+  	<c:choose>
+	 	<c:when test="${goodsFileVO.goodsDto.goods_stock>0}">
+	 		<div class="col-lg-4 goods_box">
   			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
   				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
   			</a>
-  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
-  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
-  		<p class="goods_price">
-  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
+	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+	  		<p class="goods_price">
+	  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
   		</div>
+	 	</c:when>
+	 	<c:otherwise>
+	  		<div class="col-lg-4 goods_box soldout">
+	  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
+	  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
+	  			</a>
+	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
+	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+	  		<p class="goods_price">
+	  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+	  		</div>
+	 	</c:otherwise>
+	</c:choose>
 	</c:forEach>
   	</div>
   </div>
@@ -126,18 +165,33 @@ $(function(){
   <div class="container">
   	<div class="row">
   	<div class="col-12">
-		 <h1 class="text-center">All</h1>
+		 <h1 class="title">모든 상품</h1>
 	 </div>
   	<c:forEach var="goodsFileVO" items="${list}">
-  		<div class="col-lg-4 goods_box">
+  		<c:choose>
+		 	<c:when test="${goodsFileVO.goodsDto.goods_stock>0}">
+		 		<div class="col-lg-4 goods_box">
   			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
   				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
   			</a>
-  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
-  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
-  		<p class="goods_price">
-  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
-  		</div>
+	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
+	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+	  		<p class="goods_price">
+	  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+	  		</div>
+		 	</c:when>
+		 	<c:otherwise>
+		  		<div class="col-lg-4 goods_box soldout">
+		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
+		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
+		  			</a>
+		  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
+		  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+		  		<p class="goods_price">
+		  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+		  		</div>
+		 	</c:otherwise>
+ 		</c:choose>
 	</c:forEach>
   	</div>
   </div>
