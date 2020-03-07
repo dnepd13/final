@@ -97,9 +97,15 @@
 	});
 </script>
 
-<!-- 카테고리관리창--><div style="padding-top: 50px;">
+<!-- 카테고리관리창-->
+<aside>
+<div>
 <jsp:include page="template/header.jsp"></jsp:include>
 </div>
+</aside>
+
+<section class="admin" style="padding-left: 250px;">
+	<article>
 
 
 <div class="container-fluid">
@@ -198,4 +204,4 @@
         </div>
     </div>
 
-
+</article></section>

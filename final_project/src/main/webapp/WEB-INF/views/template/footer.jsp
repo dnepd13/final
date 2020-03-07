@@ -3,7 +3,6 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 
-<div class="row-empty-40"></div>
 <footer>
 <div class="footer_area">
 	<ul class="footer_title">
@@ -23,6 +22,6 @@
 	</ul>
 </div>
 </footer>
-
+</section>
 </body>
 </html>

@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.entity.PayDto;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.repository.MemberDao;
@@ -63,12 +64,12 @@ public class KakaoPayController {
 	@PostMapping("/test")
 	public String test(@RequestParam String orderVO, Model model) {
 		model.addAttribute("orderVO", orderVO);
-		return "pay/test";
+		return "pay/kakao/test";
 	}
 	
 	@GetMapping("/confirm")
 	public String confirm() {
-		return "pay/confirm";
+		return "pay/kakao/confirm";
 	}
 	
 	@PostMapping("/confirm")
@@ -87,7 +88,7 @@ public class KakaoPayController {
 		} 
 		catch (URISyntaxException e) {
 			e.printStackTrace();
-			return "redirect:/pay/confirm";
+			return "redirect:/pay/kakao/confirm";
 		}
 		
 	}
@@ -104,10 +105,6 @@ public class KakaoPayController {
 		session.removeAttribute("tid");
 		session.removeAttribute("ready");
 		
-		log.info("pg_token = {}", pg_token);
-		log.info("tid = {}", tid);
-		log.info("vo = {}", vo);
-		
 		KakaoPaySuccessReadyVO data = KakaoPaySuccessReadyVO.builder()
 												.cid("TC0ONETIME")
 												.tid(tid)
@@ -118,9 +115,15 @@ public class KakaoPayController {
 
 		KakaoPaySuccessReturnVO result = payService.approve(data);
 		
-		 payService.transactionOrder(data.getPartner_order_id());
+		payService.transactionOrder(data.getPartner_order_id());
 		 
-		 return "redirect:/pay/success";
+		int cart_info_no = orderDao.getCartInfoNo(data.getPartner_order_id());
+		return "redirect:/member/cartDetailGoods?cart_info_no="+cart_info_no;
+	}
+	
+	@GetMapping("/result")
+	public String result() {
+		return "pay/success"; 
 	}
 	
 	@GetMapping("/list")
@@ -150,9 +153,11 @@ public class KakaoPayController {
 		return "pay/cancel";
 	}
 	
-//////////주문제작
-//	결제준비 요청-응답
-	@PostMapping("/customPay")
+	
+	
+//	주문제작
+
+	@PostMapping("/customPay") // 결제준비 요청-응답
 	public String customPay(@RequestParam String jsonOrderVO, HttpSession session) throws URISyntaxException, JsonMappingException, JsonProcessingException {
 		
 		// 결제준비 요청 데이터(뷰에서 넘어온 jsonOrderVO)를 받아서 카카오페이 요청 데이터에 set
@@ -166,24 +171,18 @@ public class KakaoPayController {
 		session.setAttribute("tid", result.getTid()); // 응답의 tid
 		session.setAttribute("readyVO", readyVO); // 결제요청 데이터
 		
-		ObjectMapper mapper = new ObjectMapper();
-		OrderVO orderVO = mapper.readValue(jsonOrderVO, OrderVO.class);
-		session.setAttribute("custom_order_no", orderVO.getCustomOrderVO().getCustom_order_no());
-		
 		// 응답 데이터 중 결제를 위한 주소가 들어있는 페이지로 redirect
 		return "redirect:"+result.getNext_redirect_pc_url();
 	}
 	
-	@GetMapping("/customPaySuccess")
+	@GetMapping("/customPaySuccess") // 결제승인 요청-응답
 	public String customPaySuccess(@RequestParam String pg_token, HttpSession session,
 																Model model) throws Exception {
 		String tid = (String)session.getAttribute("tid");
 		KakaoPayReadyVO readyVO = (KakaoPayReadyVO) session.getAttribute("readyVO");
 		
-		int custom_order_no = (Integer)session.getAttribute("custom_order_no");
 		session.removeAttribute("tid");
 		session.removeAttribute("readyVO");
-		session.removeAttribute("custom_order_no");
 		
 		// 결제 승인처리
 		// KakaoPaySuccessReadyVO를 받아서 KakaoPaySuccessReturnVO 반환
@@ -196,14 +195,24 @@ public class KakaoPayController {
 																					.pg_token(pg_token)
 																					.build();
 
-		KakaoPaySuccessReturnVO result = payService.approveVO(successReadyVO, session, custom_order_no);
+		KakaoPaySuccessReturnVO result = payService.approveVO(successReadyVO, session);
 		
 		model.addAttribute("patner_order_id", readyVO.getPartner_order_id());
 		
 		return "pay/customPaySuccess";
 	}
-	@GetMapping("/customPayCancel")
+	@GetMapping("/customPayCancel") // 결제취소
 	public String customPayCancel(){
 		return "pay/customPayCancel";
+	}
+	
+	@GetMapping("/customPayRevoke")
+	public String customPayRevoke(@RequestParam int ordering_no) throws URISyntaxException {
+			PayDto payDto = payDao.get(ordering_no);
+		
+			KakaoPayRevokeReturnVO revokeReturnVO = payService.customRevokeVO(payDto);
+
+
+		return "redirect:/member/cartDetailPay?partner_order_id="+payDto.getPartner_order_id();
 	}
 }

@@ -4,8 +4,9 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<h1>사이트매출현황</h1>
+
 <jsp:include page="../template/header.jsp"></jsp:include>
+<h1>사이트매출현황</h1>
 <h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
 
     <hr>

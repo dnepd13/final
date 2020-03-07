@@ -3,9 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<div style="padding-top: 50px;">
+
+
+<aside>
+<div>
 <jsp:include page="../template/header.jsp"></jsp:include>
 </div>
+</aside>
+
+<section class="admin" style="padding-left: 250px;">
+	<article>
     <title>Document</title>
     <style></style>
     <script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
@@ -38,4 +45,4 @@
    </div>
         </div>
     </div>
-    
+    </article></section>

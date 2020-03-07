@@ -40,6 +40,7 @@ import com.kh.ordering.repository.GoodsQnaDao;
 import com.kh.ordering.repository.GoodsReviewDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.SellerCustomDao;
+import com.kh.ordering.repository.SellerDao;
 import com.kh.ordering.service.DeliveryService;
 import com.kh.ordering.service.GoodsReviewService;
 import com.kh.ordering.service.GoodsService;
@@ -55,6 +56,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/goods")
 @Slf4j
 public class GoodsController {
+	
+	@Autowired
+	private SellerDao sellerDao;
 	
 	@Autowired
 	private FilesDao filesDao;
@@ -94,8 +98,28 @@ public class GoodsController {
 	// 파일 다운로드
 	@GetMapping("/mainImageDown")
 	public ResponseEntity<ByteArrayResource> mainImageDown(@RequestParam int files_no) throws IOException{
-		File dir = new File("C:/upload");
+		File dir = new File("D:/upload/kh2d");
 		File target = new File(dir, "goodsMain" + files_no);
+		byte[] data = FileUtils.readFileToByteArray(target);
+		
+		if(data==null) {
+			return ResponseEntity.notFound().build();
+		}
+		ByteArrayResource resource = new ByteArrayResource(data);
+		
+		FilesDto filesDto = filesDao.getFiles(files_no);
+		
+		return ResponseEntity.ok()
+				.contentType(MediaType.APPLICATION_OCTET_STREAM)
+				.contentLength(filesDto.getFiles_size())
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+URLEncoder.encode(filesDto.getFiles_savename(),"UTF-8")+"\"")
+				.body(resource);
+	}
+	
+	@GetMapping("/contentImageDown")
+	public ResponseEntity<ByteArrayResource> contentImageDown(@RequestParam int files_no) throws IOException{
+		File dir = new File("D:/upload/kh2d");
+		File target = new File(dir, "goodsContent" + files_no);
 		byte[] data = FileUtils.readFileToByteArray(target);
 		
 		if(data==null) {
@@ -114,8 +138,9 @@ public class GoodsController {
 	
 	
 	@GetMapping("/insert")
-	public String insert(Model model) {
+	public String insert(Model model, HttpSession session) {
 		model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
+		model.addAttribute("seller_no", sellerDao.getSellerNo((String)session.getAttribute("seller_id")));
 		return "goods/insert";
 	}
 	
@@ -137,7 +162,7 @@ public class GoodsController {
 		// 물리 저장 처리
 		//파일 저장 : 저장을 할 가상의 파일 객체가 필요
 		//저장경로 : D:/upload
-		File dir = new File("C:/upload");
+		File dir = new File("D:/upload/kh2d");
 		dir.mkdirs();//디렉터리 생성
 		
 		File target = new File(dir, "goodsMain" + files_no);
@@ -148,7 +173,9 @@ public class GoodsController {
 			goods_content_image[i].transferTo(tg);
 		}
 		
-		return "redirect:getList";
+		int page_no = goodsDao.getSequence();
+		
+		return "redirect:goodsInfo?goods_no=" + page_no;
 	}
 	
 	@GetMapping("/get")
@@ -187,7 +214,8 @@ public class GoodsController {
 	
 	@GetMapping("/goodsInfo")
 	public String goodsInfo(@RequestParam int goods_no, Model model, HttpSession session,
-												@RequestParam(value = "pageNo", required=false, defaultValue="0")String pageNo) throws JsonProcessingException {
+												@RequestParam(value = "pageNo", required=false, defaultValue="0")String pageNo,
+												@RequestParam(value = "reviewPage", required=false, defaultValue="0")String reviewPage) throws JsonProcessingException {
 		String jsonGoodsVO = new ObjectMapper().writeValueAsString(goodsService.getGoodsVO(goods_no));
 		String jsonGoodsOptionVOList = new ObjectMapper().writeValueAsString(goodsService.getGoodsOptionVOList(goods_no));
 		
@@ -195,8 +223,19 @@ public class GoodsController {
 		model.addAttribute("goodsOptionVOList", goodsService.getGoodsOptionVOList(goods_no));
 		model.addAttribute("jsonGoodsVO", jsonGoodsVO);
 		model.addAttribute("jsonGoodsOptionVOList", jsonGoodsOptionVOList);
-
-//	문의, 리뷰 게시판 ...... 세션아이디 없어도 들어갈 수 있게 ..........ㅎ....
+		
+		model.addAttribute("files_no", goodsDao.getGoodsMainImage(goods_no));
+		
+		if(goodsDao.getContentImage(goods_no).size()>0) {
+			model.addAttribute("content_image", goodsDao.getContentImage(goods_no));
+		}
+		// 적립금
+		int rate = 1;
+		if((String)session.getAttribute("member_id") != null) {
+			rate = memberDao.getGradeBenefitRate(memberDao.getMemberGrade(memberDao.getNo((String)session.getAttribute("member_id"))));
+		}
+		model.addAttribute("rate", rate);
+		//	문의, 리뷰 게시판 ...... 세션아이디 없어도 들어갈 수 있게 ..........ㅎ....
 		String member_id=(String)session.getAttribute("member_id");
 		String seller_id = (String)session.getAttribute("seller_id");
 		if(member_id!=null) { // 판매자 로그인 상태일 때 세션에서 seller_id 가져와서 비교		
@@ -213,7 +252,9 @@ public class GoodsController {
 			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
 			model.addAttribute("goodsQna", goodsQna);
 			
-			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(goods_no);
+			PagingVO page = goodsReviewService.goodsReviewPaging(reviewPage, goods_no);
+			model.addAttribute("reviewPage", page);
+			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(page);
 			model.addAttribute("goodsReview", goodsReview); // 리뷰 목록
 			
 			// 리뷰 댓글
@@ -222,6 +263,7 @@ public class GoodsController {
 				reviewReply.addAll(goodsReviewDao.getListReply(review.getGoods_review_no()));
 				model.addAttribute("reviewReply", reviewReply);
 			}
+			
 			// 리뷰 파일
 			List<FilesVO> reviewFiles = new ArrayList<>();
 			for(GoodsReviewDto review : goodsReview) {
@@ -232,7 +274,7 @@ public class GoodsController {
 		return "goods/goodsInfo";
 	}
 	
-	@PostMapping("/large")
+	@PostMapping("/large") 
 	@ResponseBody
 	public List<String> large(@RequestParam String category_name) {
 		return categoryDao.getList("category_middle", category_name);

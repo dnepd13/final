@@ -6,6 +6,7 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
@@ -14,6 +15,7 @@
  	.articleBox {
  		width: 500px;
 		margin: 0 auto;
+		padding-top: 5rem;
 	}
 
 /*수정 modal 내부 input 스타일 */	
@@ -104,7 +106,6 @@
 	});
 </script>
   
-<div class="row-empty-40"></div>    
 <article class="articleBox">
 
 <div class="card mb-3">
@@ -121,7 +122,10 @@
 			 		</c:otherwise>
 		 		</c:choose>
 			</span>
-			<span style="float:right;">${getListInfoReq.custom_order_date}</span><br>
+			<span style="float:right;">
+				<fmt:parseDate value="${getListInfoReq.custom_order_date}" var="custom_order_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+				<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
+			</span><br>
 			<span style="float:right;">${getListInfoReq.custom_order_status }</span>
 		</h6>
 	</div>

@@ -35,7 +35,7 @@ public class ChartServiceImpl implements ChartService{
 		ajaxObjCols1.put("type", "string");
 		
 		ajaxObjCols2.put("id", "");
-		ajaxObjCols2.put("label", "value");
+		ajaxObjCols2.put("label", "접속자수");
 		ajaxObjCols2.put("pattern", "");
 		ajaxObjCols2.put("type", "number");
 		

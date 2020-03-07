@@ -3,9 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sping" uri="http://www.springframework.org/tags" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
-<div style="padding-top: 50px;">
+
+<aside>
+<div>
 <jsp:include page="../template/header.jsp"></jsp:include>
 </div>
+</aside>
+
+<section class="admin" style="padding-left: 250px;">
+	<article>
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
@@ -14,8 +20,18 @@
 
 	
 <div class="offset-md-3 col-md-6">
-<h1>${param.seller_id }님의 ${list.goods_name} 상품입니다</h2>
+<h1>${param.seller_id }님의 ${list.goods_name} 상품입니다</h1>
 </div>
+
+<div class="row justify-content-center" style="padding: 20px;">
+<h3>상품 사진</h3>
+</div>
+<div class="row justify-content-center" style="padding: 15px;" >
+<c:forEach var="filesVO" items="${file }">
+	<img src="http://localhost:8080/admin/goods/download?files_no=${filesVO.files_no }" width=150px; height=150px;>
+</c:forEach>
+</div>
+
 	<table class="table table-hover">
   <thead>
     <tr>
@@ -40,17 +56,10 @@
     </tr>
   </tbody>
 </table>
-<div class="row justify-content-center" style="padding: 50px;">
-<h3>상품 사진</h3>
-</div>
-<div class="row justify-content-center" style="padding: 30px;" >
-<c:forEach var="filesVO" items="${file }">
-	<img src="http://localhost:8080/admin/goods/download?files_no=${filesVO.files_no }" width=150px; height=150px;>
-</c:forEach>
-</div>
 
-<div class="row justify-content-center" style="padding: 30px;">
-<h1>${list.goods_name} 상품의 옵션</h2><br>
+
+<div class="row justify-content-center" style="padding: 50px;">
+<h1>${list.goods_name} 상품의 옵션</h1><br>
 </div>
 
 <table class="table table-hover">
@@ -84,3 +93,4 @@
 </div>
         </div>
     </div>
+</article></section>

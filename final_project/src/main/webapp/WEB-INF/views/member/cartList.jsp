@@ -5,6 +5,7 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 
@@ -14,31 +15,19 @@
 	.articleBox {
 		width: 60%;
 		margin: 0 auto;
+		padding-top: 5rem;
 	}
 	
 	table {border-collapse: collapse;}
 	.table_head {
 		background-color: rgb(248,245,240);
 	}
-/*	부트스트랩 nav */
-	.navbar {
-	    padding: 3px 1rem;
-	}
-	.navbar .nav-link {
-		margin: 5px 0;
-	    padding: 0 2rem;
-	    border-left: 1px solid rgba(255,255,255,0.1);
-	    border-right: 1px solid rgba(0,0,0,0.2);
-	    font-size: 13px;
-	}
+
 </style>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-<div class="row-empty-40"></div>
-<div class="row-empty-40"></div>
-
-<article class="articleBox">
+<article class="articleBox infoPage-area">
 <table class="table table-hover" border="1">
   <thead align="center">
     <tr class="table_head">
@@ -63,7 +52,7 @@
 </table> 
 
 <!-- 내비게이터 -->
-<div>
+<div class="row justify-content-center">
 	<ul class="pagination">
 		<c:if test="${paging.startBlock > 1 }">
 			<li class="page-item">

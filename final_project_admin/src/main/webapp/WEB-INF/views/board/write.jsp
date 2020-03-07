@@ -1,11 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
 
-<div style="padding-top: 50px;">
+<aside>
+<div>
 <jsp:include page="../template/header.jsp"></jsp:include>
 </div>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
+</aside>
+
+<section class="admin" style="padding-left: 250px;">
+	<article>
 <div class="container-fluid">
         <div class="row" style="padding: 50px;"><br>
             <div class="offset-md-3 col-md-6">
@@ -51,3 +56,4 @@
    </div>
         </div>
     </div>
+    </article></section>

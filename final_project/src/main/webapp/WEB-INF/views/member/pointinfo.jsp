@@ -2,6 +2,13 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
 <h1>포인트 상세정보</h1>
 
 <h1><a href="${pageContext.request.contextPath}/home">홈페이지로</a></h1>
@@ -18,3 +25,5 @@
 
 </c:forEach>
 </div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

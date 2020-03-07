@@ -19,9 +19,15 @@ $(function(){
 });
 </script>
 
-<div style="padding-top: 50px;">
-	<jsp:include page="../template/header.jsp"></jsp:include>
+
+<aside>
+<div>
+<jsp:include page="../template/header.jsp"></jsp:include>
 </div>
+</aside>
+
+<section class="admin" style="padding-left: 250px;">
+	<article>
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
@@ -41,12 +47,11 @@ $(function(){
       <th width="10%">상세보기</th>
       <th width="10%">차단
       <th width="10%">비밀번호초기화</th>
-      </th>
     </tr>
   </thead>
   <tbody>
     <c:forEach var="list" items="${list }">
-    <tr class="table-light"">
+    <tr class="table-light">
       <th scope="row">${list.seller_id}</th>
       <td>${list.seller_name}</td>
       <td>${list.seller_email}</td>
@@ -174,3 +179,5 @@ $(function(){
 </div>
         </div>
     </div>
+    
+</article></section>
