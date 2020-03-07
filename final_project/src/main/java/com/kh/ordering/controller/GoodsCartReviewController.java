@@ -26,6 +26,7 @@ import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsReviewDto;
+import com.kh.ordering.entity.GoodsReviewReplyDto;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.GoodsReviewDao;
@@ -167,5 +168,47 @@ public class GoodsCartReviewController {
 													.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+URLEncoder.encode(filesDto.getFiles_savename(),"UTF-8")+"\"")
 													.body(resource);
 			
+		}
+		
+// 리뷰 댓글 등록
+		@PostMapping("/insertReply")
+		public String insertReply(HttpSession session,
+														@ModelAttribute GoodsReviewReplyDto goodsReviewReplyDto,
+														int goods_review_no) {
+			
+			String member_id = (String)session.getAttribute("member_id");
+			int member_no= memberDao.getNo(member_id);
+			
+			goodsReviewReplyDto.setMember_no(member_no);
+			goodsReviewReplyDto.setGoods_review_reply_writer(member_id);
+			goodsReviewDao.insertReviewReply(goodsReviewReplyDto);
+			
+			int goods_no = goodsReviewDao.getGoodsNoReview(goods_review_no);
+			
+			return "redirect:/goods/goodsInfo?goods_no="+goods_no;
+		}
+		@PostMapping("/updateReply")
+		public String updateReply(@ModelAttribute GoodsReviewReplyDto goodsReviewReplyDto,
+														int goods_review_reply_no) {
+			
+			int member_no = goodsReviewReplyDto.getMember_no();
+			
+			goodsReviewReplyDto.setMember_no(member_no);
+			goodsReviewReplyDto.setGoods_review_no(goodsReviewReplyDto.getGoods_review_no());
+			goodsReviewReplyDto.setGoods_review_reply_content(goodsReviewReplyDto.getGoods_review_reply_content());
+			goodsReviewDao.updateReviewReply(goodsReviewReplyDto);
+			
+			int goods_no = goodsReviewDao.getGoodsNoReview(goodsReviewReplyDto.getGoods_review_no());
+			
+			return "redirect:/goods/goodsInfo?goods_no="+goods_no;
+		}
+		@PostMapping("/deleteReply")
+		public String deleteReply(@RequestParam int goods_review_reply_no,
+														@RequestParam int goods_review_no) {
+			goodsReviewDao.deleteReviewReply(goods_review_reply_no);
+			
+			int goods_no = goodsReviewDao.getGoodsNoReview(goods_review_no);
+			
+			return "redirect:/goods/goodsInfo?goods_no="+goods_no;
 		}
 }

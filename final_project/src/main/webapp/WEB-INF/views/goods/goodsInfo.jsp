@@ -74,6 +74,7 @@
 		margin: 10px 0
 	}
 	
+	
 .section1 {
 	margin:70px 0px;
 }
@@ -390,7 +391,7 @@ $(function(){
 			    					"member_no" : member_no,
 			    				},
 			    		success: function(resp){
-			    			location.reload(true);
+			    			alert("문의가 수정되었습니다.");
 			    		}
 			    	});				
 				}
@@ -412,6 +413,9 @@ $(function(){
 			    			location.reload(true);
 			    		}
 			    	});
+		    	}
+		    	else{
+		    		return false;
 		    	}
 		    });
     
@@ -447,12 +451,14 @@ $(function(){
 	    		method: "POST",
 	    		data: data,
 	    		success: function(resp){
-	    	        location.reload(true);
+	    	        
 	    		}
 	    	});
 	    	
 	    	$(this).parents(".qna_seller").hide();
 	    });
+
+// '리뷰댓글쓰기' 숨김, 보여주기
 	    $(".btn_reply").click(function(){
 	    	
 	        if($(this).text()=="댓글쓰기"){
@@ -465,30 +471,52 @@ $(function(){
 	        }
 	        
 	    });
-	    	    
+	    
+	    // 리뷰 댓글 수정
+	    $(".btn_reviewUpdate").click(function(){
+		    console.log($(this).text());
+	    	if($(this).text()=="수정"){
+
+			    var contentCell = $(this).parent().parent().prev().find("#reply_content");
+			    var content = contentCell.text();
+			    contentCell.empty();
+			    
+			    $("<textarea></textarea>").val(content).appendTo(contentCell);
+			    
+			    $(this).text("완료");
+			    console.log($(this).text());
+		    }
+		    else{
+		    	var contentCell = $(this).parent().parent().prev().find("#reply_content");
+			    var content = contentCell.children().val();
+			    contentCell.empty();
+			    contentCell.append(content);
+			    
+			    var goods_review_reply_content = contentCell.text();					
+				var goods_review_reply_no =$(this).parent().data("goods_review_reply_no");
+				var goods_reivew_no=$(this).parent().data("goods_reivew_no");
+				var member_no=$(this).parent().data("member_no");
+				var url = "${pageContext.request.contextPath}/member/updateReply";
+				
+				$(this).text("수정");
+				
+				$.ajax({
+		    		url: url,
+		    		method: "POST",
+		    		data: {"goods_reivew_no": goods_reivew_no,
+		    					"goods_review_reply_no":goods_review_reply_no,
+		    					"goods_review_reply_content": goods_review_reply_content,
+		    					"member_no" : member_no,
+		    				},
+		    		success: function(resp){
+		    			
+		    		}
+		    	});   
+			}
+	     });
+	    
+
 });
-
-
-
-///////// 문의,리뷰게시판 tab
-	function tabView(event, tabName){
-
-		// tab_content 숨김처리
-		var tab_content = document.querySelector(".tab_content");
-
-		for(var i=0 ; i<tab_content.length ; i++){
-			tab_content[i].style.display = "none";
-		}
-		
-		// tab 불러와서 초기화
-		var tab_links = document.querySelector(".tab_links");
-		for(var i=0 ; i<tab_links.length ; i++){
-			tab_links[i].className = tab_links[i].className.replace(" active", "");
-		}
-		
-		document.getElementById(tabName).style.display = "block"; // 해당 tab_content만 보여주기
-		event.currentTarget.className += "active"; // 이벤트로 클릭한 탭 활성화
-	};
 
 </script>
 
@@ -801,7 +829,9 @@ $(function(){
 						<td></td>
 						<td>[${qna.goods_qna_head }] ${qna.goods_qna_content }</td>
 						<td>${qna.goods_qna_writer }</td>
-						<td>${qna.goods_qna_date }</td>
+						<td><fmt:parseDate value="${qna.goods_qna_date }" var="goods_qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+								<fmt:formatDate value="${goods_qna_date }" pattern="yyyy/MM/dd HH:mm:ss"/>	
+						</td>
 						<td></td>
 					</tr>
 					</c:when>
@@ -810,7 +840,9 @@ $(function(){
 						<td>${qna.goods_qna_head }</td>
 						<td>${qna.goods_qna_content }</td>
 						<td>${qna.goods_qna_writer }</td>
-						<td>${qna.goods_qna_date }</td>
+						<td><fmt:parseDate value="${qna.goods_qna_date }" var="goods_qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+								<fmt:formatDate value="${goods_qna_date }" pattern="yyyy/MM/dd HH:mm:ss"/>	
+						</td>
 						<%-- 문의 작성자와 로그인한 member_id가 같을 때 / 상품 판매자와 로그인한 seller_id가 같을 때 --%>
 						<c:set var="status" value="${qna.goods_qna_status}"></c:set>
 						<c:choose>
@@ -939,7 +971,7 @@ $(function(){
 		</tr>
 		<tr class="reply" style="display:none;">
 			<td colspan="2">
-				<form action="insertReply" method="post">
+				<form action="../member/insertReply" method="post">
 					<input type="hidden" name="goods_review_no" value="${review.goods_review_no }">
 					<input type="hidden">
 					<textarea name="goods_review_reply_content" class="form-control" required></textarea>
@@ -948,7 +980,7 @@ $(function(){
 				</form>
 				</td>
 		</tr>
-		<c:forEach var="reviewReply" items="${reviewReply }">
+		<c:forEach var="reviewReply" items="${reviewReply }"> <!-- 댓글 목록 -->
 			<c:if test="${review.goods_review_no==reviewReply.goods_review_no }">
 			<tr>
 				<td colspan="2" style="padding: 0 12px;">
@@ -958,15 +990,20 @@ $(function(){
 								<fmt:parseDate value="${reviewReply.goods_review_reply_date }" var="reply_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 								<fmt:formatDate value="${reply_date }" pattern="yyyy/MM/dd HH:mm:ss"/>							
 							</span>
-							<div class="reply_content">${reviewReply.goods_review_reply_content }</div>
+							<div id="reply_content">${reviewReply.goods_review_reply_content }</div>
 					</div>
 					<c:if test="${reviewReply.member_no == member_no}">
-							<p data-goods_no = "${goodsVO.goods_no }"
-									data-goods_qna_no="${reviewReply.goods_review_reply_no }"
-									data-member_no="${reviewReply.member_no }" style="border-right: none;">
-									<button class="btn_reviewUpdate btn_clean">수정</button>
-									<button class="btn_reviewDelete btn_clean">삭제</button>
+						<form action="../member/deleteReply" method="post" class="delete_reply_form"
+									onsubmit="return confirm('댓글을 삭제하시겠습니까?');">
+							<p data-goods_reivew_no = "${review.goods_review_no }"
+									data-goods_review_reply_no="${reviewReply.goods_review_reply_no }"
+									data-member_no="${reviewReply.member_no }" align="right">
+									<button type="button" class="btn_reviewUpdate btn_clean">수정</button>
+									<input type="hidden" name="goods_review_reply_no" value="${reviewReply.goods_review_reply_no }">
+									<input type="hidden" name="goods_review_no" value="${review.goods_review_no }">
+									<input type="submit"  value="삭제" class="btn_reviewDelete btn_clean">									
 							</p>
+						</form>
 					</c:if>
 				</td>
 			</tr>

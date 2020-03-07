@@ -62,13 +62,21 @@ public class GoodsReviewDaoImpl implements GoodsReviewDao{
 	public int getGoodsNoReview(int goods_review_no) {
 		return sqlSession.selectOne("review.getGoodsNoReview", goods_review_no);
 	}
-	@Override
+	@Override // 댓글 입력
 	public void insertReviewReply(GoodsReviewReplyDto goodsReviewReplyDto) {
 		sqlSession.insert("review.insertReply", goodsReviewReplyDto);
 	}
-	@Override
+	@Override // 댓글 목록
 	public List<GoodsReviewReplyDto> getListReply(int goods_review_no) {
 		return sqlSession.selectList("review.getListReply", goods_review_no);
+	}
+	@Override // 댓글 수정
+	public void updateReviewReply(GoodsReviewReplyDto goodsReviewReplyDto) {
+		sqlSession.update("review.updateReply", goodsReviewReplyDto);
+	}
+	@Override // 댓글 삭제
+	public void deleteReviewReply(int goods_review_reply_no) {
+		sqlSession.delete("review.deleteReply", goods_review_reply_no);
 	}
 
 }

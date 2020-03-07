@@ -25,6 +25,8 @@ public interface GoodsReviewDao {
 	
 	// 리뷰 댓글
 	int getGoodsNoReview(int goods_review_no); // 리뷰번호로 상품번호 가져오기(리다이렉트 용)
-	void insertReviewReply(GoodsReviewReplyDto goodsReviewReplyDto);
-	List<GoodsReviewReplyDto> getListReply(int goods_review_no);
+	void insertReviewReply(GoodsReviewReplyDto goodsReviewReplyDto); // 댓글입력
+	List<GoodsReviewReplyDto> getListReply(int goods_review_no); // 댓글 목록
+	void updateReviewReply(GoodsReviewReplyDto goodsReviewReplyDto); // 댓글수정
+	void deleteReviewReply(int goods_review_reply_no);
 }
