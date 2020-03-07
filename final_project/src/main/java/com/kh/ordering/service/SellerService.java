@@ -20,9 +20,10 @@ public interface SellerService {
 		//포트폴리오 작성
        PortfolioDto Portfolio_insert(HttpSession session,
     		                          FilesVO files,
-    		                          SellerDto sellerDto,    		                        
-    		                          PortfolioDto portfolioDto)
+    		                          SellerDto sellerDto)
     		                          throws IllegalStateException,IOException;
+
+	List<FilesVO> filesList(int seller_no);
        
 	}
 		

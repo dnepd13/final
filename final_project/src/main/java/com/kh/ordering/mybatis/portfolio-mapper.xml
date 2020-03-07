@@ -7,12 +7,21 @@
  <!-- 포트폴리오 파일 등록 -->
  <insert id="insert">
 		insert into portfolio values(
-         #{files_no},
-         #{seller_no}
-
+		 #{seller_no},
+         #{files_no}
 	)
 	</insert>
-	<!-- 포토폴리오 조회 -->
+
+<!-- 포토폴리오 조회 -->
+	
+	<!-- seller_no로 파일no 조회 -->
+	<select id="getFilesNo" parameterType="int" resultType="FilesVO">
+		select files.files_no
+		    from files inner join portfolio
+		        on portfolio.files_no = files.files_no
+		where portfolio.seller_no = #{seller_no}
+	</select>
+	
 <!-- <select id=""></select> -->
 
 
