@@ -21,20 +21,20 @@
   <div class="collapse navbar-collapse" id="navbarColor03" style="padding: 0 2rem;">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="#" style="padding: 0 15px;">반지</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/goods/search?keyword=" style="padding: 0 15px;">전체보기</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" style="padding: 0 15px;">목걸이</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/goods/search?keyword=반지" style="padding: 0 15px;">반지</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" style="padding: 0 15px;">팔찌</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/goods/search?keyword=목걸이" style="padding: 0 15px;">목걸이</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" style="padding: 0 15px;">etc.</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/goods/search?keyword=팔찌" style="padding: 0 15px;">팔찌</a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search">
+    <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/goods/search" method="GET">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" name="keyword">
       <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
     </form>
   </div>

@@ -30,9 +30,9 @@ import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.entity.GoodsQnaDto;
 import com.kh.ordering.entity.GoodsReviewDto;
-import com.kh.ordering.entity.GoodsReviewFilesDto;
 import com.kh.ordering.entity.GoodsReviewReplyDto;
 import com.kh.ordering.repository.CategoryDao;
+import com.kh.ordering.repository.DeliveryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
@@ -44,6 +44,7 @@ import com.kh.ordering.repository.SellerDao;
 import com.kh.ordering.service.DeliveryService;
 import com.kh.ordering.service.GoodsReviewService;
 import com.kh.ordering.service.GoodsService;
+import com.kh.ordering.service.SellerService;
 import com.kh.ordering.vo.DeliveryVO;
 import com.kh.ordering.vo.FilesVO;
 import com.kh.ordering.vo.GoodsFileVO;
@@ -56,6 +57,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/goods")
 @Slf4j
 public class GoodsController {
+	
+	
+	@Autowired
+	private DeliveryDao deliveryDao;
 	
 	@Autowired
 	private SellerDao sellerDao;
@@ -88,6 +93,8 @@ public class GoodsController {
 	private GoodsReviewDao goodsReviewDao;
 	@Autowired
 	private GoodsReviewService goodsReviewService;
+	@Autowired
+	private SellerService sellerService;
 	
 	// 정렬 나중에...
 //	@GetMapping("/align")
@@ -190,15 +197,9 @@ public class GoodsController {
 		return "redirect:list";
 	}
 	
-	@GetMapping("/getList")
-	public String getList(Model model) {
-		
-		
-		model.addAttribute("listNew", goodsService.getListNew());
-		model.addAttribute("listBest", goodsService.getListBest());
-		
-		// 전체 상품
-		List<GoodsDto> list = goodsService.getList();
+	@GetMapping("/search")
+	public String search(Model model, @RequestParam String keyword) {
+		List<GoodsDto> list = goodsService.search(keyword);
 		List<GoodsFileVO> VOlist = new ArrayList<>();
 		for (GoodsDto goodsDto : list) {
 			GoodsFileVO goodsFileVO = GoodsFileVO.builder()
@@ -208,8 +209,9 @@ public class GoodsController {
 			VOlist.add(goodsFileVO);
 		}
 		model.addAttribute("list", VOlist);
+		model.addAttribute("listSize", list.size());
 //		model.addAttribute("VOList", VOlist);
-		return "goods/getList";
+		return "goods/search";
 	}
 	
 	@GetMapping("/goodsInfo")
@@ -224,13 +226,15 @@ public class GoodsController {
 		model.addAttribute("jsonGoodsVO", jsonGoodsVO);
 		model.addAttribute("jsonGoodsOptionVOList", jsonGoodsOptionVOList);
 		
+		model.addAttribute("deliveryDto", deliveryDao.get2(goods_no));
+		
 		model.addAttribute("files_no", goodsDao.getGoodsMainImage(goods_no));
 		
 		if(goodsDao.getContentImage(goods_no).size()>0) {
 			model.addAttribute("content_image", goodsDao.getContentImage(goods_no));
 		}
 		// 적립금
-		int rate = 1;
+		int rate = 0;
 		if((String)session.getAttribute("member_id") != null) {
 			rate = memberDao.getGradeBenefitRate(memberDao.getMemberGrade(memberDao.getNo((String)session.getAttribute("member_id"))));
 		}
@@ -252,6 +256,11 @@ public class GoodsController {
 			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
 			model.addAttribute("goodsQna", goodsQna);
 			
+			// 포트폴리오 파일
+			int seller_no = goodsQnaDao.getSeller(goods_no);
+			List<FilesVO> portfolioFiles = sellerService.filesList(seller_no);
+			model.addAttribute("portfolioFiles",portfolioFiles);
+			
 			PagingVO page = goodsReviewService.goodsReviewPaging(reviewPage, goods_no);
 			model.addAttribute("reviewPage", page);
 			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(page);
@@ -268,7 +277,7 @@ public class GoodsController {
 			List<FilesVO> reviewFiles = new ArrayList<>();
 			for(GoodsReviewDto review : goodsReview) {
 				reviewFiles.addAll(goodsReviewService.filesList(review.getGoods_review_no()));
-				model.addAttribute("filesVO", reviewFiles);
+				model.addAttribute("reviewFiles", reviewFiles);
 			}
 					
 		return "goods/goodsInfo";

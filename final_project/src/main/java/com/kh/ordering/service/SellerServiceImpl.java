@@ -73,13 +73,12 @@ private CategoryDao categoryDao;
     //------------포트폴리오 등록하기--------------// 
 	@Override
 	public PortfolioDto Portfolio_insert(HttpSession session,
-			FilesVO files, SellerDto sellerDto,PortfolioDto portfolioDto)
+			FilesVO files, SellerDto sellerDto)
 			throws IllegalStateException, IOException {
 		//세션에서 판매자 아이디를 가져와서 판매자 카테고리 다오에서 넘버를 꺼내서 온다
 		 String seller_id=(String)session.getAttribute("seller_id");
 		int seller_no=sellerCategoryDao.getNo(seller_id);
-				log.info("seller_no[]"+seller_no);
-		
+
 		// 파일이 있다면 파일 테이블에 파일 등록하고
 				File dir  = new File("D:/upload/kh2d");//파일을 넣을 폴더 경로
 				dir.mkdirs();//폴더가 없으면 폴더 생성
@@ -109,6 +108,7 @@ private CategoryDao categoryDao;
 								  .files_savename(Integer.toString(files_no)+"."+fileType)
 								  .files_uploadname(multiFile.getOriginalFilename())
 								  .build());
+
 			}
 				// 위의 filesList에 셋팅된 데이터를 filesList 길이만큼 반복하여 저장
 				for(int i=0 ; i<filesList.size();i++) {
@@ -123,17 +123,25 @@ private CategoryDao categoryDao;
 						// 포트폴리오 테이블
 						files_no = filesList.get(i).getFiles_no(); // 1번 for문의 filesList 길이만큼 files_no를 꺼내서 변수에 저장
 						
-						PortfolioDto portfolioDto1 =PortfolioDto.builder()
+						PortfolioDto portfolioDto =PortfolioDto.builder()
 																.files_no(files_no)
 															    .seller_no(seller_no)
 								                                .build();
-						portfolioDao.Portfolio_insert(portfolioDto1);
+						portfolioDao.Portfolio_insert(portfolioDto);
 					}
 				}
-				return portfolioDto;
+				return null;
 	
 	}
 
+///	포트폴리오 파일 가져오기
+	@Override
+	public List<FilesVO> filesList(int seller_no){
+		
+		List<FilesVO> filesVO = portfolioDao.getFilesList(seller_no);
+		
+		return filesVO;
+	}
 
    //------------------------판매자 카테고리------------------------//
 	@Override
@@ -184,8 +192,6 @@ private CategoryDao categoryDao;
 		log.info("vo123123={}", vo);
 		return vo;	
 	}
-
-
 
 	
 				}

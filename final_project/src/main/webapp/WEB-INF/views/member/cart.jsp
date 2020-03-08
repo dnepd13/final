@@ -346,6 +346,10 @@ function deliveryPriceTagUpdate(delivery_price){
 	padding: 15px;
 }
 
+.section1{
+	margin: 70px 0px;
+}
+
 </style>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
@@ -353,6 +357,7 @@ function deliveryPriceTagUpdate(delivery_price){
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
+<section class="section1">
 <form action="../order/order" method="POST">
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
@@ -431,4 +436,5 @@ function deliveryPriceTagUpdate(delivery_price){
 	</div>
 </div>
 </form>
+</section>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

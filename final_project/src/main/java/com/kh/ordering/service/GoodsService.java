@@ -117,6 +117,10 @@ public class GoodsService {
 	public List<GoodsFileVO> getListNew() {
 		return goodsDao.getListNew();
 	}
+
+	public List<GoodsDto> search(String keyword) {
+		return goodsDao.search(keyword);
+	}
 	
 	// 정렬 나중에..
 //	public void align(String type) {
