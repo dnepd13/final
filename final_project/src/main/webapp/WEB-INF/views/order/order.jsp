@@ -24,6 +24,8 @@ $(function(){
 // 	@ 총 금액(상품전체+배송비-포인트+부가세)
 // 	@ 총 배송비
 
+$(".alert-kakao").hide();
+$(".alert-none").hide();
 	
 var jsCartVOList = JSON.parse('${jsonCartVOList}');
 	
@@ -165,8 +167,21 @@ function orderingPriceUpdate(total_delivery_price){
 	// 총 상품금액 출력	
 	total_price += delivery_price;
 	if(total_price == 0){
-		$(".ordering_btn").attr("disabled", true);
+		$("#ordering_btn").attr("disabled", true);
+		$("#ordering_btn").hide();
+		$(".alert-none").show();
+		$(".alert-kakao").hide();
 		deliveryPriceTagUpdate(0);
+	} else if(total_price > 1000000) {
+		$("#ordering_btn").attr("disabled", true);
+		$("#ordering_btn").hide();
+		$(".alert-kakao").show();
+		$(".alert-none").hide();
+		deliveryPriceTagUpdate(0);
+	} else {
+		$("#ordering_btn").attr("disabled", false);
+		$("#ordering_btn").show();
+		$(".alert").hide();
 	}
 	$(".ordering_price").html(addComma(String(total_price))+" 원");
 	
@@ -546,6 +561,12 @@ function inputOrderInfo(){
 		</table>
 	</div>
 	<div class="col-lg-5">
+		<div class="alert-kakao alert alert-danger text-center" role="alert">
+		  1,000,000원을 초과할 수 없습니다!(카카오페이 테스트 결제 금액 초과!)
+		</div>
+		<div class="alert-none alert alert-primary text-center" role="alert">
+		   상품이 없습니다! <a href="${pageContext.request.contextPath}" class="alert-link">(쇼핑하기!)</a>
+		</div>
 		<button id="ordering_btn" class="btn btn-secondary btn-block">결제하기</button>
 	</div>
 </div>
