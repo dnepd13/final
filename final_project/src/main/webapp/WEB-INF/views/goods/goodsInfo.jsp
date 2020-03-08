@@ -735,12 +735,27 @@ $(function(){
 <div class="tab">
 <!-- 	<button class="tab_links active" onclick="tabView(event, 'tab1')">문의하기</button> -->
 <!-- 	<button class="tab_links" onclick="tabView(event, 'tab2')">리뷰</button> -->
-	<span><a href="#">상품정보</a></span>&verbar;
+	<span><a href="#tab1">포트폴리오</a></span>&verbar;
 	<span><a href="#tab2">문의하기</a></span>&verbar;
 	<span><a href="#tab3">리뷰</a></span>
 </div>
 
 <article class="articleBox">
+<!-- 포트폴리오 이미지 ----------------------------------------------------------------------- -->
+<div id="tab1" class="tab_content" align="center">
+	<div class="row-empty-40"></div>
+	<div class="row-empty-40"></div>
+	<c:if test="${ not empty portfolioFiles }">
+		<c:forEach var="portfolioFiles" items="${portfolioFiles }">
+			<img src="${pageContext.request.contextPath }/seller/portfolio_download?files_no=${portfolioFiles.files_no}" style="width:800px; height:auto;">
+		</c:forEach>
+	</c:if>
+</div>
+<div class="row-empty-40"></div>
+<div class="row-empty-40"></div>
+<hr>
+
+<!-- 문의 ----------------------------------------------------------------------- -->
 <div id="tab2" class="tab_content">
 	<div class="row-empty-20"></div>
 	<div class="qnaBox">
@@ -916,12 +931,12 @@ $(function(){
 				<fmt:formatDate value="${review_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
 			</td>
 		</tr>
-		<c:if test="${ not empty filesVO }">
+		<c:if test="${ not empty reviewFiles }">
 			<tr>
 				<td colspan="2">
-				<c:forEach var="filesVO" items="${filesVO }">
-				<c:if test="${review.goods_review_no==filesVO.goods_review_no }">
-					<img src="http://localhost:8080/ordering/member/reviewFile?files_no=${filesVO.files_no}" width=100px; height=100px;>
+				<c:forEach var="reviewFiles" items="${reviewFiles }">
+				<c:if test="${review.goods_review_no==reviewFiles.goods_review_no }">
+					<img src="http://localhost:8080/ordering/member/reviewFile?files_no=${reviewFiles.files_no}" width=100px; height=100px;>
 				</c:if>
 				</c:forEach>
 				</td>
@@ -934,7 +949,7 @@ $(function(){
 		<tr> 
 			<td colspan="2">
 				<c:choose>
-		        <c:when test="${member_id !=null }">
+		        <c:when test="${member_id !=null || seller_id !=null }">
 		        	&or;<button class="btn_reply btn_clean">댓글쓰기</button>
 		        </c:when>
 		        <c:otherwise>
@@ -966,6 +981,14 @@ $(function(){
 							</span>
 							<div class="reply_content">${reviewReply.goods_review_reply_content }</div>
 					</div>
+					<c:if test="${reviewReply.member_no == member_no}">
+							<p data-goods_no = "${goodsVO.goods_no }"
+									data-goods_qna_no="${reviewReply.goods_review_reply_no }"
+									data-member_no="${reviewReply.member_no }" style="border-right: none;">
+									<button class="btn_reviewUpdate btn_clean">수정</button>
+									<button class="btn_reviewDelete btn_clean">삭제</button>
+							</p>
+					</c:if>
 				</td>
 			</tr>
 			</c:if>
