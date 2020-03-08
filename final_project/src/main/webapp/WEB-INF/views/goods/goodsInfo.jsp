@@ -729,7 +729,6 @@ $(function(){
 	<hr>
 	<br>
 </section>
-<section id="portfolio_area"></section>
 </article>
 <!-- --------------------------------------------------- -->
 <div class="tab">
