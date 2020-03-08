@@ -40,6 +40,12 @@ public class GoodsDaoImpl implements GoodsDao{
 //		
 //	}
 	
+	//검색
+	@Override
+	public List<GoodsDto> search(String keyword) {
+		return sqlSession.selectList("goods.search", keyword);
+	}
+	
 	// 메인 이미지 파일번호 가져오기
 	@Override
 	public int getGoodsMainImage(int goods_no) {

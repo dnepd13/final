@@ -24,4 +24,5 @@ public interface GoodsDao {
 //	void getList(String type);
 	List<GoodsFileVO> getListNew();
 	List<GoodsFileVO> getListBest();
+	List<GoodsDto> search(String keyword);
 }
