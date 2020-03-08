@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
@@ -7,8 +8,8 @@
 <style>
  	aside { 
  		float : left; 
- 		padding: 30px 60px;
-		width: 300px;
+ 		padding: 60px 0px;
+		width: 150px;
  	}	 
  	aside ul { 
  		list-style: none; 
@@ -16,17 +17,17 @@
  	}
 	
 	.aside-title {
-		border: 2px solid black;
+		border: 2px solid #BFC9D9;
 		margin: 5px;
 		padding: 10px;
 	}
 	.aside-grade {
-		border: 2px solid black;
+		border: 2px solid #BFC9D9;
 		margin: 5px;
 		padding: 10px;
 	}
 	.aside-content {
-		border: 2px solid black;
+		border: 2px solid #BFC9D9;
 		margin: 5px;
 		padding: 10px;
 	}
@@ -45,6 +46,7 @@
 	
 </style>
 
+<c:if test="${member_id != null}">
 <aside>
 	<div class="aside-title">
 		마이페이지
@@ -90,3 +92,4 @@
 		</ul>
 	</div>
 </aside>
+</c:if>

@@ -7,27 +7,27 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <style>
 	.articleBox {
-		width: 1000px;
-		margin-left: 300px;
-		height: 500px;
-		padding-top: 5rem;
-	}
-	@media screen and (min-width:1360px){
-		.articleBox {
-			width: 60%;
-			margin: 0 auto;
-		}
+		width: 1200px;
+		height: 800px;
+		margin: 0 auto;
 	}
 	
 	.detailPayBox {
 		border-collapse: collapse;
+		float: left;
+		margin-left: 60px;
+		padding-top: 100px;
+		width: 960px;
+	}
+	.payContent {
+		margin: 0 auto;
+		width: 90%;
 	}
 </style>
 
@@ -45,7 +45,9 @@
 </script>
 
 <article class="articleBox">
-	<table class="table detailPayBox" border="1">
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
+	<div class="detailPayBox">
+	<table class="table payContent" border="1">
 		<tr>
 			<th>주문번호</th>
 			<td>${payDetails.partner_order_id }</td>
@@ -86,10 +88,10 @@
 		</tr>
 	</table>
 
-<p style="text-align: right;"><a href="${pageContext.request.contextPath }/member/cartList">목록으로</a></p>
+	<p style="text-align: right;"><a href="${pageContext.request.contextPath }/member/cartList">목록으로</a></p>
+	</div>
 </article>
 
-<div class="row-empty-40"></div>
 <div class="row-empty-40"></div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.ordering.entity.Member_PointDto;
+import com.kh.ordering.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,11 +33,20 @@ public class Member_PointDaoImpl implements Member_PointDao{
 
 
 	@Override
-	public List<Member_PointDto> getListPoint(int member_no) {
+	public List<Member_PointDto> getListPoint(PagingVO pagingVO) {
 
-		return sqlSession.selectList("member_PointDto.getListPoint",member_no);
+		return sqlSession.selectList("member_PointDto.getListPoint",pagingVO);
+	}
+	@Override
+	public int getListCount(int member_no) {
+		return sqlSession.selectOne("member_PointDto.getListCount", member_no);
 	}
 
+	@Override
+	public int getTotalPoint(int member_no) {
+		return sqlSession.selectOne("member_PointDto.getTotalPoint", member_no);
+	}
+	
 	@Override // 포인트 적립추가
 	public void insertPoint(Member_PointDto membePointDto) {	
 		sqlSession.insert("member_PointDto.insertPoint",membePointDto);
@@ -46,6 +56,5 @@ public class Member_PointDaoImpl implements Member_PointDao{
 		sqlSession.insert("member_PointDto.usedPoint", memberPointDto);
 	}
 	
-
 
 }
