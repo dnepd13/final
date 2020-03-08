@@ -54,6 +54,7 @@
 	</div>
 	<div class="aside-content">
 		<ul>
+		     <h3>상품관리</h3><br>
 			<li><a href="${pageContext.request.contextPath}/member/cartList">주문/배송</a><li>
 			<li><a href="#">교환/환불</a><li>
 		</ul>

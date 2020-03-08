@@ -10,6 +10,7 @@ import com.kh.ordering.entity.PortfolioDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.entity.SellerDto;
 import com.kh.ordering.vo.FilesVO;
+import com.kh.ordering.vo.PagingVO;
 public interface SellerService {
 	//판매자 가입 Service
 	void regist(SellerDto sellerDto);
@@ -23,6 +24,13 @@ public interface SellerService {
     		                          SellerDto sellerDto,    		                        
     		                          PortfolioDto portfolioDto)
     		                          throws IllegalStateException,IOException;
+
+	 public PagingVO categoryPagination(String pno1);
+		
+
+		
+		
+
        
 	}
 		

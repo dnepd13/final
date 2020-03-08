@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>  
     <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
- 
+ <jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/sellerInfoAside.jsp"/>
 <h1>판매자메인홈</h1>
 <c:choose>
 	<c:when test="${seller_id==null }">
@@ -15,3 +17,4 @@
 		  <h3><a href="${pageContext.request.contextPath}/seller/management">판매자 관리페이지</a></h3><br><br>
 	</c:otherwise>
 </c:choose>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

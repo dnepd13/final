@@ -3,8 +3,8 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="seller_category">
- <!-- 카테고리 리스트 불러오기 -->
-	<!-- <select id="sellerGetCategoryList" parameterType="paging" resultType="categoryDto">
+	<!-- 카테고리 리스트 불러오기 -->
+<select id="sellerGetCategoryList" parameterType="pagingVO" resultType="categoryDto">
 		select * from(
 			select rownum rn, A.* from(
 				select * from category 
@@ -14,10 +14,24 @@
 			)A
 		)where rn between #{start} and #{finish}
 	</select>
-	카테고리 목록 총 갯수 가져오기
+	
+	<!-- 카테고리 대 불러오기 -->
+	<select id="categoryItemBig" resultType="categoryDto">
+		select category_large from category group by category_large
+	</select>
+	<!-- 카테고리 중 불러오기 -->
+	<select id="categoryItemMiddle" resultType="categoryDto">
+		select category_middle from category group by category_middle
+	</select>
+	<!-- 카테고리 소 불러오기 -->
+	<select id="categoryItemSmall" resultType="categoryDto">
+		select category_small from category group by category_small
+	</select>
+	
+	<!-- 카테고리 목록 총 갯수 가져오기 -->
 	<select id="categoryCount" resultType="int">
 		select count(*) from category 
-	</select>	 -->
+	</select>	
 	<!-- 카테고리 등록하기 -->
 	<insert id="insert" parameterType="sellerCategoryDto">
 		insert into seller_category values(
