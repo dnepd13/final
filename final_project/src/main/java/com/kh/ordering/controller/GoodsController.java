@@ -196,15 +196,9 @@ public class GoodsController {
 		return "redirect:list";
 	}
 	
-	@GetMapping("/getList")
-	public String getList(Model model) {
-		
-		
-		model.addAttribute("listNew", goodsService.getListNew());
-		model.addAttribute("listBest", goodsService.getListBest());
-		
-		// 전체 상품
-		List<GoodsDto> list = goodsService.getList();
+	@GetMapping("/search")
+	public String search(Model model, @RequestParam String keyword) {
+		List<GoodsDto> list = goodsService.search(keyword);
 		List<GoodsFileVO> VOlist = new ArrayList<>();
 		for (GoodsDto goodsDto : list) {
 			GoodsFileVO goodsFileVO = GoodsFileVO.builder()
@@ -214,8 +208,9 @@ public class GoodsController {
 			VOlist.add(goodsFileVO);
 		}
 		model.addAttribute("list", VOlist);
+		model.addAttribute("listSize", list.size());
 //		model.addAttribute("VOList", VOlist);
-		return "goods/getList";
+		return "goods/search";
 	}
 	
 	@GetMapping("/goodsInfo")
