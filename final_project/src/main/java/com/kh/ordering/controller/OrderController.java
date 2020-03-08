@@ -88,6 +88,14 @@ public class OrderController {
 		}
 		model.addAttribute("filesList", filesList);
 		
+		// 회원 기본 주소정보
+		int member_no = memberDao.getNo(member_id);
+		MemberDto member = memberDao.getMember(member_no);
+		model.addAttribute("member", member);
+		
+		Member_AddrDto memberAddr = memberAddrDao.getBasicAddr(member_no);
+		model.addAttribute("memberAddr", memberAddr);
+		
 		return "order/order";
 	}
 	

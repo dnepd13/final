@@ -24,6 +24,25 @@ $(function(){
 // 	@ 총 금액(상품전체+배송비-포인트+부가세)
 // 	@ 총 배송비
 
+// 주소 새로 입력하기
+	$(".addr_status").change(function(){
+
+		if($(this).val()=='새로운주소'){
+			$(".name").val("");
+			$(".member_phone").val("");
+			$(".addr_post").val("");
+			$(".addr_basic").val("");
+			$(".addr_extra").val("");
+		}
+		else {
+			$(".name").val("${member.member_name }");
+			$(".member_phone").val("${member.member_phone }");
+			$(".addr_post").val("${memberAddr.member_addr_post }");
+			$(".addr_basic").val("${memberAddr.member_addr_basic }");
+			$(".addr_extra").val("${memberAddr.member_addr_extra }");
+		}
+		
+	});
 	
 var jsCartVOList = JSON.parse('${jsonCartVOList}');
 	
@@ -447,26 +466,26 @@ function inputOrderInfo(){
 				<tr>
 					<th scope="row">받는사람</th>
 					<td>
-						<input id="addr_name" class="name" type="text" name="name" required>
+						<input id="addr_name" class="name" type="text" name="name" value="${member.member_name }" required>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">우편번호</th>
 					<td>
-						<input class="addr_post" type="text" name="addr_post" id="sample6_postcode" placeholder="우편번호" required>
+						<input class="addr_post" type="text" name="addr_post" id="sample6_postcode" placeholder="우편번호" value="${memberAddr.member_addr_post }" required>
 						<button class="find_btn btn btn-secondary" type="button" onclick="sample6_execDaumPostcode()">우편번호 찾기</button>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">기본주소</th>
 					<td>
-						<input class="addr_basic" type="text" name="addr_basic" id="sample6_address" placeholder="주소" required>
+						<input class="addr_basic" type="text" name="addr_basic" id="sample6_address" placeholder="주소" value="${memberAddr.member_addr_basic }" required>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">상세주소</th>
 					<td>
-						<input class="addr_extra" type="text" name="addr_extra" id="sample6_detailAddress" placeholder="상세주소" required>
+						<input class="addr_extra" type="text" name="addr_extra" id="sample6_detailAddress" placeholder="상세주소" value="${memberAddr.member_addr_extra }" required>
 						<input type="text" id="sample6_extraAddress" class="" placeholder="참고항목">
 					</td>
 				</tr>

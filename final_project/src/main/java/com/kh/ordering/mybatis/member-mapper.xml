@@ -38,7 +38,7 @@
 			values(custom_order_seq.nextval,
 						#{custom_order_title}, #{custom_order_content}, sysdate,
 						#{custom_order_price}, #{custom_order_hopedate},
-						'진행중', '요청서', #{custom_order_category})
+						'요청대기', '요청서', #{custom_order_category})
 	</insert>
 	
 	<!-- 요청서 시퀀스번호 -->
@@ -66,15 +66,14 @@
 	<select id="getAlarm" parameterType="int" resultType="MemberAlarmDto">
 		select *from member_alarm where seller_custom_order_no=#{seller_custom_order_no}
 	</select>
-
-	<!-- 전체 견적서 보기(카테고리 미구현) -->
-	<select id="getListAll" resultType="customOrderVO">
-		select *from seller_custom_view
+	<!-- 요청서관리테이블 단일조회 -->
+	<select id="getMemberCustom" parameterType="int" resultType="memberCustomDto">
+		select *from member_custom_order where member_custom_order_no=#{member_custom_order_no}
 	</select>
-	
+
 	<!-- 구매자가 받은 견적서 총 개수(목적: 페이징) -->
 	<select id="customRespTest" parameterType="int" resultType="int">
-		select count(*) from member_alarm where member_no=#{member_no}
+		select count(*) from member_alarm where member_alarm_delete='N' and member_no=#{member_no}
 	</select>
 	<!-- 나에게 온 견적서만 보기 -->
 	<select id="getListResp" parameterType="int" resultType="customOrderVO">
@@ -83,33 +82,47 @@
 				select A.*, B.seller_id from
 			    	seller_custom_view A inner join seller B
 			        	on A.seller_no = B.seller_no
-				where member_no = #{member_no} order by custom_order_date desc
+				where member_no = #{member_no} and A.member_alarm_delete='N' order by a.custom_order_no desc
 			)RN
 		)where rn between #{start} and #{finish}
 	</select>
-	<!-- 견적서 상세내용 보기. 단일조회 -->
+	<!-- 받은 견적서 상세내용 보기. 단일조회 -->
 	<select id="getListInfoResp" resultType="customOrderVO">
 		select A.*, B.seller_id from
 		    seller_custom_view A inner join seller B
 		        on A.seller_no = B.seller_no
 		where seller_custom_order_no = #{seller_custom_order_no}
 	</select>
-	<!-- 견적서 상세내용 확인하면 구매자 알람 업데이트 -->
+	<!-- 받은 견적서 상세 확인하면 구매자 알람/주문제작 상태 업데이트 -->
 	<update id="updateAlarm" parameterType="memberAlarmDto">
 		update member_alarm set member_alarm_date=sysdate, member_alarm_check='Y'
     		where member_no=#{member_no} and seller_custom_order_no=#{seller_custom_order_no}
 	</update>
+
 	<!-- 구매자 알람테이블 check N 상태 count (새 요청서 개수에 활용) -->
 	<select id="customCheck" parameterType="int" resultType="int">
-		select count(*) from member_alarm where member_alarm_check='N' and member_no=#{member_no}
+		select count(*) from member_alarm where member_alarm_check='N' and member_alarm_delete='N' and member_no=#{member_no}
 	</select>
-	<!--견적서 결제하면 주문제작 상태 업데이트 -->
-	<update id="updateCustomStatus" parameterType="int">
-		update custom_order set custom_order_status='결제완료' where custom_order_no=#{custom_order_no}
+	<!--받은 견적서 결제하면 주문제작 상태 업데이트 -->
+	<update id="updateCustomPay" parameterType="int">
+		update custom_order
+			set custom_order_date=sysdate, custom_order_status='결제완료' where custom_order_no=#{custom_order_no}
 	</update>
-	<!--견적서 결제 취소 주문제작 상태 업데이트 -->
+	<!--받은 견적서 결제 취소 주문제작 상태 업데이트 -->
 	<update id="updateCustomCancel" parameterType="int">
-		update custom_order set custom_order_status='결제취소' where custom_order_no=#{custom_order_no}
+		update custom_order
+			set custom_order_date=sysdate, custom_order_status='결제취소' where custom_order_no=#{custom_order_no}
+	</update>
+	<!-- 받은 견적서 삭제: 알람 읽음 N, 삭제 Y처리 -->
+	<update id="updateRespDelete" parameterType="memberAlarmDto">
+		update member_alarm set member_alarm_date=sysdate, member_alarm_check='N', member_alarm_delete='Y'
+    		where member_no=#{member_no} and seller_custom_order_no=#{seller_custom_order_no}
+	</update>
+	
+	<!-- 견적서 처리에 대한 주문제작 상태 업데이트 -->
+	<update id="updateCustomStatus" parameterType="int">
+		update custom_order
+			set custom_order_date=sysdate,  custom_order_status=#{custom_order_status} where custom_order_no=#{custom_order_no}
 	</update>
 	
 	<!-- 구매자가 보낸 요청서 총 개수(목적:페이징) -->
@@ -125,26 +138,21 @@
 							                        custom_order_date=sysdate
                 where custom_order_no=#{custom_order_no}
 	</update>
-	<!-- 보낸 1:1 요청서 삭제 -->
-	<select id="getCustomNo" parameterType="int" resultType="int">
+	<!-- 보낸 요청서 삭제 -->
+	<select id="getCustomNo" parameterType="memberAlarmDto" resultType="int">
 		select custom_order_no from member_custom_view
-				where seller_alarm_delete='Y' or seller_alarm_check='N'and member_custom_order_no=#{member_custom_order_no}
+				where seller_alarm_delete='Y' or seller_alarm_check='N' and member_custom_order_no=#{member_custom_order_no}
 	</select>
-	<delete id="deleteReq" parameterType="int">
+	<delete id="deleteReq" parameterType="memberCustomDto">
 		delete from custom_order A
-		    where exists( select 1 from member_custom_order B
-				                    	where A.custom_order_no = B.custom_order_no
-				                    				and B.custom_order_no=#{custom_order_no})
+		    where A.custom_order_no
+		        IN (select custom_order.custom_order_no
+		                from custom_order inner join member_custom_order
+		                    on member_custom_order.custom_order_no = custom_order.custom_order_no
+		                where member_no=#{member_no} and member_custom_order_no=#{member_custom_order_no} and custom_order_status='요청대기')
 	</delete>
 	<delete id="deleteAlarm" parameterType="int">
 		delete seller_alarm where member_custom_order_no= #{member_custom_order_no}
-	</delete>
-	<!-- 보낸 카테고리 요청서 삭제 -->
-	<delete id="deleteCustom">
-		delete from custom_order A
-    		where a.custom_order_no
-    			IN (select custom_order_no from member_custom_order
-							where member_custom_order_no= #{member_custom_order_no})
 	</delete>
 	
 	
@@ -155,7 +163,7 @@
 				select A.*, B.member_no, B.member_custom_order_no from
 				    custom_order A inner join member_custom_order B
 				        on a.custom_order_no = b.custom_order_no
-				    where member_no =#{member_no} order by custom_order_date desc
+				    where member_no =#{member_no} order by a.custom_order_no desc
 			)RN
 		)where rn between #{start} and #{finish}
 	</select>

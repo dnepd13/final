@@ -4,14 +4,15 @@
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<jsp:include page="/WEB-INF/views/template/header-sellerMain.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <style>
-	.articleBox,
-	.navBox {
-		width: 500px;
+	.articleBox {
+		width: 1000px;
+		height: 800px;
 		margin: 0 auto;
 	}
 	.dataEmpty {
@@ -46,24 +47,13 @@
 			
 </script> 
 
+
 <h3>판매자가 받은 요청서 customListReq.jsp</h3>
 
 <h4>확인 안 한 요청서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
 
 <article class="articleBox">
 <table class="table table-hover listBox">
-<c:choose>
-	<c:when test="${ empty getListReq }">
-		<tr class="dataEmpty">
-			<td>
-				<div class="row-empty-40"></div><div class="row-empty-40"></div>
-				<div align="center" style="padding: 10px;">
-					받은 요청서가 없습니다.
-				</div><div class="row-empty-40"></div><div class="row-empty-40"></div><div class="row-empty-40"></div>
-			</td>
-		</tr>
-	</c:when>
-	<c:otherwise>
 	<c:forEach var="memberReq" items="${getListReq }">
 	<tr>
 		<td>
@@ -82,12 +72,23 @@
 				<fmt:parseDate value="${memberReq.custom_order_date }" var="custom_order_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 				<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
 			</span>
-			<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberReq.member_custom_order_no })">&times;</button></span>
+			<c:set var="check" value="${memberReq.custom_order_status }"/>
+				<c:choose>
+					<c:when test="${functions : contains(check, '결제완료') }">
+						<span aria-hidden="true" class="close">${memberReq.custom_order_status }</span>
+					</c:when>
+					<c:otherwise>
+						<form action="deleteResp" method="get">
+							<input type="hidden" name="member_no" value="${memberReq.member_no }">
+							<input type="hidden" name="seller_custom_order_no" value="${memberReq.seller_custom_order_no }">
+							<span aria-hidden="true">${memberReq.custom_order_status }<input type="submit" class="close delete_resp"aria-label="Close" value="&times;"></span>
+						</form>
+					</c:otherwise>
+				</c:choose>
 		</td>
 	</tr>
 	</c:forEach>
-	</c:otherwise>
-</c:choose>
+
 </table>
 
 <div class="row justify-content-center">

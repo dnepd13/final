@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.MemberCustomAlarmDto;
+import com.kh.ordering.entity.MemberCustomOrderDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
+import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
@@ -65,11 +67,11 @@ public class SellerCustomController {
 	
 // 주문제작 견적서 작성
 	@GetMapping("/customOrder")
-	public String memberCustom(@RequestParam int member_no,
+	public String memberCustom(@RequestParam int member_custom_order_no,
 															@RequestParam(value="category_no", required=false, defaultValue="0") int category_no,
 															Model model) {
 
-		model.addAttribute("member_no", member_no);
+		model.addAttribute("member_custom_order_no", member_custom_order_no);
 		model.addAttribute("category_no", category_no);
 		
 		return "seller/customOrder";
@@ -77,14 +79,14 @@ public class SellerCustomController {
 		
 	@PostMapping("/customOrder")
 	public String memberCustom(HttpSession session,
-														@RequestParam int member_no,
+														@RequestParam int member_custom_order_no,
 														@RequestParam int category_no,
 														@ModelAttribute FilesVO files,
 														@ModelAttribute CustomOrderDto customOrderDto) throws IllegalStateException, IOException {
 
 		//판매자 견적서 보내기
 		//견적서 작성 --> 주문제작 테이블 데이터 입력 --> 관리테이블 데이터 등록 --> 구매자 알람 테이블 등록
-		sellerCustomService.SellerCustom(session, member_no, category_no, files, customOrderDto);
+		sellerCustomService.SellerCustom(session, member_custom_order_no, category_no, files, customOrderDto);
 		return "redirect:/seller/customSuccess";
 	}
 //	작성 완료시 안내 페이지
@@ -122,11 +124,18 @@ public class SellerCustomController {
 		String seller_id = (String)session.getAttribute("seller_id");
 		int seller_no = sellerCustomDao.getNo(seller_id);
 		
-		// 판매자 알람 업데이트 후
+		// 판매자 알람 및 주문제작 상태(읽음) 업데이트 후
 		sellerCustomDao.updateAlarm(seller_no, member_custom_order_no);
+		MemberCustomOrderDto memberCustomDto = memberCustomDao.getMemberCustom(member_custom_order_no);
+		CustomOrderDto customOrderDto = CustomOrderDto.builder()
+																										.custom_order_no(memberCustomDto.getCustom_order_no())
+																										.custom_order_status("읽음")
+																										.build();
+		sellerCustomDao.updateCustomStatus(customOrderDto);
+		
 		// 상세페이지 보기
 		CustomOrderVO content = sellerCustomDao.customOrderVO1(member_custom_order_no, seller_no);
-
+		
 		model.addAttribute("getListInfoReq", content);
 				// 카테고리 표시를 위한 model정보
 		int category_no = content.getCustom_order_category();
@@ -135,7 +144,7 @@ public class SellerCustomController {
 		// 파일 번호 보내기
 		List<FilesVO>  filesVO = memberCustomService.filesList(member_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
-		
+
 		return "seller/customInfoReq";
 	}
 
@@ -210,21 +219,26 @@ public class SellerCustomController {
 		
 		model.addAttribute("seller_no", seller_no);
 		
-		// 판매자 알람 delete 컬럼 Y로 업데이트 --> 추후 구매자도 요청서를 삭제할 수 있도록
+		// 판매자 알람 status=N, delete =Y(전체요청서 개수 기준)로 업데이트 
+		// --> 추후 구매자도 요청서를 삭제할 수 있도록
 		sellerCustomDao.updateAlarm(seller_no, member_custom_order_no);
-		
-		// 알람테이블 삭제
-		sellerCustomDao.deleteCustomReq(seller_no, member_custom_order_no);
+		sellerCustomDao.updateAlarmDelete(seller_no, member_custom_order_no);
 		return "seller/customListReq";
 	}
 	@GetMapping("/deleteResp")	 // 보낸 견적서 삭제
-	public String CustomDeleteResp(int seller_custom_order_no) {
-		// seller_custom_order_no를 이용하여 custom_order_no를 가져오자
-		int custom_order_no = sellerCustomDao.getCustomNo(seller_custom_order_no);
+	public String CustomDeleteResp(HttpSession session,
+																@RequestParam int seller_custom_order_no) {
+
 		// 해당 주문제작 테이블 데이터 삭제
-		sellerCustomDao.deleteCustomResp(custom_order_no);
-		// 구매자 알람테이블 정보 삭제
-		sellerCustomDao.deleteAlarm(seller_custom_order_no);
+		String seller_id = (String)session.getAttribute("seller_id");
+		int seller_no = sellerCustomDao.getNo(seller_id);
+		SellerCustomOrderDto sellerCustomDto
+														=	 SellerCustomOrderDto.builder()
+																									.seller_no(seller_no)
+																									.seller_custom_order_no(seller_custom_order_no)
+																									.build();
+		sellerCustomDao.deleteCustomResp(sellerCustomDto);
+
 		return "seller/customListResp";
 	}
 

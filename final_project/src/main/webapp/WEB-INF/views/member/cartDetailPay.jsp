@@ -44,8 +44,6 @@
 	}
 </script>
 
-결제 상세정보 cartDetailPay.jsp
-
 <article class="articleBox">
 	<table class="table detailPayBox" border="1">
 		<tr>

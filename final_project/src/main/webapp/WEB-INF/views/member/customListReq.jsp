@@ -14,20 +14,15 @@
 <style>
 	.articleBox {
 		width: 1000px;
+		height: 800px;
 		margin-left: 300px;
 		padding-top: 5rem;
-	}
-	@media screen and (min-width:1360px){
-		.articleBox {
-			width: 60%;
-			margin: 0 auto;
-		}
 	}
 	.dataEmpty {
 		height: 300px;
 	}
 	
-	.delete {
+	.close {
 		float: right;
 	}
 </style>
@@ -36,7 +31,7 @@
     
 <script>
 	function deleteReq(member_custom_order_no){
-
+		
 		if(confirm("요청서를 삭제하시겠습니까?")){
 			$.ajax({
 				url : "deleteReq",
@@ -46,7 +41,7 @@
 						location.reload(true);
 					},
 				error: function(error){
-						alert("읽음 처리된 요청서는 삭제할 수 없습니다.");
+						alert("요청대기 상태의 요청서만 삭제할 수 있습니다.");
 					}
 			})		
 		}
@@ -54,41 +49,11 @@
 			return false;
 		}		
 	}
-	
-	function deleteCustom(member_custom_order_no){
 
-		if(confirm("요청서를 삭제하시겠습니까?")){
-			$.ajax({
-				url : "deleteCustom",
-				data: {"member_custom_order_no" : member_custom_order_no},
-				method: "get",
-				success: function(resp){
-						alert("요청서가 삭제되었습니다.");
-						location.reload(true);
-					},
-			})		
-		}
-		else{
-			return false;
-		}		
-	}
 </script>
 
 <article class="articleBox infoPage-area">
 <table class="table table-hover listBox">
-<c:choose>
-	<c:when test="${ empty getListReq }">
-		<tr class="dataEmpty">
-			<td>
-				<div class="row-empty-40"></div><div class="row-empty-40"></div>
-				<div align="center" style="padding: 10px;">
-					보낸 요청서가 없습니다.
-				</div><div class="row-empty-40"></div><div class="row-empty-40"></div><div class="row-empty-40"></div>
-				<p align="right"><a href="${pageContext.request.contextPath }/member/customCate"><button class="btn_custom">요청서 보내기</button></a></p>
-			</td>
-		</tr>
-	</c:when>
-	<c:otherwise>
 		<c:forEach var="memberCustom" items="${getListReq }">
 			<tr>
 				<td>
@@ -101,13 +66,20 @@
 							<fmt:parseDate value="${memberCustom.custom_order_date }" var="custom_order_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 							<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
 						</span>
-						<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span>
+						<c:set var="check" value="${memberCustom.custom_order_status }"/>
+						<c:choose>
+							<c:when test="${functions : contains(check, '요청대기') }">
+								<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button>요청대기</span>
+							</c:when>
+							<c:otherwise>
+								<span class="close">${memberCustom.custom_order_status }</span>
+							</c:otherwise>
+						</c:choose>
+						
 					</p>
 				</td>
 			</tr>
 		</c:forEach>
-	</c:otherwise>
-</c:choose>
 </table>
 
 <!-- 내비게이터 -->

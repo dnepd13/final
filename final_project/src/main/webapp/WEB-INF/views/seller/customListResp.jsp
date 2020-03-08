@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
@@ -24,26 +25,25 @@
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 
 <script>
-	function deleteResp(seller_custom_order_no){
-
-		if(confirm("견적서를 삭제하시겠습니까?")){
-			$.ajax({
-				url : "deleteResp",
-				data: {"seller_custom_order_no" : seller_custom_order_no},
-				method: "get",
-				success: function(resp){
-					location.reload(true);
-				},
-				error: function(error){
-					alert("읽음 처리된 견적서는 삭제할 수 없습니다.");
-				}
-			});
-		}	
+$(function(){
+	
+	$(".delete_resp").click(function(e){
+		var status = $(this).parents("#resp_data").data("custom_order_status");
+		console.log(status);
+		if(confirm('견적서를 삭제하시겠습니까')){
+			if(status=='견적대기'){
+				return true;
+			}
+			else {
+				alert("견적대기 상태의 견적서만 삭제할 수 있습니다.");
+			}
+		}
 		else{
 			return false;
 		}
-		
-	}
+	});
+
+});
 </script>
 
 <h3>판매자가 보낸 견적서 customListResp.jsp</h3>
@@ -66,7 +66,10 @@
 	<c:otherwise>
 	<c:forEach var="sellerCustom" items="${getListResp }">
 		<tr>
-			<td>
+			<td id="resp_data"
+					data-seller_custom_order_no="${sellerCustom.seller_custom_order_no }"
+					data-custom_order_status="${sellerCustom.custom_order_status }"
+					data-member_no="${sellerCustom.seller_no }">
 				<p>
 					<a href="customInfoResp?seller_custom_order_no=${sellerCustom.seller_custom_order_no }">
 							${sellerCustom.custom_order_title }
@@ -77,7 +80,19 @@
 						<fmt:parseDate value="${sellerCustom.custom_order_date }" var="custom_order_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 						<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
 					</span>
-					<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteResp(${sellerCustom.seller_custom_order_no })">&times;</button></span>
+					<c:set var="check" value="${sellerCustom.custom_order_status }"/>
+						<c:choose>
+							<c:when test="${functions : contains(check, '견적대기') }">
+								<form action="deleteResp" method="get">
+									<input type="hidden" name="seller_no" value="${sellerCustom.seller_no }">
+									<input type="hidden" name="seller_custom_order_no" value="${sellerCustom.seller_custom_order_no }">
+									<span aria-hidden="true">${sellerCustom.custom_order_status }<input type="submit" class="close delete_resp"aria-label="Close" value="&times;"></span>
+								</form>
+							</c:when>
+							<c:otherwise>
+								<span class="close">${sellerCustom.custom_order_status }</span>
+							</c:otherwise>
+						</c:choose>
 				</p>
 			</td>
 		</tr>

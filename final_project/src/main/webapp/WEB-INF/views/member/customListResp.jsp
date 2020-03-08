@@ -11,17 +11,37 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+    
+<script>
+	$(function(){
+		
+		$(".delete_resp").click(function(e){
+
+			var status = $(this).parents("#resp_data").data("custom_order_status");
+			if(status=='결제완료'){
+				alert("결제완료된 견적서는 삭제할 수 없습니다.");
+				return false;
+			}
+			else{
+				if(confirm('견적서를 삭제하시겠습니까?')){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+		});
+	
+	});
+</script>
+
 <style>
 	.articleBox {
 		width: 1000px;
+		height: 800px;
 		margin-left: 300px;
 		padding-top: 5rem;
-	}
-	@media screen and (min-width:1360px){
-		.articleBox {
-			width: 60%;
-			margin: 0 auto;
-		}
 	}
 	
 	.dataEmpty {
@@ -35,22 +55,13 @@
 
 <article class="articleBox infoPage-area">
 <table class="table table-hover listBox">
-<c:choose>
-	<c:when test="${ empty getListResp }">
-		<tr class="dataEmpty">
-			<td>
-				<div class="row-empty-40"></div><div class="row-empty-40"></div>
-				<div align="center" style="padding: 10px;">
-					받은 견적서가 없습니다.
-				</div><div class="row-empty-40"></div><div class="row-empty-40"></div><div class="row-empty-40"></div>
-				<p align="right"><a href="${pageContext.request.contextPath }/member/customCate"><button class="btn_custom">요청서 보내기</button></a></p>
-			</td>
-		</tr>
-	</c:when>
-	<c:otherwise>
+
 		<c:forEach var="sellerResp" items="${getListResp }">
 			<tr>
-				<td>
+				<td id ="resp_data"
+						data-seller_custom_order_no="${sellerResp.seller_custom_order_no }"
+						data-custom_order_status="${sellerResp.custom_order_status }"
+						data-member_no="${sellerResp.member_no }">
 					<p><span>${sellerResp.seller_id } 님이 보낸 견적서입니다.</span>
 						<span class="new" style="color: red">
 							<c:set var="check" value="${sellerResp.member_alarm_check }"/>
@@ -67,13 +78,21 @@
 						<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
 					</span>
 					<c:set var="check" value="${sellerResp.custom_order_status }"/>
-					<c:if test="${functions : contains(check, '진행중') }">
-						<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberCustom.member_custom_order_no })">&times;</button></span>
-					</c:if>
+						<c:choose>
+							<c:when test="${functions : contains(check, '결제완료') }">
+								<span aria-hidden="true" class="close">${sellerResp.custom_order_status }</span>
+							</c:when>
+							<c:otherwise>
+								<form action="deleteResp" method="get">
+									<input type="hidden" name="member_no" value="${sellerResp.member_no }">
+									<input type="hidden" name="seller_custom_order_no" value="${sellerResp.seller_custom_order_no }">
+									<span aria-hidden="true">${sellerResp.custom_order_status }<input type="submit" class="close delete_resp"aria-label="Close" value="&times;"></span>
+								</form>
+							</c:otherwise>
+						</c:choose>
 				</td>
 		</c:forEach>
-	</c:otherwise>
-</c:choose>
+
 </table>
 
 <!-- 내비게이터 -->

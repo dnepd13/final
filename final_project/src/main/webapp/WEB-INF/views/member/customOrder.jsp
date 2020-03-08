@@ -5,7 +5,7 @@
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
  
  <style>
  	.articleBox {
@@ -39,9 +39,27 @@
  	}
  </style>
  
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script>
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 
+<script>
+	$(function(){
+		
+		$(".date").datepicker({ 
+			minDate: 0,
+			dateFormat: "yy/mm/dd"
+		});
+		
+		$(".price").keyup(function(){
+			console.log($(this).val());
+			if($(this).val()<=0){
+				$(this).val("");
+				alert("희망가격을 다시 확인해주세요");
+			}
+		});
+		
+	});
 </script>
 
 
@@ -58,10 +76,10 @@
 		<textarea class="input_req form-control" name="custom_order_content" required></textarea>
 			<br>
 		<h6 class="text-secondary">희망 가격은 얼마인가요?</h6>
-		<input class="input_req form-control" type="number" name="custom_order_price" placeholder="원" required>
+		<input class="input_req form-control price" type="number" name="custom_order_price" placeholder="원" required>
 			<br>
 		<h6 class="text-secondary">희망 날짜는 언제인가요? </h6>
-		<input class="input_req form-control" type="date" name="custom_order_hopedate" required>
+		<input class="input_req form-control date" type="text" name="custom_order_hopedate" required readonly>
 			<br>
 		<h6 class="text-secondary">원하는 디자인 등이 있다면 함께 보내주세요.</h6>
 		<input class="input_req form-control-file" type="file" name="files" multiple>
