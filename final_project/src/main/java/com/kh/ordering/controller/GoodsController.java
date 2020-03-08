@@ -32,6 +32,7 @@ import com.kh.ordering.entity.GoodsQnaDto;
 import com.kh.ordering.entity.GoodsReviewDto;
 import com.kh.ordering.entity.GoodsReviewReplyDto;
 import com.kh.ordering.repository.CategoryDao;
+import com.kh.ordering.repository.DeliveryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
@@ -56,6 +57,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/goods")
 @Slf4j
 public class GoodsController {
+	
+	@Autowired
+	private DeliveryDao deliveryDao;
 	
 	@Autowired
 	private SellerDao sellerDao;
@@ -226,13 +230,15 @@ public class GoodsController {
 		model.addAttribute("jsonGoodsVO", jsonGoodsVO);
 		model.addAttribute("jsonGoodsOptionVOList", jsonGoodsOptionVOList);
 		
+		model.addAttribute("deliveryDto", deliveryDao.get2(goods_no));
+		
 		model.addAttribute("files_no", goodsDao.getGoodsMainImage(goods_no));
 		
 		if(goodsDao.getContentImage(goods_no).size()>0) {
 			model.addAttribute("content_image", goodsDao.getContentImage(goods_no));
 		}
 		// 적립금
-		int rate = 1;
+		int rate = 0;
 		if((String)session.getAttribute("member_id") != null) {
 			rate = memberDao.getGradeBenefitRate(memberDao.getMemberGrade(memberDao.getNo((String)session.getAttribute("member_id"))));
 		}
