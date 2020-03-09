@@ -52,7 +52,7 @@ public class SellerCategoryDaoImpl implements SellerCategoryDao{
 		sqlSession.delete("seller_category.delete", sellerCategoryDto);
 		
 	}
-	//------------------------- 카테고 번호----------------//
+	//------------------------- 카테고리 번호----------------//
 	@Override
 	public int category_no(CategoryDto categoryDto) {
 		

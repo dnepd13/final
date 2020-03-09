@@ -29,8 +29,6 @@
 	<!-- 카테고리 번호 -->
 	<select id="get_category_no" resultType="int" parameterType="CategoryDto">
 	    select category_no from category where 
-		     category_large = #{category_large} 
-		     category_middle = #{category_middle} 
 		     category_small = #{category_small} 
 	</select>
 	<!-- select distinct categpry_no from seller_category where_no=423;
