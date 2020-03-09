@@ -29,6 +29,8 @@ public interface Member_AddrDao {
 	// 기본주소만 조회
 	public Member_AddrDto getBasicAddr(int member_no);
 
+	void insertchuaddr(Member_AddrDto member_AddrDto);
+
 
 	
 //	//배송지 정보조회

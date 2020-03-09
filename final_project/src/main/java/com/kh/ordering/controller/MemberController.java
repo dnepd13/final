@@ -686,20 +686,6 @@ public class MemberController {
 	
 
 
-	//배송지 추가 테이블
-	@PostMapping("/addrRegist")
-	public String addrregist(@ModelAttribute Member_AddrDto member_AddrDto,
-							HttpSession session, Model model)
-	{
-		String member_id = (String)session.getAttribute("member_id");
-		int member_no = memberDao.getNo(member_id);
-
-		member_AddrDto.setMember_no(member_no);
-
-		member_AddrDao.addrregist(member_AddrDto);
-
-		return "redirect:/addrinfo";
-	}
 
 
 
@@ -831,7 +817,15 @@ public class MemberController {
 			
 		log.info("no={}", member_no);
 		
+		if(member_AddrDao.getListAddr(member_no).size()>0) {
+			member_AddrDao.insertchuaddr(member_AddrDto);
+		}
+	else{
 		member_AddrDao.insertaddr(member_AddrDto);
+		}
+		
+			
+		
 //		log.info("member_AddrDto={}",member_AddrDto);
 		return "redirect:/member/addrinfo";
 	}

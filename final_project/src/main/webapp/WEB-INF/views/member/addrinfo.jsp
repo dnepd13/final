@@ -12,7 +12,7 @@
 
 <div class="btn-group-vertical">
 
-	<a href="${pageContext.request.contextPath}/member/addrRegist">
+
 
 	<a href="${pageContext.request.contextPath}/member/insertaddr">
 
