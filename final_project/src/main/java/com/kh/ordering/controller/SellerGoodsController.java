@@ -60,22 +60,15 @@ public class SellerGoodsController {
 	@GetMapping("/category_insert")
 	//@ResponseBody
 	public String seller_category_insert( Model model) {
-		try{
 			model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
 	
 	//	log.info("msg");
 		log.info("여기");
 		return "/seller/category_insert";
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return "/seller/category_insert";
-		}
-		}
 	
 	@PostMapping("/category_insert")
 	public String seller_category_insert(Model model ,@ModelAttribute CategoryDto categoryDto,HttpSession session) {
-		  try {
 		ModelAndView mv = new ModelAndView();
 		String seller_id=(String)session.getAttribute("seller_id");//세션에서 아이디를 가져온다
 	//System.out.println(categoryDto.getCategory_small());
@@ -106,26 +99,20 @@ public class SellerGoodsController {
 			mv.addObject("list", category_list);
 			mv.setViewName("/seller/category_insert");
 			return "/seller/category_insert";
-			}
-			catch (Exception e) {
-			e.printStackTrace();
-		
-			return "redirect;/seller/category_insert";
-				}
 	}
 	
-//@PostMapping("/category_info")
-//public ModelAndView seller_category_info(HttpSession session) {
-//	ModelAndView mv = new ModelAndView();
-//	String seller_id=(String)session.getAttribute("seller_id");
-//	int seller_no=sellerCategoryDao.getNo(seller_id);
-//	List<Integer> list = sellerCategoryDao.seller_category_list(seller_no);
-//	List<CategoryDto> category_list =sellerCategoryDao.seller_category_name_list(list);
-//	mv.addObject("seller_id", seller_id);
-//	mv.addObject("category_list",category_list);
-//	mv.setViewName("/seller/category_info");
-//	return mv;
-//}
+@PostMapping("/category_info")
+public ModelAndView seller_category_info(HttpSession session) {
+	ModelAndView mv = new ModelAndView();
+	String seller_id=(String)session.getAttribute("seller_id");
+	int seller_no=sellerCategoryDao.getNo(seller_id);
+	List<Integer> list = sellerCategoryDao.seller_category_list(seller_no);
+	List<CategoryDto> category_list =sellerCategoryDao.seller_category_name_list(list);
+	mv.addObject("seller_id", seller_id);
+	mv.addObject("category_list",category_list);
+	mv.setViewName("/seller/category_info");
+	return mv;
+}
 ///---카테고리 수정---------------------------------------------------//
 @PostMapping("/category_update")
 @ResponseBody
