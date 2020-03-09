@@ -4,10 +4,16 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.SellerCategoryDto;
+import com.kh.ordering.vo.PagingVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Repository
+@Slf4j
 public class SellerCategoryDaoImpl implements SellerCategoryDao{
 	@Autowired
 	private SqlSession sqlSession;
@@ -22,12 +28,14 @@ public class SellerCategoryDaoImpl implements SellerCategoryDao{
 	//-------------------------판매자 카테고리 관리----------------//
 	@Override
 	public int categoryCount() {
-		int result = sqlSession.selectOne("seller_category_count");
+		int result= sqlSession.selectOne("seller_category.categoryCount");
 		return result;
+
 	}
 	//------------------------- 카테고리 등록----------------//
 	@Override
 	public void seller_category_insert(SellerCategoryDto sellerCategoryDto) {
+		log.info("sellerCategoryDto={}", sellerCategoryDto);
 		sqlSession.insert("seller_category.insert", sellerCategoryDto);
 
 		
@@ -63,6 +71,32 @@ public class SellerCategoryDaoImpl implements SellerCategoryDao{
 		
 		return sqlSession.selectList("seller_category.get_category_name_list",list);
 	}
-	
+				
+	@Override
+	public List<CategoryDto> categoryGetList(PagingVO vo) {
+		List<CategoryDto> list =
+				sqlSession.selectList("seller_categoty.sellerGetCategoryList",vo);
+		return list;
+	}
+
+	@Override
+	public List<CategoryDto> categoryBig() {		
+		return sqlSession.selectList("seller_categoty.categoryItemBig");
+	}
+
+	@Override
+	public List<CategoryDto> categoryMiddle() {
+		return sqlSession.selectList("seller_categoty.categoryItemMiddle");
+	}
+
+
+
+	@Override
+	public List<CategoryDto> categorySmall() {
+		return sqlSession.selectList("seller_categoty.categoryItemSmall");
+	}
 
 }
+	
+
+

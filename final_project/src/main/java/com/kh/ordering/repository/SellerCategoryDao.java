@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.SellerCategoryDto;
+import com.kh.ordering.vo.PagingVO;
 
 public interface SellerCategoryDao {
 	public int categoryCount();
@@ -23,6 +24,10 @@ public interface SellerCategoryDao {
 	public List<Integer> seller_category_list(int seller_no);
 	
 	public List<CategoryDto> seller_category_name_list(List<Integer> list);
+	public List<CategoryDto> categoryGetList(PagingVO vo);
+	public List<CategoryDto> categoryBig();
+	public List<CategoryDto> categoryMiddle();
+	public List<CategoryDto> categorySmall();
 	
 
 
