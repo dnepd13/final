@@ -462,6 +462,19 @@ function inputOrderInfo(){
 .section1 {
 	margin:70px 0px;
 }
+
+	.payment {
+		border: 1px solid gray;
+		display: inline-block;
+		margin: 0 3px;
+		padding: 10px;
+		width: 7rem;
+		text-align: center;
+	}
+	.kakaoPay:focus {
+		background-color: rgb(255, 235, 0);
+	}
+
 </style>
 
 <section class="section1">
@@ -485,6 +498,10 @@ function inputOrderInfo(){
 					<td>
 						<input id="addr_name" class="name" type="text" name="name" value="${member.member_name }" required>
 					</td>
+				</tr>
+				<tr>
+					<th>연락처</th>
+					<td><input class="member_phone" type="text" name="member_phone" value="${member.member_phone }" placeholder=" '-' 없이 입력"></td>
 				</tr>
 				<tr>
 					<th scope="row">우편번호</th>
@@ -579,6 +596,20 @@ function inputOrderInfo(){
 					<td><span class="ordering_price"> 원</span></td>
 				</tr>
 			</tbody>
+		</table>
+	</div>
+	<div class="col-lg-8">
+		<div>
+			<h3>결제방법</h3>
+		</div>
+		<table class="table table-borderless total_table">
+			<tr>
+				<th></th>
+				<td><span>
+							<a href="javascript:void(0);" class="kakaoPay payment">KakaoPay</a>
+						</span>
+				</td>
+			</tr>
 		</table>
 	</div>
 	<div class="col-lg-5">

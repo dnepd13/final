@@ -200,10 +200,10 @@
 		});
  		
 		$(".price").keyup(function(){
-			console.log($(this).val());
-			if($(this).val()<=0){
+
+			if($(this).val()<=0 || $(this).val()>1000000){
 				$(this).val("");
-				alert("희망가격을 다시 확인해주세요");
+				alert("희망가격은 1원 이상, 100만원 이하로 작성해주세요.");
 			}
 		});
 	});

@@ -13,7 +13,7 @@
 <div class="btn-group-vertical">
 
 	<a href="${pageContext.request.contextPath}/member/addrRegist">
-
+	</a>
 	<a href="${pageContext.request.contextPath}/member/insertaddr">
 
 		<button type="button" class="btn btn-primary">배송추가</button>
