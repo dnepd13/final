@@ -34,7 +34,7 @@ $(function(){
             <div class="offset-md-1 col-md-10">
 <div class="row justify-content-center"  style="padding: 20px;"><h1>카테고리 관리</h1></div>
 
-<div>
+<div>ㄴ
 	<form  action="category_insert" method="post">
 		<div>
 			<input type="text" name="category_large" placeholder="대분류" required="required" list="itemListBig">
