@@ -29,7 +29,6 @@ import com.kh.ordering.entity.GoodsReviewDto;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.GoodsReviewDao;
-import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.service.CartInfoService;
@@ -45,8 +44,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping("/member")
 public class GoodsCartReviewController {
-	@Autowired
-	private MemberCustomDao memberCustomDao;
 	@Autowired
 	private MemberDao memberDao;
 	@Autowired

@@ -116,6 +116,7 @@
 		<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/memberreport">신고하기</a></li>
 		<li class="right_line main_line" style="margin-right:50px;"><a href="${pageContext.request.contextPath }/member/customCate">주문제작</a></li>
 		<li class="right_line main_line"><a href="${pageContext.request.contextPath }/member/membermyinfo">마이페이지</a></li>
+		<li class="right_line main_line"><a href="${pageContext.request.contextPath }/member/cart">장바구니</a></li>
 		<li class="right_line main_line"><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></li>
 	</ul>
 	</c:otherwise>

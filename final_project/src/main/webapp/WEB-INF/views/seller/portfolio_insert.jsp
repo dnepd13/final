@@ -20,5 +20,19 @@
       </div>
     </div>
  </div>
-   
+ 
+  <!-- 등록된 포트폴리오 미리보기(?) 영역 -->
+	 <div align="center">
+	 <c:if test="${ not empty filesVO }">
+		 <c:forEach var="filesVO" items="${filesVO }">
+			 <div>
+			 	<img src="${pageContext.request.contextPath }/seller/portfolio_download?files_no=${filesVO.files_no}" style="width:800px; height:auto;">
+			 </div>
+		 </c:forEach>
+	</c:if>   
+	</div>
+ 
+<%--  <jsp:include page="/WEB-INF/views/seller/portfolio_img.jsp"/> --%>
+
+ 
     

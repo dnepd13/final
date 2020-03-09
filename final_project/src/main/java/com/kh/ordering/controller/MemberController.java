@@ -183,7 +183,7 @@ public class MemberController {
 			//시퀀스를 넣은 포인트에 데이터를 넣고 입력
 			sqlSession.insert("member_PointDto.pointregist", member_PointDto);
 			
-			return "redirect:/member/login"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
+			return "redirect:/member/registsuccess"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
 		}
 	
 	//회원 탈퇴
@@ -213,10 +213,10 @@ public class MemberController {
 	}
 	
 	
-//	@GetMapping("/registsuccess")
-//	public String registsuccess() {
-//		return "member/registsuccess";//완료한뒤 인덱스페이지로 보낼것을 준비
-//	}
+	@GetMapping("/registsuccess")
+	public String registsuccess() {
+		return "member/registsuccess";//완료한뒤 인덱스페이지로 보낼것을 준비
+	}
 //	
 //	@PostMapping("/registsuccess")
 //	public String registsuccess(
@@ -473,10 +473,7 @@ public class MemberController {
 		
 
 		int result = sqlSession.selectOne("member.id_check", member_id);
-			log.info("들어오나");
-			log.info("membercheck={}",member_id);
-			
-			log.info("result={}", result);
+		
 			String a = Integer.toString(result);
 			if(result == 1) {
 				return a;
@@ -496,17 +493,13 @@ public class MemberController {
 				@PostMapping("/memberfind_id")
 				public String memberfind_id(HttpSession session,@RequestParam String member_email,
 						@RequestParam String member_name,Model model) {
-						log.info("1= {}", member_email);
-						log.info("2= {}", member_name);
+
 						MemberDto memberDto =MemberDto.builder().member_name(member_name)
 																.member_email(member_email)
 																.build();
 						
-						log.info("memberDto={}",memberDto);
-						
 						MemberDto find_id=memberDao.memberfind_id(memberDto);
-						log.info("2find_id={}",memberDto);
-						log.info("2find_id={}",find_id);
+
 						model.addAttribute("memberDto",find_id);
 					return "member/find_id_info";
 
@@ -522,9 +515,9 @@ public class MemberController {
 						MemberDto memberDto =MemberDto.builder().member_name(member_name) 
 																				   .member_email(member_email)
 																				   .build();
-						log.info("memberDto={}",memberDto);
+
 						MemberDto find_id=memberDao.memberfind_id(memberDto);
-							log.info("find_id={}",find_id);
+
 					//	model.addAttribute("sellerDto",find_id);
 
 					return "member/find_id_info";
