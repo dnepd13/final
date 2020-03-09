@@ -4,10 +4,10 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script>
-  /* 	$(function(){
-  		location.reload();	
+//   $(function(){
+//   		location.reload();	
   		
-  	}); */
+//   	});
   
   
   </script> 

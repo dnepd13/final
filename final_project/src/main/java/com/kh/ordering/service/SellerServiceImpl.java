@@ -156,7 +156,7 @@ private CategoryDao categoryDao;
 
 			pno = 1; //그외 예외처리시 pno는 1로 가정
 		}
-		int pagesize = 10; // 네비게이터 크기는 10으로
+		int pagesize = 5; // 네비게이터 크기는 10으로
 		int finish = pno * pagesize; //네비게이터의끝
 		int start = finish - (pagesize-1); //네비게이터의 시작
 
