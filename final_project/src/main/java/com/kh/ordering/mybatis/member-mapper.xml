@@ -282,7 +282,11 @@
 		delete from member where member_no = #{member_no}
 	</delete>
 	
-	
+	<!-- 비밀번호 수정 -->
+	<update id="change_pw" parameterType="member">
+	update member set member_pw=#{member_pw} where member_id=#{member_id} 
+						
+	</update>
 
 	
 	

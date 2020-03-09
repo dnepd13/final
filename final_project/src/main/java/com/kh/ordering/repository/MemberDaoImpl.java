@@ -270,6 +270,11 @@ public class MemberDaoImpl implements MemberDao{
 			
 		}
 
+		@Override
+		public void change_pw(MemberDto memberDto) {
+			sqlSession.update("member.change_pw",memberDto);
+		}
+
 	
 
 //		@Override

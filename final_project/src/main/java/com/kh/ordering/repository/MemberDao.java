@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.GoodsCartDto;
 import com.kh.ordering.entity.MemberDto;
@@ -75,6 +76,7 @@ public interface MemberDao {
 		
 		//회원 탈퇴
 		void memberdelete(MemberDto memberDto);
+		void change_pw(MemberDto memberDto);
 		
 		
 	

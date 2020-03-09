@@ -5,23 +5,98 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
+
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
-<div align="center" class="btn-group-vertical">
+<style>
+	* {box-sizing: border-box;}
+	.myInfo_wrap {
+		width: 1200px;
+		height: 800px;
+		margin: 0 auto;
+		border: 1px dotted gray;
+	}
+	.point_wrap {
+		float: left;
+		margin-left: 60px;
+		padding-top: 30px;
+		width: 900px;
+		border: 1px dotted gray;
+	}
+	.point_wrap::after{content:""; display: block; clear:both;}
+	.point_main {
+		margin: 0 auto;
+		width: 90%;
+		height: 120px;
+		border: 2px solid #F3F5F8;
+		border: 1px dotted gray;
+	}
+	.point_mainBox1 {
+		width: 100px;
+		height: auto;
+		padding-top: 10px;
+		margin-left: 30px;
+		float: left;
+	}
+ 	.point_mainBox2 { 
+ 		padding-top: 35px;
+ 		margin-left: 100px;
+ 		width: 250px;
+ 		font-size: x-large; 
+ 		float: left;
+ 	}
+	.point_mainBox3 {
+		width: 307px;
+		height: 100%;
+		padding-top: 35px;
+		padding-left: 25px;
+		margin-left: 500px;
+		font-size: x-large; 
+		background: #F3F5F8;
+	}
+	.point_mainBox3 ::after {
+		content="";
+		display: block;
+		clear: both;	
+	}
+	.point_list {
+		margin: 30px auto;
+		width: 90%;
+		border: 1px solid black;
+	}
+	
+	table thead {background: #F3F5F8; }
+	table thead tr {
+		border-top: 2px solid gray;
+		text-align: center;
+	}
+th, td {
+    text-align: center;
+    vertical-align: middle;
+}
+</style>
 
-
-
-<h2>회원 문의게시판</h2>
+<div class="btn-group-vertical">
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
+<h2>회원 문의 목록</h2>
 <h2><a href="${pageContext.request.contextPath}/">홈으로</a></h2>
+<div class="point_wrap"></div>
+	<div class="point_main"></div>
+		<tr style="text-align: center">
+			<b><font color="bf0000" style="text-align: center">해당 게시판의 특성에 맞는 카테고리에 문의 남겨 주시면 보다 정확하고 빠른 답변을 얻으실 수 있어요!
+				</font>
+			</b>
+		</tr>
+		
+		<div class="point_mainBox1"></div>
 
-<div class="btn-group-vertical" align="left">
-	<a href="${pageContext.request.contextPath}/board/qnaregist">
-		<button type="button" class="btn btn-primary">글쓰기</button>
-	</a>
-</div>
+			<div class="btn-group-vertical" align="left">
+				<a href="${pageContext.request.contextPath}/board/qnaregist">
+				<button type="button" class="btn btn-primary">글쓰기</button>
+				</a>
+			</div>
 <table class="table table-hover">
 	<thead>
 		<tr>

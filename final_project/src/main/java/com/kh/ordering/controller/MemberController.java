@@ -25,6 +25,7 @@ import com.kh.ordering.entity.GoodsCartDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.entity.Member_PointDto;
+import com.kh.ordering.entity.SellerDto;
 import com.kh.ordering.repository.CertDao;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.MemberCustomDao;
@@ -187,6 +188,47 @@ public class MemberController {
 			return "redirect:/member/registsuccess"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
 		}
 	
+	
+//		//회원 이메일 인증창
+//		@GetMapping("/getpwid") 
+//		public String getpwid(@ModelAttribute MemberDto memberDto) {
+//			
+//			sqlSession.selectOne("memberDto.getpwid", memberDto);
+//			return "member/pwupdate1";
+//		}
+//		
+//		@PostMapping("/getpwid1")
+//		public String pwupdate1(@ModelAttribute MemberDto memberDto,
+//				Model model) {
+//			
+//			memberDao.getpwid1(memberDto);
+//			
+//			return "redirect:/member/pwupdatesuper";
+//		}
+//		
+		
+		
+		
+		
+		//회원 비밀번호 수정
+//		@GetMapping("/pwupdate1")
+//		public String pwupdate1(@ModelAttribute MemberDto memberDto) {
+//			String member_id = "member2";
+//			
+//			
+//			memberDto=memberDao.pwget(member_id);
+//			
+//			return "member/pwupdate1";
+//		}
+//		
+//		@PostMapping("/pwupdate1")
+//		public String pwupdate(@ModelAttribute MemberDto member) {
+//			
+//			
+//			return "redirect:/member/pwupdate1";
+//		}
+		
+		
 	//회원 탈퇴
 	@GetMapping("memberdelete")
 	public String memberdelete() {
@@ -369,16 +411,19 @@ public class MemberController {
 	}
 	
 	//회원 정보 수정
-	@GetMapping("editmember")
-	public String editmember(@RequestParam int member_no,Model model)
-	{
-	
-		MemberDto member = memberDao.memberGetOne(member_no);
-		model.addAttribute("memberget",member);
-		
-		
-		return "member/editmember";
-	}
+//	@GetMapping("editmember")
+//	public String editmember(@ModelAttribute MemberDto memberDto, HttpSession session)
+//	{
+//	
+//		String member_id = (String)session.getAttribute("member_id");
+//		int member_no = memberDao.getNo(member_id);			
+//		
+//		memberDto = memberDao.membergetUpdate(member_no);
+//		
+//		
+//		
+//		return "member/editmember";
+//	}
 	
 	//회원 정보 수정
 	@PostMapping("editmember")
@@ -427,6 +472,7 @@ public class MemberController {
 		return "member/membercheck";
 	}
 	
+
 	
 	
 	
@@ -865,4 +911,56 @@ public class MemberController {
 			
 			return "member/membermyinfo";
 		}
+		
+		
+		
+		
+		//비밀번호 확인 안됨
+		@GetMapping("/check_pw")
+		public String check_pw() {
+			
+			return "member/check_pw";
+		}
+		@PostMapping("/check_pw")
+		public String check_pw(@ModelAttribute MemberDto memberDto,HttpSession session) {
+			String member_id = (String)session.getAttribute("member_id");
+			memberDto.setMember_id(member_id);
+			MemberDto find = memberDao.login(memberDto);
+			boolean correct = passwordEncoder.matches(memberDto.getMember_pw(), find.getMember_pw());
+			if(correct==true) {
+			return"redirect:/member/pwchange";
+		}
+			else {
+				return"redirect:/member/check_pw";
+			}
+		}
+		
+		//비밀번호 변경 완료
+		@GetMapping("/pwchange")
+		public String pwchange () {
+
+			
+			return "member/pwchange";
+			
+		}	
+		@PostMapping("/pwchange")
+		public String pwchange(@ModelAttribute MemberDto memberDto,HttpSession session) {
+			String member_id = (String)session.getAttribute("member_id"); 
+		//	log.info("seller_id={}", seller_id);
+			memberDto.setMember_id(member_id);
+			//log.info("sellerDto={}",sellerDto);
+			memberDto.setMember_pw(passwordEncoder.encode(memberDto.getMember_pw()));
+			
+				memberDto.setMember_id(member_id); 
+			
+				memberDao.change_pw(memberDto);
+			
+			return"redirect:/member/login";
+			}
+
+
+
+
+
+
 }
