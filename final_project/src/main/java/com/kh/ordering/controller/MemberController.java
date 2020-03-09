@@ -837,11 +837,33 @@ public class MemberController {
 			return "member/pointinfo";
 		}
 		
-	
 		//회원 로그인후 마이페이지
-		@GetMapping("/membermyinfo")
-		public String membermyinfo() {
+				@GetMapping("/membermyinfo")
+				public String membermyinfo() {
 
-			return "member/membermyinfo";
+					return "member/membermyinfo";
+				}
+		
+	
+// 회원 마이페이지 Aside에 보낼 정보
+		@GetMapping("/memberInfoAside") // 전체 회원정보
+		@ResponseBody
+		public MemberDto memberInfoAside(HttpSession session) {
+			
+			String member_id = (String)session.getAttribute("member_id");
+			int member_no = memberDao.getNo(member_id);
+			
+			MemberDto memberDto = memberDao.getMember(member_no);
+			
+			return memberDto;
+		}
+		@GetMapping("/memberPointAside")
+		@ResponseBody
+		public int memberPointAside(HttpSession session) {
+			
+			String member_id = (String)session.getAttribute("member_id");
+			int member_no = memberDao.getNo(member_id);
+			
+			return member_PointDao.getTotalPoint(member_no);
 		}
 }

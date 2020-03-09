@@ -24,8 +24,22 @@
 		padding-top: 100px;
 		width: 960px;
 	}
-	.cartContent {
+	.cart_main {
 		margin: 0 auto;
+		width: 90%;
+		height: 50px;
+		border-bottom: 2px solid #F3F5F8;
+	}
+	.cart_mainBox1 {
+		width: 200px;
+		height: auto;
+		padding-top: 10px;
+		margin-left: 30px;
+		float: left;
+		font-size: large; 
+	}		
+	.cartContent {
+		margin: 30px auto;
 		width: 80%;
 	}
 	
@@ -39,6 +53,11 @@
 <article class="articleBox">
 <jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 	<div class="cartList">
+		<div class="cart_main">
+			<div class="cart_mainBox1">
+				주문내역
+			</div>
+		</div>	
 		<div class="cartContent">
 		<table class="table table-hover" border="1">
 			  <thead align="center">

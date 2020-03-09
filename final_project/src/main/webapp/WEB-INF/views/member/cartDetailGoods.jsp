@@ -148,11 +148,11 @@
 				<c:set var="status" value="${cartGoods.cart_ok_status}"/>
 				<c:choose>
 					<c:when test="${empty cartGoods.cart_ok_status && cartGoods.cart_info_status=='결제완료'}">
-						<button class="btn_confirm" data-cart_info_goods_no="${cartGoods.cart_info_goods_no }">구매확정</button><br>
+						<button class="btn_confirm btn_custom" data-cart_info_goods_no="${cartGoods.cart_info_goods_no }">구매확정</button><br>
 					</c:when>
 					<c:when test="${functions:contains(status, '구매확정') }">
 					
-						<button class="btn btn-secondary btn_review">리뷰쓰기</button>
+						<button class="btn btn-secondary btn_review btn_custom">리뷰쓰기</button>
 						<div class="modal" style="display:none;">
 							<div class="modal-dialog" role="document">
 								<form action="insertReview" method="post" enctype="multipart/form-data" class="insertReview">	

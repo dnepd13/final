@@ -198,10 +198,10 @@
 	
 	<!-- 판매자 문의 답변 -->
 	<insert id="insertA" parameterType="goodsQnaDto">
-		insert into goods_qna(goods_qna_no, goods_no, seller_no,
+		insert into goods_qna(goods_qna_no, goods_no, seller_no, member_no,
 							                    goods_qna_content, goods_qna_writer, goods_qna_date,goods_qna_head,
 							                    goods_qna_groupno,goods_qna_superno,goods_qna_status)
-			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no},
+			        values(goods_qna_seq.nextval, #{goods_no}, #{seller_no}, #{member_no,},
 				                 #{goods_qna_content}, #{goods_qna_writer}, sysdate, '답변',
 				                #{goods_qna_groupno}, #{goods_qna_superno},'답변완료')
 	</insert>

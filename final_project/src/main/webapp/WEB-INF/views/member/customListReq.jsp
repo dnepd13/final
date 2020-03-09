@@ -24,8 +24,22 @@
 		padding-top: 100px;
 		width: 900px;
 	}
-	.reqList {
+	.req_main {
 		margin: 0 auto;
+		width: 90%;
+		height: 50px;
+		border-bottom: 2px solid #F3F5F8;
+	}
+	.req_mainBox1 {
+		width: 200px;
+		height: auto;
+		padding-top: 10px;
+		margin-left: 30px;
+		float: left;
+		font-size: large; 
+	}
+	.reqList {
+		margin: 30px auto;
 		width: 80%;
 	}
 	table {
@@ -85,6 +99,11 @@
 	</c:when>
 	<c:otherwise>
 		<div class="req_wrap">
+			<div class="req_main">
+				<div class="req_mainBox1">
+					보낸 요청서 관리
+				</div>
+			</div>
 			<div class="reqList">
 				<table class="table table-hover">
 						<c:forEach var="memberCustom" items="${getListReq }">

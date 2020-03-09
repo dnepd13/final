@@ -48,8 +48,22 @@
 		padding-top: 100px;
 		width: 900px;
 	}
-	.respList {
+	.resp_main {
 		margin: 0 auto;
+		width: 90%;
+		height: 50px;
+		border-bottom: 2px solid #F3F5F8;
+	}
+	.resp_mainBox1 {
+		width: 200px;
+		height: auto;
+		padding-top: 10px;
+		margin-left: 30px;
+		float: left;
+		font-size: large; 
+	}
+	.respList {
+		margin: 30px auto;
 		width: 80%;
 	}
 	table {
@@ -86,6 +100,11 @@
 	</c:when>
 	<c:otherwise>
 		<div class="resp_wrap">
+			<div class="resp_main">
+				<div class="resp_mainBox1">
+					받은 견적서 관리
+				</div>
+			</div>
 			<div class="respList">
 				<table class="table table-hover">
 				
