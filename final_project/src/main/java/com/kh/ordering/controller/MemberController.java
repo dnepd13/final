@@ -1,17 +1,13 @@
  package com.kh.ordering.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,21 +17,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.kh.ordering.entity.CertDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.ordering.entity.GoodsCartDto;
 import com.kh.ordering.entity.MemberDto;
-import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.entity.Member_AddrDto;
+import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.repository.CertDao;
+import com.kh.ordering.repository.GoodsDao;
+import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.Member_AddrDao;
 import com.kh.ordering.repository.Member_PointDao;
 import com.kh.ordering.service.EmailService;
+import com.kh.ordering.service.GoodsOptionService;
 import com.kh.ordering.service.MemberService;
-import com.kh.ordering.service.Member_AddrService;
 import com.kh.ordering.service.RandomService;
+import com.kh.ordering.vo.CartVO;
+import com.kh.ordering.vo.ItemVO;
+import com.kh.ordering.vo.ItemVOList;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,12 +45,17 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/member")
 @Slf4j
 public class MemberController {
-
+	@Autowired
+	private MemberCustomDao memberCustomDao;
+	
 	@Autowired
 	private CertDao certDao;
 	
 	@Autowired
 	private JavaMailSender sender;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	@Autowired
 	private RandomService randomService;
@@ -66,7 +72,8 @@ public class MemberController {
 	@Autowired
 	private Member_AddrDao member_AddrDao;
 	
-
+	@Autowired
+	private GoodsDao goodsDao;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -74,7 +81,67 @@ public class MemberController {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	
+	@Autowired
+	private GoodsOptionService goodsOptionService;
+
+	// 장바구니 (월용) ///////////////////////
+	@GetMapping("/cart")
+	public String cart(HttpSession session, Model model) throws JsonProcessingException {
+		String member_id = (String)session.getAttribute("member_id");
+
+		List<GoodsCartDto> goodsCartDtoList = memberDao.getGoodsCartList(member_id);
+		List<ItemVO> itemVOList = new ArrayList<>();
+		List<Integer> goodsCartNoList = new ArrayList<>();
+
+		for(GoodsCartDto goodsCartDto : goodsCartDtoList) {
+			goodsCartNoList.add(goodsCartDto.getGoods_cart_no());
+
+			ItemVO itemVO = ItemVO.builder()
+					.goods_no(goodsCartDto.getGoods_no())
+					.option_no_list(memberDao.getGoodsOptionNoList(goodsCartDto.getGoods_cart_no()))
+					.price(goodsCartDto.getGoods_cart_price())
+					.quantity(goodsCartDto.getGoods_cart_quantity())
+				.build();
+			itemVOList.add(itemVO);
+		}
+
+		List<CartVO> cartVOList = goodsOptionService.getCartVOList(itemVOList);
+
+
+
+		model.addAttribute("cartVOList", cartVOList);
+
+		ObjectMapper mapper = new ObjectMapper();
+		model.addAttribute("jsonCartVOList", mapper.writeValueAsString(cartVOList));
+		model.addAttribute("jsGoodsCartNoList", goodsCartNoList);
+		
+		// 파일
+		List<Integer> filesList = new ArrayList<>();
+		for (CartVO cartVO : cartVOList) {
+			filesList.add(goodsDao.getGoodsMainImage(cartVO.getGoodsDto().getGoods_no()));
+		}
+		model.addAttribute("filesList", filesList);
+		
+		return "member/cart";
+	}
+
+	@PostMapping("/addCart")
+	@ResponseBody
+	public String addCart(@ModelAttribute ItemVOList itemVOList, HttpSession session) {
+		memberService.addCart((String)session.getAttribute("member_id"), itemVOList);
+		return "";
+	}
+
+	@PostMapping("/deleteCart")
+	@ResponseBody
+	public String deleteCart(@RequestParam int goods_cart_no) {
+		memberService.deleteCart(goods_cart_no);
+		return "";
+	}
+
+
+	/////////////////////////////////////	
+
 		
 	
 		//회원 가입하기
@@ -95,8 +162,6 @@ public class MemberController {
 			//멤버 시퀀스를  저장한다
 			member.setMember_no(seq);
 			
-			System.out.println(member);
-		
 			//memberDto에 들어가 있는 pw를 암호화 한다(bcrypt)
 			
 //			//멤버의 pw를 가져오고
@@ -117,15 +182,40 @@ public class MemberController {
 			//시퀀스를 넣은 포인트에 데이터를 넣고 입력
 			sqlSession.insert("member_PointDto.pointregist", member_PointDto);
 			
-			return "redirect:/member/login"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
+			return "redirect:/member/registsuccess"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
 		}
 	
+	//회원 탈퇴
+	@GetMapping("memberdelete")
+	public String memberdelete() {
+		
+		return "member/memberdelete";
+	}
 
+	@PostMapping("memberdelete")
+	public String memberdelete(HttpSession session, @ModelAttribute MemberDto memberDto)
+	{
+		String member_id = (String)session.getAttribute("member_id");
+		memberDto.setMember_id(member_id);
+		MemberDto login = memberDao.login(memberDto);
+		
+		boolean correct = passwordEncoder.matches(memberDto.getMember_pw(),login.getMember_pw());
+		
+		if(login == null) {
+			return "redirect:/ordering/member/membermyinfo";
+		}
+		else {
+			session.invalidate();
+			memberDao.memberdelete(login);
+			return "redirect:/";
+		}
+	}
 	
-//	@GetMapping("/registsuccess")
-//	public String registsuccess() {
-//		return "member/registsuccess";//완료한뒤 인덱스페이지로 보낼것을 준비
-//	}
+	
+	@GetMapping("/registsuccess")
+	public String registsuccess() {
+		return "member/registsuccess";//완료한뒤 인덱스페이지로 보낼것을 준비
+	}
 //	
 //	@PostMapping("/registsuccess")
 //	public String registsuccess(
@@ -221,6 +311,12 @@ public class MemberController {
 //		session.removeAttribute("member_no");
 		
 		return "redirect:/";
+	}
+	
+	@GetMapping("/style")
+	public String style() {
+		
+		return "member/style";
 	}
 
 	
@@ -329,6 +425,16 @@ public class MemberController {
 		return "member/membercheck";
 	}
 	
+	
+	
+	
+	
+	
+
+
+
+	
+	
 //회원 이메일 인증
 	@PostMapping("/send")//jsp로 결과가 나가면 안된다
 	@ResponseBody//내가 반환하는 내용이 곧 결과물
@@ -343,14 +449,15 @@ public class MemberController {
 	      }
 	@PostMapping("/validate")//세션에 있는 cert랑 사용자가 입력한 번호랑 같아야한다
 	@ResponseBody
-	public String validate(HttpSession session, @RequestParam(value = "cert",required = false,defaultValue = "")  String cert) {
+	public String validate(HttpSession session, @RequestParam String cert) {
 			String value =(String)session.getAttribute("cert");//서버에 저장된 번호를 내놔라 사용자가 입력한 값이 cert로 들어와야한다
 			      session.removeAttribute("cert");//세션값을 지운다 한번쓰면 지워야한다(버려야한다)
-			if (value.equals(cert)) {  //사용자가 입력한 값이 cert랑 같으면
-				return "email_success";
-			}	
-				else {
-					return "fail";
+			      if (value.equals(cert)) {  //사용자가 입력한 값이 cert랑 같으면
+
+						return "success";
+			      }
+			      else {
+			    	  	return "fail";
 
 				}
 			}
@@ -365,10 +472,7 @@ public class MemberController {
 		
 
 		int result = sqlSession.selectOne("member.id_check", member_id);
-			log.info("들어오나");
-			log.info("membercheck={}",member_id);
-			
-			log.info("result={}", result);
+		
 			String a = Integer.toString(result);
 			if(result == 1) {
 				return a;
@@ -388,17 +492,13 @@ public class MemberController {
 				@PostMapping("/memberfind_id")
 				public String memberfind_id(HttpSession session,@RequestParam String member_email,
 						@RequestParam String member_name,Model model) {
-						log.info("1= {}", member_email);
-						log.info("2= {}", member_name);
+
 						MemberDto memberDto =MemberDto.builder().member_name(member_name)
 																.member_email(member_email)
 																.build();
 						
-						log.info("memberDto={}",memberDto);
-						
 						MemberDto find_id=memberDao.memberfind_id(memberDto);
-						log.info("2find_id={}",memberDto);
-						log.info("2find_id={}",find_id);
+
 						model.addAttribute("memberDto",find_id);
 					return "member/find_id_info";
 
@@ -414,9 +514,9 @@ public class MemberController {
 						MemberDto memberDto =MemberDto.builder().member_name(member_name) 
 																				   .member_email(member_email)
 																				   .build();
-						log.info("memberDto={}",memberDto);
+
 						MemberDto find_id=memberDao.memberfind_id(memberDto);
-							log.info("find_id={}",find_id);
+
 					//	model.addAttribute("sellerDto",find_id);
 
 					return "member/find_id_info";
@@ -712,9 +812,14 @@ public class MemberController {
 		
 	
 		//회원 로그인후 마이페이지
-		
 		@GetMapping("/membermyinfo")
-		public String membermyinfo() {
+		public String membermyinfo(HttpSession session, Model model) {
+			
+			String member_id = (String)session.getAttribute("member_id");
+			int member_no = memberDao.getNo(member_id);
+			
+			// 회원 신규 견적서 알람 check N count 개수		
+			model.addAttribute("customAlarm", memberCustomDao.customAlarm(member_no));
 			
 			return "member/membermyinfo";
 		}

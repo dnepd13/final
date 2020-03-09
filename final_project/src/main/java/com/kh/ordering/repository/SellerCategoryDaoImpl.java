@@ -7,16 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.SellerCategoryDto;
+import com.kh.ordering.vo.PagingVO;
 
 public class SellerCategoryDaoImpl implements SellerCategoryDao{
 	@Autowired
 	private SqlSession sqlSession;
+	//-------------------------판매자id로 판매자 번호 구하기----------------//
+	@Override
+	public int getNo(String seller_id) {
+		// seller_id 나중에 세션에서 가져와서 바꾸기
+		int seller_no = sqlSession.selectOne("seller.getNo", seller_id);
+	    return seller_no;
+	}
 	
 	//-------------------------판매자 카테고리 관리----------------//
 	@Override
 	public int categoryCount() {
-		int result = sqlSession.selectOne("seller_category_count");
+		int result= sqlSession.selectOne("seller_category.categoryCount");
 		return result;
+
 	}
 	//------------------------- 카테고리 등록----------------//
 	@Override
@@ -56,5 +65,32 @@ public class SellerCategoryDaoImpl implements SellerCategoryDao{
 		
 		return sqlSession.selectList("seller_category.get_category_name_list",list);
 	}
+				
+	@Override
+	public List<CategoryDto> categoryGetList(PagingVO vo) {
+		List<CategoryDto> list =
+				sqlSession.selectList("seller_categoty.sellerGetCategoryList",vo);
+		return list;
+	}
+
+	@Override
+	public List<CategoryDto> categoryBig() {		
+		return sqlSession.selectList("seller_categoty.categoryItemBig");
+	}
+
+	@Override
+	public List<CategoryDto> categoryMiddle() {
+		return sqlSession.selectList("seller_categoty.categoryItemMiddle");
+	}
+
+
+
+	@Override
+	public List<CategoryDto> categorySmall() {
+		return sqlSession.selectList("seller_categoty.categoryItemSmall");
+	}
 
 }
+	
+
+

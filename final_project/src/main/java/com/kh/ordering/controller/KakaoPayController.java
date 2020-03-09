@@ -2,6 +2,7 @@ package com.kh.ordering.controller;
 
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,13 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.entity.PayDto;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsOptionDao;
 import com.kh.ordering.repository.MemberDao;
@@ -23,6 +27,7 @@ import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.repository.PayDao;
 import com.kh.ordering.service.payService;
 import com.kh.ordering.vo.CartVO;
+import com.kh.ordering.vo.KakaoPayReadyReturnVO;
 import com.kh.ordering.vo.KakaoPayReadyVO;
 import com.kh.ordering.vo.KakaoPayRevokeReturnVO;
 import com.kh.ordering.vo.KakaoPaySuccessReadyVO;
@@ -31,12 +36,13 @@ import com.kh.ordering.vo.OrderVO;
 import com.kh.ordering.vo.PayReadyReturnVO;
 
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequestMapping("/pay/kakao")
 @Slf4j
 public class KakaoPayController {
-	
+
 	@Autowired
 	private GoodsOptionDao goodsOptionDao;
 	
@@ -58,12 +64,12 @@ public class KakaoPayController {
 	@PostMapping("/test")
 	public String test(@RequestParam String orderVO, Model model) {
 		model.addAttribute("orderVO", orderVO);
-		return "pay/test";
+		return "pay/kakao/test";
 	}
 	
 	@GetMapping("/confirm")
 	public String confirm() {
-		return "pay/confirm";
+		return "pay/kakao/confirm";
 	}
 	
 	@PostMapping("/confirm")
@@ -82,7 +88,7 @@ public class KakaoPayController {
 		} 
 		catch (URISyntaxException e) {
 			e.printStackTrace();
-			return "redirect:/pay/confirm";
+			return "redirect:/pay/kakao/confirm";
 		}
 		
 	}
@@ -99,10 +105,6 @@ public class KakaoPayController {
 		session.removeAttribute("tid");
 		session.removeAttribute("ready");
 		
-		log.info("pg_token = {}", pg_token);
-		log.info("tid = {}", tid);
-		log.info("vo = {}", vo);
-		
 		KakaoPaySuccessReadyVO data = KakaoPaySuccessReadyVO.builder()
 												.cid("TC0ONETIME")
 												.tid(tid)
@@ -113,9 +115,15 @@ public class KakaoPayController {
 
 		KakaoPaySuccessReturnVO result = payService.approve(data);
 		
-		 payService.transactionOrder(data.getPartner_order_id());
+		payService.transactionOrder(data.getPartner_order_id());
 		 
-		 return "redirect:/pay/success";
+		int cart_info_no = orderDao.getCartInfoNo(data.getPartner_order_id());
+		return "redirect:/member/cartDetailGoods?cart_info_no="+cart_info_no;
+	}
+	
+	@GetMapping("/result")
+	public String result() {
+		return "pay/success"; 
 	}
 	
 	@GetMapping("/list")
@@ -143,5 +151,68 @@ public class KakaoPayController {
 	@GetMapping("/cancel")
 	public String cancel() {
 		return "pay/cancel";
+	}
+	
+	
+	
+//	주문제작
+
+	@PostMapping("/customPay") // 결제준비 요청-응답
+	public String customPay(@RequestParam String jsonOrderVO, HttpSession session) throws URISyntaxException, JsonMappingException, JsonProcessingException {
+		
+		// 결제준비 요청 데이터(뷰에서 넘어온 jsonOrderVO)를 받아서 카카오페이 요청 데이터에 set
+		KakaoPayReadyVO readyVO = payService.setCustomReadyVO(jsonOrderVO);
+		
+		// Service에 넘기면 결제 준비 응답 데이터를 반환
+		// 결제 준비 응답 데이터를 ReadyReturnVO 객체에 저장
+		KakaoPayReadyReturnVO result = (KakaoPayReadyReturnVO) payService.readyReturnVO(readyVO, session, jsonOrderVO);
+		
+		// DB에 필요한 내역을 저장하고 성공페이지에 전달할 세션 추가
+		session.setAttribute("tid", result.getTid()); // 응답의 tid
+		session.setAttribute("readyVO", readyVO); // 결제요청 데이터
+		
+		// 응답 데이터 중 결제를 위한 주소가 들어있는 페이지로 redirect
+		return "redirect:"+result.getNext_redirect_pc_url();
+	}
+	
+	@GetMapping("/customPaySuccess") // 결제승인 요청-응답
+	public String customPaySuccess(@RequestParam String pg_token, HttpSession session,
+																Model model) throws Exception {
+		String tid = (String)session.getAttribute("tid");
+		KakaoPayReadyVO readyVO = (KakaoPayReadyVO) session.getAttribute("readyVO");
+		
+		session.removeAttribute("tid");
+		session.removeAttribute("readyVO");
+		
+		// 결제 승인처리
+		// KakaoPaySuccessReadyVO를 받아서 KakaoPaySuccessReturnVO 반환
+		KakaoPaySuccessReadyVO successReadyVO
+									= KakaoPaySuccessReadyVO.builder()
+																					.cid("TC0ONETIME")
+																					.tid(tid)
+																					.partner_order_id(readyVO.getPartner_order_id())
+																					.partner_user_id(readyVO.getPartner_user_id())
+																					.pg_token(pg_token)
+																					.build();
+
+		KakaoPaySuccessReturnVO result = payService.approveVO(successReadyVO, session);
+		
+		model.addAttribute("patner_order_id", readyVO.getPartner_order_id());
+		
+		return "pay/customPaySuccess";
+	}
+	@GetMapping("/customPayCancel") // 결제취소
+	public String customPayCancel(){
+		return "pay/customPayCancel";
+	}
+	
+	@GetMapping("/customPayRevoke")
+	public String customPayRevoke(@RequestParam int ordering_no) throws URISyntaxException {
+			PayDto payDto = payDao.get(ordering_no);
+		
+			KakaoPayRevokeReturnVO revokeReturnVO = payService.customRevokeVO(payDto);
+
+
+		return "redirect:/member/cartDetailPay?partner_order_id="+payDto.getPartner_order_id();
 	}
 }

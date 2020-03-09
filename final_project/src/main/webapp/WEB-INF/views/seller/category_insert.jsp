@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 
 <!DOCTYPE html>
 <html>
@@ -196,6 +196,24 @@
 </select>
 <!-- 리스트 -->
 	<input class="submit_btn" type="submit" value="등록" >
+	
+	
+	<div class="form-group">
+  <fieldset>
+    <label class="control-label" for="seller_id">판매자 아이디</label>
+    <input class="form-control" id="seller_id" type="text"  value="${seller_id}">
+  </fieldset>
+</div>
+
+
+    <h3>판매자 아이디: ${seller_id}</h3>
+    <c:forEach var ="list" items="${category_list}">
+    		<h3>${list.category_no}</h3>
+    		<h3>${list.category_large}</h3>
+    		<h3>${list.category_middle}</h3>
+    		<h3>${list.category_small}</h3>
+    </c:forEach>
+    
  <%-- c:forEach var="list" items="${list }">
     <tr class="table-light">
       <th scope="row" id="category_no">${list.category_no }</th>
@@ -242,3 +260,4 @@
 
 </form>
 </body>
+</html>

@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.GoodsCartDto;
-import com.kh.ordering.entity.CartInfoDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.OptionCartDto;
 import com.kh.ordering.vo.MemberPointVO;
@@ -43,8 +43,9 @@ public interface MemberDao {
 //////////////////////////////////////
 	
 	
-// 회원 주문제작 Dao
-
+//////// 회원구매확정 (ordering, cart_info 테이블 관련)
+	void insertCartOkCustom(CartOkDto cartOkDto); // 일반상품
+	void insertCartOk(CartOkDto cartOkDto); // 주문제작
 	
 //회원 정보 가입
 
@@ -69,12 +70,14 @@ public interface MemberDao {
 		//세션에 있는 id를 통해 번호구하기
 		int getNo(@RequestParam String member_id);
 
-
+		
 		public MemberDto memberGetOne(MemberDto member);
 		
+		//회원 탈퇴
+		void memberdelete(MemberDto memberDto);
 		
 		
-		
+	
 		
 		
 		

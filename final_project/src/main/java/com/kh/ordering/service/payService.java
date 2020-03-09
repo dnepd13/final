@@ -6,6 +6,8 @@ import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.kh.ordering.entity.PayDto;
+import com.kh.ordering.vo.CustomOrderVO;
 import com.kh.ordering.vo.KakaoPayReadyVO;
 import com.kh.ordering.vo.KakaoPayRevokeReturnVO;
 import com.kh.ordering.vo.KakaoPaySuccessReadyVO;
@@ -20,4 +22,10 @@ public interface payService {
 	KakaoPayRevokeReturnVO revoke(int no)  throws URISyntaxException;
 	KakaoPayReadyVO setReadyVO(String orerVO) throws JsonMappingException, JsonProcessingException;
 	boolean transactionOrder(String partner_order_id) throws Exception;
+	
+	// 주문제작
+	PayReadyReturnVO readyReturnVO(PayReadyVO readyVO, HttpSession session, String jsonOrderVO) throws URISyntaxException, JsonMappingException, JsonProcessingException;
+	KakaoPayReadyVO setCustomReadyVO(String jsonOrderVO) throws JsonMappingException, JsonProcessingException;
+	KakaoPaySuccessReturnVO approveVO(KakaoPaySuccessReadyVO successReadyVO, HttpSession session) throws URISyntaxException;
+	KakaoPayRevokeReturnVO customRevokeVO(PayDto payDto) throws URISyntaxException;
 }

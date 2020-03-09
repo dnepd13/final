@@ -22,5 +22,9 @@ public class GoodsFilesDaoImpl implements GoodsFilesDao{
 	public FilesDto getFile(int files_no) {
 		return sqlSession.selectOne("admin.getFile", files_no);
 	}
+	@Override
+	public List<FilesDto> getCustomOrderFiles(int custom_files_no) {
+		return sqlSession.selectList("admin.getCustomOrderFiles", custom_files_no);
+	}
 	
 }

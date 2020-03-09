@@ -17,6 +17,8 @@ public interface Member_PointDao {
 	// 포인트 상세 정보보기 테이블
 	List<Member_PointDto> getListPoint(int member_no);
 	
-	// 포인트 추가적립
+	// 포인트 적립 추가
 	void insertPoint(Member_PointDto membePointDto);
+	// 포인트 사용 추가
+	void usedPoint(Member_PointDto memberPointDto);
 }

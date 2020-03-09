@@ -38,7 +38,7 @@
 			values(custom_order_seq.nextval,
 						#{custom_order_title}, #{custom_order_content}, sysdate,
 						#{custom_order_price}, #{custom_order_hopedate},
-						'진행 중', '요청서', #{custom_order_category})
+						'진행중', '요청서', #{custom_order_category})
 	</insert>
 	
 	<!-- 요청서 시퀀스번호 -->
@@ -103,6 +103,14 @@
 	<select id="customCheck" parameterType="int" resultType="int">
 		select count(*) from member_alarm where member_alarm_check='N' and member_no=#{member_no}
 	</select>
+	<!--견적서 결제하면 주문제작 상태 업데이트 -->
+	<update id="updateCustomStatus" parameterType="int">
+		update custom_order set custom_order_status='결제완료' where custom_order_no=#{custom_order_no}
+	</update>
+	<!--견적서 결제하면 주문제작 상태 업데이트 -->
+	<update id="updateCustomCancel" parameterType="int">
+		update custom_order set custom_order_status='결제취소' where custom_order_no=#{custom_order_no}
+	</update>
 	
 	<!-- 구매자가 보낸 요청서 총 개수(목적:페이징) -->
 	<select id="customReqCount" parameterType="int" resultType="int">
@@ -221,6 +229,12 @@
 	<update id="lastLogin" parameterType="member">
 		update member set member_last_login = sysdate where member_id= #{member_id}
 	</update>
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="delete" parameterType="member">
+		delete member where member_id = #{member_id}
+	</delete>
+	
 	
 	<!-- 회원 상세보기 리스트 -->
 	<select id="memberGetOne" parameterType="member" resultType="member">

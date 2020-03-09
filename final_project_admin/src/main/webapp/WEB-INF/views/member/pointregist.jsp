@@ -1,9 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
-<div style="padding-top: 50px;">
+
+<aside>
+<div>
 <jsp:include page="../template/header.jsp"></jsp:include>
 </div>
+</aside>
+
+<section class="admin" style="padding-left: 250px;">
+	<article>
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
@@ -13,7 +19,7 @@
 
 </div>
    
-<div class="row justify-content-center" >
+<div class="row justify-content-center" style="padding-top:100px;">
 <h1>${member.member_id }님의 포인트를 등록합니다</h1>
 </div>
 <form action="pointregist" method="post">
@@ -51,3 +57,4 @@
 </div>
         </div>
     </div>
+    </article></section>

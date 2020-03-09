@@ -37,10 +37,13 @@ public class Member_PointDaoImpl implements Member_PointDao{
 		return sqlSession.selectList("member_PointDto.getListPoint",member_no);
 	}
 
-	@Override // 포인트 추가적립
-	public void insertPoint(Member_PointDto membePointDto) {
-		
+	@Override // 포인트 적립추가
+	public void insertPoint(Member_PointDto membePointDto) {	
 		sqlSession.insert("member_PointDto.insertPoint",membePointDto);
+	}
+	@Override // 포인트 사용추가
+	public void usedPoint(Member_PointDto memberPointDto) {
+		sqlSession.insert("member_PointDto.usedPoint", memberPointDto);
 	}
 	
 

@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 public class FilesDto {
 	private int files_no,
 					files_size,
-					goods_no;
+					goods_no,
+					custom_order_no;
 	private String files_savename,
 						files_uploadname;
 }

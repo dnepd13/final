@@ -92,7 +92,7 @@ public class GoodsService {
 			finishBlock=pageCount;
 		}
 		
-		int seller_no= goodsQnaDao.getSeller(goods_no);
+//		int seller_no= goodsQnaDao.getSeller(goods_no);
 		
 		PagingVO pagingVO = PagingVO.builder()
 				.pno(pno)
@@ -104,7 +104,7 @@ public class GoodsService {
 				.finishBlock(finishBlock)
 				.start(start)
 				.finish(finish)
-				.seller_no(seller_no)
+//				.seller_no(seller_no)
 				.goods_no(goods_no)
 				.build();
 		return pagingVO;
@@ -116,6 +116,10 @@ public class GoodsService {
 	
 	public List<GoodsFileVO> getListNew() {
 		return goodsDao.getListNew();
+	}
+
+	public List<GoodsDto> search(String keyword) {
+		return goodsDao.search(keyword);
 	}
 	
 	// 정렬 나중에..

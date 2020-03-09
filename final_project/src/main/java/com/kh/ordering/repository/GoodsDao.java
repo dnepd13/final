@@ -19,8 +19,10 @@ public interface GoodsDao {
 	List<GoodsVO> getGoodsVOList(int seller_no);
 	List<Integer> getGoodsNoList(int seller_no);
 	int getGoodsMainImage(int goods_no);
+	List<Integer> getContentImage(int goods_no);
 	//정렬 나중에..
 //	void getList(String type);
 	List<GoodsFileVO> getListNew();
 	List<GoodsFileVO> getListBest();
+	List<GoodsDto> search(String keyword);
 }

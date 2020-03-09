@@ -11,8 +11,10 @@ import com.kh.ordering.entity.CartInfoDto;
 import com.kh.ordering.entity.CartInfoGoodsDto;
 import com.kh.ordering.entity.CartInfoOpDto;
 import com.kh.ordering.entity.CartOkDto;
+import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.GoodsOptionDto;
 import com.kh.ordering.service.payService;
+import com.kh.ordering.vo.CartDetailsVO;
 import com.kh.ordering.vo.CartInfoGoodsVO;
 import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.CartVO;
@@ -99,7 +101,7 @@ public class OrderDaoImpl implements OrderDao {
 		// 포인트 검사, 감소
 		if (!memberDao.minusPointOrder(member_no, orderVO.getUsed_point())) {
 			payService.revoke(orderDao.getOrdering_no(partner_order_id));
-			System.out.println("포인트부족	");
+			System.out.println("포인트부족");
 			throw new Exception();
 		}
 		
@@ -167,7 +169,12 @@ public class OrderDaoImpl implements OrderDao {
 
 		return goodsOptionDtoList;
 	}
-
+	
+	@Override
+	public int getCartInfoNo(String partner_order_id) {
+		return sqlSession.selectOne("order.getCartInfoNo", partner_order_id);
+	}
+	
 	@Override
 	public int getOrdering_no(String partner_order_id) {
 		return sqlSession.selectOne("order.getOrdering_no", partner_order_id);
@@ -201,12 +208,30 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public int getCartInfoCount(int member_no) {
 		return sqlSession.selectOne("order.getCartInfoCount", member_no);
+		
 	}
-	@Override // 주문번호에 대한 상품List
-	public List<CartInfoVO> getCartGoods(int cart_info_no) {
+	@Override
+	public CartInfoDto getCartInfoDto(int cart_info_no) {
+		return sqlSession.selectOne("order.getCartInfoDto", cart_info_no);
+	}
+	@Override // 결제상세
+	public List<CartInfoVO> getCartPay(String partner_order_id) {
+		return sqlSession.selectList("order.getCartPay", partner_order_id);
+	}
+	@Override // 주문번호에 대한 상품 상세
+	public List<CartDetailsVO> getCartGoods(int cart_info_no) {
 		return sqlSession.selectList("order.getCartGoods", cart_info_no);
 	}
+	@Override // 옵션상세
+	public List<CartDetailsVO> getCartOption(int cart_info_goods_no) {
+		return sqlSession.selectList("order.getCartOption", cart_info_goods_no);
+	}
 
+	@Override // 주문제작 상세
+	public CustomOrderDto getCustomOrderDto(int custom_order_no) {
+		return sqlSession.selectOne("order.getCustomOrder", custom_order_no);
+	}
+	
 	@Override // 상품별 구매확정 테이블
 	public CartOkDto getCartOk(int cart_info_goods_no) {
 		return sqlSession.selectOne("order.getOkList", cart_info_goods_no);
@@ -224,5 +249,5 @@ public class OrderDaoImpl implements OrderDao {
 	public List<CartInfoVO> getTopSales(int category_no) {
 		return sqlSession.selectList("order.getTopSales", category_no);
 	}
-
+	
 }

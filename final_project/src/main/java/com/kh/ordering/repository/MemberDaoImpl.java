@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.ordering.entity.GoodsCartDto;
 import com.kh.ordering.entity.CartInfoDto;
+import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.OptionCartDto;
 import com.kh.ordering.vo.MemberPointVO;
@@ -165,6 +166,16 @@ public class MemberDaoImpl implements MemberDao{
 	}
 	
 //////////////////////////////////////	
+
+////////회원구매확정 (ordering, cart_info 테이블 관련)
+	@Override //주문제작 구매확정
+	public void insertCartOkCustom(CartOkDto cartOkDto) {
+		sqlSession.insert("order.insertCartOkCustom", cartOkDto);
+	}
+	@Override
+	public void insertCartOk(CartOkDto cartOkDto) {
+		sqlSession.insert("order.insertCartOk", cartOkDto);
+	}
 	
 	
 //회원 번호 구하기 (영락)
@@ -252,6 +263,14 @@ public class MemberDaoImpl implements MemberDao{
 			sqlSession.update("member.memberedit", member);
 			
 		}
+
+		@Override
+		public void memberdelete(MemberDto memberDto) {
+			sqlSession.delete("member.memberdelete", memberDto);
+			
+		}
+
+	
 
 //		@Override
 //		public List<MemberDto> memberGetOne(int member_no) {

@@ -2,13 +2,20 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
  
  <style>
  	.articleBox {
  		width: 500px;
 		margin: 0 auto;
+		padding-top: 5rem;
 	}
 
 /*수정 modal 내부 input 스타일 */	
@@ -98,7 +105,7 @@
 // 		}
 	});
 </script>
-    
+  
 <article class="articleBox">
 
 <div class="card mb-3">
@@ -115,7 +122,10 @@
 			 		</c:otherwise>
 		 		</c:choose>
 			</span>
-			<span style="float:right;">${getListInfoReq.custom_order_date}</span><br>
+			<span style="float:right;">
+				<fmt:parseDate value="${getListInfoReq.custom_order_date}" var="custom_order_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+				<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
+			</span><br>
 			<span style="float:right;">${getListInfoReq.custom_order_status }</span>
 		</h6>
 	</div>
@@ -134,7 +144,9 @@
 	<ul class="list-group list-group-flush">
 		<li class="list-group-item card-text">
 			<h6 class="card-subtitle text-muted">희망가격&Tab;</h6>
-			${getListInfoReq.custom_order_price}
+				<fmt:formatNumber pattern="###,###,###" type="number">
+					${getListInfoReq.custom_order_price}
+				</fmt:formatNumber> 원
 			</li>
 		<li class="list-group-item card-text">
 			<h6 class="card-subtitle text-muted">희망날짜&Tab;</h6>
@@ -187,3 +199,7 @@
 </div>
 
 </article>
+
+<div class="row-empty-40"></div> 
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

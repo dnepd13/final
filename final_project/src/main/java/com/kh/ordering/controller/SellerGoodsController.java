@@ -41,8 +41,6 @@ public class SellerGoodsController {
 	private SellerDto sellerDto;
 	@Autowired
 	private SellerDao sellerDao;
-	@Autowired
-	private SellerCustomDao sellerCustomDao;
 	//---------------------------카테고리 관리창----------------------------------
 //	@GetMapping("/serller_category")
 //	public String category(
@@ -62,20 +60,28 @@ public class SellerGoodsController {
 	@GetMapping("/category_insert")
 	//@ResponseBody
 	public String seller_category_insert( Model model) {
-		model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
+		try{
+			model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
+	
 	//	log.info("msg");
 		log.info("여기");
 		return "/seller/category_insert";
-	}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return "/seller/category_insert";
+		}
+		}
 	
 	@PostMapping("/category_insert")
-	public ModelAndView seller_category_insert(Model model ,@ModelAttribute CategoryDto categoryDto,HttpSession session) {
+	public String seller_category_insert(Model model ,@ModelAttribute CategoryDto categoryDto,HttpSession session) {
+		  try {
 		ModelAndView mv = new ModelAndView();
 		String seller_id=(String)session.getAttribute("seller_id");//세션에서 아이디를 가져온다
 	//System.out.println(categoryDto.getCategory_small());
 		//small name search category no
 		int category_no=sellerCategoryDao.category_no(categoryDto);//카테고리 넘버는 카테고리 디티오에 있다
-		int seller_no=sellerCustomDao.getNo(seller_id);//셀러 넘버는 sellercustromedao.get
+		int seller_no=sellerCategoryDao.getNo(seller_id);//셀러 넘버는 sellercustromedao.get
 	    SellerCategoryDto sellerCategoryDto=SellerCategoryDto.builder()
 	    													 .seller_no(seller_no)
 	    													  .category_no(category_no)
@@ -98,21 +104,28 @@ public class SellerGoodsController {
 	//			return "redirect:/seller/category_info?seller_no=" + seller_no;
 			mv.addObject("seller_id", seller_id);
 			mv.addObject("list", category_list);
-			mv.setViewName("redirect:/seller/category_info");
-			return mv;
-		}
-@PostMapping("/category_info")
-public ModelAndView seller_category_info(HttpSession session) {
-	ModelAndView mv = new ModelAndView();
-	String seller_id=(String)session.getAttribute("seller_id");
-	int seller_no=sellerCustomDao.getNo(seller_id);
-	List<Integer> list = sellerCategoryDao.seller_category_list(seller_no);
-	List<CategoryDto> category_list =sellerCategoryDao.seller_category_name_list(list);
-	mv.addObject("seller_id", seller_id);
-	mv.addObject("category_list",category_list);
-	mv.setViewName("/seller/category_info");
-	return mv;
-}
+			mv.setViewName("/seller/category_insert");
+			return "/seller/category_insert";
+			}
+			catch (Exception e) {
+			e.printStackTrace();
+		
+			return "redirect;/seller/category_insert";
+				}
+	}
+	
+//@PostMapping("/category_info")
+//public ModelAndView seller_category_info(HttpSession session) {
+//	ModelAndView mv = new ModelAndView();
+//	String seller_id=(String)session.getAttribute("seller_id");
+//	int seller_no=sellerCategoryDao.getNo(seller_id);
+//	List<Integer> list = sellerCategoryDao.seller_category_list(seller_no);
+//	List<CategoryDto> category_list =sellerCategoryDao.seller_category_name_list(list);
+//	mv.addObject("seller_id", seller_id);
+//	mv.addObject("category_list",category_list);
+//	mv.setViewName("/seller/category_info");
+//	return mv;
+//}
 ///---카테고리 수정---------------------------------------------------//
 @PostMapping("/category_update")
 @ResponseBody

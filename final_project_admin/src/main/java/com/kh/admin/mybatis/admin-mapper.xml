@@ -79,6 +79,24 @@
 		delete admin where admin_no = #{admin_no}
 	</delete>
 	
+	<!-- 관리자 자기정보 -->
+	<select id="amindMy" parameterType="string" resultType="adminDto" >
+		select * from admin where admin_id = #{admin_id}
+	</select>
+	
+	<!-- 관리자 자기비밀번호 변경 위한 비밀번호 확인 -->
+	<select id="adminCheckPw" parameterType="int" resultType="adminDto">
+		select * from admin where admin_no = #{admin_no}
+	</select>
+	
+	<!-- 관리자 비밀번호 변경하기 관리자가 자기 아이디 하는 것 -->
+	<select id="adminChangePw" parameterType="adminDto">
+		update admin set 
+			admin_pw = #{admin_pw}
+		where 
+			admin_no = #{admin_no}
+	</select>
+	
 	<!-- 판매자 리스트 불러오기 -->
 	<select id="sellerGetList" parameterType="paging" resultType="blockSellerDto">
 		select * from(
@@ -105,6 +123,15 @@
 	<select id="sellerGetOne" parameterType="sellerDto" resultType="sellerDto">
 		select * from seller where seller_no = #{seller_no}
 	</select>
+	
+	<!-- 판매자 비밀번호 변경 -->
+	<update id="resetSellerPw" parameterType="sellerDto">
+		update seller 
+			set 
+				seller_pw = #{seller_pw}
+			where 
+				seller_no = #{seller_no}
+	</update>
 	
 	<!-- 판매자 삭제 -->
 	<delete id="sellerDelete" parameterType="sellerDto">
@@ -177,6 +204,15 @@
 	<delete id="categoryDelete" parameterType="int">
 		delete category where category_no = #{category_no}
 	</delete>
+	
+	<!-- 회원 비밀번호 리셋 -->
+	<update id="resetPw" parameterType="memberDto">
+		update member 
+			set
+				member_pw = #{member_pw}
+			where
+				member_no = #{member_no}
+	</update>
 	
 	<!-- 회원 리스트 -->
 	<select id="memberGetList" parameterType="Paging" resultType="blockMemberDto">
@@ -1003,7 +1039,7 @@
 	</select>
 	
 	<!-- 상품 파일사진 불러오기 -->
-	<select id="getGoodsFiles" parameterType="int" resultType="GoodsFiles">
+	<select id="getGoodsFiles" parameterType="int" resultType="Files">
 		select F.* from files F
 		    inner join files_goods FG on F.files_no = FG.files_no
 		    inner join goods G on FG.goods_no = G.goods_no
@@ -1011,11 +1047,17 @@
 	</select>
 	
 	<!-- 파일 번호로 파일 정보가져오기 -->
-	<select id="getFile" parameterType="int" resultType="GoodsFiles">
-		select F.* from files F
-		    inner join files_goods FG on F.files_no = FG.files_no
-		    inner join goods G on FG.goods_no = G.goods_no
+	<select id="getFile" parameterType="int" resultType="Files">
+		select F.* from files F  
 		    where F.files_no = #{files_no}
+	</select>
+	
+	<!-- 주문제작 파일 사진 불러오기 -->
+	<select id="getCustomOrderFiles" parameterType="int" resultType="Files">
+		select F.*, CO.custom_order_no from files F
+		    inner join files_custom_order FCO on F.files_no = fco.files_no
+		    inner join custom_order CO on fco.custom_order_no = co.custom_order_no
+		    where CO.custom_order_no = #{custom_order_no}
 	</select>
 	
 	<!-- 주문제작 리스트 가져오기 -->
@@ -1079,6 +1121,24 @@
 		    left outer join category C on co.custom_order_category = c.category_no
 		where CO.custom_order_no = #{custom_order_no}
 	</select>
+	
+	<!-- 회사 정보 불러오기 -->
+	<select id="getCompanyInfo" resultType="companyInfoDto">
+		select * from companyinfo
+	</select>
+	
+	<!-- 회사 정보 수정하기 -->
+	<update id="updateCompanyInfo" parameterType="companyInfoDto">
+		update companyinfo
+			set
+			co_name = #{co_name},
+			co_ceo = #{co_ceo},
+			co_location = #{co_location},
+			co_call = #{co_call},
+			co_email = #{co_email},
+			co_termsofuse = #{co_termsofuse},
+			co_privacy = #{co_privacy}
+	</update>
  </mapper> 
 	
  

@@ -10,6 +10,7 @@ import com.kh.ordering.entity.GoodsReviewDto;
 import com.kh.ordering.entity.GoodsReviewFilesDto;
 import com.kh.ordering.entity.GoodsReviewReplyDto;
 import com.kh.ordering.vo.FilesVO;
+import com.kh.ordering.vo.PagingVO;
 
 @Repository
 public class GoodsReviewDaoImpl implements GoodsReviewDao{
@@ -38,8 +39,12 @@ public class GoodsReviewDaoImpl implements GoodsReviewDao{
 		sqlSession.insert("review.insertFiles", goodsReviewFilesDto);
 	}
 	@Override // 리뷰 목록
-	public List<GoodsReviewDto> getReview(int goods_no) {
-		return sqlSession.selectList("review.getReview", goods_no);
+	public List<GoodsReviewDto> getReview(PagingVO pagingVO) {
+		return sqlSession.selectList("review.getReview", pagingVO);
+	}
+	@Override
+	public int getCount(int goods_no) {
+		return sqlSession.selectOne("review.getCount", goods_no);
 	}
 	@Override // 리뷰 평점
 	public int getStarAvg(int goods_no) {
@@ -47,9 +52,9 @@ public class GoodsReviewDaoImpl implements GoodsReviewDao{
 	}
 	
 	@Override // 파일 출력
-	public List<FilesVO> getFilesNo(int goods_no) {
+	public List<FilesVO> getFilesNo(int goods_review_no) {
 				
-		return sqlSession.selectList("review.getFilesNo", goods_no);
+		return sqlSession.selectList("review.getFilesNo", goods_review_no);
 	}
 	
 //	리뷰 댓글	
@@ -60,6 +65,10 @@ public class GoodsReviewDaoImpl implements GoodsReviewDao{
 	@Override
 	public void insertReviewReply(GoodsReviewReplyDto goodsReviewReplyDto) {
 		sqlSession.insert("review.insertReply", goodsReviewReplyDto);
+	}
+	@Override
+	public List<GoodsReviewReplyDto> getListReply(int goods_review_no) {
+		return sqlSession.selectList("review.getListReply", goods_review_no);
 	}
 
 }

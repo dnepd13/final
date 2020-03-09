@@ -4,6 +4,7 @@
     
 <div class="btn-group-vertical">
   <h3>상품관리</h3><br>
+  <button type="button" class="btn btn-primary" onclick="location='portfolio_insert'">포토폴리오등록</button><br>
   <button type="button" class="btn btn-primary" onclick="location='category_insert'">카테고리관리</button><br>
   <button type="button" class="btn btn-primary"  onclick="location='../goods/insert'">상품등록</button><br>
   <h3>판매관리</h3><br>

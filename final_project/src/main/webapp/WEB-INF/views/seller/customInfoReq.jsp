@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
  
@@ -32,7 +33,10 @@
 			 		</c:otherwise>
 		 		</c:choose>
 			</span>
-			<span style="float:right;">${getListInfoResp.custom_order_date}</span><br>
+			<span style="float:right;">
+				<fmt:parseDate value="${getListInfoResp.custom_order_date}" var="custom_order_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+				<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
+			</span><br>
 			<span style="float:right;">${getListInfoResp.custom_order_status }</span>
 		</h6>
 	</div>
@@ -51,7 +55,9 @@
 	<ul class="list-group list-group-flush">
 		<li class="list-group-item card-text">
 			<h6 class="card-subtitle text-muted">희망가격&Tab;</h6>
-			${getListInfoReq.custom_order_price }
+				<fmt:formatNumber pattern="###,###,###" type="number">
+					${getListInfoReq.custom_order_price }
+				</fmt:formatNumber> 원
 			</li>
 		<li class="list-group-item card-text">
 			<h6 class="card-subtitle text-muted">희망날짜&Tab;</h6>

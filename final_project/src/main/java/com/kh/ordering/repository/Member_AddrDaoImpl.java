@@ -55,6 +55,11 @@ public class Member_AddrDaoImpl implements Member_AddrDao{
 		
 	}
 
+	@Override
+	public Member_AddrDto getBasicAddr(int member_no) {
+		return sqlSession.selectOne("member_AddrDto.getBasicAddr", member_no);
+	}
+
 //	@Override
 //	public Member_AddrDto addrinfo(Member_AddrDto member_AddrDto) {
 //		Member_AddrDto addrinfo = sqlSession.selectOne("member_AddrDto.addrinfo", member_AddrDto);

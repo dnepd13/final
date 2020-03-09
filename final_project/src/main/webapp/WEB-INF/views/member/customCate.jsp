@@ -2,12 +2,18 @@
     pageEncoding="UTF-8"%>
  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
- 
- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
- 
+
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
  <style>
+/*	customCate.jsp style*/
  	.articleBox {
  		width: 500px;
+ 		height: 800px;
 		margin: 0 auto;
 	}
  	.insert_cate,
@@ -27,13 +33,18 @@
  	.insert_req input[type=submit] {
  		height: 50px;
  	}
- 	.btn_next {
+ 	.btn_custom {
  		border: 1px solid darkgray;
  		background-color: white;
  	}
-	.btn_next:focus {
+	.btn_custom {
  		outline: none;
  	}
+ 	
+ 	/* a태그 하이퍼링크 표시 제어 */
+    .sellerList a:link { text-decoration: none;}
+    .sellerList a:visited { text-decoration: none;}
+    .sellerList a:hover { text-decoration: none;}
  </style>
  
  <script src="https://code.jquery.com/jquery-latest.js"></script>
@@ -109,29 +120,53 @@
 			 });
  		 });
  		 
+ 		var urlSeller = "${pageContext.request.contextPath}/member/sellerPick";
  		 $(".category_small").change(function(){
    			var category_name = $(this).val();
+   			
+   			$.ajax({
+ 				 type: "POST",
+ 			 	 url: urlSeller,
+ 			 	 data: {"category_name":category_name},
+ 			 	 success: function(resp){
 
-  			 var url = "${pageContext.request.contextPath}/member/pick";
+					if(resp.length==0){
+						var p = $("<p>현재 카테고리의 요청서를 허용한 판매자가 없습니다.</p>");
+						$(".sellerList").append(p);
+						
+						var btn_next = document.querySelector(".btn_next");
+	  			 		 $(btn_next).attr("disabled", true);
+					}
+					else{
+						var btn_next = document.querySelector(".btn_next");
+	  			 		 $(btn_next).attr("disabled", false);
+					}
+				}
+   			});
+ 		 
+  			 var url = "${pageContext.request.contextPath}/member/bestPick";
   			 $.ajax({
   				 type: "POST",
   			 	 url: url,
   			 	 data: {"category_name":category_name},
-  			 	 success: function(resp){	
-  			 		 if(resp.seller_no!=null){
-	  			 		 var p = $("<p><a href='#' title='최근 한 달간 판매량 순'>&check;</a> 추천 판매자를 선택하시면 1:1 개인요청서로 전환됩니다.</p>");
-	  			 		$(".sellerList").append(p); 
-  			 		 }
-  			 		 var btn_next = document.querySelector(".btn_next");
-  			 		 $(btn_next).attr("disabled", false);
+  			 	 success: function(resp){
+
+					if(resp.length>0){
+						var p = $("<p><a href='#' title='최근 한 달간 판매량 순'>&check; 추천 판매자</a>를 선택하시면 1:1 개인요청서로 전환됩니다.</p>");
+						$(".sellerList").append(p); 
+		  			 		
+						$.each(resp, function(index, item){
+							var seller = $("<a href='${pageContext.request.contextPath}/member/customOrder?seller_no="+item.seller_no+"'>"+item.seller_id+"</a><br>");
+							$(".sellerList").append(seller);
+						});
+
+	  			 		 var btn_next = document.querySelector(".btn_next");
+	  			 		 $(btn_next).attr("disabled", false);
+					}
   			 		 
-  			 		$.each(resp, function(index, item){
-  			 			var seller = $("<a href='${pageContext.request.contextPath}/member/customOrder?seller_no="+item.seller_no+"'>"+item.seller_id+"</a><br>");
-  			 			$(".sellerList").append(seller);
- 			 		 });
-  			 		
   			 	 }
   			 });
+  			 
  		 });
  	///////////////// 요청서 입력창 스타일 제어
  		$(".btn_next").click(function(){
@@ -156,9 +191,7 @@
 
  </script>
  
-<h3>member/customoCate.jsp 카테고리 주문제작 페이지</h3>
-
-<br><br>
+<div class="row-empty-40"></div>
 
 <!-- 카테고리 선택페이지 -->
 <article class="articleBox">
@@ -202,6 +235,10 @@
 			<input class="input_req form-control btn btn-primary" type="submit" value="요청서 보내기">
 		</div>
 	</form>
-		<button type="button" class="btn_next" disabled>다음</button>
+		<button type="button" class="btn_next btn_custom" disabled>다음</button>
 </div>
 </article>
+
+<div class="row-empty-40"></div> 
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

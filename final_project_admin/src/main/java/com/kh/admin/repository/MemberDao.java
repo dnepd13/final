@@ -22,4 +22,6 @@ public interface MemberDao {
 	public int memberNameCount(String member_name);
 	public int memberGradeCount(String member_grade);
 	public void memberPointMulti(List<MemberPointVO> list);
+	//비밀번호 초기화
+	public void memberChangePw(MemberDto memberDto);
 }

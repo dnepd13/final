@@ -19,4 +19,6 @@ public class OrderVO {
 	private int total_price;
 	private int total_delivery_price;
 	private String partner_user_id;
+	
+	private CustomOrderVO customOrderVO;
 }

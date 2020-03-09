@@ -22,6 +22,7 @@
 		<!-- 판매자 Dto Alias--> 		
  		<typeAlias type="com.kh.ordering.entity.SellerDto" alias="seller"/>	
  		<typeAlias type="com.kh.ordering.entity.SellerCategoryDto" alias="sellerCategoryDto"/>
+ 		<typeAlias type="com.kh.ordering.entity.PortfolioDto" alias="portfolioDto"/>
  		
  		<!-- 주문제작 Dto Alias -->
  		<typeAlias type="com.kh.ordering.entity.MemberDto" alias="member"/>
@@ -71,6 +72,7 @@
 		
 		<!-- 주문내역 -->
 		<typeAlias type="com.kh.ordering.vo.CartInfoVO" alias="cartInfoVO"/>
+		<typeAlias type="com.kh.ordering.vo.CartDetailsVO" alias="cartDetailsVO"/>
 		<typeAlias type="com.kh.ordering.entity.CartOkDto" alias="cartOkDto"/>
 		
 		<!-- 포인트 -->

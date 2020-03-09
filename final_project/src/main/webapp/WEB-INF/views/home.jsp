@@ -1,80 +1,204 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<!DOCTYPE html>
-<html>
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"></jsp:include>
+
 <head>
-<meta charset="UTF-8">
-<title>홈</title>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<script>
+$(function(){
+	$(".goods_box").click(function(){
+		var url = $(this).children(".goods_img").attr("href");
+		$(location).attr('href', url);
+	});
+	
+// 	$(".goods_box").mouseover(function(){
+// 		$(this).addClass("rounded border border-light shadow p-3 mb-5 bg-white");
+// 	});
+	
+// 	$(".goods_box").mouseout(function(){
+// 		$(this).removeClass("rounded border border-light shadow p-3 mb-5 bg-white");
+// 	});
+	
+	$(".soldout").click(function(){
+		window.alert("품절된 상품입니다.");
+	});
+});
+</script>
 </head>
-<body>
-<main>
-	<!-- 메인 내비 -->
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand" href="#">Navbar</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
 
-  <div class="collapse navbar-collapse" id="navbarColor03">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search">
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-    </form>
-  </div>
-</nav>
-	<section>
-	</section>
-</main>
+<style>
+.goods_box{
+	cursor: pointer;
+	padding: 15px;
+}
 
-<h1>홈</h1>
+.goods_box > p {
+	margin: 0px;
+}
 
+.goods_img {
+	width: 100%;
+	height: 230px;
+}
 
+.goods_img > img {
+	width: 100%;
+	height: 250px;
+	margin: 10px auto;
+}
 
-	<span><a href="${pageContext.request.contextPath }/seller/login">판매자로그인</a></span>
-	<span> &#124; </span>
-	<span><a href="${pageContext.request.contextPath }/goods/insert">상품등록</a></span>
+.goods_name{
+	font-size: 1.1rem;
+	font-weight: bold;
+}
+
+.goods_price{
+	font-size: 1rem;
+}
+
+.goods_content{
+	font-size: 1rem;
+}
+
+.best_area {
+	margin: 50px 0px;
+}
+
+.new_area {
+	margin: 50px 0px;
+}
+
+.all_area {
+	margin: 50px 0px;
+}
+
+.soldout {
+	text-decoration: line-through;
+}
+
+.badge {
+	margin-left: 10px;
+}
+
+</style>
 <!-- 바뀐 session의 member_no에서 memeber_id를 구해서 확인  -->
 
-<!-- 로그인 내용  -->
-<c:choose>
-	<c:when test="${member_id == null}">
-		<form role="form" method="post" autocomplete="off" action="/member/login">
-			<p><a href="/ordering/member/login">일반회원 로그인</a></p>
-			<p><a href="/ordering/member/regist">회원가입</a></p>
-		</form>
-		<span><a href="${pageContext.request.contextPath }/goods/getList">상품List</a></span>
-		<p><a href="/ordering/member/login">요청서 보내기</a>
-	</c:when>
 
-	<c:otherwise>
-		<p>${member_id}님 환영합니다.</p>
-    <h1><a href="/ordering/member/membermyinfo">마이페이지</a></h1>
-		<h1><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></h1>
-		
-		<h1><a href="/ordering/board/memberreport">회원신고게시판</a></h1><br>
-<h1><a href="/ordering/board/memberqna">회원문의게시판</a></h1><br>
-		
-		<span><a href="${pageContext.request.contextPath }/goods/getList">상품List</a></span>
-		<span>&verbar;</span>
-		<span><a href="${pageContext.request.contextPath }/member/customCate">요청서 보내기</a></span>
-	</c:otherwise>
-</c:choose>
+<div class="best_area">
+  <div class="container">
+  	<div class="row">
+	 <div class="col-12">
+		 <h1 class="title">인기 상품</h1>
+	 </div>
+  	<c:forEach var="goodsFileVO" items="${listBest}">
+  	 	<c:choose>
+  	 		<c:when test="${goodsFileVO.goodsDto.goods_stock>0}">
+		  		<div class="col-sm-4 goods_box">
+		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
+		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
+		  			</a>
+			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
+			  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+			  		<p class="goods_price">
+			  			<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber>
+			  		</p>
+		  		</div>
+  	 		</c:when>
+  	 		<c:otherwise>
+  	 			<div class="col-sm-4 goods_box soldout">
+		  			<a class="goods_img" href="#">
+		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
+		  			</a>
+			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
+			  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+			  		<p class="goods_price">
+			  			<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber>
+			  		</p>
+		  		</div>
+  	 		</c:otherwise>
+  		</c:choose>
+	</c:forEach>
+  	</div>
+  </div>
+</div>
 
-</body>
-</html>
+<div class="new_area">
+  <div class="container">
+  	<div class="row">
+  	<div class="col-12">
+		 <h1 class="title">새로운 상품</h1>
+	 </div>
+  	<c:forEach var="goodsFileVO" items="${listNew}">
+  	<c:choose>
+	 	<c:when test="${goodsFileVO.goodsDto.goods_stock>0}">
+	 		<div class="col-lg-4 goods_box">
+  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
+  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
+  			</a>
+	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
+	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+	  		<p class="goods_price">
+	  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+  		</div>
+	 	</c:when>
+	 	<c:otherwise>
+	  		<div class="col-lg-4 goods_box soldout">
+	  			<a class="goods_img" href="#">
+	  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
+	  			</a>
+	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
+	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+	  		<p class="goods_price">
+	  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+	  		</div>
+	 	</c:otherwise>
+	</c:choose>
+	</c:forEach>
+  	</div>
+  </div>
+</div>
+
+<!-- 전체  -->
+<div class="all_area">
+  <div class="container">
+  	<div class="row">
+  	<div class="col-12">
+		 <h1 class="title">모든 상품</h1>
+	 </div>
+  	<c:forEach var="goodsFileVO" items="${list}">
+  		<c:choose>
+		 	<c:when test="${goodsFileVO.goodsDto.goods_stock>0}">
+		 		<div class="col-lg-4 goods_box">
+  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
+  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
+  			</a>
+	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
+	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+	  		<p class="goods_price">
+	  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+	  		</div>
+		 	</c:when>
+		 	<c:otherwise>
+		  		<div class="col-lg-4 goods_box soldout">
+		  			<a class="goods_img" href="#">
+		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
+		  			</a>
+		  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
+		  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+		  		<p class="goods_price">
+		  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+		  		</div>
+		 	</c:otherwise>
+ 		</c:choose>
+	</c:forEach>
+  	</div>
+  </div>
+</div>
+
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

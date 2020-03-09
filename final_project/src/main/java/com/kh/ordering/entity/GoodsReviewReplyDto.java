@@ -13,5 +13,5 @@ public class GoodsReviewReplyDto {
 	
 	private String goods_review_reply_content;
 	private String goods_review_reply_writer;
-	private String goods_review_reply_data;
+	private String goods_review_reply_date;
 }
