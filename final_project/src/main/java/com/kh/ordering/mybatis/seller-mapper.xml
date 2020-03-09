@@ -116,7 +116,7 @@
 		values(custom_order_seq.nextval,
 		#{custom_order_title}, #{custom_order_content}, sysdate,
 		#{custom_order_price}, #{custom_order_hopedate},
-		'진행중', '견적서',#{custom_order_category})
+		'견적대기', '견적서',#{custom_order_category})
 	</insert>	
 	<!-- 주문제작 테이블 현재 시퀀스번호 -->
 	<select id="customSeq" resultType="int">
@@ -147,10 +147,14 @@
 	<select id="getAlarm" parameterType="int" resultType="SellerAlarmDto">
 		select *from seller_alarm where member_custom_order_no=#{member_custom_order_no}
 	</select>
+	<!-- 견적서관리테이블 단일조회 -->
+	<select id="getSellerCustom" parameterType="int" resultType="sellerCustomDto">
+		select *from seller_custom_order where seller_custom_order_no=#{seller_custom_order_no}
+	</select>
 		
 	<!-- 판매자가 받은 요청서 총 개수(목적: 페이징) -->
 	<select id="customCountTest" parameterType="int" resultType="int">
-		select count(*) from seller_alarm where seller_no = #{seller_no}
+		select count(*) from seller_alarm where seller_no = #{seller_no} and seller_alarm_delete='N'
 	</select>
 	<!-- 나에게 온 요청서 보기 -->
 	<select id="getListReq" parameterType="int" resultType="customOrderVO">
@@ -159,7 +163,7 @@
 		        select A.*, B.member_id from
 		            member_custom_view A inner join member B
 		                on A.member_no = B.member_no
-		        where seller_no = #{seller_no} and  seller_alarm_delete='N' order by custom_order_date desc
+		        where seller_no = #{seller_no} and  seller_alarm_delete='N' order by a.custom_order_no desc
 		    )RN 
  		)where rn between #{start} and #{finish} 
 	</select>	
@@ -181,15 +185,19 @@
 		where a.files_size>0 and c.member_custom_order_no=#{member_custom_order_no}
 	</select>
 		
-	<!-- 요청서 상세보기 클릭하면 판매자 알람테이블 업데이트 -->
+	<!-- 요청서 상세보기 클릭하면 판매자 알람테이블/요청서관리상태 업데이트 -->
 	<update id="updateAlarm" parameterType="sellerAlarmDto">
 		update seller_alarm set seller_alarm_date=sysdate, seller_alarm_check='Y'
    			where seller_no=#{seller_no} and member_custom_order_no=#{member_custom_order_no}
 	</update>
+	<update id="updateCustomStatus" parameterType="customOrderDto">
+		update custom_order
+			set custom_order_date=sysdate, custom_order_status=#{custom_order_status} where custom_order_no=#{custom_order_no}
+	</update>
 	
 	<!-- 판매자 알람테이블 check N 상태 count (새 요청서 개수에 활용) -->
 	<select id="customCheck" resultType="int">
-		select count(*) from seller_alarm where seller_alarm_check='N' and seller_no=#{seller_no}
+		select count(*) from seller_alarm where seller_alarm_check='N' and seller_alarm_delete='N' and seller_no=#{seller_no}
 	</select>
 
 	<!-- 판매자가 보낸 견적서 총 개수(목적:페이징) -->
@@ -197,11 +205,15 @@
 		select count(*) from seller_custom_order where seller_no=#{seller_no}
 	</select>
 	
-	<!-- 요청서 삭제 (알람테이블 상태 업데이트) -->
-	<delete id="deleteReq" parameterType="SellerAlarmDto">
-		update seller_alarm set seller_alarm_date=sysdate, seller_alarm_delete='Y'
+	<!-- 요청서 삭제: status Y, delete상태 Y(구매자가 삭제할 수 있도록) -->
+	<select id="getAlarmNo" parameterType="sellerAlarmDto" resultType="int">
+		select seller_alarm_no from seller_alarm
 			where seller_no=#{seller_no} and member_custom_order_no=#{member_custom_order_no}
-	</delete>
+	</select>
+	<update id="updateAlarmDelete">
+		update seller_alarm set seller_alarm_check = 'N', seller_alarm_delete = 'Y'
+			where seller_alarm_no = #{seller_alarm_no}
+	</update>
 	
 <!-- 내가 보낸 견적서 목록 / 상세보기 -->
 	<select id="getListResp" parameterType="pagingVO" resultType="CustomOrderVO">
@@ -210,7 +222,7 @@
 		        select A.*, B.seller_no, b.seller_custom_order_no from
 		            custom_order A inner join seller_custom_order B
 		                on a.custom_order_no = b.custom_order_no 
-		        	where seller_no = #{seller_no} order by custom_order_date desc
+		        	where seller_no = #{seller_no} order by a.custom_order_no desc
 		    )RN
 		)where rn between #{start} and #{finish}
 	</select>
@@ -248,11 +260,13 @@
 		select custom_order_no from seller_custom_view
 			where member_alarm_check='N' and seller_custom_order_no=#{seller_custom_order_no}
 	</select>
-	<delete id="deleteResp" parameterType="int">
+	<delete id="deleteResp" parameterType="sellerCustomDto">
 		delete from custom_order A
-		    where exists( select 1 from seller_custom_order B
-				                    	where A.custom_order_no = B.custom_order_no
-				                    	and B.custom_order_no=#{custom_order_no})
+		    where A.custom_order_no
+		        IN (select custom_order.custom_order_no
+		                from custom_order inner join seller_custom_order
+		                    on seller_custom_order.custom_order_no = custom_order.custom_order_no
+		                where seller_no=#{seller_no} and seller_custom_order_no=#{seller_custom_order_no} and custom_order_status='견적대기')
 	</delete>
 	<delete id="deleteAlarm" parameterType="int">
 		delete member_alarm where seller_custom_order_no= #{seller_custom_order_no}

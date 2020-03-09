@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kh.ordering.entity.MemberCustomOrderDto;
 import com.kh.ordering.entity.Member_PointDto;
+import com.kh.ordering.vo.PagingVO;
 
 public interface Member_PointDao {
 	
@@ -15,7 +16,11 @@ public interface Member_PointDao {
 	
 	
 	// 포인트 상세 정보보기 테이블
-	List<Member_PointDto> getListPoint(int member_no);
+	List<Member_PointDto> getListPoint(PagingVO pagingVO);
+	int getListCount(int member_no);
+	
+	// 현재 총 포인트
+	int getTotalPoint(int member_no);
 	
 	// 포인트 적립 추가
 	void insertPoint(Member_PointDto membePointDto);

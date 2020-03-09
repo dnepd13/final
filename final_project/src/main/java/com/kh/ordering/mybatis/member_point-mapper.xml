@@ -50,8 +50,20 @@
 	</insert>
 	
 	<!-- 회원 포인트 조회 -->
+	<select id="getListCount" resultType="int" parameterType="int">
+		select count(*) from member_point where member_no=#{member_no}
+	</select>
 	<select id="getListPoint" parameterType="int" resultType="member_PointDto">
-		select * from member_point where member_no = #{member_no} order by member_point_no asc
+		select *from(
+			select rownum rn, RN.* from(
+				select * from member_point where member_no = #{member_no} order by member_point_no desc
+				)RN
+		)where rn between #{start} and #{finish}
+	</select>
+	
+	<!-- 현재 총 포인트 -->
+	<select id="getTotalPoint" resultType="int" parameterType="int"> 
+		select sum(member_point_change) from member_point where member_no=#{member_no}
 	</select>
 	
 	<!-- 포인트 적립 추가-->

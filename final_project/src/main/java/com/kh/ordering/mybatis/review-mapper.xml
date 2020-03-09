@@ -68,4 +68,12 @@
 	<select id="getListReply" parameterType="int" resultType="goodsReviewReplyDto">
 		select *from goods_review_reply where goods_review_no=#{goods_review_no} order by goods_review_reply_date asc
 	</select>
+	<update id="updateReply" parameterType="goodsReviewReplyDto">
+		update goods_review_reply set goods_review_reply_content=#{goods_review_reply_content}
+			where member_no=#{member_no} and goods_review_reply_no=#{goods_review_reply_no}
+	</update>
+	<delete id="deleteReply" parameterType="int">
+		delete goods_review_reply where goods_review_reply_no=#{goods_review_reply_no}
+	</delete>
+
  </mapper>

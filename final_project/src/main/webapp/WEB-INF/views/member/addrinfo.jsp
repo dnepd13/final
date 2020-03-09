@@ -11,7 +11,11 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <div class="btn-group-vertical">
+
+	<a href="${pageContext.request.contextPath}/member/addrRegist">
+
 	<a href="${pageContext.request.contextPath}/member/insertaddr">
+
 		<button type="button" class="btn btn-primary">배송추가</button>
 	</a>
 </div>

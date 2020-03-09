@@ -3,7 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<jsp:include page="/WEB-INF/views/template/header-sellerMain.jsp"/>
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
  
  <style>
  	.articleBox {
@@ -65,10 +68,13 @@
 			</li>
 	</ul>
 	<div class="card-footer text-muted content_last" align="right">
-		<a href="${pageContext.request.contextPath}/seller/customOrder?member_no=${getListInfoReq.member_no}&category_no=${category.category_no }" style="font-weight: bold;">견적서 보내기</a> &verbar; 
+		<a href="${pageContext.request.contextPath}/seller/customOrder?member_custom_order_no=${getListInfoReq.member_custom_order_no}&category_no=${category.category_no }" style="font-weight: bold;">견적서 보내기</a> &verbar; 
 		<a href="${pageContext.request.contextPath }/seller/customListReq">목록으로</a>		
 	</div>
 </div>
 </article>
 
     
+<div class="row-empty-40"></div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

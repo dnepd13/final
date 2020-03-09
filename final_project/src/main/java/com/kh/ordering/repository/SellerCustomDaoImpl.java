@@ -1,16 +1,13 @@
 package com.kh.ordering.repository;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.CustomOrderFilesDto;
-import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.vo.CustomOrderVO;
@@ -78,14 +75,21 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 																										.build();
 		return sqlSession.selectOne("seller.getListInfoReq", customOrderVO1);
 	}	
-	@Override // 요청서 상세페이지 접속하면 판매자 알람테이블 업데이트
+	@Override // 요청서 상세페이지 접속하면 판매자 알람테이블 상태 업데이트
 	public void updateAlarm(int seller_no, int member_custom_order_no) {
 		SellerCustomAlarmDto updateAlarm = SellerCustomAlarmDto.builder()
 																														.seller_no(seller_no)
 																														.member_custom_order_no(member_custom_order_no)
 																														.build();
 		sqlSession.update("seller.updateAlarm", updateAlarm);
-	}	
+		
+	}
+	@Override // 주문제작 상태 업데이트
+	public void updateCustomStatus(CustomOrderDto customOrderDto) {
+
+		sqlSession.update("seller.updateCustomStatus", customOrderDto);
+		
+	}
 	@Override // 판매자 알람테이블 check N count
 	public int customAlarm(int seller_no) {
 		return sqlSession.selectOne("seller.customCheck", seller_no);
@@ -121,8 +125,25 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 	
 //	받은 요청서 삭제
 	@Override
-	public void deleteCustomReq(SellerCustomAlarmDto sellerAlarmDto) {
-		sqlSession.delete("seller.deleteReq", sellerAlarmDto);
+	public void updateAlarmDelete(int seller_no, int member_custom_order_no) {
+		// seller_alarm 테이블 PK no 구해서
+		SellerCustomAlarmDto sellerAlarmDto =
+								SellerCustomAlarmDto.builder()
+																		.seller_no(seller_no)
+																		.member_custom_order_no(member_custom_order_no)
+																		.build();
+		int seller_alarm_no = sqlSession.selectOne("seller.getAlarmNo", sellerAlarmDto);
+		// delete 상태 update
+		sqlSession.update("seller.updateAlarmDelete", seller_alarm_no);
+
+	}
+
+// 보낸 견적서 영역 //
+	
+	//견적서 관리테이블 단일조회
+	@Override
+	public SellerCustomOrderDto getSellerCustom(int seller_custom_order_no) {
+		return sqlSession.selectOne("seller.getSellerCustom", seller_custom_order_no);
 	}
 	
 //	보낸 견적서 삭제
@@ -135,8 +156,8 @@ public class SellerCustomDaoImpl implements SellerCustomDao {
 		sqlSession.update("seller.updateCustom", customOrderDto);
 	}
 	@Override // 삭제
-	public void deleteCustomResp(int custom_order_no) {
-		sqlSession.delete("seller.deleteResp", custom_order_no);
+	public void deleteCustomResp(SellerCustomOrderDto sellerCustomDto) {
+		sqlSession.delete("seller.deleteResp", sellerCustomDto);
 	}
 	@Override // 구매자 알람테이블 정보 삭제
 	public void deleteAlarm(int seller_custom_order_no) {

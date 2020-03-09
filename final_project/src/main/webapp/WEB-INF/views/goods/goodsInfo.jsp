@@ -15,19 +15,32 @@
 /* tab */
 	.tab {
 		border: 2px solid rgb(248,245,240);
+		background: white;
 		text-align: center;
-		height: 40px;
+		width: 100%;
+		height: 50px;
 		padding: 10px 0;
+		z-index: 1;
 	}
 	.tab span {
 		padding: 0 100px;
 	}
+	.tab_fixed {
+		top: 0;
+		position: fixed;
+	}
+	@media screen and (max-width: 1000px){
+		.tab {
+			width: 1000px;
+		}
+	}
 
 /*	qna style */
 	.articleBox {
-		width: 80%;
+		width: 1000px;
 		margin: 0 auto;
 	}
+	
 	.qnaBox,
 	.reviewBox {
 		width: 90%;
@@ -37,7 +50,7 @@
 	/*문의작성 Modal*/
 	.modal {
  		display: none;
- 		z-index: 1;
+ 		z-index: 2;
  		top: 0;
  		bottom: 0;
  		letf: 0;
@@ -72,6 +85,7 @@
 	.reply_content {
 		margin: 10px 0
 	}
+	
 	
 .section1 {
 	margin:70px 0px;
@@ -340,8 +354,23 @@ $(function(){
 	}
 }); 
 
-////////////////////문의게시판 영역///////////////
+
+////////////////////문의, 리뷰 영역///////////////
 $(function(){
+// 탭매뉴
+		$(document).ready(function(){
+			var tabOffset = $(".tab").offset();
+			$(window).scroll(function(){
+				if($(document).scrollTop() > tabOffset.top){
+					$(".tab").addClass("tab_fixed");
+				}
+				else {
+					$(".tab").removeClass("tab_fixed");
+				}
+			});
+			
+		});
+	
 // '문의하기' Modal
 			var qna_member = document.querySelector(".qna_member");
             
@@ -406,7 +435,7 @@ $(function(){
 			    					"member_no" : member_no,
 			    				},
 			    		success: function(resp){
-			    			location.reload(true);
+			    			alert("문의가 수정되었습니다.");
 			    		}
 			    	});				
 				}
@@ -428,6 +457,9 @@ $(function(){
 			    			location.reload(true);
 			    		}
 			    	});
+		    	}
+		    	else{
+		    		return false;
 		    	}
 		    });
     
@@ -463,12 +495,14 @@ $(function(){
 	    		method: "POST",
 	    		data: data,
 	    		success: function(resp){
-	    	        location.reload(true);
+	    	        
 	    		}
 	    	});
 	    	
 	    	$(this).parents(".qna_seller").hide();
 	    });
+
+// '리뷰댓글쓰기' 숨김, 보여주기
 	    $(".btn_reply").click(function(){
 	    	
 	        if($(this).text()=="댓글쓰기"){
@@ -481,30 +515,52 @@ $(function(){
 	        }
 	        
 	    });
-	    	    
+	    
+	    // 리뷰 댓글 수정
+	    $(".btn_reviewUpdate").click(function(){
+		    console.log($(this).text());
+	    	if($(this).text()=="수정"){
+
+			    var contentCell = $(this).parent().parent().prev().find("#reply_content");
+			    var content = contentCell.text();
+			    contentCell.empty();
+			    
+			    $("<textarea></textarea>").val(content).appendTo(contentCell);
+			    
+			    $(this).text("완료");
+			    console.log($(this).text());
+		    }
+		    else{
+		    	var contentCell = $(this).parent().parent().prev().find("#reply_content");
+			    var content = contentCell.children().val();
+			    contentCell.empty();
+			    contentCell.append(content);
+			    
+			    var goods_review_reply_content = contentCell.text();					
+				var goods_review_reply_no =$(this).parent().data("goods_review_reply_no");
+				var goods_reivew_no=$(this).parent().data("goods_reivew_no");
+				var member_no=$(this).parent().data("member_no");
+				var url = "${pageContext.request.contextPath}/member/updateReply";
+				
+				$(this).text("수정");
+				
+				$.ajax({
+		    		url: url,
+		    		method: "POST",
+		    		data: {"goods_reivew_no": goods_reivew_no,
+		    					"goods_review_reply_no":goods_review_reply_no,
+		    					"goods_review_reply_content": goods_review_reply_content,
+		    					"member_no" : member_no,
+		    				},
+		    		success: function(resp){
+		    			
+		    		}
+		    	});   
+			}
+	     });
+	    
+
 });
-
-
-
-///////// 문의,리뷰게시판 tab
-	function tabView(event, tabName){
-
-		// tab_content 숨김처리
-		var tab_content = document.querySelector(".tab_content");
-
-		for(var i=0 ; i<tab_content.length ; i++){
-			tab_content[i].style.display = "none";
-		}
-		
-		// tab 불러와서 초기화
-		var tab_links = document.querySelector(".tab_links");
-		for(var i=0 ; i<tab_links.length ; i++){
-			tab_links[i].className = tab_links[i].className.replace(" active", "");
-		}
-		
-		document.getElementById(tabName).style.display = "block"; // 해당 tab_content만 보여주기
-		event.currentTarget.className += "active"; // 이벤트로 클릭한 탭 활성화
-	};
 
 </script>
 
@@ -814,18 +870,21 @@ $(function(){
 					<th>문의내용</th>
 					<th>작성자</th>
 					<th>작성일</th>
-					
+					<th>상태</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach var="qna" items="${goodsQna }">
+				<!-- 답변이면 depth 효과 -->
 				<c:choose>
 					<c:when test="${qna.goods_qna_superno != 0 }">
 					<tr> <!-- 판매자 답변 목록 -->
 						<td></td>
 						<td>[${qna.goods_qna_head }] ${qna.goods_qna_content }</td>
 						<td>${qna.goods_qna_writer }</td>
-						<td>${qna.goods_qna_date }</td>
+						<td><fmt:parseDate value="${qna.goods_qna_date }" var="goods_qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+								<fmt:formatDate value="${goods_qna_date }" pattern="yyyy/MM/dd HH:mm:ss"/>	
+						</td>
 						<td></td>
 					</tr>
 					</c:when>
@@ -834,26 +893,32 @@ $(function(){
 						<td>${qna.goods_qna_head }</td>
 						<td>${qna.goods_qna_content }</td>
 						<td>${qna.goods_qna_writer }</td>
-						<td>${qna.goods_qna_date }</td>
-						<%-- 문의 작성자와 로그인한 member_id가 같을 때 --%>
-						<c:if test="${qna.member_no == member_no && empty qna.goods_qna_status}">
-							<td data-goods_no = "${goodsVO.goods_no }"
-									data-goods_qna_no="${qna.goods_qna_no }"
-									data-member_no="${qna.member_no }" style="border-right: none;">
-									<button class="btn_update btn_clean">수정</button>
-									<button class="btn_delete btn_clean">삭제</button>
-							</td>
-						</c:if>
-						<%-- 상품의 seller_no와 로그인한 seller_no가 같을 때 --%>
-						<c:if test="${not empty seller_no && goodsVO.seller_no == seller_no }" >
-							<c:if test="${empty qna.goods_qna_status }">
-								<td><button class="btn_a btn_clean">답변하기</button></td>
-							</c:if>
-						</c:if>
+						<td><fmt:parseDate value="${qna.goods_qna_date }" var="goods_qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+								<fmt:formatDate value="${goods_qna_date }" pattern="yyyy/MM/dd HH:mm:ss"/>	
+						</td>
+						<%-- 문의 작성자와 로그인한 member_id가 같을 때 / 상품 판매자와 로그인한 seller_id가 같을 때 --%>
 						<c:set var="status" value="${qna.goods_qna_status}"></c:set>
-						<c:if test="${functions : contains(status, '답변완료') }">
-							<td>답변완료</td>
-						</c:if>
+						<c:choose>
+							<c:when test="${qna.member_no == member_no && empty qna.goods_qna_status}">
+								<td data-goods_no = "${goodsVO.goods_no }"
+										data-goods_qna_no="${qna.goods_qna_no }"
+										data-member_no="${qna.member_no }" style="border-right: none;">
+										<button class="btn_update btn_clean">수정</button>
+										<button class="btn_delete btn_clean">삭제</button>
+								</td>
+							</c:when>
+							<c:when test="${not empty seller_no && goodsVO.seller_no == seller_no }" >
+								<c:if test="${empty qna.goods_qna_status }">
+									<td><button class="btn_a btn_clean">답변하기</button></td>
+								</c:if>
+							</c:when>
+							<c:when test="${functions : contains(status, '답변완료') }">
+								<td>답변완료</td>
+							</c:when>
+							<c:otherwise>
+								<td></td>
+							</c:otherwise>
+						</c:choose>
 					</tr>
 					</c:otherwise>
 				</c:choose>
@@ -910,7 +975,7 @@ $(function(){
 </div>	
 <hr>
 
-<!-- ----------------------------------------------------------------------- -->
+<!-- 리뷰 ----------------------------------------------------------------------- -->
 
 <div id="tab3" class="tab_content">
 	<div class="row-empty-20"></div>
@@ -959,7 +1024,7 @@ $(function(){
 		</tr>
 		<tr class="reply" style="display:none;">
 			<td colspan="2">
-				<form action="insertReply" method="post">
+				<form action="../member/insertReply" method="post">
 					<input type="hidden" name="goods_review_no" value="${review.goods_review_no }">
 					<input type="hidden">
 					<textarea name="goods_review_reply_content" class="form-control" required></textarea>
@@ -968,7 +1033,7 @@ $(function(){
 				</form>
 				</td>
 		</tr>
-		<c:forEach var="reviewReply" items="${reviewReply }">
+		<c:forEach var="reviewReply" items="${reviewReply }"> <!-- 댓글 목록 -->
 			<c:if test="${review.goods_review_no==reviewReply.goods_review_no }">
 			<tr>
 				<td colspan="2" style="padding: 0 12px;">
@@ -978,15 +1043,20 @@ $(function(){
 								<fmt:parseDate value="${reviewReply.goods_review_reply_date }" var="reply_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 								<fmt:formatDate value="${reply_date }" pattern="yyyy/MM/dd HH:mm:ss"/>							
 							</span>
-							<div class="reply_content">${reviewReply.goods_review_reply_content }</div>
+							<div id="reply_content">${reviewReply.goods_review_reply_content }</div>
 					</div>
 					<c:if test="${reviewReply.member_no == member_no}">
-							<p data-goods_no = "${goodsVO.goods_no }"
-									data-goods_qna_no="${reviewReply.goods_review_reply_no }"
-									data-member_no="${reviewReply.member_no }" style="border-right: none;">
-									<button class="btn_reviewUpdate btn_clean">수정</button>
-									<button class="btn_reviewDelete btn_clean">삭제</button>
+						<form action="../member/deleteReply" method="post" class="delete_reply_form"
+									onsubmit="return confirm('댓글을 삭제하시겠습니까?');">
+							<p data-goods_reivew_no = "${review.goods_review_no }"
+									data-goods_review_reply_no="${reviewReply.goods_review_reply_no }"
+									data-member_no="${reviewReply.member_no }" align="right">
+									<button type="button" class="btn_reviewUpdate btn_clean">수정</button>
+									<input type="hidden" name="goods_review_reply_no" value="${reviewReply.goods_review_reply_no }">
+									<input type="hidden" name="goods_review_no" value="${review.goods_review_no }">
+									<input type="submit"  value="삭제" class="btn_reviewDelete btn_clean">									
 							</p>
+						</form>
 					</c:if>
 				</td>
 			</tr>
@@ -997,7 +1067,7 @@ $(function(){
 	<br>
 	</c:forEach>
 	<!-- 페이징 내비게이터 -->
-		<div class="row justify-content-center">
+		<div class="row justify-content-center" style="z-index: 0">
 			<ul class="pagination">
 				<c:if test="${paging.startBlock > 1 }">
 					<li class="page-item">

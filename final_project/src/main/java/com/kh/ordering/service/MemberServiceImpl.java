@@ -16,8 +16,10 @@ import com.kh.ordering.entity.MemberCustomOrderDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.OptionCartDto;
 import com.kh.ordering.repository.MemberDao;
+import com.kh.ordering.repository.Member_PointDao;
 import com.kh.ordering.vo.ItemVO;
 import com.kh.ordering.vo.ItemVOList;
+import com.kh.ordering.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MemberServiceImpl implements MemberService{
 
-
+	@Autowired
+	private Member_PointDao memberPointDao;
 	
 	@Autowired
 	private MemberDao memberDao;
@@ -88,7 +91,50 @@ public class MemberServiceImpl implements MemberService{
 		memberDao.deleteCart(goods_cart_no);
 	}
 
-
+// 포인트 내역 페이징
+	@Override
+	public PagingVO pointInfoPaging(String pageNo, int member_no) {
+		// 주소로 받은 pageNo를 int 형태로 변환
+			int pno;
+			try {
+				pno = Integer.parseInt(pageNo);
+				if(pno<=0) throw new Exception();
+			}
+			catch(Exception e){
+				pno = 1;
+			}
+				
+			int pageSize= 10;
+			int finish= pno*pageSize;
+			int start= finish-(pageSize-1);
+				
+			// 하단 네비게이터
+			int totalCount = memberPointDao.getListCount(member_no);
+			int navSize= 5;
+			int pageCount= (totalCount+pageSize-1)/pageSize;
+				
+			int startBlock= (pno-1)/navSize * navSize +1 ;
+			int finishBlock= startBlock+(navSize-1);
+				
+			if(finishBlock>pageCount) {
+				finishBlock=pageCount;
+			}
+			
+			PagingVO pagingVO = PagingVO.builder()
+																	.pno(pno)
+																	.navsize(navSize)
+																	.count(pageCount)
+																	.pagecount(pageCount)
+																	.pagesize(pageSize)
+																	.startBlock(startBlock)
+																	.finishBlock(finishBlock)
+																	.start(start)
+																	.finish(finish)
+																	.member_no(member_no)
+																	.build();
+				
+			return pagingVO;
+	}
 	
 	
 }
