@@ -46,15 +46,6 @@ public class SellerGoodsController {
 //	public String category(
 //			Model model,
 //			@RequestParam(value="pno1", required = false) String pno1
-//			) {
-//		SellerCategoryPagingVO vo = SellerCategoryService.categoryPagination(pno1);
-//		model.addAttribute("paging",vo);
-//		
-//		List<CategoryDto> list= sellerCategoryDao.categoryGetList(vo);
-//		model.addAttribute("list", list);
-//		return "/seller/seller_category";
-//	
-//	}
 
 	//---------------------------카테고리 등록----------------------------------
 	@GetMapping("/category_insert")
@@ -145,4 +136,8 @@ public String seller_category_update(
 		return "redirect:/seller/category_insert";
 	}
 }
+
+//}
+//
+
 
