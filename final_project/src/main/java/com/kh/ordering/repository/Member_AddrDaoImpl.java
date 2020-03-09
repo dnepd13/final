@@ -59,6 +59,19 @@ public class Member_AddrDaoImpl implements Member_AddrDao{
 	public Member_AddrDto getBasicAddr(int member_no) {
 		return sqlSession.selectOne("member_AddrDto.getBasicAddr", member_no);
 	}
+	
+	//추가 배송지 작성
+	@Override
+	public void insertchuaddr(Member_AddrDto member_AddrDto) {
+		//번호 추출
+		sqlSession.insert("member_AddrDto.insertchuaddr", member_AddrDto);
+	}
+
+
+	
+	
+	
+	
 
 //	@Override
 //	public Member_AddrDto addrinfo(Member_AddrDto member_AddrDto) {
