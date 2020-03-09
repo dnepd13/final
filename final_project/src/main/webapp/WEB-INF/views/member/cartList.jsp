@@ -6,6 +6,8 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 
 <style>
@@ -33,8 +35,6 @@
 	}
 
 </style>
-
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <article class="articleBox">
 <jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>

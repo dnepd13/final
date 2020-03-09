@@ -29,7 +29,7 @@ $(function(){
 	
 	$(".delete_resp").click(function(e){
 		var status = $(this).parents("#resp_data").data("custom_order_status");
-		console.log(status);
+
 		if(confirm('견적서를 삭제하시겠습니까')){
 			if(status=='견적대기'){
 				return true;

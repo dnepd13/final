@@ -131,7 +131,7 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 		// 요청서관리번호에 대한 주문제작 상태 업데이트
 		CustomOrderDto customOrderUpdate = CustomOrderDto.builder()
 																										.custom_order_no(custom_order_no_origin)
-																										.custom_order_status("견적받음")
+																										.custom_order_status("견적회신")
 																										.build();
 		sellerCustomDao.updateCustomStatus(customOrderUpdate);
 		
