@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.ordering.entity.AdminQnaDto;
 import com.kh.ordering.entity.GoodsCartDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.Member_AddrDto;
@@ -677,6 +678,17 @@ public class MemberController {
 
 		return "member/addrupdate";
 	}
+	
+	@PostMapping("/addrupdate")
+	public String addrupdate(@ModelAttribute Member_AddrDto member_AddrDto,Model model)
+	{
+
+		
+		member_AddrDao.addrUpdate(member_AddrDto);
+
+		return "redirect:/member/addrinfo";
+	}
+	
 
 	//배송지 추가 테이블
 	@PostMapping("/addregist")
@@ -694,15 +706,7 @@ public class MemberController {
 	}
 
 
-	@PostMapping("/addrupdate")
-	public String addrupdate(@ModelAttribute Member_AddrDto member_AddrDto,Model model)
-	{
 
-
-		member_AddrDao.addrUpdate(member_AddrDto);
-
-		return "redirect:/member/addrinfo";
-	}
 
 
 	// 배송지 한개 테이블 삭제
@@ -750,7 +754,42 @@ public class MemberController {
 		return "redirect:/member/addrinfo";
 	}
 	
-	
+//
+//	@GetMapping("/editaddr")
+//	public String editaddr(@RequestParam int member_addr_no,Model model) {
+//		log.info("reportupno={}", member_addr_no);
+//
+////		AdminQnaDto result1= AdminQnaDto.builder().admin_qna_no(admin_qna_no).build();
+//		
+//		Member_AddrDto result1 = Member_AddrDao.addrgetupdate(member_addr_no);
+//		log.info("resultupreport={}",result1);
+//		model.addAttribute("updategetreport",result1);
+//		
+//		log.info("modelupget11={}",result1);
+//
+//		return "board/editreport";
+//	}
+//
+//	
+//	@PostMapping("/editreport")
+//	public String editreport(@ModelAttribute AdminQnaDto adminQnaDto,
+//							Model model ) {
+//
+//		log.info("adimbefor={}",adminQnaDto);
+//
+////		AdminQnaDto result = adminQnaDao.qnagetupdate(adminQnaDto);
+//
+//
+//		log.info("model={}", model);
+//
+//
+////		log.info("uppoDto= {}",adminQnaDto);
+////		log.info("resultpo={}",result);
+//		adminQnaDao.reportUpdate(adminQnaDto);
+//
+//		return "redirect:/board/memberreport";
+//	}
+//	
 	
 	
 	//배송지 추가 테이블
@@ -798,7 +837,7 @@ public class MemberController {
 		
 		member_AddrDao.insertaddr(member_AddrDto);
 //		log.info("member_AddrDto={}",member_AddrDto);
-		return "redirect:/member/insertaddr";
+		return "redirect:/member/addrinfo";
 	}
 		
 	

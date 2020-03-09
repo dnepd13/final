@@ -71,11 +71,6 @@ public class AdminQnaDaoImpl implements AdminQnaDao{
 
 	}
 
-//	@Override
-//	public AdminQnaDto qnagetupdate(AdminQnaDto adminQnaDto) {
-//		AdminQnaDto result = sqlSession.selectOne("adminQnaDto.qnagetupdate");
-//		return result;
-//	}
 
 	@Override
 	public AdminQnaDto qnagetUpdate(int admin_qna_no) {
@@ -87,6 +82,98 @@ public class AdminQnaDaoImpl implements AdminQnaDao{
 	public void deleteqna(AdminQnaDto adminQnaDto) {
 		sqlSession.delete("adminQnaDto.deleteqna", adminQnaDto);
 	}
+
+	@Override
+	public void reportregist(AdminQnaDto adminQnaDto) {
+		sqlSession.insert("adminQnaDto.reportregist", adminQnaDto);
+		
+		}
+
+	@Override
+	public List<AdminQnaDto> getListSellerQna(PagingVO pagingVO) {
+		List<AdminQnaDto> qnasellerlist = sqlSession.selectList("adminQnaDto.getListSellerQna",pagingVO);
+		return qnasellerlist;
+	}
+
+	@Override
+	public List<AdminQnaDto> getListSellerReport(PagingVO pagingVO) {
+		List<AdminQnaDto> sellerreportlist =sqlSession.selectList("adminQnaDto.getListSellerReport",pagingVO);
+		return  sellerreportlist;
+	}
+
+	@Override
+	public int countsellerqna(int seller_no) {
+		return sqlSession.selectOne("adminQnaDto.countsellerqna",seller_no);
+	}
+
+	@Override
+	public int countSellerBoard(int seller_no) {
+		return sqlSession.selectOne("adminQnaDto.countSellerBoard",seller_no);
+	}
+
+	@Override
+	public AdminQnaDto reportgetupdate(int admin_qna_no) {
+		AdminQnaDto  result = sqlSession.selectOne("adminQnaDto.reportgetupdate",admin_qna_no);
+		return result;
+	}
+
+	@Override
+	public void reportUpdate(AdminQnaDto adminQnaDto) {
+		sqlSession.update("adminQnaDto.reportUpdate", adminQnaDto);
+
+	}
+
+	@Override
+	public AdminQnaDto ReportGetOne(AdminQnaDto adminQnaDto) {
+		AdminQnaDto result1 = sqlSession.selectOne("adminQnaDto.ReportGetOne", adminQnaDto);
+		return result1;
+	}
+
+	@Override
+	public void sellerqnaregist(AdminQnaDto adminQnaDto) {
+		sqlSession.insert("adminQnaDto.sellerqnaregist", adminQnaDto);
+	}
+
+	@Override
+	public AdminQnaDto sellerqnaGetOne(AdminQnaDto adminQnaDto) {
+		AdminQnaDto result1 = sqlSession.selectOne("adminQnaDto.sellerQnaGetOne", adminQnaDto);
+		return result1;
+	}
+
+	@Override
+	public AdminQnaDto sellerqnagetUpdate(int admin_qna_no) {
+		AdminQnaDto result = sqlSession.selectOne("adminQnaDto.sellerqnagetUpdate", admin_qna_no);
+		return result;
+	}
+
+	@Override
+	public void sellerqnaUpdate(AdminQnaDto adminQnaDto) {
+		sqlSession.update("adminQnaDto.sellerqnaUpdate", adminQnaDto);
+
+	}
+
+	@Override
+	public void sellerreportregist(AdminQnaDto adminQnaDto) {
+		sqlSession.insert("adminQnaDto.sellerreportregist", adminQnaDto);
+	}
+
+	@Override
+	public AdminQnaDto sellerreportGetOne(AdminQnaDto adminQnaDto) {
+		AdminQnaDto result1 = sqlSession.selectOne("adminQnaDto.sellerreportGetOne", adminQnaDto);
+		return result1;
+	}
+
+	@Override
+	public AdminQnaDto sellerreportgetupdate(int admin_qna_no) {
+		AdminQnaDto  result = sqlSession.selectOne("adminQnaDto.sellerreportgetupdate",admin_qna_no);
+		return result;
+	}
+
+	@Override
+	public void sellerreportUpdate(AdminQnaDto adminQnaDto) {
+		sqlSession.update("adminQnaDto.sellerreportUpdate", adminQnaDto);
+
+		}
 
 
 

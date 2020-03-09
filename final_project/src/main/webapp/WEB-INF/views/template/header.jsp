@@ -92,6 +92,7 @@
 	<ul class="nav_login">
 		<li class="left_line main_line"><a href="">공지사항</a></li>
 		<li class="left_line main_line"><a href="${pageContext.request.contextPath }/member/login">문의하기</a></li>
+		<li class="left_line main_line"><a href="${pageContext.request.contextPath }/member/login">신고하기</a></li>
 		<li class="right_line main_line" style="margin-right:50px;"><a href="${pageContext.request.contextPath }/member/login">주문제작</a></li>
 		<li class="right_line main_line">회원가입
 			<ul class="sub_line" style="border: 1px solid lightgray;">
@@ -112,6 +113,7 @@
 	<ul class="nav_login">
 		<li class="left_line main_line"><a href="#">공지사항</a></li>
 		<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/memberqna">문의하기</a></li>
+		<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/memberreport">신고하기</a></li>
 		<li class="right_line main_line" style="margin-right:50px;"><a href="${pageContext.request.contextPath }/member/customCate">주문제작</a></li>
 		<li class="right_line main_line"><a href="${pageContext.request.contextPath }/member/membermyinfo">마이페이지</a></li>
 		<li class="right_line main_line"><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></li>
