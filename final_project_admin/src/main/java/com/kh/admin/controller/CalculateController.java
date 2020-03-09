@@ -50,19 +50,17 @@ public class CalculateController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute PagingVO paging
 			) {
-		try {
-			
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int month = (Calendar.getInstance().get(Calendar.MONTH));
-		model.addAttribute("year", year);
-		model.addAttribute("month", month+1);
-		
-		if(adjustmentInsertVO.getYear()<1) {
-			adjustmentInsertVO.setYear(year);
-		}
-		if(adjustmentInsertVO.getMonth()<1) {
-			adjustmentInsertVO.setMonth(month);
-		}
+	
+//		int year = Calendar.getInstance().get(Calendar.YEAR);
+//		int month = (Calendar.getInstance().get(Calendar.MONTH));
+//		model.addAttribute("year", year);
+//		model.addAttribute("month", month+1);
+//		if(adjustmentInsertVO.getYear()<1) {
+//			adjustmentInsertVO.setYear(year);
+//		}
+//		if(adjustmentInsertVO.getMonth()<1) {
+//			adjustmentInsertVO.setMonth(month);
+//		}
 		log.info("ajust={}", adjustmentInsertVO);
 		
 		log.info("v111o={}",paging);
@@ -78,10 +76,7 @@ public class CalculateController {
 		model.addAttribute("list", list);
 		
 		return "calculate/total";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "calculate/total";
-		}
+		
 	}
 	
 	@GetMapping("/detail")
@@ -91,8 +86,7 @@ public class CalculateController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute PagingVO paging
 			) {
-		try {
-			
+		
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		int month = (Calendar.getInstance().get(Calendar.MONTH));
 		if(adjustmentInsertVO.getYear()<1) {
@@ -111,10 +105,9 @@ public class CalculateController {
 		vo.setSeller_id(adjustmentInsertVO.getSeller_id());
 		log.info("getonevo={}",vo);
 		List<AdjustmentFullVO> list = calculateDao.getOneSeller(vo);
-		
+		log.info("list={}", list);
 		model.addAttribute("list", list);
 		
-		log.info("구매자={}",list.get(0).getMember_id());
 		
 		String bankcode = list.get(0).getSeller_bank_code();
 		String bank = calculrateService.getBankName(bankcode);
@@ -127,10 +120,7 @@ public class CalculateController {
 		model.addAttribute("account", list.get(0).getSeller_bank_account());
 		model.addAttribute("accountname", list.get(0).getSeller_bank_username());		
 		return "calculate/detail";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "calculate/detail";
-		}
+		
 	}
 	
 	
