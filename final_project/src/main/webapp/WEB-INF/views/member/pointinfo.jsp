@@ -69,6 +69,9 @@
 		border-top: 2px solid gray;
 		text-align: center;
 	}
+	table tbody tr{
+		text-align: center;
+	}
 	
 </style>
 
@@ -83,7 +86,9 @@
 				사용 가능 포인트
 			</div>
 			<div class="point_mainBox3">
-				${totalPoint } point
+				<fmt:formatNumber pattern="###,###,###" type="number">
+					${totalPoint } 
+				</fmt:formatNumber> point
 			</div>
 		</div>
 		<div class="point_list">
@@ -107,8 +112,12 @@
 						<fmt:formatDate value="${point_date}" pattern="yyyy/MM/dd HH:mm:ss"/>
 					</td>
 					<td scope="row">${Pointinfo.member_point_status}</td>
-					<td scope="row">${Pointinfo.member_point_content}</td>
-					<td scope="row">${Pointinfo.member_point_change}</td>
+					<td scope="row" align="left">${Pointinfo.member_point_content}</td>
+					<td scope="row" align="right">
+						<fmt:formatNumber pattern="###,###,###" type="number">
+							${Pointinfo.member_point_change}
+						</fmt:formatNumber>
+					</td>
 					<td scope="row">
 						<fmt:parseDate value="${Pointinfo.member_point_limit}" var="point_limit" pattern="yyyy-MM-dd HH:mm:ss"/>
 						<fmt:formatDate value="${point_limit}" pattern="yyyy/MM/dd HH:mm:ss"/>

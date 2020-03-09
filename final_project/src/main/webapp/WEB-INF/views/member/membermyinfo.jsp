@@ -15,14 +15,15 @@
 		margin: 0 auto;
 		border: 1px dotted gray;
 	}
-	.point_wrap {
+	.main_wrap {
 		float: left;
 		margin-left: 60px;
 		padding-top: 60px;
 		width: 800px;
 		border: 1px dotted gray;
 	}
-	.point_main {
+	.content_1,
+	.content_2 {
 		margin: 0 auto;
 		width: 80%;
 		border: 1px solid black;
@@ -33,12 +34,16 @@
 <div class="myInfo_wrap">
 <jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 
-	<div class="point_wrap">
+	<div class="main_wrap">
 
-		<div class="point_main">
+		<div class="content_1">
 			회원정보 마이페이지
 		</div>
+		<div class="content_2">
+			
+		</div>
 		
-
 	</div>
 </div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
