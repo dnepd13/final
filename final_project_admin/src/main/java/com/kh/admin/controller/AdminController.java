@@ -663,6 +663,22 @@ public class AdminController {
 		return "redirect:/basicpagesetting";
 	}
 	
+	@PostMapping("/idcheck")
+	@ResponseBody
+	public int idcheck(@RequestParam String admin_id) {
+		
+		int result = adminDao.idcheck(admin_id);
+		
+		//아이디가 중복이 안됨
+		if(result == 0) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+	
+	
 	//---------------------�뿤�뜑-------------------------
 //	@GetMapping("/template/header")
 //	public String header() {

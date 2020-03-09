@@ -25,4 +25,5 @@ public interface AdminDao {
 	public int registToday();
 	
 	public byte[] get(int files_no) throws IOException;
+	int idcheck(String admin_id);
 }
