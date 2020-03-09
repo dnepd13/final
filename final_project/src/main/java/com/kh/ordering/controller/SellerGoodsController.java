@@ -48,22 +48,27 @@ public class SellerGoodsController {
 //			@RequestParam(value="pno1", required = false) String pno1
 
 	//---------------------------카테고리 등록----------------------------------
+	
 	@GetMapping("/category_insert")
-	//@ResponseBody
-	public String seller_category_insert( Model model) {
-			model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
-	
-	//	log.info("msg");
-		log.info("여기");
-		return "/seller/category_insert";
-		}
-	
-	@PostMapping("/category_insert")
-	public ModelAndView seller_category_insert(Model model ,@ModelAttribute CategoryDto categoryDto,HttpSession session) {
+	public ModelAndView category_insert(Model model,HttpSession session) {
 		ModelAndView mv = new ModelAndView();
+		mv.addObject("category_largeList", categoryDao.getList("category_large", "-"));
+		String seller_id=(String)session.getAttribute("seller_id");
+		int seller_no=sellerCategoryDao.getNo(seller_id);
+		List<Integer> list = sellerCategoryDao.seller_category_list(seller_no);
+		List<CategoryDto> category_list =sellerCategoryDao.seller_category_name_list(list);
+		mv.addObject("seller_id", seller_id);
+		mv.addObject("category_list",category_list);
+		mv.addObject("seller_no", seller_no);
+		mv.setViewName("/seller/category_insert");
+		return mv;
+	}
+	
+	
+	@PostMapping("/category_insert_proc")
+	//@ResponseBody
+	public String category_insert_proc(Model model ,@ModelAttribute CategoryDto categoryDto,HttpSession session) {
 		String seller_id=(String)session.getAttribute("seller_id");//세션에서 아이디를 가져온다
-	//System.out.println(categoryDto.getCategory_small());
-		//small name search category no
 		int category_no=sellerCategoryDao.category_no(categoryDto);//카테고리 넘버는 카테고리 디티오에 있다
 		int seller_no=sellerCategoryDao.getNo(seller_id);//셀러 넘버는 sellercustromedao.get
 	    SellerCategoryDto sellerCategoryDto=SellerCategoryDto.builder()
@@ -71,27 +76,7 @@ public class SellerGoodsController {
 	    													  .category_no(category_no)
 	    													  .build();            		
 	    		sellerCategoryDao.seller_category_insert(sellerCategoryDto);
-	  
-		//        	String seller_id=(String)session.getAttribute("seller_id");
-		//			log.info("seller_id={}",seller_id);
-		List<Integer> list = sellerCategoryDao.seller_category_list(seller_no);
-		List<CategoryDto> category_list =sellerCategoryDao.seller_category_name_list(list);
-		
-		log.info("여기2");
-		log.info("1={}",sellerCategoryDto);
-		log.info("2={}",sellerDto);
-			model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
-		   
-	      
-	
-			log.info("categoryDto={}",sellerCategoryDto);
-	//			return "redirect:/seller/category_info?seller_no=" + seller_no;
-			mv.addObject("seller_id", seller_id);
-			mv.addObject("list", category_list);
-			mv.setViewName("/seller/category_insert");
-			return mv;
-
-	
+	    return "redirect:/seller/category_insert";
 	}
 	
 @PostMapping("/category_info")
@@ -126,12 +111,9 @@ public String seller_category_update(
 }
 //---------------------------카테고리 삭제----------------------------------
 	@PostMapping("/category_delete")
-	@ResponseBody
-	public String seller_category_delete(
-			@RequestParam int category_no,
-			@RequestParam int seller_no
-			) {
-		sellerCategoryDao.seller_delete_category(sellerCategoryDto);
+	//@ResponseBody
+	public String seller_category_delete(@ModelAttribute SellerCategoryDto sellerCategoryDto) {
+		sellerCategoryDao.seller_delete_category(sellerCategoryDto);	
 		
 		return "redirect:/seller/category_insert";
 	}
