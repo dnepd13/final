@@ -78,7 +78,7 @@ $(function(){
 		<div class="pwChange_list form-group">
 			<form action="memberchange_pw" method="get">
 				<label>새비밀번호</label> <input type="password" name="member_pw" id="password1" class="form-control" required /> <br> 
-				<label>비민번호 재 확인페이지</label> <input type="password"    id="password2" class="form-control" required /> <br>
+				<label>비민번호 재 확인페이지</label> <input type="password" id="password2" class="form-control" required /> <br>
 				<div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div>
 				 <div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
 				<input type="submit" id="submit" class="btn btn-primary" value="변경하기" style="width:100%;">
