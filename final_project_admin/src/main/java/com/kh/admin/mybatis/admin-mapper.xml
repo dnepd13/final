@@ -376,7 +376,7 @@
 					member_no,
 				</when>
 				<when test="seller_no != 0">
-					seller_no
+					seller_no,
 				</when>
 			</choose>
 			admin_no,

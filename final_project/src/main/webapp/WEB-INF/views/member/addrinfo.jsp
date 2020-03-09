@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 <jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
@@ -11,7 +10,11 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <div class="btn-group-vertical">
-	<a href="${pageContext.request.contextPath}/member/addrregist">
+
+
+
+	<a href="${pageContext.request.contextPath}/member/insertaddr">
+
 		<button type="button" class="btn btn-primary">배송추가</button>
 	</a>
 </div>

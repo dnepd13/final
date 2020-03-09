@@ -3,7 +3,6 @@ package com.kh.ordering.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -25,8 +24,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
+import com.kh.ordering.entity.MemberCustomOrderDto;
 import com.kh.ordering.entity.SellerCategoryDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
+import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.entity.SellerDto;
 import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
@@ -164,20 +165,29 @@ public class MemberCustomController {
 		PagingVO result = memberCustomService.customRespPaging(pageNo, member_no);
 		model.addAttribute("paging", result);
 
-		// 1:1 받은 견적서
 		List<CustomOrderVO> list = memberCustomDao.getListResp(result);
 		model.addAttribute("getListResp", list);
-
+		
 		return "member/customListResp";
 	}
 	@GetMapping("/customInfoResp") // 받은 견적서 상세
 	public String memberCustomResp(HttpSession session,
 																	@RequestParam int seller_custom_order_no, Model model) {
+
 		// 상세페이지 이동하면 구매자 알람테이블의 '알람체크','알람 확인시간' update
 		String member_id=(String)session.getAttribute("member_id");
 		int member_no = memberCustomDao.getNo(member_id);
 		
 		memberCustomDao.updateAlarm(member_no, seller_custom_order_no);
+		
+		// 해당 견적서에 대한 주문제작 테이블 상태 "읽음" 업데이트
+		SellerCustomOrderDto sellerCustomDto = sellerCustomDao.getSellerCustom(seller_custom_order_no);
+		CustomOrderDto customOrderDto
+												= CustomOrderDto.builder()
+																					.custom_order_no(sellerCustomDto.getCustom_order_no())
+																					.custom_order_status("읽음")
+																					.build();
+		memberCustomDao.updateCustomStatus(customOrderDto);
 		
 		CustomOrderVO content = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("getListInfoResp", content);
@@ -201,7 +211,7 @@ public class MemberCustomController {
 		// 내가 보낸 요청서		
 		List<CustomOrderVO> list = memberCustomDao.getListReq(result);
 		model.addAttribute("getListReq", list);		
-		
+		log.info("list",list);
 		return "member/customListReq";
 	}
 	
@@ -259,22 +269,30 @@ public class MemberCustomController {
 	}
 
 //	삭제
-	@GetMapping("/deleteReq") // 보낸 요청서 삭제(1:1)
-	public String CustomDeleteReq(int member_custom_order_no) {
-
-		// member_custom_order_no를 이용하여 custom_order_no 가져오기
-		int custom_order_no = memberCustomDao.getCustomNo(member_custom_order_no);
+	@GetMapping("/deleteReq") // 보낸 요청서 삭제
+	public String CustomDeleteReq(HttpSession session,
+																@RequestParam int member_custom_order_no) {
 
 //		 해당 주문제작 테이블 데이터 삭제
-		memberCustomDao.deleteCustomReq(custom_order_no);
+		String member_id = (String)session.getAttribute("member_id");
+		int member_no = memberCustomDao.getNo(member_id);
+		MemberCustomOrderDto memberCustomDto
+												= MemberCustomOrderDto.builder()
+																									.member_no(member_no)
+																									.member_custom_order_no(member_custom_order_no)
+																									.build();
+		memberCustomDao.deleteCustomReq(memberCustomDto);
 		
 		return "member/customInfoReq";
 	}
-	@GetMapping("/deleteCustom")
-	public String CustomDeleteCate(int member_custom_order_no) {		
-		memberCustomDao.deleteAlarm(member_custom_order_no); // 판매자의 요청서 알람테이블 삭제
-		memberCustomDao.deleteCustom(member_custom_order_no); // 주문제작 테이블 삭제
-		return "member/customInfoReq";
+
+	// 받은 견적서 삭제 (받은 견적서 알람테이블 삭제)
+	@GetMapping("/deleteResp")
+	public String deleteCustomResp(@RequestParam int member_no,
+															 	@RequestParam int seller_custom_order_no) {
+		
+		memberCustomDao.updateRespDelete(member_no, seller_custom_order_no);
+		return "member/customListResp";
 	}
 	
 // 파일 이미지 다운로드

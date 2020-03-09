@@ -2,21 +2,18 @@ package com.kh.ordering.repository;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.CustomOrderFilesDto;
-import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.MemberCustomAlarmDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
+import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.vo.CustomOrderVO;
 import com.kh.ordering.vo.FilesVO;
 import com.kh.ordering.vo.PagingVO;
-import com.kh.ordering.entity.MemberDto;
 
 @Repository
 public class MemberCustomDaoImpl implements MemberCustomDao{
@@ -61,16 +58,16 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 		sqlSession.insert("files.customInsert", customOrderFilesDto);
 	}
 
-	@Override // 판매자가 보낸 견적서 전체보기
+	@Override // 받은 견적서 전체보기
 	public List<CustomOrderVO> getListResp(PagingVO paging) {
 		
 		return sqlSession.selectList("member.getListResp", paging);
 	}	
-	@Override // 판매자 견적서 상세보기. 주문제작번호 단일조회
+	@Override // 받은 견적서 상세보기. 주문제작번호 단일조회
 	public CustomOrderVO customOrderVO1(int seller_custom_order_no) {
 		return sqlSession.selectOne("member.getListInfoResp", seller_custom_order_no);
 	}
-	@Override // 견적서 상세페이지 확인하면 구매자 알람테이블 업데이트
+	@Override // 받은 견적서 상세페이지 확인하면 구매자 알람/주문제작 상태 업데이트
 	public void updateAlarm(int member_no, int seller_custom_order_no) {
 		MemberCustomAlarmDto updateAlarm = MemberCustomAlarmDto.builder()
 																																.member_no(member_no)
@@ -78,6 +75,13 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 																																.build();
 		sqlSession.update("member.updateAlarm", updateAlarm);
 	}
+	@Override // 주문제작 상태 업데이트
+	public void updateCustomStatus(CustomOrderDto customOrderDto) {
+
+		sqlSession.update("seller.updateCustomStatus", customOrderDto);
+		
+	}
+	
 	@Override // 구매자 알람테이블 check N count
 	public int customAlarm(int member_no) {
 		return sqlSession.selectOne("member.customCheck", member_no);
@@ -93,14 +97,34 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 	}
 	
 	@Override // 견적서 결제하면 주문제작 상태 업데이트
-	public void updateCustomStatus(int custom_order_no) {
-		sqlSession.update("member.updateCustomStatus", custom_order_no);
+	public void updateCustomPay(int custom_order_no) {
+		sqlSession.update("member.updateCustomPay", custom_order_no);
 	}
 	@Override
 	public void updateCustomCancel(int custom_order_no) {
 		sqlSession.update("member.updateCustomCancel", custom_order_no);
 	}
 	
+	@Override // 받은 견적서 삭제 업데이트
+	public void updateRespDelete(int member_no, int seller_custom_order_no) {
+		MemberCustomAlarmDto memberAlarmDto
+											= MemberCustomAlarmDto.builder()
+																							.member_no(member_no)
+																							.seller_custom_order_no(seller_custom_order_no)
+																							.build();
+		sqlSession.update("member.updateRespDelete", memberAlarmDto);
+	}
+	
+	
+	
+// 보낸 요청서 영역 //	
+
+	//요청서 관리테이블 단일조회
+	@Override
+	public MemberCustomOrderDto getMemberCustom(int member_custom_order_no) {
+		return sqlSession.selectOne("member.getMemberCustom", member_custom_order_no);
+	}
+		
 	// 내가 보낸 요청서 보기
 	@Override // 목록
 	public List<CustomOrderVO> getListReq(PagingVO paging) {	
@@ -129,8 +153,8 @@ public class MemberCustomDaoImpl implements MemberCustomDao{
 		sqlSession.update("member.updateCustom", customOrderDto);
 	}
 	@Override // 1:1 요청서 삭제
-	public void deleteCustomReq(int custom_order_no) {
-		sqlSession.delete("member.deleteReq", custom_order_no);
+	public void deleteCustomReq(MemberCustomOrderDto memberCustomDto) {
+		sqlSession.delete("member.deleteReq", memberCustomDto);
 	}
 	@Override // 카테고리. 판매자 알람테이블 삭제
 	public void deleteAlarm(int member_custom_order_no) {

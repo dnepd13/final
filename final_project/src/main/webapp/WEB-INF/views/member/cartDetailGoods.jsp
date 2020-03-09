@@ -8,25 +8,34 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 
 <style>
 	* {box-sizing: border-box;}
 	
 	.articleBox {
-		width: 60%;
-		height: 500px;
-		padding-top: 5rem;
+		width: 1200px;
+		height: 800px;
 		margin: 0 auto;
+	}
+	.cartGoods {
+		float: left;
+		margin-left: 60px;
+		padding-top: 100px;
+		width: 960px;
+	}
+	.goodsContent {
+		margin: 0 auto;
+		width: 90%;
 	}
 	
 	table {
 		border-collapse: collapse;
-		width: 100%;
+		margin: 0 auto;
+		width: 90%;
 		text-align: center;
-	}	
+	}		
 	table .t_head {
-		background-color: rgb(248,245,240);
+		background-color: #F3F5F8;
 	}
 	.cartGoods table th {
 		height: 30px;
@@ -112,8 +121,9 @@
 
 
 <article class="articleBox">
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 <div class="cartGoods">
-	<table  border="1">
+	<table  border="1" class="goodsContent">
 		<tr class="t_head">
 			<th scope="col" width="50%">상품명</th>
 			<th scope="col" width="10%">수량</th>

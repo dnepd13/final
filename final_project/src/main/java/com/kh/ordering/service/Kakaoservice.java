@@ -369,7 +369,7 @@ public class Kakaoservice implements payService {
 		// 문자열 잘라서 넣기
 		String custom_order = successReadyVO.getPartner_order_id().substring(successReadyVO.getPartner_order_id().lastIndexOf("C")+1);
 		int custom_order_no = Integer.parseInt(custom_order); 
-		memberCustomDao.updateCustomStatus(custom_order_no);
+		memberCustomDao.updateCustomPay(custom_order_no);
 		
 		// 구매에 따른 회원 포인트 적립
 		memberDao.registOrderPoint(member_no, successReturnVO.getAmount().getTotal());

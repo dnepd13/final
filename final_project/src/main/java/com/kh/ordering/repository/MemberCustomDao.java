@@ -26,26 +26,30 @@ public interface MemberCustomDao {
 	void customAlarmInsert(MemberCustomAlarmDto memberCustomAlarmDto); //견적서 도착 알람 테이블 생성
 	void customFilesInsert(CustomOrderFilesDto customOrderFilesDto); // 주문제작-파일 테이블
 	
-	//판매자 1:1 견적서 보기
+	//받은 견적서 보기
 	List<CustomOrderVO> getListResp(PagingVO paging);
-	//판매자 견적서 단일조회, 상세조회
+	//받은 견적서 단일조회, 상세조회
 	CustomOrderVO customOrderVO1(int seller_custom_order_no);
-	//견적서 누르면 구매자 알림테이블 업데이트
+	//받은 견적서 누르면 구매자 알림테이블 업데이트
 	void updateAlarm(int member_no, int seller_custom_order_no);
 	//구매 알람테이블 견적서 총 개수 check N
 	int customAlarm(int member_no);
 	MemberCustomAlarmDto getMemberAlarm(int seller_custom_order_no);
+	// 견적서 처리 상태에 따른 주문제작status 업데이트
+	void updateCustomStatus(CustomOrderDto customOrderDto);
+	// 받은 견적서 삭제(상태 업데이트로 삭제한 것처럼 안보이게_
+	void updateRespDelete(int member_no, int seller_custom_order_no);	
 	//결제한 견적서 주문제작 status업데이트
-	void updateCustomStatus(int custom_order_no);
+	void updateCustomPay(int custom_order_no);
 	//결제취소 업데이트
 	void updateCustomCancel(int custom_order_no);
 	
 	// 수정
 	void updateCustom(CustomOrderDto customOrderDto);
-	
+
 	//보낸 요청서 삭제 (1:1)
 	int getCustomNo(int member_custom_order_no);
-	void deleteCustomReq(int custom_order_no);
+	void deleteCustomReq(MemberCustomOrderDto memberCustomDto);
 	//                        (카테고리)
 	void deleteAlarm(int member_custom_order_no);
 	void deleteCustom(int member_custom_order_no);
@@ -57,6 +61,7 @@ public interface MemberCustomDao {
 	int customRespCount(int member_no);
 	
 	//내가 보낸 요청서 보기
+	MemberCustomOrderDto getMemberCustom(int member_custom_order_no); //요청서관리테이블단일조회
 	List<CustomOrderVO> getListReq(PagingVO paging); // 목록
 	CustomOrderVO customOrderVO2(int member_custom_order_no); // 상세보기
 	int customReqCount(int member_no); // 내가 보낸 요청서 총 개수
