@@ -18,8 +18,8 @@
 <h1>문의 게시판 상세보기</h1>
 <h2><a href="http://localhost:8001/ordering/board/memberqna">목록으로</a></h2>
 
-<form action="editqna" method="post">
-	<input type="hidden" name="admin_qna_no" value="${updateget.admin_qna_no }">
+<form action="sellereditqna" method="post">
+	<input type="hidden" name="admin_qna_no" value="${sellerupdateget.admin_qna_no }">
 
 	<div class="btn-group-vertical">
 	<a><button class="btn btn-primary" value="수정">수정 확인</button></a>
@@ -30,12 +30,12 @@
 
 	<tr>
 		<td width="100px">제목</td>
-		<th><input type="text" name="admin_qna_title" value="${updateget.admin_qna_title}" required></th>
+		<th><input type="text" name="admin_qna_title" value="${sellerupdateget.admin_qna_title}" required></th>
 	</tr>
 
 	<tr>
 		<td width="100px">	<textarea name="admin_qna_content" rquired rows="15" cols="100" style="resize:none;">
-		${updateget.admin_qna_content}</textarea>
+		${sellerupdateget.admin_qna_content}</textarea>
 	</td>
 
 </tbody>

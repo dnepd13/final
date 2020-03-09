@@ -109,4 +109,16 @@ public class SellerDaoImpl implements SellerDao {
 	public int getSellerNo(String seller_id) {
 		return sqlSession.selectOne("seller.getSellerNo", seller_id);
 	}
+	
+	
+	
+	
+	
+	//회원 문의글 번호 얻기
+//	@Override
+	public int getNo(String seller_id) {
+		int seller_no = sqlSession.selectOne("seller.getNo", seller_id);
+		return seller_no;
+		
+	}
 }

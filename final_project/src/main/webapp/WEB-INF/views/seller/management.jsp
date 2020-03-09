@@ -19,5 +19,9 @@
     <button type="button" class="btn btn-primary"  onclick="location='info'">판매자 정보 조회</button><br>
     <button type="button" class="btn btn-primary"  onclick="location='check_pw'">비밀번호 변경</button><br>
      <button type="button" class="btn btn-primary"  onclick="location='delete'">탈퇴하기</button><br>
-     <button type="button" class="btn btn-primary"  onclick="location='main '">홈으로가기</button><br>                            
+     <button type="button" class="btn btn-primary"  onclick="location='main '">홈으로가기</button><br>
+    <h3>판매자 문의,신고</h3> 
+       <a href="${pageContext.request.contextPath}/board/sellerreport">관리자에게 신고</a>
+       <br>
+       <a href="${pageContext.request.contextPath}/board/sellerqna">관리자에게 문의</a>                    
 </div>
