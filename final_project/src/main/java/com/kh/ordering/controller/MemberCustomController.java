@@ -33,6 +33,7 @@ import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.FilesPhysicalDao;
 import com.kh.ordering.repository.MemberCustomDao;
+import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.repository.SellerDao;
@@ -54,6 +55,8 @@ public class MemberCustomController {
 	private MemberCustomService memberCustomService;	
 	@Autowired
 	private MemberCustomDao memberCustomDao;
+	@Autowired
+	private MemberDao memberDao;
 	
 	@Autowired
 	private FilesDao filesDao;
@@ -283,7 +286,7 @@ public class MemberCustomController {
 																									.build();
 		memberCustomDao.deleteCustomReq(memberCustomDto);
 		
-		return "member/customInfoReq";
+		return "redirect:/member/customInfoReq";
 	}
 
 	// 받은 견적서 삭제 (받은 견적서 알람테이블 삭제)
@@ -292,7 +295,18 @@ public class MemberCustomController {
 															 	@RequestParam int seller_custom_order_no) {
 		
 		memberCustomDao.updateRespDelete(member_no, seller_custom_order_no);
-		return "member/customListResp";
+		return "redirect:/member/customListResp";
+	}
+	
+	// 받은 견적서 알람. (aside에서 비동기로 부를 것)
+	@GetMapping("/alarmCount")
+	@ResponseBody
+	public int alarmCount(HttpSession session, Model model) {
+		String member_id = (String)session.getAttribute("member_id");
+		int member_no = memberDao.getNo(member_id);
+
+		// 회원 신규 견적서 알람 check N count 개수		
+		return memberCustomDao.customAlarm(member_no);
 	}
 	
 // 파일 이미지 다운로드

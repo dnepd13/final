@@ -46,6 +46,23 @@
 	
 </style>
 
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+
+<script>
+	$(function(){
+		
+		$.ajax({
+			method : "get",
+			url: "${pageContext.request.contextPath}/member/alarmCount",
+			success: function(resp){
+				console.log(resp);
+				$(".badge").text(resp);
+			}
+		});
+		
+	});
+</script>
+
 <c:if test="${member_id != null}">
 <aside>
 	<div class="aside-title">
@@ -65,7 +82,7 @@
 					<li><a href="${pageContext.request.contextPath}/member/customListResp">
 							받은 견적서 
 							</a>
-							<span class="badge badge-pill badge-info">${customAlarm}</span>
+							<span class="badge badge-pill badge-info"></span>
 							</li>
 					<li><a href="${pageContext.request.contextPath}/member/customListReq">보낸 요청서</a></li>
 				</ul>

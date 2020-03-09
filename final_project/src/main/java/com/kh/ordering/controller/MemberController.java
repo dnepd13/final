@@ -860,15 +860,8 @@ public class MemberController {
 	
 		//회원 로그인후 마이페이지
 		@GetMapping("/membermyinfo")
-		public String membermyinfo(HttpSession session, Model model) {
+		public String membermyinfo() {
 
-			String member_id = (String)session.getAttribute("member_id");
-			int member_no = memberDao.getNo(member_id);
-			
-			model.addAttribute("member_id", member_id);
-			// 회원 신규 견적서 알람 check N count 개수		
-			model.addAttribute("customAlarm", memberCustomDao.customAlarm(member_no));
-			
 			return "member/membermyinfo";
 		}
 }
