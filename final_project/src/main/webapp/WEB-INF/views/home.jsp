@@ -24,6 +24,9 @@ $(function(){
 // 		$(this).removeClass("rounded border border-light shadow p-3 mb-5 bg-white");
 // 	});
 	
+	$(".soldout").click(function(){
+		window.alert("품절된 상품입니다.");
+	});
 });
 </script>
 </head>
@@ -108,7 +111,7 @@ $(function(){
   	 		</c:when>
   	 		<c:otherwise>
   	 			<div class="col-sm-4 goods_box soldout">
-		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
+		  			<a class="goods_img" href="#">
 		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
 		  			</a>
 			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
@@ -145,7 +148,7 @@ $(function(){
 	 	</c:when>
 	 	<c:otherwise>
 	  		<div class="col-lg-4 goods_box soldout">
-	  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
+	  			<a class="goods_img" href="#">
 	  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
 	  			</a>
 	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
@@ -182,7 +185,7 @@ $(function(){
 		 	</c:when>
 		 	<c:otherwise>
 		  		<div class="col-lg-4 goods_box soldout">
-		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
+		  			<a class="goods_img" href="#">
 		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
 		  			</a>
 		  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>

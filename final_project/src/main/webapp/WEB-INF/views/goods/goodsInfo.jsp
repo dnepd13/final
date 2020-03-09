@@ -335,6 +335,23 @@ $(function(){
 		return num.toString().replace(regexp, ',');
 	}
 	
+	
+	// 배송정보
+	var delivery_option = '${deliveryDto.delivery_option}';
+	var delivery_op_price = '${deliveryDto.delivery_op_price}';
+
+	console.log(delivery_option);
+	console.log(delivery_op_price);
+	switch (delivery_option) {
+	case '무료': $(".delivery_option").html(" (무료)");
+		break;
+	
+	case '유료': $(".delivery_option").html(" (유료)");
+		break;
+	
+	default: $(".delivery_option").html(" (" + addComma(Number(delivery_op_price)) + "원 이상 무료)");
+		break;
+	}
 }); 
 
 
@@ -695,6 +712,15 @@ $(function(){
 							<fmt:formatNumber pattern="###,###,###" type="number">
 							${goodsVO.goods_price/100*rate}
 							</fmt:formatNumber> 원
+							</td>
+						</tr>
+						<tr>
+							<td>배송비</td>
+							<td colspan="2">
+							<fmt:formatNumber pattern="###,###,###" type="number">
+								${deliveryDto.delivery_price}
+							</fmt:formatNumber>원
+							<span class="delivery_option"></span>
 							</td>
 						</tr>
 						</tbody>
