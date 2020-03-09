@@ -45,7 +45,15 @@ public interface SellerDao {
 
 // 판매자 번호로 단일조회
 	SellerDto sellerDto(int seller_no);
+	
+	
+// 신고 문의 게시판 영역 
+	
+////판매자 세션에 있는 id를 통해 번호 구하기 
 	int getSellerNo(String seller_id);
+	int getNo(String seller_id);
+
+
 
 
 
