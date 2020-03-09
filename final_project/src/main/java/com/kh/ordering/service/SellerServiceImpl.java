@@ -18,11 +18,13 @@ import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.PortfolioDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.entity.SellerDto;
+import com.kh.ordering.repository.CategoryDao;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.PortfolioDao;
 import com.kh.ordering.repository.SellerCategoryDao;
 import com.kh.ordering.repository.SellerDao;
 import com.kh.ordering.vo.FilesVO;
+import com.kh.ordering.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -37,7 +39,8 @@ private PortfolioDao portfolioDao;
 @Autowired
 private SellerCategoryDao sellerCategoryDao;
 
-
+@Autowired
+private CategoryDao categoryDao;
 
 	@Override
 	public void regist(SellerDto sellerDto) {
@@ -131,13 +134,63 @@ private SellerCategoryDao sellerCategoryDao;
 	
 	}
 
-//	포트폴리오 파일 가져오기
+///	포트폴리오 파일 가져오기
 	@Override
 	public List<FilesVO> filesList(int seller_no){
 		
 		List<FilesVO> filesVO = portfolioDao.getFilesList(seller_no);
 		
 		return filesVO;
+	}
+
+   //------------------------판매자 카테고리------------------------//
+	@Override
+	public PagingVO categoryPagination(String pno1) {
+		//log.info("member={}", seller_no);
+		int pno; //no 선언
+		try {
+			pno = Integer.parseInt(pno1); //선언된 pno를 인티저의 int타입으로 넣음
+			if(pno <= 0) throw new Exception(); //만약 pno가 0이라면 이셉션처리
+		}
+		catch(Exception e) {
+
+			pno = 1; //그외 예외처리시 pno는 1로 가정
+		}
+		int pagesize = 5; // 네비게이터 크기는 10으로
+		int finish = pno * pagesize; //네비게이터의끝
+		int start = finish - (pagesize-1); //네비게이터의 시작
+
+		/*하단 네비게이터 계산
+		 	시작블록= (전체페이지 -1) / 네비게이터 크기 * 네비게이터 크기+1
+		 */
+
+		int count =sellerCategoryDao.categoryCount();
+		int navsize = 10;
+		int pagecount = (count+pagesize-1) / pagesize;
+
+
+		int startBlock = (pno - 1) / navsize * navsize +1;
+		int finishBlock = startBlock + (navsize - 1);
+
+		//만약 마지막 블록이 페이지 수보다 크다면 수정하여 처리할것
+		if(finishBlock > pagecount) {
+			finishBlock = pagecount;
+		}
+
+		PagingVO vo = PagingVO.builder()
+				.pno(pno)
+				.navsize(navsize)
+				.count(count)
+				.pagecount(pagecount)
+				.pagesize(pagesize)
+				.startBlock(startBlock)
+				.finishBlock(finishBlock)
+				.start(start)
+				.finish(finish)
+			//	.seller_no(seller_no)
+			.build();
+		log.info("vo123123={}", vo);
+		return vo;	
 	}
 
 	
