@@ -10,6 +10,7 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
+<jsp:include page="/WEB-INF/views/template/sellerInfoAside.jsp"/>
 
 <style>
 	* {box-sizing: border-box;
@@ -81,7 +82,6 @@
 	.nav_login a:link { color: black; text-decoration: none;}
     .nav_login a:visited { color: black; text-decoration: none;}
     .nav_login a:hover { color: rgb(142,140,132); text-decoration: underline;}
-
 </style>
 
 </head>

@@ -115,7 +115,7 @@ th, td {
 				<a href="${pageContext.request.contextPath}/board/detailmqna?admin_qna_no=${getListQna.admin_qna_no}">---->${getListQna.admin_qna_title }</a>
 			</c:when>
 				<c:otherwise>
-					<a href="${pageContext.request.contextPath}/board/detailmqna?admin_qna_no=${getListQna.admin_qna_no}">${getListQna.admin_qna_title }</a>	
+					<a href="${pageContext.request.contextPath}/board/detailmqna">${getListQna.admin_qna_title }</a>	
 				</c:otherwise>	
 			</c:choose>
 			</td>

@@ -17,15 +17,15 @@
 
 
 <c:choose>
-<c:when test="${admin_qna_writer == admin}">	
-	<div class="btn-group-vertical">
-	<a href="${pageContext.request.contextPath}/board/updateqna?admin_qna_no=${qnaone.admin_qna_no}">
-		<button type="button" class="btn btn-primary">수정</button>
-	</a>
-</div> 
+<c:when test="${param.admin_qna_no >0}">	
+	<h1>관리자의 답변입니다.</h1>
 </c:when>
 <c:otherwise>
-	<h1>관리자의 답변입니다.</h1>
+	<div class="btn-group-vertical">
+		<a href="${pageContext.request.contextPath}/board/updateqna?admin_qna_no=${qnaone.admin_qna_no}">
+			<button type="button" class="btn btn-primary">수정</button>
+		</a>
+</div> 
 
 </c:otherwise>
 </c:choose>
