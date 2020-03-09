@@ -10,6 +10,9 @@
  		float : left; 
  		padding: 60px 0px;
 		width: 150px;
+ 	}
+ 	aside div {
+ 		border-radius: 5px;
  	}	 
  	aside ul { 
  		list-style: none; 
@@ -46,13 +49,54 @@
 	
 </style>
 
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+
+<script>
+	$(function(){
+		
+		// 회원정보
+		$.ajax({
+			method : "get",
+			url: "${pageContext.request.contextPath}/member/memberInfoAside",
+			success: function(resp){
+				var grade = resp.member_grade;
+				$(".myGrade").text(grade);
+			}
+		});
+		
+		// 회원 현재 총 포인트
+		$.ajax({
+			method : "get",
+			url: "${pageContext.request.contextPath}/member/memberPointAside",
+			success: function(resp){
+				$(".myPoint").text(resp);
+			}
+		});
+		
+		// 받은 견적서 알람
+		$.ajax({
+			method : "get",
+			url: "${pageContext.request.contextPath}/member/alarmCount",
+			success: function(resp){
+
+				$(".badge").text(resp);
+			}
+		});
+		
+	});
+</script>
+
 <c:if test="${member_id != null}">
 <aside>
 	<div class="aside-title">
 		마이페이지
 	</div>
 	<div class="aside-grade">
-		회원등급
+		나의 등급
+		<p align="right" style="margin:0;"><span class="myGrade"></span></p>
+		<hr>
+		나의 포인트 <br>
+		<p align="right" style="margin:0;"><a href="${pageContext.request.contextPath}/member/pointinfo"><span class="myPoint" style="color:#0094EC;"></span></a> P</p>
 	</div>
 	<div class="aside-content">
 		<ul>
@@ -66,7 +110,7 @@
 					<li><a href="${pageContext.request.contextPath}/member/customListResp">
 							받은 견적서 
 							</a>
-							<span class="badge badge-pill badge-info">${customAlarm}</span>
+							<span class="badge badge-pill badge-info"></span>
 							</li>
 					<li><a href="${pageContext.request.contextPath}/member/customListReq">보낸 요청서</a></li>
 				</ul>
@@ -75,7 +119,7 @@
 		<ul>
 			<li><a href="${pageContext.request.contextPath}/member/memberinfo">내 정보</a>
 				<ul>
-					<li><a href="">비밀번호 변경</a></li>
+					<li><a href="${pageContext.request.contextPath}/member/memberchange_pw">비밀번호 변경</a></li>
 					<li><a href="${pageContext.request.contextPath}/member/pointinfo">포인트 조회</a></li>
 					<li><a href="${pageContext.request.contextPath}/member/addrinfo">배송지 관리</a></li>
 				</ul>

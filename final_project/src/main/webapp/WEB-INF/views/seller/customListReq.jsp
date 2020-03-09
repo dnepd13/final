@@ -28,22 +28,27 @@
     
 <script>
 	//요청서 삭제
-	function deleteReq(member_custom_order_no){
-		if(confirm('요청서를 삭제하시겠습니까?')){
-			$.ajax({
-				url : "deleteReq",
-				data : {"member_custom_order_no": member_custom_order_no},
-				method: "GET",
-				success: function(resp){
-					location.reload(true);
-				}
-			});
+	$(function(){
+		
+		$(".deleteReq").click(function(e){
+			var status = $(this).parents("#req_data").data("custom_order_status");
 			
-	    }
-	    else{
-	    	return false;
-		}
-	}
+			if(status=='결제완료' || status=='결제취소'){
+				alert("결제완료 또는 결제취소된 요청서는 삭제할 수 없습니다.");
+				return false;
+			}
+			else {
+				if(confirm('요청서를 삭제하시겠습니까?')){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+
+		});
+		
+	});
 			
 </script> 
 
@@ -56,7 +61,8 @@
 <table class="table table-hover listBox">
 	<c:forEach var="memberReq" items="${getListReq }">
 	<tr>
-		<td>
+		<td id="req_data"
+				data-custom_order_status="${memberReq.custom_order_status }">
 			<p><span>${memberReq.member_id } 님이 보낸 요청서입니다.</span>
 				<span style="color: red">
 					<c:set var="check" value="${memberReq.seller_alarm_check }"/> 
@@ -78,10 +84,10 @@
 						<span aria-hidden="true" class="close">${memberReq.custom_order_status }</span>
 					</c:when>
 					<c:otherwise>
-						<form action="deleteResp" method="get">
+						<form action="deleteReq" method="get">
 							<input type="hidden" name="member_no" value="${memberReq.member_no }">
-							<input type="hidden" name="seller_custom_order_no" value="${memberReq.seller_custom_order_no }">
-							<span aria-hidden="true">${memberReq.custom_order_status }<input type="submit" class="close delete_resp"aria-label="Close" value="&times;"></span>
+							<input type="hidden" name="member_custom_order_no" value="${memberReq.member_custom_order_no }">
+							<span aria-hidden="true">${memberReq.custom_order_status }<input type="submit" class="close deleteReq"aria-label="Close" value="&times;"></span>
 						</form>
 					</c:otherwise>
 				</c:choose>
