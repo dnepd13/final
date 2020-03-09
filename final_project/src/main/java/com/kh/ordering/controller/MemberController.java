@@ -38,6 +38,7 @@ import com.kh.ordering.service.RandomService;
 import com.kh.ordering.vo.CartVO;
 import com.kh.ordering.vo.ItemVO;
 import com.kh.ordering.vo.ItemVOList;
+import com.kh.ordering.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -672,6 +673,7 @@ public class MemberController {
 		return "member/addrupdate";
 	}
 	
+
 	@PostMapping("/addrupdate")
 	public String addrupdate(@ModelAttribute Member_AddrDto member_AddrDto,Model model)
 	{
@@ -683,20 +685,7 @@ public class MemberController {
 	}
 	
 
-	//배송지 추가 테이블
-	@PostMapping("/addregist")
-	public String addrregist(@ModelAttribute Member_AddrDto member_AddrDto,
-							HttpSession session, Model model)
-	{
-		String member_id = (String)session.getAttribute("member_id");
-		int member_no = memberDao.getNo(member_id);
 
-		member_AddrDto.setMember_no(member_no);
-
-		member_AddrDao.addrregist(member_AddrDto);
-
-		return "redirect:/addrinfo";
-	}
 
 
 
@@ -828,7 +817,15 @@ public class MemberController {
 			
 		log.info("no={}", member_no);
 		
+		if(member_AddrDao.getListAddr(member_no).size()>0) {
+			member_AddrDao.insertchuaddr(member_AddrDto);
+		}
+	else{
 		member_AddrDao.insertaddr(member_AddrDto);
+		}
+		
+			
+		
 //		log.info("member_AddrDto={}",member_AddrDto);
 		return "redirect:/member/addrinfo";
 	}
@@ -837,14 +834,19 @@ public class MemberController {
 	//포인트를 확인 할 수 있는 게시판
 	
 		@GetMapping("/pointinfo")
-		public String pointinfo (HttpSession session, Model model ) {
+		public String pointinfo (HttpSession session, Model model, 
+													@RequestParam(value="pageNo", required=false, defaultValue="0")String pageNo ) {
 			String member_id = (String)session.getAttribute("member_id");
 			int member_no = memberDao.getNo(member_id);
 			
-			List<Member_PointDto> pointlist = member_PointDao.getListPoint(member_no);
-			log.info("pointlist={}",pointlist);
+			PagingVO result = memberService.pointInfoPaging(pageNo, member_no);
+			model.addAttribute("paging",result);
+			List<Member_PointDto> pointlist = member_PointDao.getListPoint(result);
 			
 			model.addAttribute("pointinfo",pointlist);
+			// 회원 현재 총 포인트
+			int totalPoint= member_PointDao.getTotalPoint(member_no);
+			model.addAttribute("totalPoint", totalPoint);
 			
 			return "member/pointinfo";
 		}
@@ -853,17 +855,14 @@ public class MemberController {
 		//회원 로그인후 마이페이지
 		@GetMapping("/membermyinfo")
 		public String membermyinfo(HttpSession session, Model model) {
-			
+
 			String member_id = (String)session.getAttribute("member_id");
 			int member_no = memberDao.getNo(member_id);
 			
+			model.addAttribute("member_id", member_id);
 			// 회원 신규 견적서 알람 check N count 개수		
 			model.addAttribute("customAlarm", memberCustomDao.customAlarm(member_no));
 			
 			return "member/membermyinfo";
 		}
-	
-	
-	
-	
 }

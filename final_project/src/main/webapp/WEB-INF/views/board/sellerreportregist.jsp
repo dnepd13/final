@@ -26,7 +26,7 @@
 <tbody>
 
 	<tr>
-		<td class="">제목</td>
+		<td style="width:100px;">제목</td>
 		<th><input type="text" name="admin_qna_title" value="" required></th>
 	</tr>
 

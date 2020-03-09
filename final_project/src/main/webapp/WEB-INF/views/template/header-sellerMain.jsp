@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>  
-    <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
- 
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +9,6 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
-<jsp:include page="/WEB-INF/views/template/sellerInfoAside.jsp"/>
 
 <style>
 	* {box-sizing: border-box;
@@ -82,12 +80,13 @@
 	.nav_login a:link { color: black; text-decoration: none;}
     .nav_login a:visited { color: black; text-decoration: none;}
     .nav_login a:hover { color: rgb(142,140,132); text-decoration: underline;}
+
 </style>
 
 </head>
 <body>
 
-<!-- 일반회원 home -->
+<!-- seller home -->
 <c:choose>
 	<c:when test="${seller_id==null }">
 	<ul class="nav_login">
@@ -119,11 +118,10 @@
 <hr class="basic_color">
 
 <div class="logo-area" align="center">
-	<a class="" href="${pageContext.request.contextPath }">
+	<a class="" href="${pageContext.request.contextPath }/seller/main">
   		<img src="${pageContext.request.contextPath}/resources/img/logo-ordering.png" style="width:auto; height: 100px;'">
   	</a>
 </div>
 
-<div class="row-empty-40"></div>
+<section class="wrap">
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
