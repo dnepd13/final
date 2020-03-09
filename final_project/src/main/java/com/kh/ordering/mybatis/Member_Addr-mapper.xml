@@ -9,7 +9,7 @@
   		select * from member_addr where member_addr_no = #{member_addr_no}
   </select>
   
-  <!-- 회원 배송지 추가 구문  -->
+  <!-- 회원 배송지 기본주소 인서트 구문  -->
    <insert id="insertaddr" parameterType="member_AddrDto">
    	insert into member_addr(
    	member_addr_no,
@@ -27,6 +27,28 @@
 	#{member_addr_basic},
 	#{member_addr_extra},
 	'기본주소',
+	#{member_no}
+	)
+   </insert>
+   
+     <!-- 회원 배송지 추가 배송지인서트 구문  -->
+   <insert id="insertchuaddr" parameterType="member_AddrDto">
+   	insert into member_addr(
+   	member_addr_no,
+   	member_name_extra,
+   	member_addr_post,
+   	member_addr_basic,
+   	member_addr_extra,
+   	member_addr_status,
+   	member_no
+   	)
+	values(
+	member_addr_seq.nextval,
+	#{member_name_extra},
+	#{member_addr_post},
+	#{member_addr_basic},
+	#{member_addr_extra},
+	'추가주소',
 	#{member_no}
 	)
    </insert>
@@ -53,8 +75,7 @@
    			member_name_extra = #{member_name_extra},
 			member_addr_post = #{member_addr_post},
 			member_addr_basic = #{member_addr_basic},
-			member_addr_extra = #{member_addr_extra},
-			member_addr_status = #{member_addr_status}
+			member_addr_extra = #{member_addr_extra}
 		where
 			member_addr_no = #{member_addr_no}
    </update>
