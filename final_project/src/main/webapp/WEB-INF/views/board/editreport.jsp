@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
@@ -10,54 +12,38 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
+
 <div align="center" class="btn-group-vertical">
 
-<h1>신고 게시판 상세보기</h1>
+<h1>문의 게시판 상세보기</h1>
 <h2><a href="http://localhost:8001/ordering/board/memberreport">목록으로</a></h2>
 
+<form action="editreport" method="post">
+	<input type="hidden" name="admin_qna_no" value="${updategetreport.admin_qna_no }">
 
-<c:choose>
-<c:when test="${admin_qna_writer == admin}">	
 	<div class="btn-group-vertical">
-	<a href="${pageContext.request.contextPath}/board/editreport?admin_qna_no=${ReportGetOne.admin_qna_no}">
-		<button type="button" class="btn btn-primary">수정</button>
-	</a>
-</div> 
-</c:when>
-<c:otherwise>
-	<h1>관리자의 답변입니다.</h1>
+	<a><button class="btn btn-primary" value="수정">수정 확인</button></a>
+	</div>
+<table class="table table-hover" >
 
-</c:otherwise>
-</c:choose>
-<table class="table table-hover">
-<tbody>
+<tbody class="col-lg-4 col-md-6">
+
 	<tr>
-		<th width="121px">제목</th>
-		<td width="600px">${ReportGetOne.admin_qna_title}</td>
+		<td width="100px">제목</td>
+		<th><input type="text" name="admin_qna_title" value="${updategetreport.admin_qna_title}" required></th>
 	</tr>
-		<tr>
-		<th width="121px">작성자구분</th>
-		<td width="600px">${ReportGetOne.admin_qna_usertype}</td>
-	</tr>
-		<tr>
-		<th width="121px">작성자</th>
-		<td width="600px">${ReportGetOne.admin_qna_writer}</td>
-	</tr>
-		<tr>
-		<th width="121px">작성일</th>
-		<td width="600px">${ReportGetOne.admin_qna_date}</td>
-	</tr>
-	
-	
+
 	<tr>
-		<th></th>
-		<td width="600px" align="left">${ReportGetOne.admin_qna_content}</td>
-	</tr>
+		<td width="100px">	<textarea name="admin_qna_content" rquired rows="15" cols="100" style="resize:none;">
+		${updategetreport.admin_qna_content}</textarea>
+	</td>
+
 </tbody>
 
 	
 
 </table>
+</form>
 </div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

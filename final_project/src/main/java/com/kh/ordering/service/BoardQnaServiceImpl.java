@@ -147,4 +147,100 @@ public class BoardQnaServiceImpl implements BoardQnaService{
 		return vo;
 	}
 
+	@Override
+	public PagingVO QnaPagination1(String pno2, int seller_no) {
+		int pno; //no 선언
+		try {
+			pno = Integer.parseInt(pno2); //선언된 pno를 인티저의 int타입으로 넣음
+			if(pno <= 0) throw new Exception(); //만약 pno가 0이라면 이셉션처리
+		}
+		catch(Exception e) {
+
+			pno = 1; //그외 예외처리시 pno는 1로 가정
+		}
+		int pagesize = 10; // 네비게이터 크기는 10으로
+		int finish = pno * pagesize; //네비게이터의끝
+		int start = finish - (pagesize-1); //네비게이터의 시작
+
+		/*하단 네비게이터 계산
+		 	시작블록= (전체페이지 -1) / 네비게이터 크기 * 네비게이터 크기+1
+		 */
+
+		int count = adminQnaDao.countsellerqna(seller_no);
+		int navsize = 10;
+		int pagecount = (count+pagesize-1) / pagesize;
+
+
+		int startBlock = (pno - 1) / navsize * navsize +1;
+		int finishBlock = startBlock + (navsize - 1);
+
+		//만약 마지막 블록이 페이지 수보다 크다면 수정하여 처리할것
+		if(finishBlock > pagecount) {
+			finishBlock = pagecount;
+		}
+
+		PagingVO vo = PagingVO.builder()
+				.pno(pno)
+				.navsize(navsize)
+				.count(count)
+				.pagecount(pagecount)
+				.pagesize(pagesize)
+				.startBlock(startBlock)
+				.finishBlock(finishBlock)
+				.start(start)
+				.finish(finish)
+			.build();
+
+		return vo;
+	}
+
+	@Override
+	public PagingVO adminQnaPagination1(String pno2, int seller_no) {
+		log.info("sellerpagination1={}", seller_no);
+		int pno; //no 선언
+		try {
+			pno = Integer.parseInt(pno2); //선언된 pno를 인티저의 int타입으로 넣음
+			if(pno <= 0) throw new Exception(); //만약 pno가 0이라면 이셉션처리
+		}
+		catch(Exception e) {
+
+			pno = 1; //그외 예외처리시 pno는 1로 가정
+		}
+		int pagesize = 10; // 네비게이터 크기는 10으로
+		int finish = pno * pagesize; //네비게이터의끝
+		int start = finish - (pagesize-1); //네비게이터의 시작
+
+		/*하단 네비게이터 계산
+		 	시작블록= (전체페이지 -1) / 네비게이터 크기 * 네비게이터 크기+1
+		 */
+
+		int count = adminQnaDao.countSellerBoard(seller_no);
+		int navsize = 10;
+		int pagecount = (count+pagesize-1) / pagesize;
+
+
+		int startBlock = (pno - 1) / navsize * navsize +1;
+		int finishBlock = startBlock + (navsize - 1);
+
+		//만약 마지막 블록이 페이지 수보다 크다면 수정하여 처리할것
+		if(finishBlock > pagecount) {
+			finishBlock = pagecount;
+		}
+
+		PagingVO vo = PagingVO.builder()
+				.pno(pno)
+				.navsize(navsize)
+				.count(count)
+				.pagecount(pagecount)
+				.pagesize(pagesize)
+				.startBlock(startBlock)
+				.finishBlock(finishBlock)
+				.start(start)
+				.finish(finish)
+				.seller_no(seller_no)
+			.build();
+		log.info("sellervo123123={}", vo);
+		return vo;
+	}
+
 }

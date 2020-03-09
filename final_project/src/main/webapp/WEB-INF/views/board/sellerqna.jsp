@@ -14,11 +14,11 @@
 
 
 
-<h2>회원 신고게시판</h2>
+<h2>판매자 문의게시판</h2>
 <h2><a href="${pageContext.request.contextPath}/">홈으로</a></h2>
 
-<div class="btn-group-vertical" align="left">
-	<a href="${pageContext.request.contextPath}/board/reportregist">
+<div class="btn-group-vertical">
+	<a href="${pageContext.request.contextPath}/board/sellerqnaregist">
 		<button type="button" class="btn btn-primary">글쓰기</button>
 	</a>
 </div>
@@ -32,22 +32,22 @@
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach var="getListReport" items="${getListReport}">
+		<c:forEach var="getListSellerQna" items="${getListSellerQna}">
 		<tr>
 			<td>
 			<c:choose>
-			<c:when test="${getListReport.super_no > 0}">
-				<a href="${pageContext.request.contextPath}/board/detailreport?admin_qna_no=${getListReport.admin_qna_no}">---->${getListReport.admin_qna_title }</a>
+			<c:when test="${getListSellerQna.super_no > 0}">
+				<a href="${pageContext.request.contextPath}/board/sellerdetailmqna?admin_qna_no=${getListSellerQna.admin_qna_no}">---->${getListSellerQna.admin_qna_title }</a>
 			</c:when>
 				<c:otherwise>
-					<a href="${pageContext.request.contextPath}/board/detailreport?admin_qna_no=${getListReport.admin_qna_no}">${getListReport.admin_qna_title }</a>	
+					<a href="${pageContext.request.contextPath}/board/sellerdetailmqna?admin_qna_no=${getListSellerQna.admin_qna_no}">${getListSellerQna.admin_qna_title }</a>	
 				</c:otherwise>	
 			</c:choose>
 			</td>
 
-		    <td>${getListReport.admin_qna_writer}</td>
-			<td>${getListReport.admin_qna_usertype}</td>
-			<td>${getListReport.admin_qna_date}</td>
+		    <td>${getListSellerQna.admin_qna_writer}</td>
+			<td>${getListSellerQna.admin_qna_usertype}</td>
+			<td>${getListSellerQna.admin_qna_date}</td>
 
 		</tr>
 		</c:forEach>
@@ -56,10 +56,10 @@
 
 </table>
 
-	<ul class="pagination">
+	<ul class="pagination1">
 		<c:if test="${paging1.startBlock > 1 }">
 			<li class="page-item">
-				<a class="page-item" href="${pageContext.request.contextPath}/board/memberreport?pno1=${paging1.startBlock-1}">&laquo;</a>
+				<a class="page-item" href="${pageContext.request.contextPath}/board/sellerqna?pno2=${paging1.startBlock-1}">&laquo;</a>
 
 			</li>
 		</c:if>
@@ -72,7 +72,7 @@
 				</c:when>
 				<c:when test="${p != paging1.pno }">
 					<li class="page-item active">
-						<a class="page-link" href="${pageContext.request.contextPath}/board/memberreport?pno1=${p}">${p}</a>
+						<a class="page-link" href="${pageContext.request.contextPath}/board/sellerqna?pno2=${p}">${p}</a>
 					</li>
 
 				</c:when>
@@ -80,7 +80,7 @@
 		</c:forEach>
 		<c:if test="${paging1.finishBlock < paging1.pagecount}">
 			<li class="page-item">
-				<a class="page-link" href="${pageContext.request.contextPath}/board/memberreport?pno=${paging1.finishBlock+1}">&raquo;</a>
+				<a class="page-link" href="${pageContext.request.contextPath}/board/sellerqna?pno=${paging1.finishBlock+1}">&raquo;</a>
 			</li>
 		</c:if>
 	</ul>

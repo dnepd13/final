@@ -17,7 +17,7 @@
 <h2>회원 문의게시판</h2>
 <h2><a href="${pageContext.request.contextPath}/">홈으로</a></h2>
 
-<div class="btn-group-vertical">
+<div class="btn-group-vertical" align="left">
 	<a href="${pageContext.request.contextPath}/board/qnaregist">
 		<button type="button" class="btn btn-primary">글쓰기</button>
 	</a>

@@ -258,5 +258,16 @@
 		delete member_alarm where seller_custom_order_no= #{seller_custom_order_no}
 	</delete>
 	
+	
+	
+	
+	
+	
+
+	
+	
+   
+
+	
  </mapper>
 

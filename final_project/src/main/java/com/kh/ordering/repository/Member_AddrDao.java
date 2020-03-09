@@ -28,6 +28,8 @@ public interface Member_AddrDao {
 
 	// 기본주소만 조회
 	public Member_AddrDto getBasicAddr(int member_no);
+
+
 	
 //	//배송지 정보조회
 //	Member_AddrDto addrinfo(Member_AddrDto member_AddrDto);
