@@ -16,8 +16,6 @@
             <div class="offset-md-1 col-md-10">
 <div class="row justify-content-center"  style="padding: 20px;"><h1>관리문의 게시판</h1></div>
 
-   
-
 <table class="table table-hover">
   <thead>
     <tr>
