@@ -43,9 +43,9 @@
 		
 		$(".price").keyup(function(){
 			console.log($(this).val());
-			if($(this).val()<=0){
+			if($(this).val()<=0 || $(this).val()>1000000){
 				$(this).val("");
-				alert("견적가격을 다시 확인해주세요");
+				alert("견적 가격은 1원 이상, 100만원 이하로 작성해주세요.");
 			}
 		});
 		
@@ -67,8 +67,8 @@
 		<h6 class="text-secondary">견적서의 상세내용을 작성해주세요.</h6>
 		<textarea class="input_req form-control" name="custom_order_content" required></textarea>
 			<br>
-		<h6 class="text-secondary price">예상 견적은 얼마인가요? (배송비 포함)</h6>
-		<input class="input_req form-control" type="number" name="custom_order_price" placeholder="원">
+		<h6 class="text-secondary">예상 견적은 얼마인가요? (배송비 포함)</h6>
+		<input class="input_req form-control price" type="number" name="custom_order_price" placeholder="원">
 			<br>
 		<h6 class="text-secondary">언제까지 가능한가요?</h6>
 		<input class="input_req form-control date" type="text" name="custom_order_hopedate" required readonly>

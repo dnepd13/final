@@ -115,6 +115,11 @@ public class AdminDaoImpl implements AdminDao{
 		return data;
 	}
 
+	@Override
+	public int idcheck(String admin_id) {
+		return sqlSession.selectOne("admin.idcheck", admin_id);
+	}
+
 	
 	
 	

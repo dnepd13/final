@@ -298,19 +298,17 @@ public class MemberController {
 		
 		else {//아이디가 있으면 비밀번호 매칭 검사
 		boolean correct = passwordEncoder.matches(member.getMember_pw(), login.getMember_pw());
-		log.info("correct={}",correct);
+
 			if(correct) {//비밀번호 일치
 				
-			log.info("로그인 성공");
 			//세션에 회원 정보인  member_id, member_no 를 추가 
 			session.setAttribute("member_id", login.getMember_id());
 			session.setAttribute("member_grade", login.getMember_grade());
 //			session.setAttribute("member_no", find.getMember_no());
-			log.info("no ={}",login.getMember_no());
 
 			// 최종로그인
 			memberDao.lastLogin(member);
-			log.info("1={}", login);
+
 			//필요하다면 쿠키도 생성
 			
 //			  session.getAttribute("member_id");
@@ -318,16 +316,11 @@ public class MemberController {
 //			String member_id = session.getno("member_id");
 //			  
 //			memberDao.getNo(String member_id, member);  
-//			
-			
-			log.info("member={}",member);
 			
 			return "redirect:/";
 		
 			} else {//로그인이 실패 했을 경우 확인을 위한 구문
-			
-			
-			log.info("로그인 실패");
+
 			return "redirect:/member/login?error";
 		}
 			
@@ -351,7 +344,6 @@ public class MemberController {
 		
 		
 		session.removeAttribute("member_id");
-		log.info("session ={}", session);
 		
 //		session.removeAttribute("member_no");
 		
@@ -518,7 +510,7 @@ public class MemberController {
 	@ResponseBody//내가 반환하는 내용이 곧 결과물
 	public String send(@RequestParam String member_email,HttpSession session) {
 //		String cert ="1236";//세션에 저장된 판매자 이름과 판매자 아이디를 넣어서 서버에 있는 아이디랑 이메일이 같다면 인증번호를 보내라 
-	    System.out.println("member email"+member_email);	 
+
 		String cert = randomService.generateCertificationNumber(6);
 	    	  session.setAttribute("cert", cert);
 	    	
@@ -609,9 +601,9 @@ public class MemberController {
 						MemberDto memberDto =MemberDto.builder().member_name(member_name) 
 																				   .member_email(member_email)
 																				   .build();
-						log.info("memberDto={}",memberDto);
+
 						MemberDto find_id=memberDao.memberfind_id(memberDto);
-						log.info("find_id={}",find_id);
+
 //						model.addAttribute("sellerDto",find_id);
 					return "redirect:/member/login";
 	
@@ -708,7 +700,6 @@ public class MemberController {
 					//	session에서 no를 저장했을때 사용	int member_no = (int) session.getAttribute("member_no");
 					
 					List<Member_AddrDto> list = member_AddrDao.getListAddr(member_no);
-					log.info("list={}",list);
 					
 					model.addAttribute("addrinfo", list);
 					
@@ -852,15 +843,10 @@ public class MemberController {
 	
 	//배송지 추가 테이블
 	
-	@GetMapping("/insertaddr")
-	public String registaddr() {
-		
-		return "member/insertaddr";
-	}
-	
 	@PostMapping("/insertaddr")
 	public String registaddr(@ModelAttribute Member_AddrDto member_AddrDto,
 								MemberDto member,HttpSession session) {
+			log.info("member_AddrDto={}", member_AddrDto);
 //		// session값에 있는 아이디를 찾아서 번호를 구해왔고 
 ////		String member_id =(String)session.getAttribute("member");
 ////		int member_no = memberDao.findno("member_id");
@@ -927,19 +913,34 @@ public class MemberController {
 			return "member/pointinfo";
 		}
 		
-	
 		//회원 로그인후 마이페이지
-		@GetMapping("/membermyinfo")
-		public String membermyinfo(HttpSession session, Model model) {
+				@GetMapping("/membermyinfo")
+				public String membermyinfo() {
 
+					return "member/membermyinfo";
+				}
+		
+	
+// 회원 마이페이지 Aside에 보낼 정보
+		@GetMapping("/memberInfoAside") // 전체 회원정보
+		@ResponseBody
+		public MemberDto memberInfoAside(HttpSession session) {
+			
 			String member_id = (String)session.getAttribute("member_id");
 			int member_no = memberDao.getNo(member_id);
 			
-			model.addAttribute("member_id", member_id);
-			// 회원 신규 견적서 알람 check N count 개수		
-			model.addAttribute("customAlarm", memberCustomDao.customAlarm(member_no));
+			MemberDto memberDto = memberDao.getMember(member_no);
 			
-			return "member/membermyinfo";
+			return memberDto;
+		}
+		@GetMapping("/memberPointAside")
+		@ResponseBody
+		public int memberPointAside(HttpSession session) {
+			
+			String member_id = (String)session.getAttribute("member_id");
+			int member_no = memberDao.getNo(member_id);
+			
+			return member_PointDao.getTotalPoint(member_no);
 		}
 		
 		

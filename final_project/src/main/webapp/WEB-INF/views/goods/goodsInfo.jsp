@@ -897,7 +897,7 @@ $(function(){
 								<fmt:formatDate value="${goods_qna_date }" pattern="yyyy/MM/dd HH:mm:ss"/>	
 						</td>
 						<%-- 문의 작성자와 로그인한 member_id가 같을 때 / 상품 판매자와 로그인한 seller_id가 같을 때 --%>
-						<c:set var="status" value="${qna.goods_qna_status}"></c:set>
+						<c:set var="status" value="${qna.goods_qna_status}"/>
 						<c:choose>
 							<c:when test="${qna.member_no == member_no && empty qna.goods_qna_status}">
 								<td data-goods_no = "${goodsVO.goods_no }"
@@ -910,6 +910,9 @@ $(function(){
 							<c:when test="${not empty seller_no && goodsVO.seller_no == seller_no }" >
 								<c:if test="${empty qna.goods_qna_status }">
 									<td><button class="btn_a btn_clean">답변하기</button></td>
+								</c:if>
+								<c:if test="${functions : contains(status, '답변완료') }">
+									<td>답변완료</td>
 								</c:if>
 							</c:when>
 							<c:when test="${functions : contains(status, '답변완료') }">
@@ -930,9 +933,10 @@ $(function(){
 							<input type="hidden" name="goods_no" value="${goodsVO.goods_no }">
 							<input type="hidden" name="goods_qna_groupno" value="${qna.goods_qna_groupno }">
 							<input type="hidden" name="goods_qna_no" value="${qna.goods_qna_no }">
+							<input type="hidden" name="member_no" value="${qna.member_no }">
 							<br>
 							<textarea class="form-control" name="goods_qna_content" required></textarea><br>
-							<input type="submit" value="답변하기" class="btn_custom">
+							<p align="right"><input type="submit" value="답변하기" class="btn_custom"></p>
 						</form>
 					</td>
 				</tr>
@@ -1067,6 +1071,7 @@ $(function(){
 	<br>
 	</c:forEach>
 	<!-- 페이징 내비게이터 -->
+	<c:if test="${ not empty goodsReview }">
 		<div class="row justify-content-center" style="z-index: 0">
 			<ul class="pagination">
 				<c:if test="${paging.startBlock > 1 }">
@@ -1095,6 +1100,7 @@ $(function(){
 				</c:if>
 			</ul>	
 		</div>
+		</c:if>
 		<!-- 내비게이터 영역 끝 -->
 </div>
 

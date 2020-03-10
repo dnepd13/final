@@ -223,7 +223,7 @@ public class SellerCustomController {
 		// --> 추후 구매자도 요청서를 삭제할 수 있도록
 		sellerCustomDao.updateAlarm(seller_no, member_custom_order_no);
 		sellerCustomDao.updateAlarmDelete(seller_no, member_custom_order_no);
-		return "seller/customListReq";
+		return "redirect:/seller/customListReq";
 	}
 	@GetMapping("/deleteResp")	 // 보낸 견적서 삭제
 	public String CustomDeleteResp(HttpSession session,
@@ -239,7 +239,7 @@ public class SellerCustomController {
 																									.build();
 		sellerCustomDao.deleteCustomResp(sellerCustomDto);
 
-		return "seller/customListResp";
+		return "redirect:/seller/customListResp";
 	}
 
 //	파일 이미지 다운로드
