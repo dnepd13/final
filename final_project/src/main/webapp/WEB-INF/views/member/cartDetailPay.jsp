@@ -19,7 +19,6 @@
 		height: 800px;
 		margin: 0 auto;
 	}
-	
 	.detailPayBox {
 		border-collapse: collapse;
 		float: left;
@@ -27,8 +26,22 @@
 		padding-top: 100px;
 		width: 960px;
 	}
-	.payContent {
+	.detailPay_main{
 		margin: 0 auto;
+		width: 90%;
+		height: 50px;
+		border-bottom: 2px solid #F3F5F8;
+	}
+	.detailPay_mainBox1 {
+		width: 200px;
+		height: auto;
+		padding-top: 10px;
+		margin-left: 30px;
+		float: left;
+		font-size: large;
+	}
+	.payContent {
+		margin:30px auto;
 		width: 90%;
 	}
 </style>
@@ -47,8 +60,14 @@
 
 <article class="articleBox">
 <jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
-	<div class="detailPayBox">
-	<table class="table payContent" border="1">
+<div class="detailPayBox">
+	<div class="detailPay_main">
+		<div class="detailPay_mainBox1">
+			주문상품 상세
+		</div>
+	</div>	
+	<div class="payContent">
+	<table class="table" border="1">
 		<tr>
 			<th>주문번호</th>
 			<td>${payDetails.partner_order_id }</td>
@@ -91,6 +110,7 @@
 
 	<p style="text-align: right;"><a href="${pageContext.request.contextPath }/member/cartList">목록으로</a></p>
 	</div>
+</div>
 </article>
 
 <div class="row-empty-40"></div>

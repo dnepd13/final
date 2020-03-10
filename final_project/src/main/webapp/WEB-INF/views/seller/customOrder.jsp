@@ -53,7 +53,7 @@
 		});
 		
 		// 파일정보 미리보기
-		(upload).change(function(f){
+		$(upload).change(function(f){
 			$(".files_Info").children().empty();
 			var files = f.target.files;	
 			if(files.length >5 ){
