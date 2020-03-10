@@ -192,12 +192,6 @@ public class SellerController {
 		session.invalidate();
 		return "redirect:/";		
 	}
-	///////////////////////// 판매자 관리 페이지////////////////////////////////////////////////////////////
-	@GetMapping("/management")
-	 public String management(@ModelAttribute SellerDto sellerDto) {
-		return"seller/management";
-	}
-
 //////////////////////////판매자 정보 조회///////////////////////////////////////////////////////
 	@GetMapping("/info")
 	public String info1(Model model,HttpSession session) {
