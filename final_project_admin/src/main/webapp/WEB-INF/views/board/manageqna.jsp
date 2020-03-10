@@ -16,8 +16,6 @@
             <div class="offset-md-1 col-md-10">
 <div class="row justify-content-center"  style="padding: 20px;"><h1>관리문의 게시판</h1></div>
 
-   
-
 <table class="table table-hover">
   <thead>
     <tr>
@@ -35,7 +33,9 @@
       <td>
       <c:choose>
       <c:when test="${list.super_no > 0}">
-     	 	<a href="${pageContext.request.contextPath}/board/detailqna?admin_qna_no=${list.admin_qna_no}">---->${list.admin_qna_title }</a>
+     	 	<a href="${pageContext.request.contextPath}/board/detailqna?admin_qna_no=${list.admin_qna_no}">
+     	 	<img src="${pageContext.request.contextPath}/resources/file/arrow.png" width=20px; height=20px;>
+     	 	${list.admin_qna_title }</a>
       </c:when>
      	<c:otherwise>
      		<a href="${pageContext.request.contextPath}/board/detailqna?admin_qna_no=${list.admin_qna_no}">${list.admin_qna_title }</a>

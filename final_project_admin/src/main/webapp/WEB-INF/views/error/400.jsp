@@ -11,11 +11,11 @@
      </a>
 </div>
 <div class="row justify-content-center">
-	<h3>error code : 404 </h3>
+	<h3>error code : 400 </h3>
 </div>
 <div class="row justify-content-center" style="padding-top:30px;">
 	<h1>Ooops!</h1>
 </div>
 <div class="row justify-content-center" style="padding-top:30px;">
-	<h3>this is not the page you are looking for</h3>
-</div>
+	<h3>Your client has issue a malformed or illegal request. That's all we know</h3>
+</div>    

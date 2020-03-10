@@ -7,7 +7,7 @@
 
 <div class="row justify-content-center" style="padding-top:200px;">
      <a href="${pageContext.request.contextPath}/home">
-	     <img style="padding-left:20px;" src="${pageContext.request.contextPath}/resources/file/오더링.png" width=400px; height=200px;>
+	     <img style="padding-left:20px;" src="${pageContext.request.contextPath}/resources/file/오더링.png" width=600px; height=300px;>
      </a>
 </div>
 <div class="row justify-content-center">
