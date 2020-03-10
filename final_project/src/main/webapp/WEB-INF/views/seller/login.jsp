@@ -36,7 +36,7 @@
 			    	<button type="submit" class="btn btn-secondary disabled btn-block">로그인</button>
 			    </form>
 			    <button type="button" class="btn btn-secondary disabled btn-block" onclick="location.href = 'find_id' ">아이디찾기</button>
-			    <button type="button" class="btn btn-secondary disabled btn-block"onclick="location.href = '#' ">비밀번호 찾기</button>
+			    <button type="button" class="btn btn-secondary disabled btn-block"onclick="location.href = 'pwfind' ">비밀번호 찾기</button>
 			    
 			   <div class="fail row justify-content-center">
                 	<c:if test="${param.error != null }">
