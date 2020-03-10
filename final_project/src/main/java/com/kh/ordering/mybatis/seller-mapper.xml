@@ -103,6 +103,10 @@
  		select seller_no from seller where seller_id = #{seller_id}
  	</select>
  	
+ <!-- 비밀번호 찾기 로그인 -->
+	<select id="emaillogin" parameterType="seller" resultType="seller">
+			select * from seller where seller_id = #{seller_id}
+	</select>	
 
  <!-- 판매자 견적서 sql -->
  

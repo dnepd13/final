@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.SellerDto;
 import com.kh.ordering.repository.SellerDao;
 import com.kh.ordering.service.EmailService;
@@ -119,7 +120,60 @@ public class SellerController {
 					return "fail";
 					
 				}
-			}	
+	}
+	
+	//판매자 비밀번호 찾기
+	@GetMapping("/pwfind")
+	public String pwfind(HttpSession session, Model model) {
+		
+	
+		
+		return "seller/pwfind"; 
+	}
+	
+	@PostMapping("pwfind")
+	public String pwfind(@ModelAttribute SellerDto sellerDto, HttpSession session)
+	{
+
+		
+
+		SellerDto login = sellerDao.emaillogin(sellerDto);
+
+
+				session.setAttribute("seller_id", login.getSeller_id());
+				session.setAttribute("seller_grade", login.getSeller_grade());
+
+		
+		return "redirect:/seller/emailpwchange";
+	}
+	
+	//이메일 비밀번호 변경 완료
+	@GetMapping("/emailpwchange")
+	public String emailpwchange() {
+
+		
+		return "seller/emailpwchange";
+		
+	}	
+	@PostMapping("/emailpwchange")
+	public String emailpwchange(@ModelAttribute SellerDto sellerDto,HttpSession session) {
+		String seller_id = (String)session.getAttribute("seller_id"); 
+	//	log.info("seller_id={}", seller_id);
+		sellerDto.setSeller_id(seller_id);
+		//log.info("sellerDto={}",sellerDto);
+		sellerDto.setSeller_pw(passwordEncoder.encode(sellerDto.getSeller_pw()));
+		
+			sellerDto.setSeller_id(seller_id); 
+		
+			sellerDao.change_pw(sellerDto);
+		
+			session.removeAttribute("seller_id");
+			log.info("session ={}", session);
+			
+		return"redirect:/seller/login";
+		}
+	
+
 			///아이디 중복검사
 			@GetMapping(value = "/id_check",produces ="application/text; charset=utf-8")
 			@ResponseBody //ajax로 보낼때 사용하는 어노테이션
