@@ -214,7 +214,7 @@ public class MemberCustomController {
 		// 내가 보낸 요청서		
 		List<CustomOrderVO> list = memberCustomDao.getListReq(result);
 		model.addAttribute("getListReq", list);		
-		log.info("list",list);
+
 		return "member/customListReq";
 	}
 	
