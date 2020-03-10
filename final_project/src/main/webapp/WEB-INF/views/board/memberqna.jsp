@@ -12,33 +12,26 @@
 .ordering_area {
 	margin: 30px 0px;
 }
-
 .cart_table {
 	border-top: 2px solid #171717;
 	border-bottom: 1px solid #171717;
 }
-
 .col-lg-8 {
 	margin: 25px 0px;
 }
-
 .cart_table_title {
 	border-bottom: 1px solid #171717;
 }
-
 .items_area {
 	border-bottom: 1px solid #171717;
 }
-
 .cart_area {
 	margin: 15px 0px;
 }
-
 .section1{
 	margin: 0 auto;
 	width: 1500px;
 }
-
 </style>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
@@ -59,6 +52,7 @@
 		</div>
 		<table class="table table-borderless cart_table">
 			<tr class="cart_table_title">
+			
 				<th scope="col" class="align-middle text-center" style="width: 800px">제목</th>
 				<th scope="col" class="align-middle text-center" style="width: 150px">작성자</th>
 				<th scope="col" class="align-middle text-center" style="width: 150px">구분</th>

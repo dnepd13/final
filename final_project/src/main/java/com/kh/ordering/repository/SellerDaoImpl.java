@@ -121,4 +121,11 @@ public class SellerDaoImpl implements SellerDao {
 		return seller_no;
 		
 	}
+	@Override
+	public SellerDto emaillogin(SellerDto sellerDto) {
+		sellerDto.getSeller_id();
+		SellerDto login = sqlSession.selectOne("seller.emaillogin", sellerDto);
+		
+		return login;
+	}
 }

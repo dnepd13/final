@@ -87,7 +87,7 @@
 </head>
 <body>
 
-<!-- 일반회원 home -->
+<!-- 판매자회원 home -->
 <c:choose>
 	<c:when test="${seller_id==null }">
 	<ul class="nav_login">
@@ -109,7 +109,7 @@
 	<ul class="nav_login">
 		<li class="left_line main_line"><a href="#">공지사항</a></li>
 		<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/memberqna">문의하기</a></li>
-		<li class="right_line main_line" style="margin-right:50px;"><a href="${pageContext.request.contextPath}/seller/management">관리페이지</a></li>
+		<%-- <li class="right_line main_line" style="margin-right:50px;"><a href="${pageContext.request.contextPath}/seller/management">관리페이지</a></li> --%>
 		<li class="right_line main_line"><a href="${pageContext.request.contextPath}/seller/logout">로그아웃</a></li>
 	</ul>
 	</c:otherwise>

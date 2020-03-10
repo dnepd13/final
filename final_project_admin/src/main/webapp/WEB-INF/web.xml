@@ -84,6 +84,7 @@
 		<url-pattern>/seller/*</url-pattern>
 		<url-pattern>/admin/my</url-pattern>
 		<url-pattern>/admin/changepw</url-pattern>
+		<url-pattern>/home</url-pattern>
 	</filter-mapping>
 	
 	<filter>
@@ -98,7 +99,17 @@
 		<url-pattern>/basicpagesetting</url-pattern>
 		<url-pattern>/admin/manage</url-pattern>
 		<url-pattern>/admin/reset</url-pattern>
-		<url-pattern>/admin/manage</url-pattern>
+		<url-pattern>/regist</url-pattern>
 	</filter-mapping>
+	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/error/404.jsp</location>
+	</error-page>
+	
+	<error-page>
+		<error-code>403</error-code>
+		<location>/WEB-INF/views/error/403.jsp</location>
+	</error-page>
 	
 </web-app>

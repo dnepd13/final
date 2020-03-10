@@ -678,6 +678,13 @@ public class AdminController {
 		}
 	}
 	
+	@GetMapping("/error1")
+	public String error1() {
+		int a = 10/0;
+		return "error1";
+	}
+	
+	
 	
 	//---------------------�뿤�뜑-------------------------
 //	@GetMapping("/template/header")
