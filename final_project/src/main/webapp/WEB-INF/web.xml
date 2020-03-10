@@ -140,10 +140,40 @@
 		<url-pattern>/member/updateReply</url-pattern>
 		<url-pattern>/member/deleteReply</url-pattern>
 		<url-pattern>/member/membercheck</url-pattern>
-		<url-pattern>/member/</url-pattern>
-		<url-pattern>/member/</url-pattern>
-		<url-pattern>/member/</url-pattern>
-		<url-pattern>/member/</url-pattern>
 	</filter-mapping>
 
+	<filter>
+		<filter-name>sellerBlockFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+	</filter>
+	
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>sellerBlockFilter</filter-name> -->
+<!-- 		<url-pattern>/seller/management</url-pattern> -->
+<!-- 		<url-pattern>/seller/info</url-pattern> -->
+<!-- 		<url-pattern>/seller/info_edit</url-pattern> -->
+<!-- 		<url-pattern>/seller/check_pw</url-pattern> -->
+<!-- 		<url-pattern>/seller/change_pw_success</url-pattern> -->
+<!-- 		<url-pattern>/seller/delete</url-pattern> -->
+<!-- 		<url-pattern>/seller/customOrder</url-pattern> -->
+<!-- 		<url-pattern>/seller/customSuccess</url-pattern> -->
+<!-- 		<url-pattern>/seller/customListReq</url-pattern> -->
+<!-- 		<url-pattern>/seller/customInfoReq</url-pattern> -->
+<!-- 		<url-pattern>/seller/customListResp</url-pattern> -->
+<!-- 		<url-pattern>/seller/updateResp</url-pattern> -->
+<!-- 		<url-pattern>/seller/deleteReq</url-pattern> -->
+<!-- 		<url-pattern>/seller/deleteResp</url-pattern> -->
+<!-- 		<url-pattern>/seller/category_insert</url-pattern> -->
+<!-- 		<url-pattern>/seller/category_info</url-pattern> -->
+<!-- 		<url-pattern>/seller/category_update</url-pattern> -->
+<!-- 		<url-pattern>/seller/category_delete</url-pattern> -->
+<!-- 		<url-pattern>/seller/portfolio_insert</url-pattern> -->
+<!-- 		<url-pattern>/seller/regist_success</url-pattern> -->
+<!-- 		<url-pattern>/seller/change_pw</url-pattern> -->
+<!-- 		<url-pattern>/seller/change_pw_success</url-pattern> -->
+<!-- 		<url-pattern>/seller/main</url-pattern> -->
+<!-- 	</filter-mapping> -->
+	
 </web-app>

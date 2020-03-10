@@ -17,7 +17,7 @@
 
 
 <c:choose>
-<c:when test="${param.admin_qna_no >0}">	
+<c:when test="${qnaone.admin_no >0}">	
 	<h1>관리자의 답변입니다.</h1>
 </c:when>
 <c:otherwise>
