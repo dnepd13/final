@@ -13,7 +13,7 @@
 
 </style>
 
-<nav class="navbar navbar-expand-md navbar-light" style="border-left:0; border-right:0;">
+<nav class="navbar navbar-expand-md navbar-light" style="border-top: 1px solid #BFC9D9; border-bottom: 1px solid #BFC9D9;">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
