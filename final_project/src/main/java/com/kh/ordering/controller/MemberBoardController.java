@@ -131,6 +131,7 @@ public class MemberBoardController {
 //		log.info("result={}",result1);
 
 		model.addAttribute("qnaone",result1);
+		log.info("result1={}",result1);
 		log.info("modalqna={}",model);
 		return "board/detailmqna";
 	}

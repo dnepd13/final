@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.kh.admin.entity.AdminDto;
 import com.kh.admin.entity.SellerDto;
 import com.kh.admin.repository.CalculateDao;
@@ -53,8 +54,6 @@ public class SellerController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute PagingVO paging
 			) {
-		try {
-			
 		
 		log.info("paging={}",paging);
 		
@@ -113,10 +112,6 @@ public class SellerController {
 			
 			return "seller/manage";
 		}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "seller/manage";
-		}
 		
 	}
 	
@@ -125,16 +120,11 @@ public class SellerController {
 			@RequestParam int seller_no,
 			Model model
 			) {
-		try {
 			
 		SellerDto sellerDto = SellerDto.builder().seller_no(seller_no).build();
 		SellerDto getOne = sellerDao.sellerGetOne(sellerDto);
 		model.addAttribute("seller", getOne);
 		return "seller/sellerpage";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "seller/sellerpage";
-		}
 	}
 	
 	@GetMapping("/delete")
@@ -142,22 +132,20 @@ public class SellerController {
 			@ModelAttribute SellerDto sellerDto,
 			Model model
 			) {
-		try {
 			
 		sellerDao.sellerDelete(sellerDto);
 		return "redirect:/seller/manage";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/seller/manage";
-		}
 	}
 	
 	@PostMapping("/reset")
 	public String reset(
 			@RequestParam int seller_no,
 			@RequestParam String seller_pw,
-			@RequestParam String seller_email
+			@RequestParam String seller_email,
+			Model model
 			) {
+		
+		log.info("email={}", seller_email);
 		
 		SellerDto sellerDto = SellerDto.builder()
 									.seller_no(seller_no)
@@ -167,8 +155,10 @@ public class SellerController {
 		
 		try {
 			emailService.sendMessage(seller_email);
+			model.addAttribute("email", seller_email);
 		} catch (MessagingException e) {
 			e.printStackTrace();
+			
 		}
 		
 		return "redirect:/seller/manage";
