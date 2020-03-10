@@ -96,7 +96,7 @@ public class MemberBoardController {
 		pagingVO.setMember_no(member_no);
 
 		List<AdminQnaDto> qnalist = adminQnaDao.getListQna(pagingVO);
-
+		log.info("qnalist={}",qnalist);
 
 		model.addAttribute("getListQna",qnalist);
 		model.addAttribute("paging1",pagingVO);
@@ -153,13 +153,13 @@ public class MemberBoardController {
 	public String qnaregist(@ModelAttribute AdminQnaDto adminQnaDto,
 							HttpSession session, Model model)
 	{
-
+		log.info("adminQnaDto={}", adminQnaDto);
 		//회원 문의 시퀀스 저장
 		int qnaseq = adminQnaDao.QnaSeq();
 
 		String member_id = (String)session.getAttribute("member_id");
 		int member_no = memberDao.getNo(member_id);
-
+	
 //		adminQnaDto.setAdmin_qna_no(qnaseq);
 
 		//중복되어있는 dto라 사용자가 작성한 Dto 데이터가 지워지고 다시 세팅되는 역활을 함
