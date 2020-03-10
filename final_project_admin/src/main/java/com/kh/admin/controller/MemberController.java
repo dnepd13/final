@@ -286,7 +286,8 @@ public class MemberController {
 	public String reset(
 			@RequestParam int member_no,
 			@RequestParam String member_pw,
-			@RequestParam String member_email
+			@RequestParam String member_email,
+			Model model
 			) {
 		
 		MemberDto memberDto = MemberDto.builder()
@@ -297,6 +298,7 @@ public class MemberController {
 		
 		try {
 			emailService.sendMessage(member_email);
+			model.addAttribute("email", member_email);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}

@@ -26,6 +26,11 @@
  		select * from admin where admin_id = #{admin_id}
  	</select>
  	
+ 	<!-- 관리자 아이디 체크 -->
+ 	<select id="idcheck" parameterType="string" resultType="int">
+ 		select count(*) from admin where admin_id = #{admin_id}
+ 	</select>
+ 	
  	<!-- 관리자 가입시키기 -->
 	<insert id="insert" parameterType="adminDto">
 		insert into admin values(
