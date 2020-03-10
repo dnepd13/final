@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service("adminMasterFilter")
+@Slf4j
 public class AdminMasterFilter implements Filter{
 
 	@Override
@@ -22,7 +25,7 @@ public class AdminMasterFilter implements Filter{
 		HttpServletResponse resp = (HttpServletResponse) response;
 		
 		String grade = (String) req.getSession().getAttribute("admin_grade");
-		
+		log.info("drade={}",grade);
 		if(grade.equals("총괄관리자")) {
 			chain.doFilter(request, response);
 		}
