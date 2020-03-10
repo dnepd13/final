@@ -57,7 +57,6 @@ public class GoodsController {
 				@RequestParam(value="pno1", required = false) String pno1,
 				@ModelAttribute PagingVO paging
 				) {
-			try {
 				int count;
 				if(paging.getKey()==null) {
 					count = goodsDao.goodsCount();
@@ -94,12 +93,6 @@ public class GoodsController {
 					return "goods/list";
 				}
 				
-			} catch (Exception e) {
-				e.printStackTrace();
-				return "goods/list";
-			}
-
-				
 		}
 		
 		//---------------------------상품 상세보기----------------------------------
@@ -110,7 +103,6 @@ public class GoodsController {
 				@RequestParam String seller_id,
 				Model model
 				) {
-			try {
 				
 			GoodsVO list = goodsDao.getGoodsVO(goodsVO.getGoods_no());
 			log.info("list={}",list);
@@ -123,10 +115,6 @@ public class GoodsController {
 			model.addAttribute("file", file);
 			
 			return "goods/getone";
-			} catch (Exception e) {
-				e.printStackTrace();
-				return "goods/getone";
-			}
 		}
 		
 		//---------------------------상품 삭제----------------------------------
@@ -134,28 +122,17 @@ public class GoodsController {
 		public String goodsdelete(
 				@ModelAttribute GoodsVO goodsVO
 				) {
-			try {
-				
 			
 			goodsDao.goodsDelete(goodsVO);
 			return "redirect:/goods/list";
-			} catch (Exception e) {
-				e.printStackTrace();
-				return "redirect:/goods/list";
-			}
 		}
 		
 		//---------------------------상품 별 리뷰목록----------------------------------
 		@GetMapping("/review")
 		public String review(@RequestParam int goods_no, Model model) {
-			try {
 				
 			model.addAttribute("list", goodsReviewDao.reviewList(goods_no));
 			return "goods/review";
-			} catch (Exception e) {
-				e.printStackTrace();
-				return "goods/review";
-			}
 		}
 		
 		//파일 이미지 다운로드
