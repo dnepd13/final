@@ -75,8 +75,7 @@
    			member_name_extra = #{member_name_extra},
 			member_addr_post = #{member_addr_post},
 			member_addr_basic = #{member_addr_basic},
-			member_addr_extra = #{member_addr_extra},
-			member_addr_status = #{member_addr_status}
+			member_addr_extra = #{member_addr_extra}
 		where
 			member_addr_no = #{member_addr_no}
    </update>

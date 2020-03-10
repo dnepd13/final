@@ -347,7 +347,8 @@ public class GoodsController {
 
 		goodsQnaDto.setGoods_qna_groupno(goodsQnaDto.getGoods_qna_groupno());
 		goodsQnaDto.setGoods_qna_superno(goodsQnaDto.getGoods_qna_no());
-		goodsQnaDto.setGoods_qna_writer(seller_id);		
+		goodsQnaDto.setGoods_qna_writer(seller_id);
+		goodsQnaDto.setMember_no(goodsQnaDto.getMember_no());
 		goodsQnaDao.insertA(goodsQnaDto);
 		
 		int goods_qna_groupno = goodsQnaDto.getGoods_qna_groupno();
