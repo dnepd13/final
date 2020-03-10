@@ -73,19 +73,6 @@ public class SellerGoodsController {
 	    		sellerCategoryDao.seller_category_insert(sellerCategoryDto);
 	    return "redirect:/seller/category_insert";
 	}
-	
-@PostMapping("/category_info")
-public ModelAndView seller_category_info(HttpSession session) {
-	ModelAndView mv = new ModelAndView();
-	String seller_id=(String)session.getAttribute("seller_id");
-	int seller_no=sellerCategoryDao.getNo(seller_id);
-	List<Integer> list = sellerCategoryDao.seller_category_list(seller_no);
-	List<CategoryDto> category_list =sellerCategoryDao.seller_category_name_list(list);
-	mv.addObject("seller_id", seller_id);
-	mv.addObject("category_list",category_list);
-	mv.setViewName("/seller/category_info");
-	return mv;
-}
 //---------------------------카테고리 삭제----------------------------------
 	@PostMapping("/category_delete")
 	//@ResponseBody
