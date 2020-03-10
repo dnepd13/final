@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.ordering.entity.CustomOrderDto;
-
+import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
 
 import com.kh.ordering.entity.SellerDto;
@@ -46,6 +46,7 @@ public interface SellerDao {
 // 판매자 번호로 단일조회
 	SellerDto sellerDto(int seller_no);
 	int getSellerNo(String seller_id);
+	List<GoodsDto> getGoodsList(String seller_id);
 
 
 

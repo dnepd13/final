@@ -102,7 +102,7 @@ $(function(){
 		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
 		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
 		  			</a>
-			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
+			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-danger">Hot</span></p>
 			  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
 			  		<p class="goods_price">
 			  			<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber>

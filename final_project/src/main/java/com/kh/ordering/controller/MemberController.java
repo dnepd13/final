@@ -115,10 +115,12 @@ public class MemberController {
 		model.addAttribute("jsonCartVOList", mapper.writeValueAsString(cartVOList));
 		model.addAttribute("jsGoodsCartNoList", goodsCartNoList);
 		
-		// 파일
+		// 파일	
 		List<Integer> filesList = new ArrayList<>();
-		for (CartVO cartVO : cartVOList) {
-			filesList.add(goodsDao.getGoodsMainImage(cartVO.getGoodsDto().getGoods_no()));
+		if(cartVOList.size() > 0) {
+			for (CartVO cartVO : cartVOList) {
+				filesList.add(goodsDao.getGoodsMainImage(cartVO.getGoodsDto().getGoods_no()));
+			}
 		}
 		model.addAttribute("filesList", filesList);
 		
@@ -243,7 +245,6 @@ public class MemberController {
 		
 		try {
 		MemberDto login = memberDao.login(member);
-		log.info("member={}", login);
 		
 		
 		if(login == null) {//아이디가 없으면
@@ -253,19 +254,15 @@ public class MemberController {
 		
 		else {//아이디가 있으면 비밀번호 매칭 검사
 		boolean correct = passwordEncoder.matches(member.getMember_pw(), login.getMember_pw());
-		log.info("correct={}",correct);
 			if(correct) {//비밀번호 일치
 				
-			log.info("로그인 성공");
 			//세션에 회원 정보인  member_id, member_no 를 추가 
 			session.setAttribute("member_id", login.getMember_id());
 			session.setAttribute("member_grade", login.getMember_grade());
 //			session.setAttribute("member_no", find.getMember_no());
-			log.info("no ={}",login.getMember_no());
 
 			// 최종로그인
 			memberDao.lastLogin(member);
-			log.info("1={}", login);
 			//필요하다면 쿠키도 생성
 			
 //			  session.getAttribute("member_id");
@@ -275,14 +272,12 @@ public class MemberController {
 //			memberDao.getNo(String member_id, member);  
 //			
 			
-			log.info("member={}",member);
 			
 			return "redirect:/";
 		
 			} else {//로그인이 실패 했을 경우 확인을 위한 구문
 			
 			
-			log.info("로그인 실패");
 			return "redirect:/member/login?error";
 		}
 			
@@ -306,7 +301,6 @@ public class MemberController {
 		
 		
 		session.removeAttribute("member_id");
-		log.info("session ={}", session);
 		
 //		session.removeAttribute("member_no");
 		
@@ -327,18 +321,15 @@ public class MemberController {
 		
 		String member_id = (String)session.getAttribute("member_id");
 		int member_no = memberDao.getNo(member_id);			
-		log.info("q= {}", member_no);
 		
 		member = MemberDto.builder()
 							.member_no(member_no)
 							.build();
-		log.info("q= {}",member);
 		
 //		List<MemberDto> memberlist = memberDao.memberGetOne(member_no);
 //		log.info("q= {}", memberlist);		
 	  
 	model.addAttribute("memberGetOne",memberDao.memberGetOne(member));
-	log.info("q= {}", member);
 //		model.addAttribute("memberGetOne",memberlist);
 		
 		return "member/memberinfo";
@@ -382,7 +373,6 @@ public class MemberController {
 	@PostMapping("editmember")
 	public String editmember(@ModelAttribute MemberDto member) {
 		
-		log.info("memberPost={}", member);
 		
 //		MemberDto member = MemberDto.builder()
 //					.member_no(member_no)
@@ -393,7 +383,6 @@ public class MemberController {
 		
 
 		
-		log.info("mymember111={}",member);
 		
 		
 		memberDao.memberedit(member);
@@ -531,9 +520,7 @@ public class MemberController {
 						MemberDto memberDto =MemberDto.builder().member_name(member_name) 
 																				   .member_email(member_email)
 																				   .build();
-						log.info("memberDto={}",memberDto);
 						MemberDto find_id=memberDao.memberfind_id(memberDto);
-						log.info("find_id={}",find_id);
 //						model.addAttribute("sellerDto",find_id);
 					return "redirect:/member/login";
 	
@@ -630,7 +617,6 @@ public class MemberController {
 					//	session에서 no를 저장했을때 사용	int member_no = (int) session.getAttribute("member_no");
 					
 					List<Member_AddrDto> list = member_AddrDao.getListAddr(member_no);
-					log.info("list={}",list);
 					
 					model.addAttribute("addrinfo", list);
 					
@@ -722,12 +708,7 @@ public class MemberController {
 							@RequestParam String member_addr_extra,
 							@RequestParam String member_addr_status
 								) {
-		log.info("view={}",member_addr_no);
-		log.info("view={}",member_name_extra);
-		log.info("view={}",member_addr_post);
-		log.info("view={}",member_addr_basic);
-		log.info("view={}",member_addr_extra);
-		log.info("view={}",member_addr_status);
+		
 		
 		Member_AddrDto member_AddrDto = Member_AddrDto.builder()
 										.member_addr_no(member_addr_no)
@@ -787,7 +768,6 @@ public class MemberController {
 		
 		member_AddrDto.setMember_no(member_no);
 			
-		log.info("no={}", member_no);
 		
 		member_AddrDao.insertaddr(member_AddrDto);
 //		log.info("member_AddrDto={}",member_AddrDto);
@@ -803,7 +783,6 @@ public class MemberController {
 			int member_no = memberDao.getNo(member_id);
 			
 			List<Member_PointDto> pointlist = member_PointDao.getListPoint(member_no);
-			log.info("pointlist={}",pointlist);
 			
 			model.addAttribute("pointinfo",pointlist);
 			

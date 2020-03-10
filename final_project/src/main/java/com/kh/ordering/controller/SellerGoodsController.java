@@ -1,5 +1,6 @@
 package com.kh.ordering.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -16,11 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.ordering.entity.CategoryDto;
+import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.entity.SellerCategoryDto;
 import com.kh.ordering.entity.SellerDto;
 import com.kh.ordering.repository.CategoryDao;
+import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.SellerCategoryDao;
-import com.kh.ordering.repository.SellerCustomDao;
 import com.kh.ordering.repository.SellerDao;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/seller")
 public class SellerGoodsController {
+	@Autowired
+	private GoodsDao goodsDao;
 	@Autowired
 	private SellerCategoryDto sellerCategoryDto;
 	@Autowired
@@ -140,5 +144,6 @@ public String seller_category_update(
 		
 		return "redirect:/seller/category";
 	}
-}
 
+
+}

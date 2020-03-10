@@ -6,6 +6,11 @@
 
 <mapper namespace="goods">
 	
+	<!-- 구매가능 최대수량 -->
+	<select id="getMaxQuantity" parameterType="int" resultType="int">
+		select min(goods_option_stock) from goods_option where goods_no = #{goods_no}
+	</select>
+	
 	<!-- 검색 -->
 	<select id="search" parameterType="String" resultType="goodsDto">
 		select * from goods G

@@ -125,11 +125,31 @@ $(function(){
 	var final_qtt = 0;
 	var count = 0;
 	
+	// 최대 구매 수량 설정
+	$(".alert_option_stock").hide();
+	$(".alert_goods_stock").hide();
+	
+	
+	// 옵션 수량 품절 처리
+	$(".alert_soldout").hide();
+	var stock = 0;
+	for (var i = 0; i < goodsOptionVOList.length; i++) {
+		stock = 0;
+		for(var j = 0; j < goodsOptionVOList[i].goodsOptionList.length; j++){
+			stock += goodsOptionVOList[i].goodsOptionList[j].goods_option_stock;
+		}
+		if(stock == 0) {
+			$(".order_btn").hide();
+			$(".alert_soldout").show();
+		}
+	}
+	
 	$(".one_btn").click(function(e){
 		e.preventDefault();
 		var url = $(".alink").attr("href");
 		$(location).attr('href', url);
 	});
+	
 	
 	// 옵션 선택 이벤트
 	$(".options").change(function(){
@@ -162,10 +182,12 @@ $(function(){
 			var div = $("<div class='total_price_area col-12'></div>"); // 선택 상품+옵션 그룹div
 			
 			// 옵션 선택 정보 저장 (옵션번호리스트, 가격합계)
+			
+			
 			$(".options").each(function(i){
-				var no = $(this).val();
-				var arr = goodsOptionVOList[i].goodsOptionList;
-				var index = arr.findIndex(dto => dto.goods_option_no == no);
+				var no = $(this).val(); // 선택된 옵션 번호
+				var arr = goodsOptionVOList[i].goodsOptionList; // 옵션 dto 배열
+				var index = arr.findIndex(dto => dto.goods_option_no == no); // 옵션번호 일치하는 dto배열의 인덱스
 				price += arr[index].goods_option_price;
 				title = goodsOptionVOList[i].goods_option_title;
 				content = arr[index].goods_option_content;
@@ -177,10 +199,20 @@ $(function(){
 				
 				// div에 no 추가
 				var option_no = $("<input type='hidden' name='itemVOList["+VOindex+"].option_no_list' value='"+no+"'>");
-				div.append(option_no);
+				div.append(option_no); 	
+				
+				// 옵션 번호와 재고 저장
+// 				arr_option_stock.push({
+// 						option_no: no,
+// 						stock: arr[index].goods_option_stock
+// 						});
+				
+				// 옵션번호에 그룹번호 저장
+// 				arr_selected_option.push({
+// 						group_name: 'group_'+VOindex,
+// 						option_no: no						
+// 						}); 
 			});
-			
-			
 			
 			// div에 나머지 기능 추가
 			var goods_name = $("<h5>" + goodsVO.goods_name + "</h5>");
@@ -190,7 +222,7 @@ $(function(){
 			var delete_btn = $("<a class='delete_btn' href='#'>X</a>");
 			
 			// div에 수량 추가
-			var quantity = $("<input class='quantity' name='itemVOList["+VOindex+"].quantity' type='text' value='1'>");
+			var quantity = $("<input class='quantity group_"+VOindex+"' name='itemVOList["+VOindex+"].quantity' type='text' value='1'>");
 			
 			// div에 상품번호 추가
 			var hidden_goods_no = $("<input type='hidden' name='itemVOList["+VOindex+"].goods_no' value='"+goodsVO.goods_no+"'>");
@@ -216,6 +248,7 @@ $(function(){
 				$(this).siblings(".quantity").val(parseInt(qtt)+1);
 				span.html(addComma(price) + "원");
 				setFinalArea();
+				goodsStockCheck();
 			});
 			
 			// - 버튼
@@ -228,17 +261,19 @@ $(function(){
 					span.html(addComma(price) + "원");
 					setFinalArea();
 				}
+				goodsStockCheck();
 			});
 			
 			// 수량 수정
 			quantity.blur(function(){ 
-				var qtt = $(this).val();
+				var qtt = Number($(this).val());
 				if(qtt>=1) {
 					qtty = parseInt(qtt);
 					price = total_price * (parseInt(qtt));
 					$(this).val(parseInt(qtt));
 					span.html(addComma(price) + "원");
 					setFinalArea();
+					goodsStockCheck();
 				} else {
 					$(this).val(1);
 					qtt = 1;
@@ -246,6 +281,7 @@ $(function(){
 					price = total_price * (parseInt(qtt));
 					span.html(addComma(price) + "원");
 					setFinalArea();
+					goodsStockCheck();
 				}
 			});
 			
@@ -255,13 +291,12 @@ $(function(){
 				$(this).parent(".total_price_area").remove();
 // 				VOindex--;
 				setFinalArea();
+				goodsStockCheck();
 				
 				count--;
 				if(count < 1) {
-					$(".submit_ordering").attr("disabled",true);
-					$(".add_cart_btn").attr("disabled",true);
+					$(".order_btn").attr("disabled",true);
 				}
-				
 			});
 			
 			// 리셋
@@ -272,6 +307,8 @@ $(function(){
 			
 			// 총 상품금액(수량) 업데이트
 			setFinalArea();
+			
+			goodsStockCheck();
 		}
 		
 	});
@@ -280,12 +317,10 @@ $(function(){
 		
 		e.preventDefault();
 		
-<%-- 		var member_id = "<%=session.getAttribute("member_id")%>"; --%>
-		
-// 		if(member_id == null){
-// 			var url = "${pageContext.request.contextPath}" + "/member/login";
-// 			$(location).attr('href', url);
-// 		}
+		if('${member_id}'==''){
+			var url = "${pageContext.request.contextPath}" + "/member/login";
+			$(location).attr('href', url);
+		}
 		
 		setFinalArea();
 		//버튼 바로 위에 있는 form을 데이터화하여 전송
@@ -326,8 +361,6 @@ $(function(){
 	var delivery_option = '${deliveryDto.delivery_option}';
 	var delivery_op_price = '${deliveryDto.delivery_op_price}';
 
-	console.log(delivery_option);
-	console.log(delivery_op_price);
 	switch (delivery_option) {
 	case '무료': $(".delivery_option").html(" (무료)");
 		break;
@@ -338,6 +371,52 @@ $(function(){
 	default: $(".delivery_option").html(" (" + addComma(Number(delivery_op_price)) + "원 이상 무료)");
 		break;
 	}
+	
+	
+	// 수량 체크
+	
+	var goods_stock = Number('${goods_stock}');
+	function goodsStockCheck(){
+		var quantity = 0;
+		$(".quantity").each(function(){
+			quantity += Number($(this).val());
+		});
+		
+		if(quantity > goods_stock) {
+			$(".alert_goods_stock").show();
+			$(".order_btn").attr("disabled", true);
+		} else {
+			$(".alert_goods_stock").hide();
+			$(".order_btn").attr("disabled", false);
+		}
+	}
+	
+	
+	
+// 	$("#submit_btn").submit(function(e){
+// 		console.log("?????");
+// 		e.preventDefault();
+// 		var data = $("#form-box").serialize();
+		
+// 		$.ajax({
+// 			type: "POST",
+// 			url: "goods/quantityCheck",
+// 			data:data,
+// 			success: function(result){
+// 				console.log(result);
+// 				if(!result){
+// 					console.log("실패");
+// 					e.preventDefault();
+// 					$(".alert_quantity").show();
+// 					$(".order_btn").attr("disabled", true);
+// 				}
+// 			}
+// 		});
+		
+// 		e.preventDefault();
+// 	});
+	
+	
 }); 
 
 ////////////////////문의게시판 영역///////////////
@@ -555,7 +634,7 @@ $(function(){
 }
 .mainImage_box > img {
 	width: 100%;
-	height: auto;
+	height: 100%;
 }
 .contentImage_box {
 	width: 100%;
@@ -570,11 +649,12 @@ $(function(){
 
 .contentImage_box > img {
 	width: 95%;
-	height: auto;
+	height: 100%;
 	margin: 5px;
 }
 .options {
 	margin-left: 10px;
+	width: 100%;
 }
 
 .submit_ordering {
@@ -595,11 +675,6 @@ $(function(){
 .btn_area {
 	padding: 0px 5px;
 }
-
-.options {
-	width: 50%;
-}
-
 
 .contentImage_box {
 	margin: 5px;
@@ -691,34 +766,43 @@ $(function(){
 				</div>
 					<div class="selected_area row">
 					</div>
+					<div class="alert_goods_stock alert alert-warning">
+					  <strong>상품 수량이 부족합니다!</strong> (구매가능수량:${goods_stock}개)
+					</div>
+					<div class="alert_option_stock alert alert-warning">
+					  <strong>옵션 수량이 부족합니다!</strong> (구매가능수량: ? 개)
+					</div>					
 				<div class="row">
 					<div class="total_area col-12">
 						<h4>총 상품금액(수량)</h4>
 						<span class="final_price">0원 </span><span class="final_qtt">(0개)</span>
 				</div>
 					</div>
-				<div class="row">
+				<div class="row order_btn_area">
 					<div class="col-4 btn_area">
-						<input class="submit_ordering btn btn-primary btn-block" type="submit" value="주문하기" disabled>
+						<input id="submit_btn" class="order_btn submit_ordering btn btn-primary btn-block" type="submit" value="주문하기" disabled>
 					</div>
 					<div class="col-4 btn_area">
-						<button class="add_cart_btn btn btn-primary btn-block" disabled>장바구니</button>
+						<button class="order_btn add_cart_btn btn btn-primary btn-block" disabled>장바구니</button>
 					</div>
 					<div class="col-4 btn_area">
 						<span>
 							<c:choose>
 								<c:when test="${member_id !=null }">
 									<a class="alink" href="${pageContext.request.contextPath}/member/customOrder?seller_no=${goodsVO.seller_no }">
-										<button class="one_btn btn btn-primary btn-block">1:1 요청서</button>
+										<button class="order_btn one_btn btn btn-primary btn-block">1:1 요청서</button>
 									</a>
 								</c:when>
 								<c:otherwise>
 									<a class="alink" href="${pageContext.request.contextPath}/member/login">
-										<button class="one_btn btn btn-primary btn-block">1:1 요청서</button>
+										<button class="order_btn one_btn btn btn-primary btn-block">1:1 요청서</button>
 									</a>
 								</c:otherwise>
 							</c:choose>
 						</span>
+					</div>
+					<div class="col-12 alert_soldout alert alert-danger text-center" role="alert">
+						 [구매불가]옵션 수량이 부족합니다!
 					</div>
 				</div>
 			</div>		

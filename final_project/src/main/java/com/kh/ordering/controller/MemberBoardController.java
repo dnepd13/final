@@ -205,12 +205,10 @@ public class MemberBoardController {
 	public String editqna(@ModelAttribute AdminQnaDto adminQnaDto,
 							Model model ) {
 
-		log.info("adimbefor={}",adminQnaDto);
 
 //		AdminQnaDto result = adminQnaDao.qnagetupdate(adminQnaDto);
 
 
-		log.info("model={}", model);
 
 
 //		log.info("uppoDto= {}",adminQnaDto);
@@ -229,7 +227,6 @@ public class MemberBoardController {
 	@PostMapping("/deleteqna")
 	public String deleteqna(@ModelAttribute AdminQnaDto adminQnaDto)
 	{
-		log.info("deleteno={}",adminQnaDto);
 		adminQnaDao.deleteqna(adminQnaDto);
 		
 		return "redirect:/board/memberqna";

@@ -28,6 +28,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsDto;
+import com.kh.ordering.entity.GoodsOptionDto;
 import com.kh.ordering.entity.GoodsQnaDto;
 import com.kh.ordering.entity.GoodsReviewDto;
 import com.kh.ordering.entity.GoodsReviewReplyDto;
@@ -49,6 +50,8 @@ import com.kh.ordering.vo.DeliveryVO;
 import com.kh.ordering.vo.FilesVO;
 import com.kh.ordering.vo.GoodsFileVO;
 import com.kh.ordering.vo.GoodsVO;
+import com.kh.ordering.vo.ItemVO;
+import com.kh.ordering.vo.ItemVOList;
 import com.kh.ordering.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -146,9 +149,14 @@ public class GoodsController {
 	
 	@GetMapping("/insert")
 	public String insert(Model model, HttpSession session) {
-		model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
-		model.addAttribute("seller_no", sellerDao.getSellerNo((String)session.getAttribute("seller_id")));
-		return "goods/insert";
+		
+		if(session.getAttribute("seller_id") != null) {
+			model.addAttribute("category_largeList", categoryDao.getList("category_large", "-"));
+			model.addAttribute("seller_no", sellerDao.getSellerNo((String)session.getAttribute("seller_id")));
+			return "goods/insert";
+		} else {
+			return "redirect:../seller/login";
+		}
 	}
 	
 	@PostMapping("/insert")
@@ -157,6 +165,7 @@ public class GoodsController {
 						@RequestParam MultipartFile goods_main_image,
 						@RequestParam MultipartFile[] goods_content_image
 						) throws IllegalStateException, IOException {
+		
 		// 상품 처리
 		int goods_no = goodsService.insert(goodsVO);
 		deliveryVO.setGoods_no(goods_no);
@@ -251,35 +260,37 @@ public class GoodsController {
 			model.addAttribute("seller_no", seller_no);				
 		}
 
-			PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
-			model.addAttribute("paging", result);			
-			List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
-			model.addAttribute("goodsQna", goodsQna);
-			
-			// 포트폴리오 파일
-			int seller_no = goodsQnaDao.getSeller(goods_no);
-			List<FilesVO> portfolioFiles = sellerService.filesList(seller_no);
-			model.addAttribute("portfolioFiles",portfolioFiles);
-			
-			PagingVO page = goodsReviewService.goodsReviewPaging(reviewPage, goods_no);
-			model.addAttribute("reviewPage", page);
-			List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(page);
-			model.addAttribute("goodsReview", goodsReview); // 리뷰 목록
-			
-			// 리뷰 댓글
-			List<GoodsReviewReplyDto> reviewReply = new ArrayList<>();
-			for(GoodsReviewDto review : goodsReview) {
-				reviewReply.addAll(goodsReviewDao.getListReply(review.getGoods_review_no()));
-				model.addAttribute("reviewReply", reviewReply);
-			}
-			
-			// 리뷰 파일
-			List<FilesVO> reviewFiles = new ArrayList<>();
-			for(GoodsReviewDto review : goodsReview) {
-				reviewFiles.addAll(goodsReviewService.filesList(review.getGoods_review_no()));
-				model.addAttribute("reviewFiles", reviewFiles);
-			}
-					
+		PagingVO result = goodsService.goodsQnaPaging(pageNo, goods_no);
+		model.addAttribute("paging", result);			
+		List<GoodsQnaDto> goodsQna = goodsQnaDao.getListQna(result);
+		model.addAttribute("goodsQna", goodsQna);
+		
+		// 포트폴리오 파일
+		int seller_no = goodsQnaDao.getSeller(goods_no);
+		List<FilesVO> portfolioFiles = sellerService.filesList(seller_no);
+		model.addAttribute("portfolioFiles",portfolioFiles);
+		
+		PagingVO page = goodsReviewService.goodsReviewPaging(reviewPage, goods_no);
+		model.addAttribute("reviewPage", page);
+		List<GoodsReviewDto> goodsReview = goodsReviewDao.getReview(page);
+		model.addAttribute("goodsReview", goodsReview); // 리뷰 목록
+		
+		// 리뷰 댓글
+		List<GoodsReviewReplyDto> reviewReply = new ArrayList<>();
+		for(GoodsReviewDto review : goodsReview) {
+			reviewReply.addAll(goodsReviewDao.getListReply(review.getGoods_review_no()));
+			model.addAttribute("reviewReply", reviewReply);
+		}
+		
+		// 리뷰 파일
+		List<FilesVO> reviewFiles = new ArrayList<>();
+		for(GoodsReviewDto review : goodsReview) {
+			reviewFiles.addAll(goodsReviewService.filesList(review.getGoods_review_no()));
+			model.addAttribute("reviewFiles", reviewFiles);
+		}
+		
+		model.addAttribute("goods_stock", goodsDao.getStock(goods_no));
+		
 		return "goods/goodsInfo";
 	}
 	
@@ -375,4 +386,75 @@ public class GoodsController {
 		return "redirect:/goods/goodsInfo?goods_no="+goods_no;
 	}
 
+	
+	// 등록 상품 목록
+	@GetMapping("/goodsList")
+	public String goodsList(HttpSession session, Model model) {
+		if(session.getAttribute("seller_id") != null) {
+			String seller_id = (String)session.getAttribute("seller_id");
+			List<GoodsDto> goodsList = sellerDao.getGoodsList(seller_id);
+			model.addAttribute("goodsList", goodsList);
+			
+			// 파일
+			List<Integer> filesList = new ArrayList<>();
+			for (GoodsDto goodsDto : goodsList) {
+				filesList.add(goodsDao.getGoodsMainImage(goodsDto.getGoods_no()));
+			}
+			model.addAttribute("filesList", filesList);
+			
+			return "goods/goodsList";
+		} else {
+			return "goods/login";
+		}
+	}
+	
+	// 대표 이미지 수정
+	@PostMapping("/mainImageUpdate")
+	public int mainImageUpdate(@RequestParam MultipartFile goods_main_image, @RequestParam int goods_no) throws IllegalStateException, IOException {
+		
+		// 파일 처리
+		int files_no = goodsService.insertFiles(goods_main_image, goods_no);
+		
+		// 물리 저장 처리
+		//파일 저장 : 저장을 할 가상의 파일 객체가 필요
+		//저장경로 : D:/upload
+		File dir = new File("D:/upload/kh2d");
+		dir.mkdirs();//디렉터리 생성
+		
+		File target = new File(dir, "goodsMain" + files_no);
+		goods_main_image.transferTo(target);//파일 저장
+		
+		return files_no;
+	}
+	
+	
+	// 수량 체크
+//	@PostMapping("/quantityCheck")
+//	public boolean quantityCheck(@ModelAttribute ItemVOList itemVOList) {
+//		int goods_stock = goodsDao.getStock(itemVOList.getItemVOList().get(0).getGoods_no());
+//		int order_goods_quantity = 0;
+//		
+//		
+//		
+//		for (ItemVO itemVO : itemVOList.getItemVOList()) {
+//			order_goods_quantity += itemVO.getQuantity();
+//		}
+//		
+//		for (ItemVO itemVO : itemVOList.getItemVOList()) {
+//			for(GoodsOptionDto goodsOptionDto : goodsOptionDao.getList(itemVO.getOption_no_list())) {
+//				if(goodsOptionDto.getGoods_option_stock() < order_goods_quantity) {
+//					return false;
+//				}
+//			}
+//		}
+//		
+//		log.info("##########order_Q = {}", order_goods_quantity);
+//		
+//		if(goods_stock < order_goods_quantity) {
+//			return false;
+//		}
+//		
+//		return true;
+//	}
+	
 }

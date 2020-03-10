@@ -53,10 +53,7 @@ public class OrderDaoImpl implements OrderDao {
 	@Transactional
 	@Override
 	public boolean updatePointAndStock(String partner_order_id) throws Exception {
-		
-		
-		
-		
+
 		// 처리 실패시 취소로 보내버리기
 		// ### 처리할것들
 		// - 주문번호로 상품검색해서 상품 수량 차감 (차감안되면 취소로 보내기)
