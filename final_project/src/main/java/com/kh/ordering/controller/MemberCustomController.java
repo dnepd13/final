@@ -191,10 +191,10 @@ public class MemberCustomController {
 																					.custom_order_status("읽음")
 																					.build();
 		memberCustomDao.updateCustomStatus(customOrderDto);
-		
+
 		CustomOrderVO content = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("getListInfoResp", content);
-		
+
 		List<FilesVO>  filesVO = sellerCustomService.filesList(seller_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
 		
