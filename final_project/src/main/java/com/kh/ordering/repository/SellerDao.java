@@ -52,6 +52,7 @@ public interface SellerDao {
 ////판매자 세션에 있는 id를 통해 번호 구하기 
 	int getSellerNo(String seller_id);
 	int getNo(String seller_id);
+	SellerDto emaillogin(SellerDto sellerDto);
 
 
 

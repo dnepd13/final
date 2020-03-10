@@ -389,27 +389,56 @@ public class MemberController {
 		return "member/memberinfo";
 	}
 	
-	//회원 비밀번호 수정
-	@GetMapping("/memberchange_pw")
-	public String memberchange_pw() {
+	//비밀번호 찾기 확인
+	@GetMapping("/pwfind")
+	public String pwfind(HttpSession session, Model model) {
 		
-		return "member/memberchange_pw"; 
+	
+		
+		return "member/pwfind"; 
 	}
 	
-	@PostMapping("memberchange_pw")
-	public String memberchange_pw(@ModelAttribute MemberDto memberDto, HttpSession session)
+	@PostMapping("pwfind")
+	public String pwfind(@ModelAttribute MemberDto memberDto, HttpSession session)
 	{
-		String member_id = (String)session.getAttribute("member_id");
-		memberDto.setMember_id(member_id);
+
 		
-		memberDto.setMember_pw(passwordEncoder.encode(memberDto.getMember_pw()));
-		memberDto.setMember_id(member_id);
+
+		MemberDto login = memberDao.emaillogin(memberDto);
+
+
+				session.setAttribute("member_id", login.getMember_id());
+				session.setAttribute("member_grade", login.getMember_grade());
+			memberDao.lastLogin(memberDto);
 		
-		
-		memberDao.memberchange_pw(memberDto);
-		
-		return "redirect:/member/memberchange_pw_success";
+		return "redirect:/member/emailpwchange";
 	}
+	
+	//이메일 비밀번호 변경 완료
+	@GetMapping("/emailpwchange")
+	public String emailpwchange() {
+
+		
+		return "member/emailpwchange";
+		
+	}	
+	@PostMapping("/emailpwchange")
+	public String emailpwchange(@ModelAttribute MemberDto memberDto,HttpSession session) {
+		String member_id = (String)session.getAttribute("member_id"); 
+	//	log.info("seller_id={}", seller_id);
+		memberDto.setMember_id(member_id);
+		//log.info("sellerDto={}",sellerDto);
+		memberDto.setMember_pw(passwordEncoder.encode(memberDto.getMember_pw()));
+		
+			memberDto.setMember_id(member_id); 
+		
+			memberDao.change_pw(memberDto);
+		
+			session.removeAttribute("member_id");
+			log.info("session ={}", session);
+			
+		return"redirect:/member/login";
+		}
 	
 	//회원 정보 수정
 //	@GetMapping("editmember")
@@ -956,6 +985,9 @@ public class MemberController {
 			
 				memberDao.change_pw(memberDto);
 			
+				session.removeAttribute("member_id");
+				log.info("session ={}", session);
+				
 			return"redirect:/member/login";
 			}
 

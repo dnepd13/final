@@ -77,6 +77,7 @@ public interface MemberDao {
 		//회원 탈퇴
 		void memberdelete(MemberDto memberDto);
 		void change_pw(MemberDto memberDto);
+		MemberDto emaillogin(MemberDto memberDto);
 		
 		
 	

@@ -275,6 +275,14 @@ public class MemberDaoImpl implements MemberDao{
 			sqlSession.update("member.change_pw",memberDto);
 		}
 
+		@Override
+		public MemberDto emaillogin(MemberDto memberDto) {
+			memberDto.getMember_id();
+			MemberDto login = sqlSession.selectOne("member.emaillogin", memberDto);
+
+			return login;
+		}
+
 	
 
 //		@Override

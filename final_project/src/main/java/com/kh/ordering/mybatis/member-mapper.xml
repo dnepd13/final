@@ -228,6 +228,12 @@
 
 	</select>
 	
+	<!--  -->
+		<!-- 로그인 -->
+	<select id="emaillogin" parameterType="member" resultType="member">
+			select * from member where member_id = #{member_id}
+
+	</select>
 <!--수정전 정보조회-->
 	<select id="memberGETOne" parameterType="int" resultType="member">
 		select * from member where member_no = #{member_no}
