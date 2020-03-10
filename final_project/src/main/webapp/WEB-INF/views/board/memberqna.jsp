@@ -52,6 +52,7 @@
 		</div>
 		<table class="table table-borderless cart_table">
 			<tr class="cart_table_title">
+			
 				<th scope="col" class="align-middle text-center" style="width: 800px">제목</th>
 				<th scope="col" class="align-middle text-center" style="width: 150px">작성자</th>
 				<th scope="col" class="align-middle text-center" style="width: 150px">구분</th>
