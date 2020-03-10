@@ -44,6 +44,36 @@
 			<beans:bean class="com.kh.ordering.action.VisitCounter"></beans:bean>
 		</interceptor>
 	</interceptors>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/seller/**"/><!--더하기  --> 
+			<mapping path="/goods/**"/>
+			<mapping path="/board/**"/>
+			<mapping path="/pay/**"/>
+			<mapping path="/order/**"/>
+			<!-- 전체 다 안 빠지게 하는 구문 /꼭 써줘야한다-->
+		 	<exclude-mapping path="/seller/login"/>
+		 	<exclude-mapping path="/seller/logout"/>
+		 	<exclude-mapping path="/seller/main"/>
+		 	<exclude-mapping path="/member/login"/>
+		 	<exclude-mapping path="/member/logout"/>
+		 	<exclude-mapping path="/board/memberqna"/><!--회원 문의 게시판 전체목록  -->
+		 	<exclude-mapping path="/board/detailmqna"/> <!--회원 문의 게시판 상세목록  -->
+		 	<exclude-mapping path="/board/qnaregist"/> <!--회원 문의게시판 글쓰기  -->
+		 	<exclude-mapping path="/board/editqna"/> <!-- 회원 문의 게시판 글 수정 -->
+		 	<exclude-mapping path="board/updateqna"/><!--신고글 수정  -->
+		 	<exclude-mapping path="/board/sellerqna"/> <!--판매자 문의 게시판 전체목록 -->
+		 	<exclude-mapping path="/board/sellerqnaregist"/> <!--판매자 문의 게시판 글쓰기 -->
+		 	<exclude-mapping path="/board/sellerdetailmqna"/> <!--판매자 문의 게시판 상세보기 -->
+		 	<exclude-mapping path="/board/sellereditqna"/> <!--판매자 문의 글 수정하기  -->
+		 	
+		 	
+		 	
+			<!-- <exclude-mapping path="/**"/> --><!-- 안빠진다 --><!-- 빼기 -->
+			<beans:bean class="com.kh.ordering.interceptor.BlockInterceptor"></beans:bean>
+		</interceptor>
+	</interceptors>
 
 <!-- 웹 소캣 서버 등록 -->
 <!-- 	<beans:bean id="server" class="com.kh.sts25.websocket.WebSocketServer"></beans:bean> -->

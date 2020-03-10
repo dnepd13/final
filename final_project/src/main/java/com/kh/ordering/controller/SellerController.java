@@ -55,6 +55,7 @@ public class SellerController {
 	private SqlSession sqlSession;
 	//판매자 메인 홈
 	@GetMapping("/main")
+	@RegueiredAuth
 	public String main() {
 		return "/seller/main";
 	}
@@ -206,12 +207,13 @@ public class SellerController {
 	}
 	
 ///////////////////////////판매자 로그인///////////////////////////////////////
-	@GetMapping("/login")
+	@GetMapping("login")
+	@RegueiredAuth
 	private String login( ) {
 		return "seller/login";
 		
 	}
-	@PostMapping("/login")
+	@PostMapping("login")
 	private String login(@ModelAttribute SellerDto sellerDto, 
 									HttpSession session) {
 		//비밀번호 암호화
@@ -242,6 +244,7 @@ public class SellerController {
 	
 ////////////////////////////판매자 로그아웃///////////////////////////////////
 	@GetMapping("/logout")
+	@RegueiredAuth
 		public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";		
