@@ -43,7 +43,7 @@
       <textarea name="admin_qna_content" class="form-control" id="exampleTextarea" rows="5" required="required"></textarea>
     </div>
     <c:if test="${param.member_no != null or param.seller_no != null }">
-    <input type="hidden" name="admin_qna_no1" value="${admin_qna_no }">
+    <input type="hidden" name="admin_qna_no1" value="${param.admin_qna_no }">
     <input type="hidden" name="member_no" value="${param.member_no }">
     <input type="hidden" name="seller_no" value="${param.seller_no }">
     </c:if>

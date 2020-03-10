@@ -202,10 +202,6 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 		// 판매자에게 요청서 도착 알람 생성
 		//	- 판매자 ID 통해서 판매자 회원번호 가져오기.
 		// - 나중에 사용자 클릭하면 파라미터 값으로 가져오기.
-//		String seller_id = "11"; // 세션 임의설정
-//		session.setAttribute("seller_id", seller_id);
-		
-//		seller_no = sellerCustomDao.getNo(seller_id);
 		
 		// 요청서 관리테이블 현재 시퀀스번호
 		int member_custom_order_no = memberCustomDao.memberCustomSeq();

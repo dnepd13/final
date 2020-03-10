@@ -13,31 +13,58 @@
 <select id="QnaSeq" resultType="int">
 	select admin_qna_seq.nextval from dual
 </select>
-
+<!-- 회원 신고 게시글 글쓰기 -->
+ <insert id="reportregist" parameterType="adminQnaDto">
+ 	insert
+ 	into admin_qna(
+ 	admin_qna_no,
+ 	member_no,
+ 	admin_qna_content,
+ 	admin_qna_title,
+ 	admin_qna_writer,
+ 	admin_qna_date,
+ 	admin_qna_head,
+ 	group_no,
+ 	admin_qna_usertype
+ 	)
+ 	values(
+ 	#{admin_qna_no},
+ 	#{member_no},
+ 	#{admin_qna_content},
+ 	#{admin_qna_title},
+ 	#{admin_qna_writer},
+ 	sysdate,
+ 	'신고',
+ 	#{group_no},
+ 	'회원'
+ 	)
+ </insert>
 
  <!-- 신고 게시글갯수 -->
   <select id="countBoard" parameterType="int" resultType="int">
- 	select count(*) from admin_qna where admin_qna_head = '신고' and member_no = #{member_no}
+ 	select count(*) from admin_qna where admin_qna_head='신고' and member_no = #{member_no}
  </select>
  <!-- 신고 페이징 -->
    <select id="getListReport" parameterType="pagingVO" resultType="adminQnaDto">
  	select * from(
 			select rownum rn, A.* from (
-				select * from admin_qna where admin_qna_head = '신고' and member_no = #{member_no}
-				connect by prior admin_qna_no=super_no 
-				start with super_no is null 
-				order siblings by group_no asc, admin_qna_no desc
+				select * from admin_qna connect by prior
+				admin_qna_no=super_no start with super_no
+				is null and admin_qna_head='신고' order siblings
+				by group_no desc, admin_qna_no asc
 			)A
 		) where rn between #{start} and #{finish}
-
  </select>
 
 
 <!-- 신고 게시글 상세보기 -->
- <select id="adminQnaGetOne" parameterType="adminQnaDto" resultType="adminQnaDto">
+ <select id="ReportGetOne" parameterType="adminQnaDto" resultType="adminQnaDto">
  	select * from admin_qna where admin_qna_no = #{admin_qna_no}
  </select>
-
+ <!-- 문의 게시글 상세보기 -->
+ <select id="QnaGetOne" parameterType="adminQnaDto" resultType="adminQnaDto">
+ 	select * from admin_qna where admin_qna_no = #{admin_qna_no}
+ </select>
 
   <!-- 회원 문의 게시글 글쓰기 -->
  <insert id="qnaregist" parameterType="adminQnaDto">
@@ -80,6 +107,23 @@
  <select id="qnagetUpdate" parameterType="int" resultType="adminQnaDto">
 	 select * from admin_qna where admin_qna_no = #{admin_qna_no}
 </select>
+ <select id="reportgetupdate" parameterType="int" resultType="adminQnaDto">
+	 select * from admin_qna where admin_qna_no = #{admin_qna_no}
+</select>
+
+<!-- 신고게시글 수정 -->
+ <update id="reportUpdate" parameterType="adminQnaDto">
+ 	update admin_qna
+ 	set
+ 		admin_qna_title = #{admin_qna_title},
+ 		admin_qna_content = #{admin_qna_content}
+ 	where
+ 		admin_qna_no = #{admin_qna_no}
+
+ </update>
+
+
+
 
 
  <!-- 문의 게시글 갯수 보기 -->
@@ -88,24 +132,161 @@
 </select>
  <!-- 문의  페이징 -->
  <select id="getListQna" parameterType="pagingVO" resultType="adminQnaDto">
- 	select * from(
- 		select rownum rn, A.* from(
- 			select * from admin_qna where admin_qna_head = '문의' and member_no = #{member_no}
- 			connect by prior admin_qna_no=super_no 
-				start with super_no is null 
-				order siblings by group_no asc, admin_qna_no desc
+	select * from(
+			select rownum rn, A.* from (
+				select * from admin_qna connect by prior
+				admin_qna_no=super_no start with super_no
+				is null and admin_qna_head='문의' order siblings
+				by group_no desc, admin_qna_no asc
 			)A
 		) where rn between #{start} and #{finish}
  </select>
 
- <!-- 문의 게시글 상세보기 -->
- <select id="QnaGetOne" parameterType="adminQnaDto" resultType="adminQnaDto">
- 	select * from admin_qna where admin_qna_no = #{admin_qna_no}
- </select>
+
 	
 <!-- 문의글 삭제 -->	
 <delete id="deleteqna" parameterType="adminQnaDto">
 	delete admin_qna where admin_qna_no = #{admin_qna_no}
 </delete>
 
+
+
+ <!-- 판매자 문의  페이징 -->
+ <select id="getListSellerQna" parameterType="pagingVO" resultType="adminQnaDto">
+	select * from(
+			select rownum rn, A.* from (
+				select * from admin_qna connect by prior
+				admin_qna_no=super_no start with super_no
+				is null and admin_qna_head='문의' order siblings
+				by group_no desc, admin_qna_no asc
+			)A
+		) where rn between #{start} and #{finish}
+ </select>
+
+ <!-- 판매자 문의 게시글 갯수 보기 -->
+<select id="countsellerqna" parameterType="int" resultType="int">
+	select count(*) from admin_qna where admin_qna_head='문의' and seller_no = #{seller_no}
+</select>
+
+
+
+
+ <!-- 판매자 신고 페이징 -->
+   <select id="getListSellerReport" parameterType="pagingVO" resultType="adminQnaDto">
+	select * from(
+			select rownum rn, A.* from (
+				select * from admin_qna connect by prior
+				admin_qna_no=super_no start with super_no
+				is null and admin_qna_head='신고' order siblings
+				by group_no desc, admin_qna_no asc
+			)A
+		) where rn between #{start} and #{finish}
+
+ </select>
+ 
+  <!-- 판매자 신고 게시글갯수 -->
+  <select id="countSellerBoard" parameterType="int" resultType="int">
+ 	select count(*) from admin_qna where admin_qna_head='신고' and seller_no = #{seller_no}
+ </select>
+ 
+ 
+ <!-- 판매 문의 게시글 글쓰기 -->
+ <insert id="sellerqnaregist" parameterType="adminQnaDto">
+ 	insert
+ 	into admin_qna(
+ 	admin_qna_no,
+ 	seller_no,
+ 	admin_qna_content,
+ 	admin_qna_title,
+ 	admin_qna_writer,
+ 	admin_qna_date,
+ 	admin_qna_head,
+ 	group_no,
+ 	admin_qna_usertype
+ 	)
+ 	values(
+ 	#{admin_qna_no},
+ 	#{seller_no},
+ 	#{admin_qna_content},
+ 	#{admin_qna_title},
+ 	#{admin_qna_writer},
+ 	sysdate,
+ 	'문의',
+ 	#{group_no},
+ 	'판매자'
+ 	)
+ </insert>
+
+ <!-- 판매자 문의 게시글 상세보기 -->
+ <select id="sellerQnaGetOne" parameterType="adminQnaDto" resultType="adminQnaDto">
+ 	select * from admin_qna where admin_qna_no = #{admin_qna_no}
+ </select>
+ 
+  <select id="sellerqnagetUpdate" parameterType="int" resultType="adminQnaDto">
+	 select * from admin_qna where admin_qna_no = #{admin_qna_no}
+</select>
+ 
+ <update id="sellerqnaUpdate" parameterType="adminQnaDto">
+ 	update admin_qna
+ 	set
+ 		admin_qna_title = #{admin_qna_title},
+ 		admin_qna_content = #{admin_qna_content}
+ 	where
+ 		admin_qna_no = #{admin_qna_no}
+
+ </update>
+ 
+ 
+  <!-- 판매 문의 게시글 글쓰기 -->
+ <insert id="sellerreportregist" parameterType="adminQnaDto">
+ insert
+ 	into admin_qna(
+ 	admin_qna_no,
+ 	seller_no,
+ 	admin_qna_content,
+ 	admin_qna_title,
+ 	admin_qna_writer,
+ 	admin_qna_date,
+ 	admin_qna_head,
+ 	group_no,
+ 	admin_qna_usertype
+ 	)
+ 	values(
+ 	#{admin_qna_no},
+ 	#{seller_no},
+ 	#{admin_qna_content},
+ 	#{admin_qna_title},
+ 	#{admin_qna_writer},
+ 	sysdate,
+ 	'신고',
+ 	#{group_no},
+ 	'판매자'
+ 	)
+ </insert>
+ 
+ <!-- 판매자 신고 게시글 상세보기 -->
+ <select id="sellerreportGetOne" parameterType="adminQnaDto" resultType="adminQnaDto">
+ 	select * from admin_qna where admin_qna_no = #{admin_qna_no}
+ </select>
+ 
+ 
+ 
+ <select id="sellerreportgetupdate" parameterType="int" resultType="adminQnaDto">
+	 select * from admin_qna where admin_qna_no = #{admin_qna_no}
+</select>
+ 
+ 
+ <!-- 판매자 신고게시글 수정 -->
+ <update id="sellerreportUpdate" parameterType="adminQnaDto">
+ 	update admin_qna
+ 	set
+ 		admin_qna_title = #{admin_qna_title},
+ 		admin_qna_content = #{admin_qna_content}
+ 	where
+ 		admin_qna_no = #{admin_qna_no}
+
+ </update>
+ 
+ 
+ 
  </mapper>  

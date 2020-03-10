@@ -115,4 +115,20 @@ public class SellerDaoImpl implements SellerDao {
 	public List<GoodsDto> getGoodsList(String seller_id) {
 		return sqlSession.selectList("seller.getGoodsList", this.getSellerNo(seller_id));
 	}
+	
+	
+	//회원 문의글 번호 얻기
+//	@Override
+	public int getNo(String seller_id) {
+		int seller_no = sqlSession.selectOne("seller.getNo", seller_id);
+		return seller_no;
+		
+	}
+	@Override
+	public SellerDto emaillogin(SellerDto sellerDto) {
+		sellerDto.getSeller_id();
+		SellerDto login = sqlSession.selectOne("seller.emaillogin", sellerDto);
+		
+		return login;
+	}
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.CustomOrderFilesDto;
 import com.kh.ordering.entity.FilesDto;
+import com.kh.ordering.entity.MemberCustomOrderDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.vo.CustomOrderVO;
@@ -27,6 +28,9 @@ public interface SellerCustomDao {
 	void customAlarmInsert(SellerCustomAlarmDto sellerCustomAlarmDto); 	//요청서 도착 알람 테이블
 	void customFilesInsert(CustomOrderFilesDto customOrderFilesDto); // 주문제작-파일테이블
 	
+	//주문제작테이블 상태 업데이트
+	void updateCustomStatus(CustomOrderDto customOrderDto) ;
+	
 	//받은 요청서 보기
 	List<CustomOrderVO> getListReq(PagingVO paging); // 목록
 	//받은 요청서 단일조회, 상세내용
@@ -38,10 +42,10 @@ public interface SellerCustomDao {
 	List<SellerCustomAlarmDto> getSellerAlarm(int member_custom_order_no);
 	
 	//받은 요청서 삭제
-	void deleteCustomReq(SellerCustomAlarmDto sellerAlarmDto);
+	void updateAlarmDelete(int seller_no, int member_custom_order_no);
 	//보낸 견적서 삭제
 	int getCustomNo(int seller_custom_order_no);
-	void deleteCustomResp(int custom_order_no);
+	void deleteCustomResp(SellerCustomOrderDto sellerCustomDto);
 	//구매자의 견적서 알람테이블 삭제
 	void deleteAlarm(int seller_custom_order_no);
 	
@@ -52,6 +56,7 @@ public interface SellerCustomDao {
 	int customReqCount(int seller_no);
 	
 	//내가 보낸 견적서 보기
+	SellerCustomOrderDto getSellerCustom(int seller_custom_order_no); //견적서관리테이블단일조회
 	List<CustomOrderDto> getListResp(PagingVO paging);	//목록
 	CustomOrderVO customOrderVO2(int seller_custom_order_no); // 상세보기
 	int customRespCount(int seller_no); // 내가 보낸 견적서 총 개수

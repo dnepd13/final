@@ -53,5 +53,63 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
+	
+	<filter>
+		<filter-name>adminFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>adminFilter</filter-name>
+		<url-pattern>/category</url-pattern>
+		<url-pattern>/categoryUpdate</url-pattern>
+		<url-pattern>/categoryDelete</url-pattern>
+		<url-pattern>/premium</url-pattern>
+		<url-pattern>/premiumUpdate</url-pattern>
+		<url-pattern>/premiumDelete</url-pattern>
+		<url-pattern>/block</url-pattern>
+		<url-pattern>/blocklist</url-pattern>
+		<url-pattern>/unlock</url-pattern>
+		<url-pattern>/gradebenefit</url-pattern>
+		<url-pattern>/gradebenefitupdate</url-pattern>
+		<url-pattern>/gradebenefitdelete</url-pattern>
+		<url-pattern>/board/*</url-pattern>
+		<url-pattern>/calculate/*</url-pattern>
+		<url-pattern>/custom/*</url-pattern>
+		<url-pattern>/goods/*</url-pattern>
+		<url-pattern>/member/*</url-pattern>
+		<url-pattern>/sales/*</url-pattern>
+		<url-pattern>/seller/*</url-pattern>
+		<url-pattern>/admin/my</url-pattern>
+		<url-pattern>/admin/changepw</url-pattern>
+		<url-pattern>/home</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>adminMasterFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>adminMasterFilter</filter-name>
+		<url-pattern>/basicpagesetting</url-pattern>
+		<url-pattern>/admin/manage</url-pattern>
+		<url-pattern>/admin/reset</url-pattern>
+		<url-pattern>/regist</url-pattern>
+	</filter-mapping>
+	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/error/404.jsp</location>
+	</error-page>
+	
+	<error-page>
+		<error-code>403</error-code>
+		<location>/WEB-INF/views/error/403.jsp</location>
+	</error-page>
+	
 </web-app>

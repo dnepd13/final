@@ -43,8 +43,9 @@
 	<a href="${pageContext.request.contextPath }/member/memberfind_id">
 		<button class="btn btn-secondary" style="width:48%;">아이디찾기</button>
 	</a>
-	
+	<a href="${pageContext.request.contextPath }/member/pwfind">
 	<button class="btn btn-secondary" style="width:48%; float:right;">비밀번호찾기</button>
+	</a>
 </div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

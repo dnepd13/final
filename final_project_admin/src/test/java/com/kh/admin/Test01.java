@@ -56,7 +56,9 @@ public class Test01 {
 	@Test
 	public void test() {
 		List<String> a = calculateDao.scheduleCalculateGetSeller();
+		log.info("a={}", a);
 		for(int j=0; j<a.size();j++) {
+			log.info(a.get(j));
 			List<AdjustmentFullVO> list = calculateDao.scheduleCalcul(a.get(j));
 			int total = 0;
 			
@@ -74,6 +76,10 @@ public class Test01 {
 				log.info("total2={}",list.get(i).getCart_info_goods_quantity() * list.get(i).getCart_info_goods_price());
 			}
 		}
+		
+		log.info("total={}", total);
+
+		
 		int rate = calculateDao.getRate(total);
 		int fee = total * rate / 100;
 		int adjustment_price = total - fee;

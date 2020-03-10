@@ -19,6 +19,7 @@ import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.CustomOrderFilesDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.MemberCustomAlarmDto;
+import com.kh.ordering.entity.MemberCustomOrderDto;
 import com.kh.ordering.entity.SellerCustomOrderDto;
 import com.kh.ordering.repository.FilesDao;
 import com.kh.ordering.repository.MemberCustomDao;
@@ -44,7 +45,7 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 	@Transactional
 	@Override
 	public CustomOrderDto SellerCustom(HttpSession session,
-																@RequestParam int member_no,
+																@RequestParam int member_custom_order_no,
 																@RequestParam int category_no,
 																@ModelAttribute FilesVO files,
 																@ModelAttribute CustomOrderDto customOrderDto)
@@ -52,7 +53,7 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 
 		String seller_id=(String)session.getAttribute("seller_id");
 		int seller_no = sellerCustomDao.getNo(seller_id);
-
+		
 		// 견적서 저장하고
 		customOrderDto.setCustom_order_category(category_no);
 		sellerCustomDao.customOrderInsert(customOrderDto);
@@ -110,19 +111,30 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 			}
 		}
 
+			
+		// 요청서 관리 테이블 정보 가져오기(방금 받은 요청서)
+		// - 회원번호, 주문제작 번호 꺼내기.
+		MemberCustomOrderDto memberCustomDto = memberCustomDao.getMemberCustom(member_custom_order_no);
+		int member_no = memberCustomDto.getMember_no();
+		int custom_order_no_origin = memberCustomDto.getCustom_order_no();
+			
 		int seller_custom_order_no = sellerCustomDao.customOrderSeq();
 		//구매자에게 견적서 도착 알람 생성
-		// - 구매자 ID 통해서 구매자 회원번호 가져오기
-//		String member_id = "member"; // 세션 임의설정
-//		session.setAttribute("member_id", member_id);
-		
-//		int member_no = memberCustomDao.getNo(member_id);
+		// - 요청서 관리테이블의 정보에서 가져온 회원번호
 		MemberCustomAlarmDto memberCustomAlarmDto 
 																			= MemberCustomAlarmDto.builder()
 																																.member_no(member_no)
 																																.seller_custom_order_no(seller_custom_order_no)
 																																.build();
 		memberCustomDao.customAlarmInsert(memberCustomAlarmDto);
+		
+		// 요청서관리번호에 대한 주문제작 상태 업데이트
+		CustomOrderDto customOrderUpdate = CustomOrderDto.builder()
+																										.custom_order_no(custom_order_no_origin)
+																										.custom_order_status("견적회신")
+																										.build();
+		sellerCustomDao.updateCustomStatus(customOrderUpdate);
+		
 		return null;
 	}
 

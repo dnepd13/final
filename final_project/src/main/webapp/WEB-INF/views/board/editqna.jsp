@@ -1,32 +1,49 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 
-<h1>문의 수정하기</h1>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
+
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
+
+<div align="center" class="btn-group-vertical">
+
+<h1>문의 게시판 상세보기</h1>
+<h2><a href="http://localhost:8001/ordering/board/memberqna">목록으로</a></h2>
 
 <form action="editqna" method="post">
 	<input type="hidden" name="admin_qna_no" value="${updateget.admin_qna_no }">
 
-	<table border="1" width="70%">
+	<div class="btn-group-vertical">
+	<a><button class="btn btn-primary" value="수정">수정 확인</button></a>
+	</div>
+<table class="table table-hover" >
 
-		<tr>
-			<th>제목</th>
-			<td>
-				<input type="text" name="admin_qna_title" value="${updateget.admin_qna_title}" required>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" >
-				<textarea name="admin_qna_content" rquired rows="15" cols="100"
-					style="resize:vertical;">${updateget.admin_qna_content}</textarea>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" align="center">
-				<input type="submit" value="수정">
+<tbody class="col-lg-4 col-md-6">
 
+	<tr>
+		<td width="100px">제목</td>
+		<th><input type="text" name="admin_qna_title" value="${updateget.admin_qna_title}" required></th>
+	</tr>
 
-		</tr>
+	<tr>
+		<td width="100px">	<textarea name="admin_qna_content" rquired rows="15" cols="100" style="resize:none;">
+		${updateget.admin_qna_content}</textarea>
+	</td>
 
-	</table>
+</tbody>
 
-</form> 
+	
+
+</table>
+</form>
+</div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

@@ -6,10 +6,19 @@
   <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
   
+  <div class="container-fluid">
+        <div class="row" style="padding: 50px;">
+            <div class="offset-md-1 col-md-10">
+            
+            
    <div class="container-fluid">
-        <div class="row">
-            <div class="offset-md-4 col-md-4 ">
-                <div class="row justify-content-center"><h1>판매자 로그인</h1></div>
+        <div class="row" >
+            <div class="offset-md-3 col-md-6 ">
+            
+                <div class="row justify-content-center" style="padding-top:20px;">
+                <img style="padding-left:20px;" src="${pageContext.request.contextPath}/resources/img/logo-ordering.png" width=400px; height=200px;>
+                <h1>판매자 로그인</h1>
+                </div>
                 <br><br><br>
                 <form action="login" method="post"> 
                	   <!--아이디 입력창-->
@@ -27,7 +36,7 @@
 			    	<button type="submit" class="btn btn-secondary disabled btn-block">로그인</button>
 			    </form>
 			    <button type="button" class="btn btn-secondary disabled btn-block" onclick="location.href = 'find_id' ">아이디찾기</button>
-			    <button type="button" class="btn btn-secondary disabled btn-block"onclick="location.href = '#' ">비밀번호 찾기</button>
+			    <button type="button" class="btn btn-secondary disabled btn-block"onclick="location.href = 'pwfind' ">비밀번호 찾기</button>
 			    
 			   <div class="fail row justify-content-center">
                 	<c:if test="${param.error != null }">
@@ -37,5 +46,6 @@
               </div>
           </div>
        </div>
-
- 
+</div>
+        </div>
+  </div>

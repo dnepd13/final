@@ -358,7 +358,8 @@ public class GoodsController {
 
 		goodsQnaDto.setGoods_qna_groupno(goodsQnaDto.getGoods_qna_groupno());
 		goodsQnaDto.setGoods_qna_superno(goodsQnaDto.getGoods_qna_no());
-		goodsQnaDto.setGoods_qna_writer(seller_id);		
+		goodsQnaDto.setGoods_qna_writer(seller_id);
+		goodsQnaDto.setMember_no(goodsQnaDto.getMember_no());
 		goodsQnaDao.insertA(goodsQnaDto);
 		
 		int goods_qna_groupno = goodsQnaDto.getGoods_qna_groupno();
@@ -368,23 +369,6 @@ public class GoodsController {
 		return "redirect:goodsInfo?goods_no="+goodsQnaDto.getGoods_no();
 	}
 
-// 리뷰 댓글 등록
-	@PostMapping("/insertReply")
-	public String insertReply(HttpSession session,
-													@ModelAttribute GoodsReviewReplyDto goodsReviewReplyDto,
-													int goods_review_no) {
-		
-		String member_id = (String)session.getAttribute("member_id");
-		int member_no= memberDao.getNo(member_id);
-		
-		goodsReviewReplyDto.setMember_no(member_no);
-		goodsReviewReplyDto.setGoods_review_reply_writer(member_id);
-		goodsReviewDao.insertReviewReply(goodsReviewReplyDto);
-		
-		int goods_no = goodsReviewDao.getGoodsNoReview(goods_review_no);
-		
-		return "redirect:/goods/goodsInfo?goods_no="+goods_no;
-	}
 
 	
 	// 등록 상품 목록

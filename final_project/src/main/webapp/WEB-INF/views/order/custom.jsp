@@ -166,6 +166,24 @@ $(function(){
 // 	@ 총 금액(상품전체+배송비-포인트+부가세)
 // 	@ 총 배송비
 
+// 주소 새로 입력하기
+	$(".addr_status").change(function(){
+
+		if($(this).val()=='새로운주소'){
+			$(".name").val("");
+			$(".addr_post").val("");
+			$(".addr_basic").val("");
+			$(".addr_extra").val("");
+		}
+		else {
+			$(".name").val("${member.member_name }");
+			$(".addr_post").val("${memberAddr.member_addr_post }");
+			$(".addr_basic").val("${memberAddr.member_addr_basic }");
+			$(".addr_extra").val("${memberAddr.member_addr_extra }");
+		}
+		
+	});
+
 var g_total_price = orderingPriceUpdate();
 
 ////////// 총금액 업데이트
@@ -315,7 +333,7 @@ function inputOrderInfo(){
 				</tr>
 				<tr>
 					<th>연락처</th>
-					<td><input type="text" name="member_phone" value="${member.member_phone }" placeholder=" '-' 없이 입력"></td>
+					<td><input class="member_phone" type="text" name="member_phone" value="${member.member_phone }" placeholder=" '-' 없이 입력"></td>
 				</tr>
 				<tr>
 					<th>우편번호</th>

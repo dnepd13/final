@@ -4,14 +4,15 @@
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<jsp:include page="/WEB-INF/views/template/header-sellerMain.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <style>
-	.articleBox,
-	.navBox {
-		width: 500px;
+	.articleBox {
+		width: 1000px;
+		height: 800px;
 		margin: 0 auto;
 	}
 	.dataEmpty {
@@ -27,24 +28,30 @@
     
 <script>
 	//요청서 삭제
-	function deleteReq(member_custom_order_no){
-		if(confirm('요청서를 삭제하시겠습니까?')){
-			$.ajax({
-				url : "deleteReq",
-				data : {"member_custom_order_no": member_custom_order_no},
-				method: "GET",
-				success: function(resp){
-					location.reload(true);
-				}
-			});
+	$(function(){
+		
+		$(".deleteReq").click(function(e){
+			var status = $(this).parents("#req_data").data("custom_order_status");
 			
-	    }
-	    else{
-	    	return false;
-		}
-	}
+			if(status=='결제완료' || status=='결제취소'){
+				alert("결제완료 또는 결제취소된 요청서는 삭제할 수 없습니다.");
+				return false;
+			}
+			else {
+				if(confirm('요청서를 삭제하시겠습니까?')){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+
+		});
+		
+	});
 			
 </script> 
+
 
 <h3>판매자가 받은 요청서 customListReq.jsp</h3>
 
@@ -52,21 +59,10 @@
 
 <article class="articleBox">
 <table class="table table-hover listBox">
-<c:choose>
-	<c:when test="${ empty getListReq }">
-		<tr class="dataEmpty">
-			<td>
-				<div class="row-empty-40"></div><div class="row-empty-40"></div>
-				<div align="center" style="padding: 10px;">
-					받은 요청서가 없습니다.
-				</div><div class="row-empty-40"></div><div class="row-empty-40"></div><div class="row-empty-40"></div>
-			</td>
-		</tr>
-	</c:when>
-	<c:otherwise>
 	<c:forEach var="memberReq" items="${getListReq }">
 	<tr>
-		<td>
+		<td id="req_data"
+				data-custom_order_status="${memberReq.custom_order_status }">
 			<p><span>${memberReq.member_id } 님이 보낸 요청서입니다.</span>
 				<span style="color: red">
 					<c:set var="check" value="${memberReq.seller_alarm_check }"/> 
@@ -82,12 +78,23 @@
 				<fmt:parseDate value="${memberReq.custom_order_date }" var="custom_order_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 				<fmt:formatDate value="${custom_order_date }" pattern="yyyy/MM/dd HH:mm:ss"/>
 			</span>
-			<span aria-hidden="true"><button class="close" aria-label="Close" onclick="deleteReq(${memberReq.member_custom_order_no })">&times;</button></span>
+			<c:set var="check" value="${memberReq.custom_order_status }"/>
+				<c:choose>
+					<c:when test="${functions : contains(check, '결제완료') }">
+						<span aria-hidden="true" class="close">${memberReq.custom_order_status }</span>
+					</c:when>
+					<c:otherwise>
+						<form action="deleteReq" method="get">
+							<input type="hidden" name="member_no" value="${memberReq.member_no }">
+							<input type="hidden" name="member_custom_order_no" value="${memberReq.member_custom_order_no }">
+							<span aria-hidden="true">${memberReq.custom_order_status }<input type="submit" class="close deleteReq"aria-label="Close" value="&times;"></span>
+						</form>
+					</c:otherwise>
+				</c:choose>
 		</td>
 	</tr>
 	</c:forEach>
-	</c:otherwise>
-</c:choose>
+
 </table>
 
 <div class="row justify-content-center">

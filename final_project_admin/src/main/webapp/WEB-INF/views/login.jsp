@@ -23,6 +23,8 @@
             	
                 <div class="row justify-content-center" style="padding-top:20px;">
                	<img style="padding-left:20px;" src="${pageContext.request.contextPath}/resources/file/오더링.png" width=400px; height=200px;>
+                </div>
+                <div class="row justify-content-center">
                 <h1>관리자 로그인</h1>
                 </div>
                 <br><br><br>

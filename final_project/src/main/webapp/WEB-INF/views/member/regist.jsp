@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+    
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
 
@@ -8,7 +16,7 @@
   <script>  
   $(function() {
 	  $(".buttontest").attr("disabled", true);
-      $(".test").click(function() {
+      $("#id_check").click(function() {
 
             var member_id = $("input[name=member_id]").val();
 
@@ -20,18 +28,25 @@
                      $.ajax({
                               url : "id_check",
                               type : "get",
+                              contetType: "application/x-www-form-urlencoded; charset=UTF-8",
                               data : {
                                  'member_id' : member_id
                               },
                               success : function(resp) { //resp = 위코드가 성공적으로 컨트롤러에 다녀왔을때 가져온 값
 									console.log(resp);                              		
                               		if(resp == 0){
+
+
+                    					
                               			window.alert("사용 가능한 아이디 입니다");
 										$(".buttontest").attr("disabled", false);
+										//	$(".buttontest").attr("disabled", false);
+										$('input[name="idcheck2"]').val("Y");
+										
                               		}
                               		else{
                               			window.alert("중복된 아이디 입니다");
-                              			
+                              			$('input[name="idcheck2"]').val("N");
                               		}
                                  }
                                  
@@ -42,7 +57,8 @@
    });
 // 		.validate-form은 처음에 숨기고 이메일 전송시만 표시
 $(function() {
-// 		$("#check_email_code").hide();
+		
+		$("#check_email_code").hide();
 // 		.email-form이 전송되면 send 주소로 비동기 신호를 전송(ajax)
 		$("#check_email").click(function(e){
 			e.preventDefault();
@@ -51,10 +67,8 @@ $(function() {
 			if(email==""){
 				alert("이메일을 입력해주세요");
 			}
-			else{
-				
-// 				$(this).find("input[type=button]").prop("disabled", true);
-				$(this).val("인증번호 재발송");
+			else if($(this).val()=='인증번호 재발송'){
+				$("#check_email").parents(".input_email").next(".send").find(".info").remove();
 				
 				var url = $(this).attr("action"); 
 				var method = $(this).attr("method");
@@ -69,7 +83,33 @@ $(function() {
 					success:function(resp){
 						//console.log(resp);
 							$("#check_email_code").show();
-							var send = $("<td></td><td colspan='2'><p>해당 이메일로 인증번호 발송이 완료되었습니다.</p></td>");
+							var send = $("<td class='info'></td><td colspan='2' class='info'><p>해당 이메일로 인증번호 발송이 완료되었습니다.</p></td>");
+							$("#check_email").parents(".input_email").next(".send").append(send);
+					}
+				
+				});	
+			}
+				
+			else{
+				
+// 				$(this).find("input[type=button]").prop("disabled", true);
+				$(this).val("인증번호 재발송");
+				$("#check_email_code").show();
+				
+				var url = $(this).attr("action"); 
+				var method = $(this).attr("method");
+				var data = $("#email").val();
+				console.log(data)
+				$.ajax({
+					url: "send",
+					type:"post",
+					data:{'member_email' :data
+						
+					},
+					success:function(resp){
+						//console.log(resp);
+							
+							var send = $("<td class='info'></td><td colspan='2' class='info'><p>해당 이메일로 인증번호 발송이 완료되었습니다.</p></td>");
 							$("#check_email").parents(".input_email").next(".send").append(send);
 					}
 				
@@ -94,24 +134,22 @@ $(function() {
 				success:function(resp){
 // 					console.log(resp);
 					if(resp == "success"){
+						$("input[value='회원가입']").prop("disabled", false);
 						window.alert("인증 완료");
 					}
 					else{
 						window.alert("인증 실패");
+						
+						$("#check_email").parents(".input_email").next(".send").find(".info").remove();
+						
+						var send = $("<td class='info'></td><td colspan='2' class='info'><p>인증에 실패했습니다. 인증번호 재발송 후 다시 입력해주세요.</p></td>");
+						$("#check_email").parents(".input_email").next(".send").append(send);
 					}
 				}
 			});
 		});
 });
 </script>
-
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
-
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <style>
 	.regist-area {
@@ -122,15 +160,15 @@ $(function() {
 	.btn_regist {
 		width: 100%;'
 	}
-	
- 	.card-body table tr {
- 		margin: 5px 0;
- 	}
+
  	.card-body table td {
- 		heigh: 100px;
+ 		heigh: 150px;
+ 		padding: 10px 0;
  	}
 </style>
 
+<div class="row-empty-40"></div>
+<div class="row-empty-40"></div>
 
 <div class="regist-area card border-primary mb-3">
 	<div class="card-header" style="width:100%;">
@@ -189,7 +227,7 @@ $(function() {
 			    				<td></td>
 			    			</tr>
 			    			<tr>
-			    				<td colspan="3"><input type="submit" value="회원가입" onclick="test();" class="btn_regist btn btn-secondary"/></td>
+			    				<td colspan="3"><input type="submit" value="회원가입" onclick="test();" class="btn_regist btn btn-secondary" disabled/></td>
 			    			</tr>
 		    			</tbody>
 		    		</table>

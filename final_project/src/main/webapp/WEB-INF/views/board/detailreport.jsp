@@ -1,23 +1,63 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
 
-<h1>신고게시판 상세보기</h1>
-<h1><a href="${pageContext.request.contextPath}/home">홈으로</a></h1>
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
+<div align="center" class="btn-group-vertical">
+
+<h1>신고 게시판 상세보기</h1>
+<h2><a href="http://localhost:8001/ordering/board/memberreport">목록으로</a></h2>
 
 
-<hr>
-<h1>제목:${reportone.admin_qna_title}</h1>
-<h1>회원등급:${reportone.admin_qna_usertype}</h1>
-<h1>작성자:${reportone.admin_qna_writer} </h1>
-<h1>작성일:${reportone.admin_qna_date}</h1>
-<hr>
-<hr>
-<h3>내용:${reportone.admin_qna_content}</h3>
-<hr>
-<div class="btn-group-vertical">
-	<a href="${pageContext.request.contextPath}/board/editreport?admin_qna_no1=${reportone.admin_qna_no}">
+<c:choose>
+<c:when test="${admin_qna_writer == admin}">	
+	<div class="btn-group-vertical">
+	<a href="${pageContext.request.contextPath}/board/editreport?admin_qna_no=${ReportGetOne.admin_qna_no}">
 		<button type="button" class="btn btn-primary">수정</button>
 	</a>
 </div> 
+</c:when>
+<c:otherwise>
+	<h1>관리자의 답변입니다.</h1>
+
+</c:otherwise>
+</c:choose>
+<table class="table table-hover">
+<tbody>
+	<tr>
+		<th width="121px">제목</th>
+		<td width="600px">${ReportGetOne.admin_qna_title}</td>
+	</tr>
+		<tr>
+		<th width="121px">작성자구분</th>
+		<td width="600px">${ReportGetOne.admin_qna_usertype}</td>
+	</tr>
+		<tr>
+		<th width="121px">작성자</th>
+		<td width="600px">${ReportGetOne.admin_qna_writer}</td>
+	</tr>
+		<tr>
+		<th width="121px">작성일</th>
+		<td width="600px">${ReportGetOne.admin_qna_date}</td>
+	</tr>
+	
+	
+	<tr>
+		<th></th>
+		<td width="600px" align="left">${ReportGetOne.admin_qna_content}</td>
+	</tr>
+</tbody>
+
+	
+
+</table>
+</div>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

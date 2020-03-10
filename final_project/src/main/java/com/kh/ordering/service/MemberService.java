@@ -9,6 +9,7 @@ import com.kh.ordering.entity.MemberCustomOrderDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.vo.ItemVOList;
+import com.kh.ordering.vo.PagingVO;
 
 public interface MemberService {
 //	회원 요청서 Service
@@ -27,5 +28,6 @@ public interface MemberService {
 
 	void deleteCart(int goods_cart_no);
 
-	
+	// 포인트 페이징
+	PagingVO pointInfoPaging(String pageNo, int member_no);
 }
