@@ -3,6 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css"> 
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
+
 <aside>
 <div>
 <jsp:include page="../template/header.jsp"></jsp:include>
@@ -10,7 +16,8 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
+	
 <div class="row justify-content-center"  style="padding: 20px;"><h1>회원 상세</h1></div>
 
 <c:if test="${admin_grade == '총괄관리자' }">

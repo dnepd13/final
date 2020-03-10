@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import lombok.extern.slf4j.Slf4j;
-//@ControllerAdvice(basePackages = {"com.kh.admin.controller"})
+//@ControllerAdvice(annotations = Controller.class)
 @Slf4j
-@ControllerAdvice(annotations = Controller.class)
+@ControllerAdvice(basePackages = {"com.kh.admin"})
 public class ErrorController {
 	
 	@ExceptionHandler(SQLException.class)

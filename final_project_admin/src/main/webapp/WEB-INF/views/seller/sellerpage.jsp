@@ -3,6 +3,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css"> 
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
+
 <aside>
 <div>
 <jsp:include page="../template/header.jsp"></jsp:include>
@@ -10,7 +16,7 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 <%-- <c:if test="${admin_grade == '총괄관리자' }"> --%>
 <!-- <div class="btn-group-vertical"> -->
 <%-- 	<a href="${pageContext.request.contextPath}/seller/delete?seller_no=${seller.seller_no }"><button type="button" class="btn btn-primary">삭제</button></a> --%>
