@@ -59,5 +59,91 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	
+	<filter>
+		<filter-name>sellerFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>sellerFilter</filter-name>
+		<url-pattern>/seller/management</url-pattern>
+		<url-pattern>/seller/info</url-pattern>
+		<url-pattern>/seller/info_edit</url-pattern>
+		<url-pattern>/seller/check_pw</url-pattern>
+		<url-pattern>/seller/change_pw_success</url-pattern>
+		<url-pattern>/seller/delete</url-pattern>
+		<url-pattern>/seller/customOrder</url-pattern>
+		<url-pattern>/seller/customSuccess</url-pattern>
+		<url-pattern>/seller/customListReq</url-pattern>
+		<url-pattern>/seller/customInfoReq</url-pattern>
+		<url-pattern>/seller/customListResp</url-pattern>
+		<url-pattern>/seller/updateResp</url-pattern>
+		<url-pattern>/seller/deleteReq</url-pattern>
+		<url-pattern>/seller/deleteResp</url-pattern>
+		<url-pattern>/seller/category_insert</url-pattern>
+		<url-pattern>/seller/category_info</url-pattern>
+		<url-pattern>/seller/category_update</url-pattern>
+		<url-pattern>/seller/category_delete</url-pattern>
+		<url-pattern>/seller/portfolio_insert</url-pattern>
+		<url-pattern>/seller/regist_success</url-pattern>
+		<url-pattern>/seller/change_pw</url-pattern>
+		<url-pattern>/seller/change_pw_success</url-pattern>
+		<url-pattern>/seller/main</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>memberFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>memberFilter</filter-name>
+		<url-pattern>/member/cart</url-pattern>
+		<url-pattern>/member/memberdelete</url-pattern>
+		<url-pattern>/member/logout</url-pattern>
+		<url-pattern>/member/memberinfo</url-pattern>
+		<url-pattern>/member/memberchange_pw</url-pattern>
+		<url-pattern>/member/editmember</url-pattern>
+		<url-pattern>/member/addrinfo</url-pattern>
+		<url-pattern>/member/addrupdate</url-pattern>
+		<url-pattern>/member/addrdelete</url-pattern>
+		<url-pattern>/member/addrpage</url-pattern>
+		<url-pattern>/member/insertaddr</url-pattern>
+		<url-pattern>/member/pointinfo</url-pattern>
+		<url-pattern>/member/membermyinfo</url-pattern>
+		<url-pattern>/member/memberInfoAside</url-pattern>
+		<url-pattern>/member/sellerPick</url-pattern>
+		<url-pattern>/member/bestPick</url-pattern>
+		<url-pattern>/member/customCate</url-pattern>
+		<url-pattern>/member/customCate</url-pattern>
+		<url-pattern>/member/customOrder</url-pattern>
+		<url-pattern>/member/customSuccess</url-pattern>
+		<url-pattern>/member/customListResp</url-pattern>
+		<url-pattern>/member/customListReq</url-pattern>
+		<url-pattern>/member/customInfoReq</url-pattern>
+		<url-pattern>/member/updateReq</url-pattern>
+		<url-pattern>/member/deleteReq</url-pattern>
+		<url-pattern>/member/deleteResp</url-pattern>
+		<url-pattern>/member/alarmCount</url-pattern>
+		<url-pattern>/member/cartList</url-pattern>
+		<url-pattern>/member/cartDetailPay</url-pattern>
+		<url-pattern>/member/cartDetailCustom</url-pattern>
+		<url-pattern>/member/cartDetailGoods</url-pattern>
+		<url-pattern>/member/updateConfirm</url-pattern>
+		<url-pattern>/member/insertReview</url-pattern>
+		<url-pattern>/member/insertReply</url-pattern>
+		<url-pattern>/member/updateReply</url-pattern>
+		<url-pattern>/member/deleteReply</url-pattern>
+		<url-pattern>/member/membercheck</url-pattern>
+		<url-pattern>/member/</url-pattern>
+		<url-pattern>/member/</url-pattern>
+		<url-pattern>/member/</url-pattern>
+		<url-pattern>/member/</url-pattern>
+	</filter-mapping>
 
 </web-app>
