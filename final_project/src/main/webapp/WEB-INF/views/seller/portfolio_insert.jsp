@@ -12,8 +12,27 @@
 		margin: 0 auto;
 	}
 	.portfolio_content{
-		width: 800px;
+		width: 850px;
 		margin: 0 auto;
+	}
+	.btn_delete {
+		float: right;
+	}
+	.btn_delete::after{
+		content:"";
+		display: block;
+		clear: both;
+	}
+	
+	table {
+		border: 1px darkgray solid;
+		border-collapse: collapse;
+	}
+	table thead :nth-child(1) {	
+		border-bottom: 1px darkgray solid;
+	}
+	table tbody td {
+		height: 100px;
 	}
 </style>
    
@@ -24,21 +43,21 @@
 		var upload = document.querySelector("#upload");
 		
 		$(upload).change(function(f){
+			$(".filesInfo").children().empty();
 			var files = f.target.files;	
-			for(var i=0 ; i<files.length ; i++){
-				var filesName =files[i].name;
-				var filesSizeOrigin = files[i].size/1024;
-				var filesSize = String(filesSizeOrigin).substring(0,5);
-				$(".filesName").append(filesName);
-				$(".filesSize").append(filesSize+" KB");
-				$(".filesDelete").append("<button class='btn_clean'>&times;</button>");
-				
-				var img = $("<img>"); // 미리보기를 담을 태그
-				reader = new FileReader(); // 파일 리더 객체
-				
-				reader.onload(function(){
-					
-				});
+			if(files.length >5 ){
+				alert("파일은 최대 5개까지만 등록 가능합니다. 다시 선택해주세요.");
+				$(".btn_upload").prop("disabled", true);
+			}
+			else{
+				$(".btn_upload").prop("disabled", false);
+				for(var i=0 ; i<files.length ; i++){
+					var filesName =files[i].name;
+					var filesSizeOrigin = files[i].size/1024;
+					var filesSize = String(filesSizeOrigin).substring(0,5);
+					$(".filesName").append(filesName+"<br>");
+					$(".filesSize").append(filesSize+" KB <br>");
+				}
 			}
 		});
 		
@@ -69,32 +88,28 @@
       	<div>
         <input id="upload" type="file" name="files" multiple><br><br>
         </div>
-        <button type="submit" class="btn btn-secondary disabled">업로드하기</button>
-    
+        <button type="submit" class="btn btn-secondary btn_upload">업로드하기</button>   
    	    </form>
       </div>
     </div>
  </div>
   <!-- 파일정보 미리보기 영역-->
   <div align="center">
-  	<table border="1">
+  	<table>
   		<colgroup>
   			<col width="400px">
-  			<col width="100px">
-  			<col width="30px">
+  			<col width="150px">
   		</colgroup>
   		<thead>
   			<tr>
   				<td>파일이름</td>
-  				<td colspan="2">파일크기</td>
-  				<td></td>
+  				<td>파일크기</td>
   			</tr>
   		</thead>
   		<tbody>
-  			<tr>
+  			<tr class="filesInfo">
   				<td class="filesName"></td>
   				<td class="filesSize"></td>
-  				<td class="filesReadyDelete"></td>
   			</tr>
   		</tbody>
   	</table>
@@ -105,17 +120,16 @@
  
   <!-- 등록된 포트폴리오 출력 영역 -->
 	 <div class="portfolio_area" align="center">
-	 <p>아래의 이미지가 판매중인 모든 상품에 등록됩니다.</p>
+	 <p>아래의 이미지가 판매중인 모든 상품의 상세페이지에 노출됩니다.</p>
 	 <c:if test="${ not empty filesVO }">
 		 <c:forEach var="filesVO" items="${filesVO }">
-		 	<span>${filesVO.files_no}</span>
 			 <div class="portfolio_content" align="center">
 			 	<form action="portfolio_delete" method="post" class="portfolio_delete">
 					<input type="hidden" name="files_no" value="${filesVO.files_no}">			 			
 					<input type="hidden" name="seller_no" value="${seller_no }">
-					<input type="submit" value="&times;" class="btn_custom btn_delete">
-			 	</form>
 			 	<img src="${pageContext.request.contextPath }/seller/portfolio_download?files_no=${filesVO.files_no}" style="width:800px; height:auto;">
+					<span><input type="submit" value="&times;" class="btn_clean btn_delete"></span>
+			 	</form>
 			 </div>
 		 </c:forEach>
 	</c:if>   

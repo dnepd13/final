@@ -25,13 +25,14 @@ import com.kh.ordering.entity.GoodsCartDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.entity.Member_PointDto;
-import com.kh.ordering.entity.SellerDto;
+import com.kh.ordering.repository.AdminQnaDao;
 import com.kh.ordering.repository.CertDao;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.Member_AddrDao;
 import com.kh.ordering.repository.Member_PointDao;
+import com.kh.ordering.service.BoardQnaService;
 import com.kh.ordering.service.EmailService;
 import com.kh.ordering.service.GoodsOptionService;
 import com.kh.ordering.service.MemberService;
@@ -86,6 +87,11 @@ public class MemberController {
 	
 	@Autowired
 	private GoodsOptionService goodsOptionService;
+	
+	@Autowired
+	private AdminQnaDao adminQnaDao;
+	@Autowired
+	private BoardQnaService boardQnaService;
 
 	// 장바구니 (월용) ///////////////////////
 	@GetMapping("/cart")
@@ -913,15 +919,25 @@ public class MemberController {
 			return "member/pointinfo";
 		}
 		
-		//회원 로그인후 마이페이지
-				@GetMapping("/membermyinfo")
-				public String membermyinfo() {
-
-					return "member/membermyinfo";
-				}
+//회원 로그인후 마이페이지
+	@GetMapping("/membermyinfo")
+	public String membermyinfo(Model model, HttpSession session,
+												@RequestParam(value="pageNo", required=false, defaultValue="0") String pageNo) {
+		
+		String member_id = (String)session.getAttribute("member_id");
+		int member_no = memberDao.getNo(member_id);
+		model.addAttribute("member_no", member_no);
+		
+		PagingVO result= boardQnaService.myInfoQnaPaging(pageNo, member_no);
+		model.addAttribute("paging", result);
+		List<AdminQnaDto> getListYesterDay= adminQnaDao.getListYesterDay(result);
+		model.addAttribute("getListYesterDay", getListYesterDay);
+					
+		return "member/membermyinfo";
+	}
 		
 	
-// 회원 마이페이지 Aside에 보낼 정보
+///// 회원 마이페이지 Aside에 보낼 정보
 		@GetMapping("/memberInfoAside") // 전체 회원정보
 		@ResponseBody
 		public MemberDto memberInfoAside(HttpSession session) {
@@ -943,7 +959,7 @@ public class MemberController {
 			return member_PointDao.getTotalPoint(member_no);
 		}
 		
-		
+//////////////////////////////		
 		
 		
 		//비밀번호 확인 안됨

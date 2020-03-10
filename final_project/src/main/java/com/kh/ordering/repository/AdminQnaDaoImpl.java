@@ -175,6 +175,17 @@ public class AdminQnaDaoImpl implements AdminQnaDao{
 
 		}
 
+	
+	// 최근 3일기준 관리자 문의게시판 작성 List	
+	@Override
+	public List<AdminQnaDto> getListYesterDay(PagingVO paging) {
+		return sqlSession.selectList("adminQnaDto.getListYesterDay", paging);
+	}
+	@Override
+	public int getYesterDayCount(int member_no) {
+		return sqlSession.selectOne("adminQnaDto.getYesterDayCount", member_no);
+	}
+
 
 
 
