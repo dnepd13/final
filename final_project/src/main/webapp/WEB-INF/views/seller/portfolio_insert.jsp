@@ -16,7 +16,7 @@
 		margin: 0 auto;
 	}
 </style>
-
+   
 <script type="text/javascript">
 	
 	$(function(){
@@ -99,7 +99,8 @@
   		</tbody>
   	</table>
   </div>
- 
+
+<br>
  <div class="row-empty-40"></div>
  
   <!-- 등록된 포트폴리오 출력 영역 -->
