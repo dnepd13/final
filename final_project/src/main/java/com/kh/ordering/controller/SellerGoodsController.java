@@ -41,11 +41,6 @@ public class SellerGoodsController {
 	private SellerDto sellerDto;
 	@Autowired
 	private SellerDao sellerDao;
-	//---------------------------카테고리 관리창----------------------------------
-//	@GetMapping("/serller_category")
-//	public String category(
-//			Model model,
-//			@RequestParam(value="pno1", required = false) String pno1
 
 	//---------------------------카테고리 등록----------------------------------
 	
@@ -91,24 +86,6 @@ public ModelAndView seller_category_info(HttpSession session) {
 	mv.setViewName("/seller/category_info");
 	return mv;
 }
-///---카테고리 수정---------------------------------------------------//
-@PostMapping("/category_update")
-@ResponseBody
-public String seller_category_update(
-		@RequestParam int category_no,
-		@RequestParam String seller_no) {
-	
-	log.info("1={}", category_no);
-	log.info("1={}", seller_no);
-	
-	SellerCategoryDto sellerCategoryDto = SellerCategoryDto.builder()
-																	.category_no(category_no)
-																//	.seller_no(seller_no)
-																	.build();
-	
-	sellerCategoryDao.seller_update_category(sellerCategoryDto);
-	return "/seller/category_info";
-}
 //---------------------------카테고리 삭제----------------------------------
 	@PostMapping("/category_delete")
 	//@ResponseBody
@@ -119,7 +96,6 @@ public String seller_category_update(
 	}
 }
 
-//}
-//
+
 
 
