@@ -120,7 +120,7 @@ public class SellerController {
 					return "fail";
 					
 				}
-			}
+	}
 	
 	//판매자 비밀번호 찾기
 	@GetMapping("/pwfind")
@@ -173,23 +173,7 @@ public class SellerController {
 		return"redirect:/seller/login";
 		}
 	
-	
-	
-	
-	
-//	///아이디 중복검사
-//	@ResponseBody //ajax로 보낼때 사용하는 어노테이션
-//			@GetMapping("/check_id")
-//			public  Map<Object, Object>id_check(@RequestBody String seller_id) {
-//		int count = 0;
-//        Map<Object, Object> map = new HashMap<Object, Object>();
-//        count = sellerService.check_id(seller_id);
-//        map.put("count", count);
-// 
-//        return map;
-//	}
 
-	
 			///아이디 중복검사
 			@GetMapping(value = "/id_check",produces ="application/text; charset=utf-8")
 			@ResponseBody //ajax로 보낼때 사용하는 어노테이션
@@ -260,14 +244,8 @@ public class SellerController {
 	@GetMapping("/logout")
 		public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/seller/login";		
+		return "redirect:/";		
 	}
-	///////////////////////// 판매자 관리 페이지////////////////////////////////////////////////////////////
-	@GetMapping("/management")
-	 public String management(@ModelAttribute SellerDto sellerDto) {
-		return"seller/management";
-	}
-
 //////////////////////////판매자 정보 조회///////////////////////////////////////////////////////
 	@GetMapping("/info")
 	public String info1(Model model,HttpSession session) {

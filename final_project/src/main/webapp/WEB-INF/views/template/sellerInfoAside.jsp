@@ -91,6 +91,14 @@
 		       </ul>
 		   </li>	
 	   </ul>
+<ul>
+	   <li>판매자 문의,신고
+	   		<ul>
+       		<li><a href="${pageContext.request.contextPath}/board/sellerreport">관리자에게 신고</a></li>
+       		<li><a href="${pageContext.request.contextPath}/board/sellerqna">관리자에게 문의</a></li> 
+       		</ul>
+       </li>
+</ul>        
 		<ul>
 			<li><a href="/ordering/member/style">style</a></li>
 		</ul>
