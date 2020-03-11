@@ -13,7 +13,8 @@
  		<setting name="defaultStatementTimeout" value="10000"/>
  	</settings>
  	<typeAliases>
- 		
+ 		<!--블락-->
+ 		<typeAlias type="com.kh.ordering.entity.BlockDto" alias="BlockDto"/>	
  		<!-- 페이징, 파일 -->
  		<typeAlias type="com.kh.ordering.vo.PagingVO" alias="pagingVO"/>
  		<typeAlias type="com.kh.ordering.entity.FilesDto" alias="FilesDto"/>

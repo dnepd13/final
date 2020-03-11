@@ -84,6 +84,7 @@ public class MemberBoardController {
 	
 	//문의 게시판 처리
 	@GetMapping("/memberqna")
+	@RegueiredAuth
 	public String memberqna(HttpSession session, Model model,
 					@RequestParam(value="pno1", required = false)
 					String pno1
@@ -123,6 +124,7 @@ public class MemberBoardController {
 
 	//문의 상세보기
 	@GetMapping("/detailmqna")
+	@RegueiredAuth
 	public String detailmqna(
 			@ModelAttribute AdminQnaDto adminQnaDto,
 			Model model
@@ -139,6 +141,7 @@ public class MemberBoardController {
 
 	//문의 게시판 인서트
 	@GetMapping("/qnaregist")
+	@RegueiredAuth
 	public String qnaregist()
 	{
 
@@ -150,6 +153,7 @@ public class MemberBoardController {
 	
 
 	@PostMapping("/qnaregist")
+	@RegueiredAuth
 	public String qnaregist(@ModelAttribute AdminQnaDto adminQnaDto,
 							HttpSession session, Model model)
 	{
@@ -198,6 +202,7 @@ public class MemberBoardController {
 
 	// 회원 문의게시판 수정
 	@GetMapping("/updateqna")
+	@RegueiredAuth
 	public String editqna(@RequestParam int admin_qna_no,Model model) {
 //		log.info("upno={}", admin_qna_no);
 
@@ -314,6 +319,7 @@ public class MemberBoardController {
 	
 	// 판매자 문의 게시판 처리
 		@GetMapping("/sellerqna")
+		@RegueiredAuth
 		public String sellerqna(HttpSession session, Model model,
 						@RequestParam(value="pno2", required = false)
 						String pno2
@@ -446,6 +452,7 @@ public class MemberBoardController {
 //				
 //				//판매자 문의 상세보기
 				@GetMapping("/sellerdetailmqna")
+				@RegueiredAuth
 				public String sellerdetailmqna(
 						@ModelAttribute AdminQnaDto adminQnaDto,
 						Model model
@@ -461,6 +468,7 @@ public class MemberBoardController {
 		
 //				//문의 게시판 인서트
 				@GetMapping("/sellerqnaregist")
+				@RegueiredAuth
 				public String sellerqnaregist()
 				{
 					return "board/sellerqnaregist";
@@ -500,6 +508,7 @@ public class MemberBoardController {
 		
 //				// 판매자 문의게시판 수정
 				@GetMapping("/sellereditqna")
+				@RegueiredAuth
 				public String sellereditqna(@RequestParam int admin_qna_no,Model model) {
 //					log.info("upno={}", admin_qna_no);
 

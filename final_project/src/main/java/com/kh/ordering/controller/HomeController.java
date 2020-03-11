@@ -23,6 +23,7 @@ public class HomeController {
 	private GoodsDao goodsDao;
 	
 	@GetMapping("/")
+	@RegueiredAuth
 	public String home(Model model) {
 		model.addAttribute("listNew", goodsService.getListNew());
 		model.addAttribute("listBest", goodsService.getListBest());

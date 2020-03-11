@@ -33,7 +33,7 @@
          <div class="offset-md-4 col-md-4 ">
             <div class="row justify-content-center"><h1>판매자 탈퇴</h1></div>
             <br><br><br>
-            <form action="delete" method="post">
+            <form action="delete_proc" method="post">
  
 				<!--비밀번호 입력창-->
                <div class="form-group">
