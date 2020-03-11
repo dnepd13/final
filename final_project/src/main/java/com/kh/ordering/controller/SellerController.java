@@ -55,7 +55,7 @@ public class SellerController {
 	private SqlSession sqlSession;
 	//판매자 메인 홈
 	@GetMapping("/main")
-	@RegueiredAuth
+
 	public String main() {
 		return "/seller/main";
 	}
@@ -208,7 +208,7 @@ public class SellerController {
 	
 ///////////////////////////판매자 로그인///////////////////////////////////////
 	@GetMapping("login")
-	@RegueiredAuth
+
 	private String login( ) {
 		return "seller/login";
 		
@@ -232,10 +232,11 @@ public class SellerController {
 			log.info("current={}",correct);
 					if(correct == true) {   //비밀번호일치
 						session.setAttribute("seller_id", find.getSeller_id());
+						log.info("session={}"+session);
 						return "redirect:/seller/main";				
 					}
 					else {
-//						log.info("asda");
+	//				log.info("asda");
 						return "redirect:/seller/login?error";
 					}		
 		}
@@ -244,7 +245,7 @@ public class SellerController {
 	
 ////////////////////////////판매자 로그아웃///////////////////////////////////
 	@GetMapping("/logout")
-	@RegueiredAuth
+
 		public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";		

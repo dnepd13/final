@@ -30,7 +30,6 @@ public class HomeController {
 	private GoodsDao goodsDao;
 	
 	@GetMapping("/")
-	@RegueiredAuth
 	public String home(Model model) {
 		List<GoodsFileVO> listNew = goodsService.getListNew();
 		List<Integer> starListNew = new ArrayList<>();
