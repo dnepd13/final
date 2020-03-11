@@ -285,6 +285,7 @@ public class MemberController {
 		return "member/deleteFail";
 	}
 	
+	//
 	
 	@GetMapping("deleteSuccess")
 	public String deleteSuccess() {
