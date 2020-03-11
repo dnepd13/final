@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.ordering.entity.BlockDto;
 import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
@@ -200,9 +201,11 @@ public class MemberCustomController {
 
 		List<FilesVO>  filesVO = sellerCustomService.filesList(seller_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
-//		log.info("content.getSeller_no={}",content.getSeller_no());
+		
 		// 차단판매자 데려오기
-//		int sellerblock = sqlSession.selectOne("seller.getblock", content.getSeller_no());
+		BlockDto blockDto = sqlSession.selectOne("Block.getSellerInfo", content.getSeller_no());
+		log.info("blockDto={}",blockDto);
+		//		int sellerblock = sqlSession.selectOne("seller.getblock", content.getSeller_no());
 //		log.info("sellerblock={}",sellerblock);
 //		model.addAttribute("sellerblock", sellerblock);
 		
@@ -251,8 +254,10 @@ public class MemberCustomController {
 			
 			int seller_no = alarmList.get(0).getSeller_no();
 			SellerDto sellerDto= sellerDao.sellerDto(seller_no);
-			String seller_id = sellerDto.getSeller_id();
-			model.addAttribute("seller_id", seller_id);
+			if(sellerDto!=null) {
+				String seller_id = sellerDto.getSeller_id();
+				model.addAttribute("seller_id", seller_id);
+			}
 
 			return "member/customInfoReq";
 		}

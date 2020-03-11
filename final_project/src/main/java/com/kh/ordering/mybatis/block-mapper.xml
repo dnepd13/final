@@ -16,7 +16,16 @@
  
 
  
- 
+	<!-- seller_no에 대한 차단 정보 조회 -->
+	<select id="getSellerInfo" parameterType="int" resultType="BlockDto">
+		select *from block where seller_no=#{seller_no} and block_group='판매자'
+	</select>
+	
+	<!-- member_no에 대한 차단 정보 조회 -->
+	<select id="getMemberInfo" parameterType="int" resultType="BlockDto">
+		select *from block where member_no=#{member_no} and block_group='구매자'
+	</select>
+
  
  
  </mapper>

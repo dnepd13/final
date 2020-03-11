@@ -13,15 +13,16 @@
  <style>
  	.articleBox {
  		width: 1200px;
-		height: 800px;
+		height: auto;
 		margin: 0 auto;
 	}
 	.req_wrap {
 		float: left;
-		margin-left: 150px;
+		margin-left: 60px;
 		padding-top: 100px;
-		width: 500px;
+		width: 900px;
 	}
+	
 
 /*수정 modal 내부 input 스타일 */	
  	.insert_req  {
@@ -67,7 +68,7 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
-<script type="text/javascript">
+<script>
 	$(function(){
 	// 수정 modal 제어
 		var btn_update = document.querySelector(".btn_update");
@@ -108,10 +109,10 @@
 		}
 		
 		// 달력
-		$(".date").datepicker({ 
-			minDate: 0,
-			dateFormat: "yy/mm/dd"
-		});
+// 		$(".date").datepicker({ 
+// 			minDate: 0,
+// 			dateFormat: "yy/mm/dd"
+// 		});
 		
 		// 가격 입력제한
 		$(".price").keyup(function(){
@@ -134,7 +135,7 @@
 <article class="articleBox">
 <jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 <div class="req_wrap">
-	<div class="card mb-3 ">
+	<div class="card mb-3">
 		<div class="card-header">
 			<h5>${getListInfoReq.custom_order_title}</h5>
 			<h6 class="card-subtitle text-muted">
@@ -144,7 +145,14 @@
 						 	카테고리: ${category.category_large } / ${category.category_middle } / ${category.category_small } 
 				 		</c:when>
 				 		<c:otherwise>
-				 			${seller_id } 님에게 보낸 요청서
+				 			<c:choose>
+				 				<c:when test="${ not empty seller_id }">
+				 					${seller_id } 님에게 보낸 요청서
+				 				</c:when>
+				 				<c:otherwise>
+				 					탈퇴한 판매자입니다.
+				 				</c:otherwise>
+				 			</c:choose>
 				 		</c:otherwise>
 			 		</c:choose>
 				</span>

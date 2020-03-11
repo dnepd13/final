@@ -28,7 +28,7 @@
  	}
  	.insert_req > textarea {
  		resize: none;
- 		height: 25%;
+ 		height: 300px;
  	}
  	.insert_req input[type=submit] {
  		height: 50px;
@@ -269,7 +269,7 @@
 			<input class="input_req form-control price" type="number" name="custom_order_price" placeholder="원" required>
 				<br>
 			<h6 class="text-secondary">희망 날짜는 언제인가요? </h6>
-			<input class="input_req form-control date" type="text" name="custom_order_hopedate" required readonly>
+			<input class="input_req form-control date" type="text" name="custom_order_hopedate" required>
 				<br>
 			<h6 class="text-secondary">원하는 디자인 등이 있다면 함께 보내주세요.</h6>
 			<input class="input_req form-control-file" type="file" name="files" id="upload" multiple>
