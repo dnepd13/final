@@ -206,6 +206,29 @@
 				alert("희망가격은 1원 이상, 100만원 이하로 작성해주세요.");
 			}
 		});
+		
+		// 파일정보 미리보기
+		var upload = document.querySelector("#upload");
+		
+		$(upload).change(function(f){
+			$(".files_Info").children().empty();
+			var files = f.target.files;	
+			if(files.length >5 ){
+				alert("파일은 최대 5개까지만 등록 가능합니다. 다시 선택해주세요.");
+				$("input[type=submit]").prop("disabled", true);
+			}
+			else{
+				$("input[type=submit]").prop("disabled", false);
+				for(var i=0 ; i<files.length ; i++){
+					var filesName =files[i].name;
+					var filesSizeOrigin = files[i].size/1024;
+					var filesSize = String(filesSizeOrigin).substring(0,5);
+					$(".files_name").append(filesName+"<br>");
+					$(".files_size").append(filesSize+" KB <br>");
+				}
+			}
+		});
+		
 	});
 
  </script>
@@ -249,7 +272,18 @@
 			<input class="input_req form-control date" type="text" name="custom_order_hopedate" required readonly>
 				<br>
 			<h6 class="text-secondary">원하는 디자인 등이 있다면 함께 보내주세요.</h6>
-			<input class="input_req form-control-file" type="file" name="files" multiple>
+			<input class="input_req form-control-file" type="file" name="files" id="upload" multiple>
+			<!-- 파일정보 미리보기 영역-->
+			  <div>
+			  	<table>
+			  		<tbody>
+			  			<tr class="files_Info">
+			  				<td class="files_name" style="width:70%;"></td>
+			  				<td class="files_size" style="width:30%;"></td>
+			  			</tr>
+			  		</tbody>
+			  	</table>
+			  </div>
 				<br>
 			<input class="input_req form-control btn btn-primary" type="submit" value="요청서 보내기">
 		</div>

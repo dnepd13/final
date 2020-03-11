@@ -17,41 +17,44 @@
 
 
 <c:choose>
-<c:when test="${param.admin_qna_no >0}">	
+
+
+<c:when test="${qnaone.admin_no >0}">	
 	<h1>관리자의 답변입니다.</h1>
+
 </c:when>
 <c:otherwise>
 	<div class="btn-group-vertical">
 		<a href="${pageContext.request.contextPath}/board/updateqna?admin_qna_no=${qnaone.admin_qna_no}">
 			<button type="button" class="btn btn-primary">수정</button>
 		</a>
-</div> 
-
+		</div> 
 </c:otherwise>
 </c:choose>
+
 <table class="table table-hover">
 <tbody>
 	<tr>
 		<th width="121px">제목</th>
-		<td width="600px">${qnaone.admin_qna_title}</td>
+		<td width="600px">${qnaoneGetOne.admin_qna_title}</td>
 	</tr>
 		<tr>
 		<th width="121px">작성자구분</th>
-		<td width="600px">${qnaone.admin_qna_usertype}</td>
+		<td width="600px">${qnaoneGetOne.admin_qna_usertype}</td>
 	</tr>
 		<tr>
 		<th width="121px">작성자</th>
-		<td width="600px">${qnaone.admin_qna_writer}</td>
+		<td width="600px">${qnaoneGetOne.admin_qna_writer}</td>
 	</tr>
 		<tr>
 		<th width="121px">작성일</th>
-		<td width="600px">${qnaone.admin_qna_date}</td>
+		<td width="600px">${qnaoneGetOne.admin_qna_date}</td>
 	</tr>
 	
 	
 	<tr>
 		<th></th>
-		<td width="600px" align="left">${qnaone.admin_qna_content}</td>
+		<td width="600px" align="left">${qnaoneGetOne.admin_qna_content}</td>
 	</tr>
 </tbody>
 

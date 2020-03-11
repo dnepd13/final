@@ -21,7 +21,7 @@ public class EmailServiceImpl implements EmailService{
 		MimeMessage message= sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 		
-		helper.setFrom("testdnepd@gmail.com");
+		helper.setFrom("ordering.kh@gmail.com");
 		helper.setTo(email);
 		helper.setSubject("[Ordering] 회원님의 비밀번호가 초기화되었습니다.");
 		helper.setText("초기화된 비밀번호는 123456789a 입니다");

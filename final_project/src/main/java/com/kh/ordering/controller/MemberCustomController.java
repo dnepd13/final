@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -50,6 +51,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/member")
 @Slf4j
 public class MemberCustomController {
+	@Autowired
+	private SqlSession sqlSession;
 	
 	@Autowired
 	private MemberCustomService memberCustomService;	
@@ -191,12 +194,17 @@ public class MemberCustomController {
 																					.custom_order_status("읽음")
 																					.build();
 		memberCustomDao.updateCustomStatus(customOrderDto);
-		
+
 		CustomOrderVO content = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("getListInfoResp", content);
-		
+
 		List<FilesVO>  filesVO = sellerCustomService.filesList(seller_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
+//		log.info("content.getSeller_no={}",content.getSeller_no());
+		// 차단판매자 데려오기
+//		int sellerblock = sqlSession.selectOne("seller.getblock", content.getSeller_no());
+//		log.info("sellerblock={}",sellerblock);
+//		model.addAttribute("sellerblock", sellerblock);
 		
 		return "member/customInfoResp";
 	}
@@ -214,7 +222,7 @@ public class MemberCustomController {
 		// 내가 보낸 요청서		
 		List<CustomOrderVO> list = memberCustomDao.getListReq(result);
 		model.addAttribute("getListReq", list);		
-		log.info("list",list);
+
 		return "member/customListReq";
 	}
 	
@@ -308,6 +316,22 @@ public class MemberCustomController {
 		// 회원 신규 견적서 알람 check N count 개수		
 		return memberCustomDao.customAlarm(member_no);
 	}
+	
+	// 받은 견적서의 판매자가 차단된 사람인가 아닌가
+//	@GetMapping("/blockSeller")
+//	@ResponseBody
+//	public boolean blockSeller(int seller_no) {
+//		boolean sellerblock=sqlSession.selectOne("seller.getBlock", seller_no);
+//		log.info("sellerblock={}",sellerblock);
+//		if(sellerblock) {
+//			return sqlSession.selectOne("seller.getBlock", seller_no);
+//		}
+//		else {
+//			return false;
+//		}
+//		
+//	}
+	
 	
 // 파일 이미지 다운로드
 	@GetMapping("/download")

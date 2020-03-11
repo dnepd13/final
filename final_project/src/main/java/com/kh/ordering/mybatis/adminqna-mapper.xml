@@ -50,7 +50,7 @@
 			select rownum rn, A.* from (
 				select * from admin_qna connect by prior
 				admin_qna_no=super_no start with super_no
-				is null and admin_qna_head='신고' order siblings
+				is null and admin_qna_head='신고' and member_no = #{member_no} order siblings
 				by group_no desc, admin_qna_no asc
 			)A
 		) where rn between #{start} and #{finish}
@@ -64,6 +64,10 @@
  <!-- 문의 게시글 상세보기 -->
  <select id="QnaGetOne" parameterType="adminQnaDto" resultType="adminQnaDto">
  	select * from admin_qna where admin_qna_no = #{admin_qna_no}
+ </select>
+ 	
+  <select id="qnaonemember" parameterType="adminQnaDto" resultType="adminQnaDto">
+ 	select * from admin_qna where admin_qna_no = #{admin_qna_no} 
  </select>
 
   <!-- 회원 문의 게시글 글쓰기 -->
@@ -136,7 +140,7 @@
 			select rownum rn, A.* from (
 				select * from admin_qna connect by prior
 				admin_qna_no=super_no start with super_no
-				is null and admin_qna_head='문의' order siblings
+				is null and admin_qna_head='문의' and member_no = #{member_no} order siblings
 				by group_no desc, admin_qna_no asc
 			)A
 		) where rn between #{start} and #{finish}
@@ -154,10 +158,10 @@
  <!-- 판매자 문의  페이징 -->
  <select id="getListSellerQna" parameterType="pagingVO" resultType="adminQnaDto">
 	select * from(
-			select rownum rn, A.* from (
+				select rownum rn, A.* from (
 				select * from admin_qna connect by prior
 				admin_qna_no=super_no start with super_no
-				is null and admin_qna_head='문의' order siblings
+				is null and admin_qna_head='문의' and seller_no = #{seller_no} order siblings
 				by group_no desc, admin_qna_no asc
 			)A
 		) where rn between #{start} and #{finish}
@@ -177,7 +181,7 @@
 			select rownum rn, A.* from (
 				select * from admin_qna connect by prior
 				admin_qna_no=super_no start with super_no
-				is null and admin_qna_head='신고' order siblings
+				is null and admin_qna_head='신고' and seller_no = #{seller_no} order siblings
 				by group_no desc, admin_qna_no asc
 			)A
 		) where rn between #{start} and #{finish}
@@ -287,6 +291,21 @@
 
  </update>
  
+	<!-- 최근 3일 기준 관리자 문의게시판 내용 -->
+	<select id="getListYesterDay" parameterType="int" resultType="adminQnaDto">
+		select *from(
+		    select rownum rn, RN.* from(
+		        select *from admin_qna where admin_qna.member_no=#{member_no} and admin_qna_date > sysdate - 3
+		            connect by prior admin_qna.admin_qna_no = admin_qna.super_no start with admin_qna.super_no is null
+		            order siblings by admin_qna.group_no desc, admin_qna.admin_qna_no asc
+		    )RN
+		)where rn between #{start} and #{finish}
+	</select>
+	<select id="getYesterDayCount" parameterType="int" resultType="int">
+		select count(*) from admin_qna where admin_qna.member_no=#{member_no} and admin_qna_date > sysdate - 3
+            connect by prior admin_qna.admin_qna_no = admin_qna.super_no start with admin_qna.super_no is null
+            order siblings by admin_qna.group_no desc, admin_qna.admin_qna_no asc
+	</select>
  
  
  </mapper>  

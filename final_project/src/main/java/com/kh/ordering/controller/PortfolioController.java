@@ -55,6 +55,7 @@ public String portfolio_insert(HttpSession session, Model model){
     if(filesVO!=null) {
     	model.addAttribute("filesVO", filesVO);
     }
+    model.addAttribute("seller_no", seller_no);
   
 	return "/seller/portfolio_insert";
 	
@@ -72,6 +73,13 @@ public String portfolio_insert(HttpSession session,
            sellerService.Portfolio_insert(session,files,sellerDto);           
            
 	      return "redirect:/seller/portfolio_insert";		
+}
+
+// 포트폴리오 삭제
+@PostMapping("/portfolio_delete")
+public String portfolio_delete(@ModelAttribute PortfolioDto portfolioDto) {
+	portfolioDao.portfolio_delete(portfolioDto);
+	return "redirect:/seller/portfolio_insert";
 }
 
 @GetMapping("/portfolio_download")

@@ -116,22 +116,28 @@
       }
     </script>
     
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
+   
 <aside>
-<div>
-<jsp:include page="template/header.jsp"></jsp:include>
-</div>
+	<section>
+		<div>
+			<jsp:include page="template/header.jsp"></jsp:include>
+		</div>
+	</section>
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 <div class="row justify-content-center"  style="padding-top: 50px; padding-right:10px">
 
-<img src="${pageContext.request.contextPath}/resources/file/오더링.png" width=400px; height=200px;>
+<img src="${pageContext.request.contextPath}/resources/file/오더링.png" width=500px; height=200px;>
 
 </div>
-<div class="container-fluid">
-        <div class="row" style="padding: 50px;">
-            <div class="offset-md-1 col-md-10">
+            <div class="offset-md-1 col-md-10" id="go">
 
 	<div class="container">
         <div class="row">
@@ -161,7 +167,6 @@
           </div>
         </div>
       </div>
-
 
 	 <div class="container">
         <div class="row">
@@ -253,10 +258,7 @@
           </div>
         </div>
       </div>
- 
 
    </div>
-        </div>
-    </div>
 </article>
 </section>

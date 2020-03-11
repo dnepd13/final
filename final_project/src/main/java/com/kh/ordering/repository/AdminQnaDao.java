@@ -19,7 +19,7 @@ public interface AdminQnaDao {
 
 	List<AdminQnaDto> getListQna(PagingVO pagingVO);
 
-	public AdminQnaDto qnaGetOne(AdminQnaDto adminQnaDto);
+	public AdminQnaDto qnaGetOne(AdminQnaDto adminQnaDto, int getNo);
 
 	int QnaSeq();
 
@@ -67,9 +67,13 @@ public interface AdminQnaDao {
 
 	void sellerreportUpdate(AdminQnaDto adminQnaDto);
 
+	AdminQnaDto qnaonemember(AdminQnaDto adminQnaDto);
 
 
-
+// 최근 3일기준 관리자 문의게시판 작성 List
+	List<AdminQnaDto> getListYesterDay(PagingVO paging);
+	int getYesterDayCount(int member_no);
+	
 //	public int countBoard();
 
 

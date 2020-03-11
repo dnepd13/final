@@ -84,6 +84,7 @@ public class MemberBoardController {
 	
 	//문의 게시판 처리
 	@GetMapping("/memberqna")
+	@RegueiredAuth
 	public String memberqna(HttpSession session, Model model,
 					@RequestParam(value="pno1", required = false)
 					String pno1
@@ -97,6 +98,7 @@ public class MemberBoardController {
 
 		List<AdminQnaDto> qnalist = adminQnaDao.getListQna(pagingVO);
 
+		log.info("qnalist={}",qnalist);
 
 		model.addAttribute("getListQna",qnalist);
 		model.addAttribute("paging1",pagingVO);
@@ -123,21 +125,39 @@ public class MemberBoardController {
 
 	//문의 상세보기
 	@GetMapping("/detailmqna")
+	@RegueiredAuth
 	public String detailmqna(
 			@ModelAttribute AdminQnaDto adminQnaDto,
-			Model model
+			Model model,HttpSession session
 			) {
-		AdminQnaDto result1 = adminQnaDao.qnaGetOne(adminQnaDto);
-//		log.info("result={}",result1);
 
+		log.info("admindto={}", adminQnaDto);
+		log.info("sessionid={}", session);
+		String member_id = (String)session.getAttribute("member_id");
+		int getNo = memberDao.getNo(member_id);
+		log.info("getNO={}", getNo);
+		AdminQnaDto result1 = adminQnaDao.qnaGetOne(adminQnaDto,getNo);
+		log.info("result11={}", result1);          
+		
+		AdminQnaDto memberresult = adminQnaDao.qnaonemember(adminQnaDto);
+		log.info("memberresult={}",memberresult);
+		
+		//세션에서 가져온 멤버no
+		model.addAttribute("memberno",getNo);
 		model.addAttribute("qnaone",result1);
-		log.info("modalqna={}",model);
+
+		
+		//리스트에서 가져온 memberNo
+		model.addAttribute("qnaoneGetOne",result1);
+		log.info("membersu={}",result1);
+		
 		return "board/detailmqna";
 	}
 
 
 	//문의 게시판 인서트
 	@GetMapping("/qnaregist")
+	@RegueiredAuth
 	public String qnaregist()
 	{
 
@@ -149,16 +169,17 @@ public class MemberBoardController {
 	
 
 	@PostMapping("/qnaregist")
+	@RegueiredAuth
 	public String qnaregist(@ModelAttribute AdminQnaDto adminQnaDto,
 							HttpSession session, Model model)
 	{
-
+		log.info("adminQnaDto={}", adminQnaDto);
 		//회원 문의 시퀀스 저장
 		int qnaseq = adminQnaDao.QnaSeq();
 
 		String member_id = (String)session.getAttribute("member_id");
 		int member_no = memberDao.getNo(member_id);
-
+	
 //		adminQnaDto.setAdmin_qna_no(qnaseq);
 
 		//중복되어있는 dto라 사용자가 작성한 Dto 데이터가 지워지고 다시 세팅되는 역활을 함
@@ -197,8 +218,9 @@ public class MemberBoardController {
 
 	// 회원 문의게시판 수정
 	@GetMapping("/updateqna")
+	@RegueiredAuth
 	public String editqna(@RequestParam int admin_qna_no,Model model) {
-//		log.info("upno={}", admin_qna_no);
+		log.info("upno={}", admin_qna_no);
 
 		AdminQnaDto result = adminQnaDao.qnagetUpdate(admin_qna_no);
 //		log.info("resultup={}",result);
@@ -312,6 +334,7 @@ public class MemberBoardController {
 	
 	// 판매자 문의 게시판 처리
 		@GetMapping("/sellerqna")
+		@RegueiredAuth
 		public String sellerqna(HttpSession session, Model model,
 						@RequestParam(value="pno2", required = false)
 						String pno2
@@ -331,6 +354,7 @@ public class MemberBoardController {
 
 			return "board/sellerqna";
 			}
+		
 	
 //		//판매 신고 게시판 처리
 		@GetMapping("/sellerreport")
@@ -444,6 +468,7 @@ public class MemberBoardController {
 //				
 //				//판매자 문의 상세보기
 				@GetMapping("/sellerdetailmqna")
+				@RegueiredAuth
 				public String sellerdetailmqna(
 						@ModelAttribute AdminQnaDto adminQnaDto,
 						Model model
@@ -459,6 +484,7 @@ public class MemberBoardController {
 		
 //				//문의 게시판 인서트
 				@GetMapping("/sellerqnaregist")
+				@RegueiredAuth
 				public String sellerqnaregist()
 				{
 					return "board/sellerqnaregist";
@@ -498,6 +524,7 @@ public class MemberBoardController {
 		
 //				// 판매자 문의게시판 수정
 				@GetMapping("/sellereditqna")
+				@RegueiredAuth
 				public String sellereditqna(@RequestParam int admin_qna_no,Model model) {
 //					log.info("upno={}", admin_qna_no);
 

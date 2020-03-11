@@ -4,6 +4,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
 
 <aside>
 <div>
@@ -12,7 +17,7 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
     <title>Document</title>
     <style></style>
     <script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
@@ -35,7 +40,10 @@
 	<c:choose>
 		<c:when test="${list.goods_review_reply_no > 0 }">
 			<hr>
-			<div>--->답변</div>
+			<div>
+				<img src="${pageContext.request.contextPath}/resources/file/arrow.png" width=15px; height=15px;>
+				답변
+			</div>
 			<div>		답변자 : ${list.goods_review_reply_writer} 답변 일시 : ${list.goods_review_reply_date}</div>
 			<div>		${list.goods_review_reply_content}</div>
 		</c:when>

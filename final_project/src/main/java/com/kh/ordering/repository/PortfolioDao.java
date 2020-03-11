@@ -10,4 +10,5 @@ public interface PortfolioDao {
 	void Portfolio_insert(PortfolioDto portfolioDto);
 
 	List<FilesVO> getFilesList(int seller_no); // 포트폴리오 FilesVO
+	void portfolio_delete(PortfolioDto portfolioDto);
 }

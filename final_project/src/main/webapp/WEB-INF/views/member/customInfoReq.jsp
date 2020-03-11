@@ -63,7 +63,10 @@
  	}
  </style>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <script type="text/javascript">
 	$(function(){
 	// 수정 modal 제어
@@ -89,6 +92,7 @@
 			}
 			else if (alarm=="Y"){
 				$("btn_update").prop("disabled", true);
+				btn_update.style.color = "#BDBDBD";
 			}
 			
 		}
@@ -102,6 +106,21 @@
 				modal.style.display = "none";
 			});	
 		}
+		
+		// 달력
+		$(".date").datepicker({ 
+			minDate: 0,
+			dateFormat: "yy/mm/dd"
+		});
+		
+		// 가격 입력제한
+		$(".price").keyup(function(){
+
+			if($(this).val()<=0 || $(this).val()>1000000){
+				$(this).val("");
+				alert("희망가격은 1원 이상, 100만원 이하로 작성해주세요.");
+			}
+		});
 
 			// modal 바깥의 윈도우 클릭 시 modal 닫음		
 // 		window.onclick = function(event){
@@ -190,11 +209,11 @@
 			<textarea class="input_req form-control" name="custom_order_content" placeholder="${getListInfoReq.custom_order_content}" required></textarea>
 				<br>
 			<h6 class="text-secondary">희망 가격은 얼마인가요?</h6>
-			<input class="input_req form-control" type="number" name="custom_order_price" placeholder="${getListInfoReq.custom_order_price} 원" required>
+			<input class="input_req form-control price" type="number" name="custom_order_price" placeholder="${getListInfoReq.custom_order_price} 원" required>
 				<br>
 			<h6 class="text-secondary">희망 날짜는 언제인가요? </h6>
-			<input class="input_req form-control" type="date" name="custom_order_hopedate" placeholder="${getListInfoReq.custom_order_hopedate}" required>
-				<br>
+			<input class="input_req form-control date" type="date" name="custom_order_hopedate" placeholder="${getListInfoReq.custom_order_hopedate}" required readonly>
+			<br>
 			<input class="input_req form-control btn btn-primary" type="submit" value="요청서 수정">
 		</form>
 	</div>

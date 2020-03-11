@@ -30,23 +30,25 @@
 							idcomfirm = 1;
 							$("#b").css("color", "blue")
 							idcheck.text("사용 가능한 아이디 입니다");
+							$(".insert").attr('disabled', false);
 						}
 						else {
 							idcheck.text("이미 존재하는 아이디 입니다");
 							$("#b").css("color", "red")
 							$(".id-form").focus();
+							$(".insert").attr('disabled', true);
 							idcomfirm=0;
 						}
 					}
 					
 				});
-				
 			}	
 			else{
 				idcomfirm=0;
 				$("#b").css("color", "red")
 				idcheck.text("아이디는 영어 소문자 및 대문자, 숫자로 작성해야하며 5~20자 사이로 입력해야합니다");
 				$(this).focus();
+				$(".insert").attr('disabled', true);
 			}
 		});
 		
@@ -58,17 +60,17 @@
 			if(nameregex.test(name)){
 				namecomfirm = 1;
 				$("#n").css("color", "blue")
-				namecheck.text("사용가능합니다")
+				namecheck.text("사용가능합니다");
+				$(".insert").attr('disabled', false);
 			}
 			else{
 				namecomfirm = 0;
 				$("#n").css("color", "red")
 				namecheck.text("이름은 한글로 2~7자로 작성해야합니다");
 				$(this).focus();
+				$(".insert").attr('disabled', true);
 			}
-			
 		});
-		
 		$(".email-form").on("blur", function(){
 			var email = $(this).val();
 			var emailregex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -78,33 +80,28 @@
 				emailcomfirm = 1;
 				$("#e").css("color", "blue")
 				emailcheck.text("사용 가능한 이메일입니다");
+				$(".insert").attr('disabled', false);
 			}
 			else{
 				emailcomfirm = 0;
 				$("#e").css("color", "red")
 				emailcheck.text("이메일을 다시 입력하세요");
+				$(".insert").attr('disabled', true);
 			}
 		});
-		
 		$(".inselt").click(function(){
-			if(idcomfirm == 1&&namecomfirm==1&&emailcomfirm==1){
-				console.log(idcomfirm);
-				console.log(namecomfirm);
-				console.log(emailcomfirm);
 				window.alert("가입이 완료되었습니다");
 				$(".admininsert").submit();		
-			}
-			else{
-				console.log(idcomfirm);
-				console.log(namecomfirm);
-				console.log(emailcomfirm);
-				$("#i").css("color", "red")
-				$("#i").text("정보를 다시 입력하세요");
-			}
 		});
 		
 	});
 </script>
+
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
 
 <aside>
 <div>
@@ -113,15 +110,14 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
-
+	<article class="arti">
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
             <div class="offset-md-4 col-md-4 ">
                 <div class="row justify-content-center" style="padding: 20px;"><h1>관리자 등록</h1></div>
                 <br><br><br>
-                <form class="admininsert" action="" method="post"> 
+                <form class="admininsert" action="" method="post" > 
                 <!-- <form class="form-inline">옆으로 오는 입력 형식 -->
                     <!--아이디 입력창-->
                     <div class="form-group">
@@ -150,7 +146,7 @@
                         <span id="e"></span>
                     </div>
 
-                    <button type="insert button" class="btn btn-primary btn-block">관리자가입</button>
+                    <button type="submit" class="insert btn btn-primary btn-block" disabled="">관리자가입</button>
                     <span id="i"></span>
                 </form>
             </div>

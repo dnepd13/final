@@ -16,14 +16,12 @@
 		width: 1200px;
 		height: 800px;
 		margin: 0 auto;
-		border: 1px dotted gray;
 	}
 	.point_wrap {
 		float: left;
 		margin-left: 60px;
 		padding-top: 30px;
 		width: 900px;
-		border: 1px dotted gray;
 	}
 	.point_wrap::after{content:""; display: block; clear:both;}
 	.point_main {
@@ -31,7 +29,6 @@
 		width: 90%;
 		height: 120px;
 		border: 2px solid #F3F5F8;
-		border: 1px dotted gray;
 	}
 	.point_mainBox1 {
 		width: 100px;
@@ -165,5 +162,6 @@
 	</div>
 </div>
 
+<div class="row-empty-40"></div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

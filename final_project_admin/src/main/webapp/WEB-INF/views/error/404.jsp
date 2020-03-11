@@ -5,9 +5,9 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 
-<div class="row justify-content-center" style="padding-top:150px;">
+<div class="row justify-content-center" style="padding-top:200px;">
      <a href="${pageContext.request.contextPath}/home">
-	     <img style="padding-left:20px;" src="${pageContext.request.contextPath}/resources/file/오더링.png" width=400px; height=200px;>
+	     <img style="padding-left:20px;" src="${pageContext.request.contextPath}/resources/file/오더링.png" width=600px; height=300px;>
      </a>
 </div>
 <div class="row justify-content-center">
@@ -16,6 +16,6 @@
 <div class="row justify-content-center" style="padding-top:30px;">
 	<h1>Ooops!</h1>
 </div>
-<div class="row justify-content-center">
+<div class="row justify-content-center" style="padding-top:30px;">
 	<h3>this is not the page you are looking for</h3>
 </div>

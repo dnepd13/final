@@ -246,5 +246,10 @@ public class OrderDaoImpl implements OrderDao {
 	public List<CartInfoVO> getTopSales(int category_no) {
 		return sqlSession.selectList("order.getTopSales", category_no);
 	}
+
+	@Override // 회원 마이페이지 메인: 최근 3일 주문내역 4개
+	public List<CartInfoVO> getListYesterDay(int member_no) {
+		return sqlSession.selectList("order.getListYesterDay", member_no);
+	}
 	
 }

@@ -3,6 +3,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">    
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
+
 <aside>
 <div>
 <jsp:include page="../template/header.jsp"></jsp:include>
@@ -10,13 +16,11 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
             <div class="offset-md-1 col-md-10">
 <div class="row justify-content-center"  style="padding: 20px;"><h1>관리문의 게시판</h1></div>
-
-   
 
 <table class="table table-hover">
   <thead>
@@ -35,7 +39,9 @@
       <td>
       <c:choose>
       <c:when test="${list.super_no > 0}">
-     	 	<a href="${pageContext.request.contextPath}/board/detailqna?admin_qna_no=${list.admin_qna_no}">---->${list.admin_qna_title }</a>
+     	 	<a href="${pageContext.request.contextPath}/board/detailqna?admin_qna_no=${list.admin_qna_no}">
+     	 	<img src="${pageContext.request.contextPath}/resources/file/arrow.png" width=20px; height=20px;>
+     	 	${list.admin_qna_title }</a>
       </c:when>
      	<c:otherwise>
      		<a href="${pageContext.request.contextPath}/board/detailqna?admin_qna_no=${list.admin_qna_no}">${list.admin_qna_title }</a>
