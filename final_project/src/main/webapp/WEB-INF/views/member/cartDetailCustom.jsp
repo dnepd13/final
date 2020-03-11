@@ -24,8 +24,22 @@
 		padding-top: 100px;
 		width: 960px;
 	}
-	.customContent {
+	.goods_main {
 		margin: 0 auto;
+		width: 90%;
+		height: 50px;
+		border-bottom: 2px solid #F3F5F8;
+	}
+	.goods_mainBox1 {
+		width: 200px;
+		height: auto;
+		padding-top: 10px;
+		margin-left: 30px;
+		float: left;
+		font-size: large; 
+	}		
+	.customContent {
+		margin:30px auto;
 		width: 90%;
 	}
 	
@@ -49,7 +63,13 @@
 <article class="articleBox">
 <jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 <div class="cartGoods">
-	<table  border="1" class="customContent">
+	<div class="goods_main">
+		<div class="goods_mainBox1">
+			주문상품 상세
+		</div>
+	</div>
+	<div class="customContent">
+	<table  border="1">
 		<tr class="t_head">
 			<th scope="col" width="50%">상품명</th>
 			<th scope="col" width="10%">수량</th>
@@ -66,9 +86,13 @@
 			<td>${customOrder.custom_order_price }</td>
 			<td>${customOrder.custom_order_status }</td>
 		</tr>
-	</table>	
-<p style="text-align: right;"><a href="${pageContext.request.contextPath }/member/cartList">목록으로</a></p>
+	</table>
+	<div class="row-empty-20"></div>
+	<p style="text-align: right;"><a href="${pageContext.request.contextPath }/member/cartList">목록으로</a></p>
+	</div>	
+		
 </div>
+
 </article>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

@@ -97,6 +97,12 @@
 	});
 </script>
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
+
 <!-- 카테고리관리창-->
 <aside>
 <div>
@@ -105,7 +111,7 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 
 
 <div class="container-fluid">

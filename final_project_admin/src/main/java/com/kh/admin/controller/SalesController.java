@@ -40,7 +40,6 @@ public class SalesController {
 	
 	@GetMapping("/status")
 	public String manage(Model model) {
-		try {
 			
 		int a = 0;
 		ResultVO result = salesDao.dailySalePrice();
@@ -116,10 +115,6 @@ public class SalesController {
 			model.addAttribute("thisMonthCancel", a);
 		}
 		return "sales/status";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "sales/status";
-		}
 	}
 	//일일방문자
 	@GetMapping("/data")

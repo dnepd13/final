@@ -53,6 +53,12 @@
 	});
 </script>
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
+
 <aside>
 <div>
 <jsp:include page="../template/header.jsp"></jsp:include>
@@ -60,7 +66,7 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
@@ -134,8 +140,8 @@
       </c:choose>
       <td>
       		<form action="reset" method="post" class="resetForm">
-      			<input type="hidden" name="member_no" value="${list.member_no }">
-      			<input type="hidden" name="member_email" value="${list.member_email }">
+      			<input class="memberNo" type="hidden" name="member_no" value="${list.member_no }">
+      			<input class="memberEmail" type="hidden" name="member_email" value="${list.member_email }">
       			<input class="memberPw" type="password" name="member_pw" value="123456789a">
       			<button class="btn btn-primary reset" >초기화</button>
       		</form>

@@ -1,19 +1,17 @@
-package com.kh.admin.controller;
+package com.kh.admin.exception;
 
 import java.sql.SQLException;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 import lombok.extern.slf4j.Slf4j;
-
-@ControllerAdvice(annotations = Controller.class)
+//@ControllerAdvice(annotations = Controller.class)
 @Slf4j
+@ControllerAdvice(basePackages = {"com.kh.admin"})
 public class ErrorController {
 	
 	@ExceptionHandler(SQLException.class)
@@ -24,13 +22,7 @@ public class ErrorController {
 	
 	@ExceptionHandler(Exception.class)
 	public String handler(Exception ex) {
-		log.error("예외발생!", ex);
+		log.error("예외발생", ex);
 		return "error/500";
-	}
-	
-	@ExceptionHandler(NoHandlerFoundException.class)
-    public String handleError404(HttpServletRequest request, Exception ex)   {
-		log.error("없는페이지에러발생", ex);
-		return "error/404";
 	}
 }

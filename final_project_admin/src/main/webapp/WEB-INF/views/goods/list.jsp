@@ -3,6 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
+
 <aside>
 <div>
 <jsp:include page="../template/header.jsp"></jsp:include>
@@ -10,7 +16,7 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
@@ -25,11 +31,11 @@
       <th width="7%">판매자 아이디</th>
       <th width="7%">판매자 이름</th>
       <th width="16%">카테고리</th>
-      <th width="20%">상품이름</th>
+      <th width="15%">상품이름</th>
       <th width="10%">가격</th>
       <th width="5%">제고</th>
-      <th width="5%">판매상태</th>
-      <th width="20%">내용</th>
+      <th width="12%">판매상태</th>
+      <th width="18%">내용</th>
       <th width="10%">상세보기</th>
     </tr>
   </thead>
