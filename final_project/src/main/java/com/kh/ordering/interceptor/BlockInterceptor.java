@@ -19,34 +19,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class BlockInterceptor extends HandlerInterceptorAdapter {
-    @Autowired
-    private SqlSession sqlSession;
-    @Autowired
-	private  BlockDto blockDto;
-	@Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-    		throws Exception {
-		String seller_id = (String) request.getAttribute("seller_id");
-		String member_id = (String) request.getAttribute("member_id");
-		int count;
-		if(seller_id!=null) {
-			count = sqlSession.selectOne("block.seller",seller_id);
-		}else
-			count = sqlSession.selectOne("block.member",member_id);
-    	if(count==0){
-    	//아이디를 이용해서 이 사람의 차단여부 알아낸다음 차단이면 에러페이지로 강제 이동,아니면 통과 return true
-    	
-	System.out.println("들어왔습니다");
-	
-			return true;
-		}
-	
-	else{
-		System.out.println("에러페이지입니다");
-		return false;
-
-		}
-	}
+//    @Autowired
+//    private SqlSession sqlSession;
+//    @Autowired
+//	private  BlockDto blockDto;
+//	@Override
+//    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+//    		throws Exception {
+//		String seller_id = (String) request.getAttribute("seller_id");
+//		String member_id = (String) request.getAttribute("member_id");
+//		int count;
+//		if(seller_id!=null) {
+//			count = sqlSession.selectOne("block.seller",seller_id);
+//		}else
+//			count = sqlSession.selectOne("block.member",member_id);
+//    	if(count==0){
+//    	//아이디를 이용해서 이 사람의 차단여부 알아낸다음 차단이면 에러페이지로 강제 이동,아니면 통과 return true
+//    	
+//	System.out.println("들어왔습니다");
+//	
+//			return true;
+//		}
+//	
+//	else{
+//		System.out.println("에러페이지입니다");
+//		return false;
+//
+//		}
+//	}
 
 
 	

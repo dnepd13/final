@@ -360,27 +360,34 @@ public class SellerController {
 
 			return "seller/delete";
 			}
-	@PostMapping("/delete")
-		public String delete( HttpSession session,@ModelAttribute SellerDto sellerDto
-	/* ,@RequestParam String seller_pw1 */) {
+	@PostMapping("/delete_proc")
+		public String delete_proc( HttpSession session,@ModelAttribute SellerDto sellerDto) {
 	//		log.info("seller_wwww={}", sellerDto);
 			//log.info("seller_pw1={}",seller_pw);
 			String seller_id = (String)session.getAttribute("seller_id");
+			//'rrrr'로 받아오고 싶은데 제이에스피부터 암호환지뭔지 길게 받아짐
+			//입력받은 텍스트 그대로 어떻게 가져올까?
+			String input_pw = sellerDto.getSeller_pw();
+			String a = passwordEncoder.encode(input_pw);
 			sellerDto.setSeller_id(seller_id);
 			SellerDto login = sellerDao.login(sellerDto);
 	//		log.info("seller_login={}", login);
 //			SellerDto find=SellerDto.builder().seller_id(seller_id).build();
 																	//유저에서가져온 값, db에서 가져온 값
-			boolean correct = passwordEncoder.matches(sellerDto.getSeller_pw(), login.getSeller_pw());
-			if(login == null) {
-				return "redirect:/seller/management";
-				 }					
-			else {
-				session.invalidate();
-				sellerDao.delete(login);		
-				return "redirect:/seller/main";
-				
-					}
+			//matche(인풋박스에서 유저가 입력한 텍스트 그대로 , 뒤는 맞);
+			//boolean correct = passwordEncoder.matches("rrrr", login.getSeller_pw());
+//		
+//			if(login == null) {
+//				return "redirect:/";
+//				 }					
+//			else {
+//				session.invalidate();
+//				sellerDao.delete(login);		
+//				return "redirect:/seller/main";
+//				
+//			}
+			//나중에 지워
+			return "seller/delete";
 	}
 	///////////////////////////////////////////////////
 	
