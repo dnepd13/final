@@ -103,12 +103,14 @@
 					if(premiumprice > parseInt($(this).text())){
 						console.log(premiumprice);
 						console.log($(this).text());
-// 						var thisrate = parseInt($(this).next().text());
-// 						var nextrate = parseInt($(this).parent().prev().children(".rate").text());
 						
-// 						console.log($(this).next().text());
-// 						console.log($(this).parent().prev().children(".rate").text());
-// 						console.log(premiumrate);
+						var thisrate = parseInt($(this).next().text());
+						var nextrate = parseInt($(this).parent().prev().children(".rate").text());
+						
+						console.log($(this).next().text());
+						console.log($(this).parent().prev().children(".rate").text());
+						console.log(premiumrate);
+					
 						if(premiumrate < parseInt(thisrate)){
 							if($(this).parent().prev().children(".rate").length == 0){
 								$(".premiumForm").submit();
