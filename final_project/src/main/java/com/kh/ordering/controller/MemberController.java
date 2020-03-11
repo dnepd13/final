@@ -262,15 +262,28 @@ public class MemberController {
 
 			memberDao.memberdelete(login);
 			session.removeAttribute("member_id");
-			return "redirect:/ordering/member/deleteSuccess";
+			return "redirect:/member/deleteSuccess";
 		}
 		else {
-			return "redirect:/ordering/member/deleteFail";
+			return "redirect:/member/deleteFail";
 		}
 		}catch(Exception e) {
 		e.printStackTrace();
 		return "redirect:/?error";	
 		}
+	}
+	
+	//비밀번호 실패 
+	@GetMapping("deleteFail")
+	public String deleteFail() {
+		
+		return "member/deleteFail";
+	}
+	
+	@GetMapping("deleteSuccess")
+	public String deleteSuccess() {
+		
+		return "member/deleteSuccess";
 	}
 	
 	
