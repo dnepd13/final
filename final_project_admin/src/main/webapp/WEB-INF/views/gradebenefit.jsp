@@ -78,49 +78,62 @@
 		$("#span2").hide();
 		$("#gradeinsert").on("keyup",function(){
 			var grade = $(this).val();
-			console.log("grade"+grade);
-		
 			$(".grade").each(function(){
-				console.log($(this).text());
 				if(grade == $(this).text()){
 					comfirm1= 1;
-					console.log(comfirm1);
 					$("#span").show();
 					$("#span").text("존재하는 등급입니다");
+					$("#span").css("color", "red");
 					$("#gradeinsert").focus();
-					$(".insertbutton").attr('disabled', true);
 					return false;
 				}
 				else{
 					comfirm1=0;
 					$("#span").show();
 					$("#span").text("사용가능합니다");
-					$(".insertbutton").attr('disabled', false);
+					$("#span").css("color", "blue");
 				}
 			});
+				if(comfirm1==0&&comfirm2==0){
+					$(".insertbutton").attr('disabled', false);
+				}
+				else{
+					$(".insertbutton").attr('disabled', true);
+				}
 		});
 		$("#rateinsert").on("keyup",function(){
 			var rate = $(this).val();
-			console.log("rate"+rate);
 		
 			$(".rate").each(function(){
-				console.log($(this).text());
 				if(rate == $(this).text()){
 					comfirm2= 1;
-					console.log(comfirm1);
 					$("#span2").show();
 					$("#span2").text("존재하는 값입니다");
+					$("#span2").css("color", "red");
 					$("#rateinsert").focus();
-					$(".insertbutton").attr('disabled', true);
 					return false;
 				}
 				else{
 					comfirm2=0;
 					$("#span2").show();
 					$("#span2").text("사용가능합니다");
+					$("#span2").css("color", "blue");
+				}
+				if(comfirm1==0&&comfirm2==0){
 					$(".insertbutton").attr('disabled', false);
 				}
+				else{
+					$(".insertbutton").attr('disabled', true);
+				}
 			});
+			console.log("grade"+comfirm1);
+			console.log("rate"+comfirm2);
+			if(comfirm1==0&&comfirm2==0){
+				$(".insertbutton").attr('disabled', false);
+			}
+			else{
+				$(".insertbutton").attr('disabled', true);
+			}
 		});
 	});
 </script>
