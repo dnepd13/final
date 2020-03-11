@@ -17,7 +17,7 @@ public interface MemberDao {
 
 	int getPoint(int member_no);
 	int getPoint(String member_id);
-	public void memberedit(MemberDto member);
+	public MemberDto memberedit(MemberDto member);
 	public MemberDto memberGetOne(int member_no);
 	//판매자 아이디 중복검사
 	int id_check(String member_id);
@@ -78,6 +78,7 @@ public interface MemberDao {
 		void memberdelete(MemberDto memberDto);
 		void change_pw(MemberDto memberDto);
 		MemberDto emaillogin(MemberDto memberDto);
+		MemberDto membergetUpdate(MemberDto memberDto);
 		
 		
 	

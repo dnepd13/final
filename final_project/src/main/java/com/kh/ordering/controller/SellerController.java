@@ -277,6 +277,9 @@ public class SellerController {
 						model.addAttribute("sellerDto",info);
 		return"redirect:/seller/info_edit";
 	}
+	
+	
+	
 ///////////판매자 정보 수정하기/////////////////////
 	@GetMapping("/info_edit")
 	public String info_edit(Model model,HttpSession session) {
@@ -289,6 +292,7 @@ public class SellerController {
 	}
 	@PostMapping("/info_edit")
 	public String info_edit(@ModelAttribute SellerDto sellerDto,HttpSession session) {
+		log.info("sellerDtoedit={}",sellerDto);
 		String seller_id=(String)session.getAttribute("seller_id");
 		sellerDto.setSeller_id(seller_id);
 		SellerDto info_edit=sellerDao.info_edit(sellerDto);
@@ -330,25 +334,17 @@ public class SellerController {
 	@PostMapping("/change_pw")
 	public String change_pw(@ModelAttribute SellerDto sellerDto,HttpSession session) {
 		String seller_id = (String)session.getAttribute("seller_id"); 
-	//	log.info("seller_id={}", seller_id);
+
 		sellerDto.setSeller_id(seller_id);
-		//log.info("sellerDto={}",sellerDto);
-//		SellerDto login =sellerDao.login(sellerDto);
-	//	log.info("seller_login={}", login);
+
 		sellerDto.setSeller_pw(passwordEncoder.encode(sellerDto.getSeller_pw()));
-		//SellerDto change_pw=SellerDto.builder().seller_id(seller_id).build();
+
 		sellerDto.setSeller_id(seller_id); 
-			sellerDao.change_pw(sellerDto);
-			return"redirect:/seller/change_pw_success";
+		sellerDao.change_pw(sellerDto);
 		
-//		session.setAttribute("seller_id",sellerDto.getSeller_id());
-//		boolean correct = encoder.matches(sellerDto.getSeller_pw(), change_pw.getSeller_pw());
-//		if(correct==true) {
-//					}
-//		else {
-//			return"redirect:/seller/change_pw";
-//		}
-//		
+		session.removeAttribute("seller_id");
+			
+			return"redirect:/seller/change_pw_success";	
 	}
 	//판매자 비밀번호 변경 성공 페이지
 	@GetMapping("/change_pw_success")

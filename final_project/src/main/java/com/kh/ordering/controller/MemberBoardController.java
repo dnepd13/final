@@ -96,6 +96,7 @@ public class MemberBoardController {
 		pagingVO.setMember_no(member_no);
 
 		List<AdminQnaDto> qnalist = adminQnaDao.getListQna(pagingVO);
+
 		log.info("qnalist={}",qnalist);
 
 		model.addAttribute("getListQna",qnalist);
@@ -126,14 +127,29 @@ public class MemberBoardController {
 
 	public String detailmqna(
 			@ModelAttribute AdminQnaDto adminQnaDto,
-			Model model
+			Model model,HttpSession session
 			) {
-		AdminQnaDto result1 = adminQnaDao.qnaGetOne(adminQnaDto);
-//		log.info("result={}",result1);
 
+		log.info("admindto={}", adminQnaDto);
+		log.info("sessionid={}", session);
+		String member_id = (String)session.getAttribute("member_id");
+		int getNo = memberDao.getNo(member_id);
+		log.info("getNO={}", getNo);
+		AdminQnaDto result1 = adminQnaDao.qnaGetOne(adminQnaDto,getNo);
+		log.info("result11={}", result1);          
+		
+		AdminQnaDto memberresult = adminQnaDao.qnaonemember(adminQnaDto);
+		log.info("memberresult={}",memberresult);
+		
+		//세션에서 가져온 멤버no
+		model.addAttribute("memberno",getNo);
 		model.addAttribute("qnaone",result1);
-		log.info("result1={}",result1);
-		log.info("modalqna={}",model);
+
+		
+		//리스트에서 가져온 memberNo
+		model.addAttribute("qnaoneGetOne",result1);
+		log.info("membersu={}",result1);
+		
 		return "board/detailmqna";
 	}
 
@@ -203,7 +219,7 @@ public class MemberBoardController {
 	@GetMapping("/updateqna")
 
 	public String editqna(@RequestParam int admin_qna_no,Model model) {
-//		log.info("upno={}", admin_qna_no);
+		log.info("upno={}", admin_qna_no);
 
 		AdminQnaDto result = adminQnaDao.qnagetUpdate(admin_qna_no);
 //		log.info("resultup={}",result);
@@ -218,12 +234,10 @@ public class MemberBoardController {
 	public String editqna(@ModelAttribute AdminQnaDto adminQnaDto,
 							Model model ) {
 
-		log.info("adimbefor={}",adminQnaDto);
 
 //		AdminQnaDto result = adminQnaDao.qnagetupdate(adminQnaDto);
 
 
-		log.info("model={}", model);
 
 
 //		log.info("uppoDto= {}",adminQnaDto);
@@ -234,6 +248,7 @@ public class MemberBoardController {
 	}
 	
 	
+
 //	@GetMapping("/deleteqna")
 //	public String deleteqna()
 //	{
@@ -338,6 +353,7 @@ public class MemberBoardController {
 
 			return "board/sellerqna";
 			}
+		
 	
 //		//판매 신고 게시판 처리
 		@GetMapping("/sellerreport")

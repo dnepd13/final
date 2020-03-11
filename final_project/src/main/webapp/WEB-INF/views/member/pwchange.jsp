@@ -3,32 +3,27 @@
      <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
- 
-     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 
-<script type="text/javascript"> 
-      $(function(){
-    	$("#submit").attr("disabled", true); 
-    	$("#alert-success").hide(); 
-    	$("#alert-danger").hide();
-		$("input").keyup(function(){ 
-				var password1=$("#password1").val(); 
-				var password2=$("#password2").val();
-				if(password1 != "" || password2 != ""){ 
-					if(password1 == password2){ 
-					$("#alert-success").show();
-					$("#alert-danger").hide(); 
-					$("#submit").attr("disabled", false); 
-				}else{
-					$("#alert-success").hide();
-					$("#alert-danger").show(); 
-					$("#submit").attr("disabled", true); 
-				} 
-			} 
-		});
-	}); 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
-  </script>
+
+<style>
+	.login-area {
+		width: 500px;
+		margin: 0 auto;
+		padding-top: 50px;
+	}
+	.login input[type=text],
+	.login input[type=password],
+	.login input[type=submit]{
+		width: 100%;
+		border: 1px solid lightgray;
+		border-radius: 5px;
+ 	}
+ 	
+</style>
+
 
 
  
@@ -44,21 +39,11 @@
                	 <label for="pw-input">비밀번호 입력 </label>
                  <input class="form-control" type="password" id="pw-input1" name="member_pw" required>
                </div>
-                 <!--비밀번호 재 입력창-->
-               <div class="form-group">
-                  <label for="pw-input">비밀번호 재입력 </label>
-                  <input class="form-control" type="password" id="pw-input2" name="member_pw" required>
-               </div>
-
-               <div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div>
- <div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
-                <button type="submit" class="btn btn-secondary disabled btn-block">비밀번호 변경하기</button>
+                <button type="submit" id="frm" class="btn btn-secondary disabled btn-block">비밀번호 변경하기</button>
              </form>
           </div>
        </div>
 </div>
+ 
 
-<form action="pwchange" method="post">
-	<input type="password" name="member_pw" placeholder="비밀번호" required>
-	<input type="submit" value="비밀번호 변경하기">
-</form> 
+ 
