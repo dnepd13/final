@@ -52,6 +52,7 @@
 			<mapping path="/board/**"/>
 			<mapping path="/pay/**"/>
 			<mapping path="/order/**"/>
+			<mapping path="/goods/goods_option"/>
 			<!-- 전체 다 안 빠지게 하는 구문 /꼭 써줘야한다-->
 		 	<exclude-mapping path="/seller/login"/>
 		 	<exclude-mapping path="/seller/logout"/>
