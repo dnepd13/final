@@ -3,11 +3,17 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css"> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css"> 
 <script>
 	$(function(){
+		
+			var success = '${success}';
+			console.log(success);
+			if(success!=""){
+				window.alert(success);
+			}
+		
 			var idcomfirm = 0;
 			var namecomfirm = 0;
 			var emailcomfirm = 0;

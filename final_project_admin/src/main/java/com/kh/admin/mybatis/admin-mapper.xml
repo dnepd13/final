@@ -682,10 +682,10 @@
 	
 	<!-- 상품 review 불러오기 상품별 -->
 	<select id="reviewList" parameterType="int" resultType="review">
-		select 
+		select distinct
 				a.*, b.goods_review_reply_writer, b.goods_review_reply_content, b.goods_review_reply_date, b.goods_review_reply_no 
 			from goods_review a 
-        		left outer join goods_review_reply b 
+        		inner join goods_review_reply b 
        			 on a.goods_review_no = b.goods_review_no where a.goods_no = #{goods_no}
 	</select>
 	
