@@ -27,10 +27,32 @@
 				
 				var grade = gradeCell.children().val();
 				var rate = rateCell.children().val();
-				
+				var confirm = 0;
+				var rateconfirm = 0;
+				$(".grade").each(function(){
+					if(grade == $(this).text()){
+						window.alert("같은 등급이 존재합니다.");
+						confirm = 1;
+						return false;
+					}
+				});
+				console.log(confirm);
+				if(confirm ==1){
+					return false;
+				}
+				$(".rate").each(function(){
+					if(rate == parseInt($(this).text())){
+						window.alert("같은 혜택율이 존재합니다.");
+						rateconfirm = 1;
+						return false;
+					}
+				});
+				console.log(rateconfirm);
+				if(rateconfirm == 1){
+					return false;
+				}
 				gradeCell.empty();
 				rateCell.empty();
-				
 				gradeCell.text(grade);
 				rateCell.text(rate);
 				

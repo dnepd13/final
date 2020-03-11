@@ -80,7 +80,7 @@
 		
 			<!-- 판매자 회원탈퇴 -->
 			<delete id="delete" parameterType="seller">
-			delete seller where seller_id=#{seller_id} 
+			delete from seller where seller_no=#{seller_no} 
 			</delete>
 
 

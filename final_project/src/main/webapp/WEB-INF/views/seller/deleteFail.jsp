@@ -22,7 +22,9 @@
 <div class="redirect-box row justify-content-center">
 
 <div class="redirect-content">
-	<h4 align="center">탈퇴처리되었습니다. 그동안 이용해주셔서 감사합니다.</h4><br>
+	<h4 align="center">
+	(입력하신 비밀번호가 잘못되었습니다)
+	</h4><br><br>
 	<div class="row-empty-40"><br>
 	<span><a href="${pageContext.request.contextPath }/">메인으로</a></span>
 	 &verbar; 

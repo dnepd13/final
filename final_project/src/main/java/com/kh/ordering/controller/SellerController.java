@@ -126,26 +126,16 @@ public class SellerController {
 	//판매자 비밀번호 찾기
 	@GetMapping("/pwfind")
 	public String pwfind(HttpSession session, Model model) {
-		
-	
-		
+
 		return "seller/pwfind"; 
 	}
 	
 	@PostMapping("pwfind")
 	public String pwfind(@ModelAttribute SellerDto sellerDto, HttpSession session)
 	{
-
-		
-
 		SellerDto login = sellerDao.emaillogin(sellerDto);
-
-
-				session.setAttribute("seller_id", login.getSeller_id());
-				session.setAttribute("seller_grade", login.getSeller_grade());
-
-		
-		return "redirect:/seller/emailpwchange";
+	session.setAttribute("seller_id", login.getSeller_id());
+	return "redirect:/seller/emailpwchange";
 	}
 	
 	//이메일 비밀번호 변경 완료
@@ -344,7 +334,7 @@ public class SellerController {
 		
 		session.removeAttribute("seller_id");
 			
-			return"redirect:/seller/change_pw_success";	
+			return"redirect:/";	
 	}
 	//판매자 비밀번호 변경 성공 페이지
 	@GetMapping("/change_pw_success")
@@ -357,13 +347,56 @@ public class SellerController {
 
 			return "seller/delete";
 			}
+	
+	@PostMapping("/delete")
+	public String delete(HttpSession session, @ModelAttribute SellerDto sellerDto) {
+		try {
+			String seller_id = (String)session.getAttribute("seller_id");
+			sellerDto.setSeller_id(seller_id);
+			
+			SellerDto login = sellerDao.login(sellerDto);
+		
+			boolean correct = passwordEncoder.matches(sellerDto.getSeller_pw(),login.getSeller_pw());
+			
+			if(correct) {
+				
+				sellerDao.delete(login);
+				session.removeAttribute("seller_id");
+				
+				return "redirect:/seller/deleteSuccess";
+			}
+			else {
+				return "redirect:/seller/deleteFail";
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return "redirect:/?error";
+		}
+	}
+	
+	//탈퇴성공
+	@GetMapping("deleteSuccess")
+	public String deleteSuccess() {
+		
+		return "member/deleteSuccess";
+	}
+	//탈퇴 비밀번호 실패 
+	@GetMapping("deleteFail")
+	public String deleteFail() {
+		
+		return "member/deleteFail";
+	}
+	
+	//탈퇴실패
+	@GetMapping("/registsuccess")
+	public String registsuccess() {
+		return "member/registsuccess";//완료한뒤 인덱스페이지로 보낼것을 준비
+	}
+	
+	
 	@PostMapping("/delete_proc")
 		public String delete_proc( HttpSession session,@ModelAttribute SellerDto sellerDto) {
-	//		log.info("seller_wwww={}", sellerDto);
-			//log.info("seller_pw1={}",seller_pw);
 			String seller_id = (String)session.getAttribute("seller_id");
-			//'rrrr'로 받아오고 싶은데 제이에스피부터 암호환지뭔지 길게 받아짐
-			//입력받은 텍스트 그대로 어떻게 가져올까?
 			String input_pw = sellerDto.getSeller_pw();
 			String a = passwordEncoder.encode(input_pw);
 			sellerDto.setSeller_id(seller_id);

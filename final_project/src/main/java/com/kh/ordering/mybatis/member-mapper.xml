@@ -285,6 +285,8 @@
  	</update>
 	
 	
+
+	
 	<!-- 회원 탈퇴 -->
 	<delete id="memberdelete" parameterType="member">
 		delete from member where member_no = #{member_no}
