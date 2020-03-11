@@ -135,6 +135,12 @@
 	});
 </script>
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
+
 <aside>
 <div>
 <jsp:include page="template/header.jsp"></jsp:include>
@@ -142,7 +148,7 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">

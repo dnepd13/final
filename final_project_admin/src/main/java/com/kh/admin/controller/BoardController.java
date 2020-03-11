@@ -42,8 +42,6 @@ public class BoardController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute PagingVO paging
 			) {
-		try {
-			
 		
 		int count;
 		if(paging.getKey() == null) {
@@ -87,10 +85,6 @@ public class BoardController {
 			
 			return "board/manageqna";
 		}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "board/manageqna";
-		}
 	}
 	
 	//관리문의 게시판 글 하나 보기
@@ -99,16 +93,11 @@ public class BoardController {
 			@ModelAttribute AdminQnaBoardDto adminQnaBoardDto,
 			Model model
 			) {
-		try {
 			
 		AdminQnaBoardDto result = boardDao.qnaBoardGetOne(adminQnaBoardDto);
 		model.addAttribute("one", result);
 		
 		return "board/detailqna";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "board/detailqna";
-		}
 	}
 	
 	//관리문의 게시판 글작성하기
@@ -117,16 +106,11 @@ public class BoardController {
 			@RequestParam(value = "admin_qna_no", required = false, defaultValue = "0") int admin_qna_no,
 			Model model
 			) {
-		try {
 			
 		if(admin_qna_no > 0) {
 			model.addAttribute(admin_qna_no);
 		}
 		return "board/write";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "board/write";
-		}
 	}
 	
 	@PostMapping("write")
@@ -135,7 +119,6 @@ public class BoardController {
 			@RequestParam(value = "admin_qna_no1", required = false, defaultValue = "0") int admin_qna_no,
 			HttpSession session
 			) {
-		try {
 			
 		log.info("adminqna={}",adminQnaBoardDto);
 		log.info("admin_qna_no={}",admin_qna_no);
@@ -155,10 +138,6 @@ public class BoardController {
 			boardDao.qnaBoardInsertNew(adminQnaBoardDto);
 		}
 		return "redirect:/board/manageqna";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/board/manageqna";
-		}
 	}
 	
 //	qna게시판 글 수정
@@ -167,7 +146,6 @@ public class BoardController {
 			@RequestParam(value = "admin_qna_no1", required = false, defaultValue = "0") int admin_qna_no,
 			Model model
 			) {
-		try {
 			
 			AdminQnaBoardDto adminQnaBoardDto = AdminQnaBoardDto.builder()
 																										.admin_qna_no(admin_qna_no)
@@ -176,16 +154,11 @@ public class BoardController {
 			model.addAttribute("one", result);
 			
 			return "board/editqna";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "board/editqna";
-		}
 		}
 	@PostMapping("/editqna")
 	public String edit(
 			@RequestParam(value = "admin_qna_no1", required = false, defaultValue = "0") int admin_qna_no,
 			@ModelAttribute AdminQnaBoardDto adminQnaBoardDto) {
-		try {
 			
 			log.info("no = {}",admin_qna_no);
 			adminQnaBoardDto.setAdmin_qna_no(admin_qna_no);
@@ -193,17 +166,12 @@ public class BoardController {
 			boardDao.qnaBoardUpdate(adminQnaBoardDto);
 
 			return "redirect:/board/detailqna?admin_qna_no="+admin_qna_no;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/board/detailqna?admin_qna_no="+admin_qna_no;
-		}
 	}
 	
 	//관리문의게시판 글 삭제
 	@GetMapping("/delete")
 	public String delete(
 			@RequestParam(value = "admin_qna_no1", required = false, defaultValue = "0") int admin_qna_no) {
-		try {
 			
 		AdminQnaBoardDto adminQnaBoardDto = AdminQnaBoardDto.builder()
 																			.admin_qna_no(admin_qna_no)
@@ -211,22 +179,13 @@ public class BoardController {
 		boardDao.qnaBoardDelete(adminQnaBoardDto);
 		
 		return "redirect:/board/manageqna";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/board/manageqna";
-		}
 	}
 	
 	//-------------------리뷰게시판------------------------------------------------
 	@GetMapping("/review")
 	public String review() {
-		try {
 			
 		return "board/review";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "board/review";
-		}
 	}
 	
 }

@@ -23,6 +23,8 @@
             	
                 <div class="row justify-content-center" style="padding-top:20px;">
                	<img style="padding-left:20px;" src="${pageContext.request.contextPath}/resources/file/오더링.png" width=400px; height=200px;>
+                </div>
+                <div class="row justify-content-center">
                 <h1>관리자 로그인</h1>
                 </div>
                 <br><br><br>
@@ -39,8 +41,9 @@
                         <label for="pw-input">PW : </label>
                         <input class="form-control" type="password" id="pw-input" name="admin_pw" required>
                     </div>
-
+					<div style="padding-top:20px;">
                     <button type="submit" class="btn btn-primary btn-block">로그인</button>
+					</div>
                 </form>
                 <div class="fail row justify-content-center">
                 	<c:if test="${param.error != null }">

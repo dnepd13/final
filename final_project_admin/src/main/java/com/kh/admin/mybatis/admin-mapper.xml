@@ -696,7 +696,7 @@
 	
 	<!-- 회원 등급 혜택 리스트  -->
 	<select id="gradeBenefitList" resultType="gradeBenefitDto">
-		select * from grade_benefit
+		select * from grade_benefit order by grade_benefit_rate asc
 	</select>
 	
 	<!-- 회원 등급 혜택 수정 -->

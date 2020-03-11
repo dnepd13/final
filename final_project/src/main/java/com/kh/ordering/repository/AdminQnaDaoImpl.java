@@ -177,10 +177,22 @@ public class AdminQnaDaoImpl implements AdminQnaDao{
 
 		}
 
+
 	@Override
 	public AdminQnaDto qnaonemember(AdminQnaDto adminQnaDto) {
 		AdminQnaDto memberresult = sqlSession.selectOne("adminQnaDto.qnaonemember", adminQnaDto);
 		return memberresult;
+	}
+	
+	// 최근 3일기준 관리자 문의게시판 작성 List	
+	@Override
+	public List<AdminQnaDto> getListYesterDay(PagingVO paging) {
+		return sqlSession.selectList("adminQnaDto.getListYesterDay", paging);
+	}
+	@Override
+	public int getYesterDayCount(int member_no) {
+		return sqlSession.selectOne("adminQnaDto.getYesterDayCount", member_no);
+
 	}
 
 

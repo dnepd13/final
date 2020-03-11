@@ -17,8 +17,11 @@
 
 
 <c:choose>
-<c:when test="${qnaoneGetOne.super_no >0}">	
-	<h1>수정 할 수 없는 게시글 입니다.</h1>
+
+
+<c:when test="${qnaone.admin_no >0}">	
+	<h1>관리자의 답변입니다.</h1>
+
 </c:when>
 <c:otherwise>
 	<div class="btn-group-vertical">

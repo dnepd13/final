@@ -2,6 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css"> 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
+
 <aside>
 <div>
 <jsp:include page="../template/header.jsp"></jsp:include>
@@ -9,7 +15,7 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 <div class="container-fluid">
         <div class="row" style="padding-top: 50px;">
             <div class="offset-md-1 col-md-10" >

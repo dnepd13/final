@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">    
 
  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
  
@@ -18,12 +17,16 @@
  	.text-primary {
  		font-weight: bold; 
  	}
- 	.insert_resp > textarea {
+ 	.insert_resp textarea {
  		resize: none;
  		height: 25%;
  	}
  	.insert_resp > input[type=submit] {
  		height: 50px;
+ 	}
+ 	
+ 	table td {
+ 		padding: 1px 5px;
  	}
  	
  </style>
@@ -46,6 +49,26 @@
 			if($(this).val()<=0 || $(this).val()>1000000){
 				$(this).val("");
 				alert("견적 가격은 1원 이상, 100만원 이하로 작성해주세요.");
+			}
+		});
+		
+		// 파일정보 미리보기
+		$(upload).change(function(f){
+			$(".files_Info").children().empty();
+			var files = f.target.files;	
+			if(files.length >5 ){
+				alert("파일은 최대 5개까지만 등록 가능합니다. 다시 선택해주세요.");
+				$("input[type=submit]").prop("disabled", true);
+			}
+			else{
+				$("input[type=submit]").prop("disabled", false);
+				for(var i=0 ; i<files.length ; i++){
+					var filesName =files[i].name;
+					var filesSizeOrigin = files[i].size/1024;
+					var filesSize = String(filesSizeOrigin).substring(0,5);
+					$(".files_name").append(filesName+"<br>");
+					$(".files_size").append(filesSize+" KB <br>");
+				}
 			}
 		});
 		
@@ -73,8 +96,21 @@
 		<h6 class="text-secondary">언제까지 가능한가요?</h6>
 		<input class="input_req form-control date" type="text" name="custom_order_hopedate" required readonly>
 			<br>
-		<h6 class="text-secondary">샘플 디자인 등이 있다면 업로드해주세요.</h6>
-		<input class="input_req form-control-file" type="file" name="files" multiple>
+		<h6 class="text-secondary">샘플 디자인 등이 있다면 업로드해주세요.
+													<small id="emailHelp" class="form-text text-muted">(이미지 파일만 등록 가능합니다.)</small>
+		</h6>
+		<input class="input_req form-control-file" type="file" name="files" id="upload" multiple accept="image/all">
+		<!-- 파일정보 미리보기 영역-->
+		 <div>
+			<table>
+			  	<tbody>
+			  		<tr class="files_Info">
+						<td class="files_name" style="width:70%;"></td>
+						<td class="files_size" style="width:30%;"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 			<br>
 		<input class="input_req form-control btn btn-primary" type="submit" value="견적서 보내기">
 	</form>

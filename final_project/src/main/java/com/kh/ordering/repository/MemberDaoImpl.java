@@ -260,6 +260,7 @@ public class MemberDaoImpl implements MemberDao{
 			return result;
 		}
 
+		
 		@Override
 		public MemberDto memberedit(MemberDto member) {
 			result = sqlSession.update("member.memberedit" , member);

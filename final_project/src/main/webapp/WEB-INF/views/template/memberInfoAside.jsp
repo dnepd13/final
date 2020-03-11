@@ -40,12 +40,7 @@
 		display: block;
 		clear: both;
 	}
-	
-	.infoPage-area {
-		width: 80%;
-		padding: 30px;
- 		flex: 1; 
-	}
+
 	
 </style>
 
@@ -89,7 +84,7 @@
 <c:if test="${member_id != null}">
 <aside>
 	<div class="aside-title">
-		마이페이지
+		<a href="${pageContext.request.contextPath}/member/membermyinfo">마이페이지</a>
 	</div>
 	<div class="aside-grade">
 		나의 등급

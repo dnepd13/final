@@ -70,8 +70,10 @@ public interface AdminQnaDao {
 	AdminQnaDto qnaonemember(AdminQnaDto adminQnaDto);
 
 
-
-
+// 최근 3일기준 관리자 문의게시판 작성 List
+	List<AdminQnaDto> getListYesterDay(PagingVO paging);
+	int getYesterDayCount(int member_no);
+	
 //	public int countBoard();
 
 
