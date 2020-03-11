@@ -12,6 +12,7 @@
 <head>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
 <script>
 $(function(){
 	$(".goods_box").click(function(){
@@ -33,7 +34,8 @@ $(function(){
 		$(".goods_area").removeClass("justify-content-center");
 	}
 	
-	
+	Hakademy.PointManager.factory(".star-wrap");
+
 });
 </script>
 </head>
@@ -48,9 +50,9 @@ $(function(){
 	padding: 15px;
 }
 
-.goods_box > p {
-	margin: 0px;
-}
+/* .goods_box > p { */
+/* 	margin: 5px 0px; */
+/* } */
 
 .goods_img {
 	width: 100%;
@@ -66,10 +68,14 @@ $(function(){
 .goods_name{
 	font-size: 1.1rem;
 	font-weight: bold;
+	margin: 5px 0px;
 }
 
 .goods_price{
-	font-size: 1rem;
+	margin-top: 7px;
+	margin-bottom: 5px;
+	font-size: 1.1rem;
+	font-weight: bold;
 }
 
 .goods_content{
@@ -104,10 +110,10 @@ $(function(){
   <hr>
   <div class="container">
   	<div class="row goods_area">
-  	<c:forEach var="goodsFileVO" items="${list}">
+  	<c:forEach var="goodsFileVO" items="${list}" varStatus="status">
   		<c:choose>
 		 	<c:when test="${goodsFileVO.goodsDto.goods_stock>0}">
-		 		<div class="col-lg-4 goods_box">
+		 		<div class="col-sm-4 goods_box">
   			<a class="goods_img" href="${pageContext.request.contextPath}/goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
   				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
   			</a>
@@ -115,10 +121,11 @@ $(function(){
 	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
 	  		<p class="goods_price">
 	  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+	  		<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${starList[status.index]}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
 	  		</div>
 		 	</c:when>
 		 	<c:otherwise>
-		  		<div class="col-lg-4 goods_box soldout">
+		  		<div class="col-sm-4 goods_box soldout">
 		  			<a class="goods_img" href="#">
 		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
 		  			</a>
@@ -126,6 +133,7 @@ $(function(){
 		  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
 		  		<p class="goods_price">
 		  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+		  		<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${starList[status.index]}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
 		  		</div>
 		 	</c:otherwise>
  		</c:choose>

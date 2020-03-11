@@ -25,7 +25,6 @@
 	<h4 align="center">
 	(입력하신 비밀번호가 잘못되었습니다)
 	</h4><br><br>
-	<h4>나는 아직 당신과 헤어지는 법을 몰라요. 우리 좀더 함께 해요.</h4>
 	<div class="row-empty-40"><br>
 	<span><a href="${pageContext.request.contextPath }/">메인으로</a></span>
 	 &verbar; 

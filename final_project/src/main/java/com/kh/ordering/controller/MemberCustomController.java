@@ -204,7 +204,7 @@ public class MemberCustomController {
 		
 		// 차단판매자 데려오기
 		BlockDto blockDto = sqlSession.selectOne("Block.getSellerInfo", content.getSeller_no());
-		log.info("blockDto={}",blockDto);
+
 		//		int sellerblock = sqlSession.selectOne("seller.getblock", content.getSeller_no());
 //		log.info("sellerblock={}",sellerblock);
 //		model.addAttribute("sellerblock", sellerblock);

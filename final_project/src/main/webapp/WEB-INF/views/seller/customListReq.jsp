@@ -58,6 +58,7 @@
 <h4>확인 안 한 요청서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
 
 <article class="articleBox">
+<jsp:include page="/WEB-INF/views/template/sellerInfoAside.jsp"/>
 <table class="table table-hover listBox">
 	<c:forEach var="memberReq" items="${getListReq }">
 	<tr>

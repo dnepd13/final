@@ -48,7 +48,11 @@ public class GoodsReviewDaoImpl implements GoodsReviewDao{
 	}
 	@Override // 리뷰 평점
 	public int getStarAvg(int goods_no) {
-		return sqlSession.selectOne("review.getStarAvg", goods_no);
+		if(sqlSession.selectOne("review.getStarAvg", goods_no) != null) {
+			return sqlSession.selectOne("review.getStarAvg", goods_no);
+		} else {
+			return 0; 
+		}
 	}
 	
 	@Override // 파일 출력
