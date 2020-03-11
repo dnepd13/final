@@ -274,8 +274,6 @@ $(function(){
 				
 				var option_no_list = [];
 				$(this).siblings(".option_no").each(function(i, value) {
-					console.log($(this));
-					console.log($(this).val());
 					option_no_list.push($(this).val());
 				});
 				
@@ -298,8 +296,6 @@ $(function(){
 				if(qtt>1) {
 					var option_no_list = [];
 					$(this).siblings(".option_no").each(function(i, value) {
-						console.log($(this));
-						console.log($(this).val());
 						option_no_list.push($(this).val());
 					});
 					
@@ -339,14 +335,8 @@ $(function(){
 				
 				var option_no_list = [];
 				$(this).siblings(".option_no").each(function(i, value) {
-					console.log($(this));
-					console.log($(this).val());
 					option_no_list.push($(this).val());
 				});
-				
-				console.log("st="+stock);
-				console.log("qty="+qtty);
-				console.log("res="+ (stock - qtty));
 				
 				checkStock(option_no_list, stock - qtty);
 				
@@ -358,8 +348,6 @@ $(function(){
 				
 				var option_no_list = [];
 				$(this).siblings(".option_no").each(function(i, value) {
-					console.log($(this));
-					console.log($(this).val());
 					option_no_list.push($(this).val());
 				});
 				
@@ -397,25 +385,20 @@ $(function(){
 		var result = false;
 		
 		$.each(option_no_list, function(i, value){
-			console.log(value);
 			var index = arr_final_stock.findIndex(x => x.option_no == value);
 			arr_final_stock[index].stock += stock;
 			
 			if(arr_final_stock[index].stock < 0) {
 				result = true;
 			}
-			
-			console.log(arr_final_stock[index]);
 		});
 		
 		
 		
 		if(result) {
-			console.log("트루");
 			$(".order_btn").attr("disabled", true);
 			$(".alert_option_stock").show();
 		} else {
-			console.log("false");
 			$(".order_btn").attr("disabled", false);
 			$(".alert_option_stock").hide();
 		}
