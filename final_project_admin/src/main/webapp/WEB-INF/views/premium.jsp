@@ -31,18 +31,27 @@
 				var upprice = $(this).parent().parent().prev().children(".premium").text();
 				var downprice = $(this).parent().parent().next().children(".premium").text();
 				
+				var uprate = $(this).parent().parent().prev().children(".rate").text();
+				var downrate = $(this).parent().parent().next().children(".rate").text();
 				console.log(upprice);
 				console.log(downprice);
 				
 				if(price >= parseInt(upprice)){
-					window.alert("조건을 다시 입력하세요");
+					window.alert("수수료 조건을 다시 입력하세요");
 					return false;
 				}
 				if(price <= parseInt(downprice)){
-					window.alert("조건을 다시 입력하세요");
+					window.alert("수수료 조건을 다시 입력하세요");
 					return false;
 				}
-				
+				if(rate <=parseInt(uprate)){
+					window.alert("수수료를 다시 입력하세요");
+					return false;
+				}
+				if(rate >= parseInt(downrate)){
+					window.alert("수수료를 다시 입력하세요");
+					return false;
+				}
 				priceCell.empty();
 				rateCell.empty();
 				

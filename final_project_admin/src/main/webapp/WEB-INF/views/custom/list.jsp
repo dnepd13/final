@@ -49,7 +49,7 @@
 	  </c:choose>    
       <td>${list.custom_order_title }</td>
       <c:choose>
-      		<c:when test="${list.seller_id != null } ">
+      		<c:when test="${list.seller_id!=null}">
       			<td>${list.seller_id }</td>
       		</c:when>
       		<c:otherwise>
