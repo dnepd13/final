@@ -283,7 +283,7 @@ public class MemberController {
 	// 회원 로그인	
 		
 	@GetMapping("/login")
-	@RegueiredAuth
+	
 	public String login() {
 		return "member/login"; 
 	}
@@ -347,7 +347,7 @@ public class MemberController {
 	//회원 로그아웃
 	
 	@GetMapping("/logout")
-	@RegueiredAuth
+	
 	public String logout(HttpSession session ) {
 		
 		
