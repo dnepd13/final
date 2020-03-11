@@ -71,24 +71,20 @@
 			      		<th scope="col">주문번호</th>
 			      		<th scope="col">주문상품</th>
 			      		<th scope="col">결제금액</th>
+			      		<th scope="col">현재상태</th>
+			      		<th scope="col">일자</th>
 			    	</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="qna" items="${getListYesterDay}">
-				    <tr>
-						<c:choose>
-							<c:when test="${qna.admin_qna_head=='답변' }">
-								<td scope="row"></td>
-								<td scope="row" align="left">[${qna.admin_qna_head}] ${qna.admin_qna_title}</td>
-							</c:when>
-							<c:otherwise>
-								<td scope="row">${qna.admin_qna_head}</td>
-								<td scope="row" align="left">${qna.admin_qna_title}</td>
-							</c:otherwise>
-						</c:choose>
+				<c:forEach var="cartYesterDay" items="${cartYesterDay }">
+				    <tr align="left">
+							<td scope="row">${cartYesterDay.partner_order_id }</td>
+							<td scope="row">${cartYesterDay.item_name }</td>
+							<td scope="row" align="right">${cartYesterDay.total_price }</td>
+							<td scope="row" align="right">${cartYesterDay.cart_info_status }</td>
 						<td scope="row">
-							<fmt:parseDate value="${qna.admin_qna_date}" var="qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
-							<fmt:formatDate value="${qna_date}" pattern="yyyy/MM/dd HH:mm:ss"/>
+							<fmt:parseDate value="${cartYesterDay.process_time}" var="cart_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+							<fmt:formatDate value="${cart_date}" pattern="yyyy/MM/dd HH:mm:ss"/>
 						</td>
 					</tr>
 				</c:forEach>
