@@ -114,7 +114,7 @@
 		<ul>
 			<li><a href="${pageContext.request.contextPath}/member/memberinfo">내 정보</a>
 				<ul>
-					<li><a href="${pageContext.request.contextPath}/member/memberchange_pw">비밀번호 변경</a></li>
+					<li><a href="${pageContext.request.contextPath}/member/pwchange">비밀번호 변경</a></li>
 					<li><a href="${pageContext.request.contextPath}/member/pointinfo">포인트 조회</a></li>
 					<li><a href="${pageContext.request.contextPath}/member/addrinfo">배송지 관리</a></li>
 				</ul>

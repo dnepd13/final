@@ -1,243 +1,237 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-    
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
-
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+</script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
-  </script>
+
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+  
+
   <script>  
   $(function() {
-	  $(".buttontest").attr("disabled", true);
-      $("#id_check").click(function() {
-
-            var member_id = $("input[name=member_id]").val();
-
-            	if(member_id.length < 1){
-            		alert("아이디를 입력하세요");
-            	}
-            	else{
-            		
-                     $.ajax({
-                              url : "id_check",
-                              type : "get",
-                              contetType: "application/x-www-form-urlencoded; charset=UTF-8",
-                              data : {
-                                 'member_id' : member_id
-                              },
-                              success : function(resp) { //resp = 위코드가 성공적으로 컨트롤러에 다녀왔을때 가져온 값
-									console.log(resp);                              		
-                              		if(resp == 0){
-
-
-                    					
-                              			window.alert("사용 가능한 아이디 입니다");
-										$(".buttontest").attr("disabled", false);
+		 // $(".buttontest").attr("disabled", true);
+	      $("#id_check").click(function() {
+	    		//console.log("되는건가");
+	            var member_id = $("input[name=member_id]").val();
+	           // console.log(seller_id);
+	            //	if(seller_id.length < 1){
+	            //		alert("아이디를 입력하세요");
+	            	//}
+	            	//else{
+	            		
+	                     $.ajax({
+	                              url : "id_check",
+	                              type : "get",
+	                              contetType: "application/x-www-form-urlencoded; charset=UTF-8",
+	                              data : {
+	                                 'member_id' : member_id
+	                              },
+	                              success : function(resp) { //resp = 위코드가 성공적으로 컨트롤러에 다녀왔을때 가져온 값
+										console.log(resp);                              		
+	                              		if(resp == 0){
+	                              			window.alert("사용 가능한 아이디 입니다")
+	                              			console.log($('input[name="idcheck2"]').val());
 										//	$(".buttontest").attr("disabled", false);
-										$('input[name="idcheck2"]').val("Y");
-										
-                              		}
-                              		else{
-                              			window.alert("중복된 아이디 입니다");
-                              			$('input[name="idcheck2"]').val("N");
-                              		}
-                                 }
-                                 
-                        
-                              });
-            	}
-    });
-   });
-// 		.validate-form은 처음에 숨기고 이메일 전송시만 표시
-$(function() {
-		
-		$("#check_email_code").hide();
-// 		.email-form이 전송되면 send 주소로 비동기 신호를 전송(ajax)
-		$("#check_email").click(function(e){
-			e.preventDefault();
+											$('input[name="idcheck2"]').val("Y");
+	                              		}
+	                              		else{
+	                              			window.alert("중복된 아이디 입니다")
+	                              			$('input[name="idcheck2"]').val("N");
+	                              			
+	                              		}
+	                                 }
+	                                 
+	                        
+	                              });
+	            	//}
+	    });
+	   });
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+//	 		.validate-form은 처음에 숨기고 이메일 전송시만 표시
+	$(function() {
+		//	$("#check_email_code").hide();
 			
-			var email = $(this).parents().find("input[name=member_email]").val();
-			if(email==""){
-				alert("이메일을 입력해주세요");
-			}
-			else if($(this).val()=='인증번호 재발송'){
-				$("#check_email").parents(".input_email").next(".send").find(".info").remove();
+//	 		.email-form이 전송되면 send 주소로 비동기 신호를 전송(ajax)
+			$("#check_email").click(function(){
+			//	e.preventDefault();
 				
-				var url = $(this).attr("action"); 
-				var method = $(this).attr("method");
-				var data = $("#email").val();
-				console.log(data)
+			//	$(this).find("input[type=button]").prop("disabled", true);
+			//	$(this).find("input[type=button]").val("인증번호 발송중...");
+				
+			//	var url = $(this).attr("action"); 
+			//	var method = $(this).attr("method");
+			//	var data = $("#email").val();
+			//	console.log(data)
 				$.ajax({
 					url: "send",
 					type:"post",
-					data:{'member_email' :data
-						
+					data: {
+						'member_id' : $("input[name='member_id']").val(),
+						'member_email' : $("input[name='member_email']").val()				
 					},
-					success:function(resp){
+					success:function(data){
 						//console.log(resp);
+						if(data == "success"){
+							$("#check_email").hide();
+							$("input[name='cert").show();
 							$("#check_email_code").show();
-							var send = $("<td class='info'></td><td colspan='2' class='info'><p>해당 이메일로 인증번호 발송이 완료되었습니다.</p></td>");
-							$("#check_email").parents(".input_email").next(".send").append(send);
-					}
-				
-				});	
-			}
-				
-			else{
-				
-// 				$(this).find("input[type=button]").prop("disabled", true);
-				$(this).val("인증번호 재발송");
-				$("#check_email_code").show();
-				
-				var url = $(this).attr("action"); 
-				var method = $(this).attr("method");
-				var data = $("#email").val();
-				console.log(data)
-				$.ajax({
-					url: "send",
-					type:"post",
-					data:{'member_email' :data
-						
-					},
-					success:function(resp){
-						//console.log(resp);
 							
-							var send = $("<td class='info'></td><td colspan='2' class='info'><p>해당 이메일로 인증번호 발송이 완료되었습니다.</p></td>");
-							$("#check_email").parents(".input_email").next(".send").append(send);
+						}
 					}
 				
-				});				
-			}
-
-		});
-// 		validate-form이 전송되면 /validate로 비동기 요청을 전송
-		$("#check_email_code").click(function(e){
-			e.preventDefault();
-			console.log("string");
-// 			var url = $(this).attr("action"); 
-// 			var method = $(this).attr("method");
-		var data = $(this).serialize();
-			
-			$.ajax({
-				url:"validate",
-				type:"post",
-				data:{
-					'cert' :$("input[name='cert']").val()
-				},
-				success:function(resp){
-// 					console.log(resp);
-					if(resp == "success"){
-						$("input[value='회원가입']").prop("disabled", false);
-						window.alert("인증 완료");
-					}
-					else{
-						window.alert("인증 실패");
-						
-						$("#check_email").parents(".input_email").next(".send").find(".info").remove();
-						
-						var send = $("<td class='info'></td><td colspan='2' class='info'><p>인증에 실패했습니다. 인증번호 재발송 후 다시 입력해주세요.</p></td>");
-						$("#check_email").parents(".input_email").next(".send").append(send);
-					}
-				}
+				});
 			});
-		});
-});
+//	 		validate-form이 전송되면 /validate로 비동기 요청을 전송
+			$("#check_email_code").click(function(){
+			//	e.preventDefault();
+			//	console.log("string");
+//	 			var url = $(this).attr("action"); 
+//	 			var method = $(this).attr("method");
+		//	var data = $(this).serialize();
+				
+				$.ajax({
+					url:"validate",
+					type:"post",
+					data:{
+						'cert' :$("input[name='cert']").val()
+					},
+					success:function(data){
+//	 					console.log(resp);
+						if(data == "success"){
+							$("#check_email").hide();
+							$("input[name='cert").hide();
+							$("#check_email_code").hide();
+							console.log($('input[name="check_email_code2"]').val());
+							window.alert("인증 완료");
+							$('input[name="checkemailcode2"]').val("Y");
+							
+						}
+						else{
+							$("#check_email").show();
+							$("input[name='cert").hide();
+							$("#check_email_code").hide();
+							window.alert("인증 실패");
+							$('input[name="checkemailcode2"]').val("N");
+						}
+					}
+				});
+			});
+	});
+  
+  
+  
+  function test() { 
+		if ($('input[name="member_id"]').val() == "") {
+			window.alert("아이디를 입력해주세요");
+			return false;
+		}
+		var idcheck2 =$('input[name="idcheck2"]').val(); 
+		if(idcheck2 != 'Y'){
+			alert("아이디 중복체크를 해주세요.");
+			return false;
+			}
+		if ($('input[name="member_pw"]').val() == "") {
+			alert("비밀번호를 입력해주세요.");
+			return false;
+		}
+		if ($('input[name="member_name"]').val() == "") {
+			alert("이름을 입력해주세요.");
+			return false;
+		}
+		var checkemailcode2 = $('input[name="checkemailcode2"]').val();
+		console.log($('input[name="checkemailcode2"]').val());
+		if(checkemailcode2 != 'Y'){
+			alert("이메일 인증이 필요합니다.");
+			return false;
+			}
+		if ($('input[name="member_phone"]').val() == "") {
+			alert("연락처를 입력해주세요.");
+			return false;
+		}
+		if ($('input[name="member_birth"]').val() == "") {
+			alert("생년 월일을 입력해주세요.");
+			return false;
+		}
+		var checkemailcode2 = $('input[name="checkemailcode2"]').val();
+		console.log($('input[name="checkemailcode2"]').val());
+		if(checkemailcode2 != 'Y'){
+			alert("이메일 인증이 필요합니다.");
+			return false;
+			}
+		$("#frm").submit();
+	}
 </script>
 
-<style>
-	.regist-area {
-		width: 500px;
-		margin: 0 auto;
-		padding-top: 50px;
-	}
-	.btn_regist {
-		width: 100%;'
-	}
+<body>
+<div class="continer-fluid">
+	<div class="row"  style="padding:50px;">
+		<div class="offset-md-4 col-md-4 ">
+	 	 <div class="row justify-content-center" style="padding: 20px;"><h1>회원가입</h1></div>
+         <br><br><br>
+		 <form id=frm action="regist" method="post">
+		 <!-- <form class="form-inline">옆으로 오는 입력 형식 -->
+              <!--아이디 입력창-->
+			  <div class="form-group">
+  				<label class="col-form-label">ID : </label>
+  				<input type="text" class="form-control" name="member_id"required>
+			  	 <!--  name = 값 controller에있는파라미터값변수명하고 일치해야함 -->
+			  	<input type="button"class="btn btn-secondary disabled" id="id_check" value="중복확인" ><br>
+			  	 <input type="hidden"name="idcheck2" value="N">
+			  </div>
+              <!-- 비밀번호 입력창 -->
+               <div class="form-group">
+  				<label class="col-form-label" >PW : </label>
+  				<input type="password" class="form-control" name="member_pw"required>
+			  </div>
+			  <!-- 이름 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label">이름 : </label>
+  				<input type="text" class="form-control"name="member_name"required>
+			  </div>
+			   <!-- 이메일 입력창 -->
+			  <div class="form-group">			 
+  				<label class="col-form-label" for="email">이메일 : </label>
+  				<input type="email" class="form-control"id="email"name="member_email"placeholder="이메일 입력" required>
+			  	<input type="button" class="btn btn-secondary disabled" id="check_email" value="인증번호 보내기">
+				<input type="text" name="cert" placeholder="인증번호 입력" style="">
+				<input type="button" class="btn btn-secondary disabled" name="check_email_code" id="check_email_code" value="인증번호확인"style="">
+				<input type="hidden"name="checkemailcode2" value="N">	
+				<!-- <p id="msg">이메일 인증에 실패하였습니다</p> -->
+			  </div>
+			  <!-- 전화번호 입력창 -->
+			  <div class="form-group">
+  				<label class="col-form-label">전화번호 : </label>
+  				<input type="tel" class="form-control" name="member_phone"required>
+  					  <div class="form-group">
+  				<label class="col-form-label">회원 생년월일 : </label>
+  				<input type="text" class="form-control" name="member_birth"required>
+			 			   <!--가입일 숨겨서 온다-->
+			  <div class="form-group">
+			  	<input type="hidden" name="member_agree_date" value="${param.dTime }">
+			  </div>
+			   <!--버튼 창 -->
+			  <div class="form-group">
+			   	<button type="button" class="btn btn-secondary disabled btn-block" onclick="test()">가입하기</button>
+			  </div>
+			  </div>
+			  </form>
+		   </div>
+		</div>
+   </div>
+ </body>
+ 
 
- 	.card-body table td {
- 		heigh: 150px;
- 		padding: 10px 0;
- 	}
-</style>
-
-<div class="row-empty-40"></div>
-<div class="row-empty-40"></div>
-
-<div class="regist-area card border-primary mb-3">
-	<div class="card-header" style="width:100%;">
-		    	회원가입
-	</div>
-	<div class="card-body">
-		<form action="regist" method="post">
-			<fieldset>
-		    		<table class="form-group">
-		    			<colgroup>
-		    				<col width="100px;">
-		    				<col width="300px;">
-		    				<col width="100px;">
-		    			</colgroup>
-		    			<tbody>
-			    			<tr>
-			    				<td><label for="member_id">ID</label></td>
-			    				<td><input type="text" name="member_id" id="member_id"  class="form-control"placeholder="아이디를 입력하세요" required>
-			    						<small id="emailHelp" class="form-text text-muted">영문, 숫자 20자 이내</small>
-			    				</td>
-			    				<td><input class="test" type="button" id="id_check" value="중복확인" ><br></td>
-			    			</tr>
-			    			<tr>
-			    				<td><label for="exampleInputPassword1">PW</label></td>
-			    				<td><input type="password" name="member_pw" class="form-control join" id="exampleInputPassword1" placeholder="Password" required>
-			    				</td>
-			    				<td></td>
-			    			</tr>
-			    			<tr>
-			    				<td>이름</td>
-			    				<td><input type="text" name="member_name" class="form-control" placeholder="이름을 입력하세요" required></td>
-			    				<td></td>
-			    			</tr>
-			    			<tr class="input_email">
-			    				<td>이메일</td>
-			    				<td>
-			    						<input type="email" id="email" name="member_email" placeholder="이메일 주소를 입력하세요" class="form-control" required>
-			    						<input type="text" name="cert" class="form-control" placeholder="인증번호 입력" required>
-			    				</td>
-			    				<td><input type="button" id="check_email" value="인증번호 보내기">
-			    						<input type="button" name="check_email_code" id="check_email_code" value="인증코드확인">
-			    				</td>
-			    			</tr>
-			    			<tr class="send">
-			    			</tr>
-			    			<tr>
-			    				<td>연락처</td>
-			    				<td><input type="text" name="member_phone" class="form-control" placeholder="휴대폰 번호를 입력하세요( '-'제외)" required></td>
-			    				<td></td>
-			    			</tr>
-			    			<tr>
-			    				<td>생년월일</td>
-			    				<td><input type="text" name="member_birth" class="form-control" placeholder="생년월일을 입력하세요" required>
-			    						<small id="emailHelp" class="form-text text-muted">ex: 19890101</small>
-			    				</td>
-			    				<td></td>
-			    			</tr>
-			    			<tr>
-			    				<td colspan="3"><input type="submit" value="회원가입" onclick="test();" class="btn_regist btn btn-secondary" disabled/></td>
-			    			</tr>
-		    			</tbody>
-		    		</table>
-	  		</fieldset>
-		</form>	
-	</div>
-</div>
-
-
-<div class="row-empty-40"></div>
-
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
 
