@@ -235,12 +235,10 @@ public class MemberBoardController {
 	public String editqna(@ModelAttribute AdminQnaDto adminQnaDto,
 							Model model ) {
 
-		log.info("adimbefor={}",adminQnaDto);
 
 //		AdminQnaDto result = adminQnaDao.qnagetupdate(adminQnaDto);
 
 
-		log.info("model={}", model);
 
 
 //		log.info("uppoDto= {}",adminQnaDto);
@@ -251,6 +249,7 @@ public class MemberBoardController {
 	}
 	
 	
+
 //	@GetMapping("/deleteqna")
 //	public String deleteqna()
 //	{

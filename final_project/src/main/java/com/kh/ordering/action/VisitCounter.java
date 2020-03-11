@@ -34,13 +34,11 @@ public class VisitCounter extends HandlerInterceptorAdapter{
 //		알아야 할 정보
 //		1. 모든요청 횟수
 //		2. 신규세션 생성 횟수
-		log.info("신규세션? {}", session.isNew());
 		if(session.isNew()) {
 			VisitCountDao.insertVisitor();
 		}
 		
 //		3. Referer(어느 페이지에서 들어왔는가 : 직접 주소를 친 경우는 배제)
-		log.info("Referer = {}", request.getHeader("Referer"));
 		
 //		VisitCountVO vo = VisitCountVO.builder().connecting(1).build();
 //		log.info("vo={}", vo);

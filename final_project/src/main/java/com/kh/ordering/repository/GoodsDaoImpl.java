@@ -40,6 +40,12 @@ public class GoodsDaoImpl implements GoodsDao{
 //		
 //	}
 	
+	@Override
+	public int getMaxQuantity(int goods_no) {
+		return sqlSession.selectOne("goods.getMaxQuantity", goods_no);
+	}
+	
+	
 	//검색
 	@Override
 	public List<GoodsDto> search(String keyword) {

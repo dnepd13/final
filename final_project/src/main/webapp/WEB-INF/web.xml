@@ -92,6 +92,8 @@
 		<url-pattern>/seller/change_pw</url-pattern>
 		<url-pattern>/seller/change_pw_success</url-pattern>
 		<url-pattern>/seller/main</url-pattern>
+		
+		<url-pattern>/goods/insert</url-pattern>
 	</filter-mapping>
 	
 	<filter>
@@ -140,6 +142,16 @@
 		<url-pattern>/member/updateReply</url-pattern>
 		<url-pattern>/member/deleteReply</url-pattern>
 		<url-pattern>/member/membercheck</url-pattern>
+		<url-pattern>/member/</url-pattern>
+		<url-pattern>/member/</url-pattern>
+		<url-pattern>/member/</url-pattern>
+		<url-pattern>/member/</url-pattern>
+		
+		<url-pattern>/order/*</url-pattern>
+		<url-pattern>/pay/kakao/*</url-pattern>
+		<url-pattern>/member/cart</url-pattern>
+		<url-pattern>/member/addCart</url-pattern>
+		<url-pattern>/member/deleteCart</url-pattern>
 	</filter-mapping>
 
 	<filter>
