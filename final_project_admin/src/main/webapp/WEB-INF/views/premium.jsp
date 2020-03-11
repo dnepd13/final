@@ -28,6 +28,11 @@
 				var price = priceCell.children().val();
 				var rate = rateCell.children().val();
 				
+				var upprice = $(this).parent().parent().prev().prev();
+				var downprice = $(this).parent().parent().next();
+				
+				console.log(upprice);
+				console.log(downprice);
 				priceCell.empty();
 				rateCell.empty();
 				
@@ -89,9 +94,6 @@
 			else{
 			$(".premium").each(function(){
 				var premium = $(this).text();
-				console.log("premium"+premium);
-				
-				
 				
 				if(premiumprice == parseInt(premium)){
 					window.alert("이미 존재하는 값입니다");
