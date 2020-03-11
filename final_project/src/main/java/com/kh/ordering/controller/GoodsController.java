@@ -210,16 +210,22 @@ public class GoodsController {
 	public String search(Model model, @RequestParam String keyword) {
 		List<GoodsDto> list = goodsService.search(keyword);
 		List<GoodsFileVO> VOlist = new ArrayList<>();
+		List<Integer> starList = new ArrayList<>();
 		for (GoodsDto goodsDto : list) {
 			GoodsFileVO goodsFileVO = GoodsFileVO.builder()
 					.goodsDto(goodsDto)
 					.goods_main_image(goodsDao.getGoodsMainImage(goodsDto.getGoods_no()))
 					.build();
 			VOlist.add(goodsFileVO);
+			starList.add(goodsReviewDao.getStarAvg(goodsDto.getGoods_no()));
 		}
 		model.addAttribute("list", VOlist);
 		model.addAttribute("listSize", list.size());
+		model.addAttribute("starList", starList);
 //		model.addAttribute("VOList", VOlist);
+		
+		
+		
 		return "goods/search";
 	}
 	

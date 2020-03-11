@@ -19,32 +19,32 @@ public class GoodsOptionController {
 	@Autowired
 	private GoodsOptionService goodsOptionService;
 	
-	@GetMapping("/insert")
-	public String insert() {
-		return "goods/goods_option/insert";
-	}
+//	@GetMapping("/insert")
+//	public String insert() {
+//		return "goods/goods_option/insert";
+//	}
+//	
+//	@PostMapping("/insert")
+//	public String insert(@ModelAttribute GoodsOptionDto goodsOptionDto) {
+//		goodsOptionService.insert(goodsOptionDto);
+//		return "redirect:getList";
+//	}
 	
-	@PostMapping("/insert")
-	public String insert(@ModelAttribute GoodsOptionDto goodsOptionDto) {
-		goodsOptionService.insert(goodsOptionDto);
-		return "redirect:getList";
-	}
-	
-	@GetMapping("/delete")
-	public String delete(@RequestParam int goods_option_no) {
-		goodsOptionService.delete(goods_option_no);
-		return "redirect:getList";
-	}
-	
-	@GetMapping("/get")
-	public String get(@RequestParam int goods_option_no, Model model) {
-		model.addAttribute("goodsOptionDto", goodsOptionService.get(goods_option_no));
-		return "goods/goods_option/get";
-	}
-	
-	@GetMapping("/getList")
-	public String getList(Model model) {
-		model.addAttribute("list", goodsOptionService.getList());
-		return "goods/goods_option/getList";
-	}
+//	@GetMapping("/delete")
+//	public String delete(@RequestParam int goods_option_no) {
+//		goodsOptionService.delete(goods_option_no);
+//		return "redirect:getList";
+//	}
+//	
+//	@GetMapping("/get")
+//	public String get(@RequestParam int goods_option_no, Model model) {
+//		model.addAttribute("goodsOptionDto", goodsOptionService.get(goods_option_no));
+//		return "goods/goods_option/get";
+//	}
+//	
+//	@GetMapping("/getList")
+//	public String getList(Model model) {
+//		model.addAttribute("list", goodsOptionService.getList());
+//		return "goods/goods_option/getList";
+//	}
 }

@@ -164,6 +164,8 @@ $(function(){
 		$(location).attr('href', url);
 	});
 	
+	var arr_option_stock = new Array();
+	var arr_final_stock = [];
 	
 	// 옵션 선택 이벤트
 	$(".options").change(function(){
@@ -174,7 +176,7 @@ $(function(){
 				return false;
 			}
 		});
-		
+
 		// 옵션 전체 선택했을 때
 		if(selectedAll){
 			count++;
@@ -191,12 +193,11 @@ $(function(){
 			var content;
 			var option_price;
 			var option_no_list = new Array();
-			var qtty;
+			var qtty = 1;
 			
 			var div = $("<div class='total_price_area col-12'></div>"); // 선택 상품+옵션 그룹div
 			
 			// 옵션 선택 정보 저장 (옵션번호리스트, 가격합계)
-			
 			
 			$(".options").each(function(i){
 				var no = $(this).val(); // 선택된 옵션 번호
@@ -212,21 +213,34 @@ $(function(){
 				div.append(option_info);
 				
 				// div에 no 추가
-				var option_no = $("<input type='hidden' name='itemVOList["+VOindex+"].option_no_list' value='"+no+"'>");
+				var option_no = $("<input class='option_no' type='hidden' name='itemVOList["+VOindex+"].option_no_list' value='"+no+"'>");
 				div.append(option_no); 	
 				
-				// 옵션 번호와 재고 저장
-// 				arr_option_stock.push({
-// 						option_no: no,
-// 						stock: arr[index].goods_option_stock
-// 						});
+				//옵션 번호와 재고 저장
+				arr_option_stock.push({
+						option_no: no,
+						stock: arr[index].goods_option_stock
+						});
 				
-				// 옵션번호에 그룹번호 저장
-// 				arr_selected_option.push({
-// 						group_name: 'group_'+VOindex,
-// 						option_no: no						
-// 						}); 
 			});
+			
+			
+			// 중복 제거
+			var option_no_list = [];
+			$.each(arr_option_stock, function(i, value){
+				option_no_list.push(value.option_no);
+				if(arr_final_stock.findIndex(x => x.option_no == value.option_no) == -1) {
+					arr_final_stock.push(value);
+				}
+			});
+
+			
+			checkStock(option_no_list, -1);
+
+			$.each(arr_option_stock, function(i, value){
+				arr_option_stock.pop();	
+			});
+
 			
 			// div에 나머지 기능 추가
 			var goods_name = $("<h5>" + goodsVO.goods_name + "</h5>");
@@ -257,37 +271,61 @@ $(function(){
 			// + 버튼
 			plus.click(function(e){
 				e.preventDefault();
+				
+				var option_no_list = [];
+				$(this).siblings(".option_no").each(function(i, value) {
+					console.log($(this));
+					console.log($(this).val());
+					option_no_list.push($(this).val());
+				});
+				
+				checkStock(option_no_list, -1);
+				
 				var qtt = $(this).siblings(".quantity").val();
 				price = total_price * (parseInt(qtt)+1);
 				$(this).siblings(".quantity").val(parseInt(qtt)+1);
 				span.html(addComma(price) + "원");
 				setFinalArea();
 				goodsStockCheck();
+
 			});
 			
 			// - 버튼
 			minus.click(function(e){
 				e.preventDefault();
+				
 				var qtt = $(this).siblings(".quantity").val();
 				if(qtt>1) {
+					var option_no_list = [];
+					$(this).siblings(".option_no").each(function(i, value) {
+						console.log($(this));
+						console.log($(this).val());
+						option_no_list.push($(this).val());
+					});
+					
+					checkStock(option_no_list, 1);
+					
 					price = total_price * (parseInt(qtt)-1);
 					$(this).siblings(".quantity").val(parseInt(qtt)-1);
 					span.html(addComma(price) + "원");
 					setFinalArea();
 				}
 				goodsStockCheck();
+
+				// 수량 체크
+				
 			});
 			
 			// 수량 수정
 			quantity.blur(function(){ 
 				var qtt = Number($(this).val());
+				var stock = qtty;
 				if(qtt>=1) {
 					qtty = parseInt(qtt);
 					price = total_price * (parseInt(qtt));
 					$(this).val(parseInt(qtt));
 					span.html(addComma(price) + "원");
 					setFinalArea();
-					goodsStockCheck();
 				} else {
 					$(this).val(1);
 					qtt = 1;
@@ -295,13 +333,40 @@ $(function(){
 					price = total_price * (parseInt(qtt));
 					span.html(addComma(price) + "원");
 					setFinalArea();
-					goodsStockCheck();
 				}
+				
+				goodsStockCheck();
+				
+				var option_no_list = [];
+				$(this).siblings(".option_no").each(function(i, value) {
+					console.log($(this));
+					console.log($(this).val());
+					option_no_list.push($(this).val());
+				});
+				
+				console.log("st="+stock);
+				console.log("qty="+qtty);
+				console.log("res="+ (stock - qtty));
+				
+				checkStock(option_no_list, stock - qtty);
+				
 			});
 			
 			// X 버튼
 			delete_btn.click(function(e){
 				e.preventDefault();
+				
+				var option_no_list = [];
+				$(this).siblings(".option_no").each(function(i, value) {
+					console.log($(this));
+					console.log($(this).val());
+					option_no_list.push($(this).val());
+				});
+				
+				var qtt = Number($(this).siblings(".quantity").val()); 
+				
+				checkStock(option_no_list, qtt);
+				
 				$(this).parent(".total_price_area").remove();
 // 				VOindex--;
 				setFinalArea();
@@ -326,6 +391,37 @@ $(function(){
 		}
 		
 	});
+	
+	
+	function checkStock(option_no_list, stock){
+		var result = false;
+		
+		$.each(option_no_list, function(i, value){
+			console.log(value);
+			var index = arr_final_stock.findIndex(x => x.option_no == value);
+			arr_final_stock[index].stock += stock;
+			
+			if(arr_final_stock[index].stock < 0) {
+				result = true;
+			}
+			
+			console.log(arr_final_stock[index]);
+		});
+		
+		
+		
+		if(result) {
+			console.log("트루");
+			$(".order_btn").attr("disabled", true);
+			$(".alert_option_stock").show();
+		} else {
+			console.log("false");
+			$(".order_btn").attr("disabled", false);
+			$(".alert_option_stock").hide();
+		}
+	}
+	
+	
 	// 장바구니
 	$(".add_cart_btn").click(function(e){		
 		
@@ -404,32 +500,7 @@ $(function(){
 			$(".order_btn").attr("disabled", false);
 		}
 	}
-	
-	
-	
-// 	$("#submit_btn").submit(function(e){
-// 		console.log("?????");
-// 		e.preventDefault();
-// 		var data = $("#form-box").serialize();
-		
-// 		$.ajax({
-// 			type: "POST",
-// 			url: "goods/quantityCheck",
-// 			data:data,
-// 			success: function(result){
-// 				console.log(result);
-// 				if(!result){
-// 					console.log("실패");
-// 					e.preventDefault();
-// 					$(".alert_quantity").show();
-// 					$(".order_btn").attr("disabled", true);
-// 				}
-// 			}
-// 		});
-		
-// 		e.preventDefault();
-// 	});
-	
+
 	
 }); 
 
@@ -823,10 +894,10 @@ $(function(){
 					<div class="selected_area row">
 					</div>
 					<div class="alert_goods_stock alert alert-warning">
-					  <strong>상품 수량이 부족합니다!</strong> (구매가능수량:${goods_stock}개)
+					  <strong>상품 수량이 부족합니다!</strong>
 					</div>
 					<div class="alert_option_stock alert alert-warning">
-					  <strong>옵션 수량이 부족합니다!</strong> (구매가능수량: ? 개)
+					  <strong>옵션 수량이 부족합니다!</strong>
 					</div>					
 				<div class="row">
 					<div class="total_area col-12">

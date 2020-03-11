@@ -234,6 +234,14 @@ function updatePoint(){
 		$(".ordering_price").html(addComma(String(g_total_price - 0))+" 원");
 		$(".max_point").html(addComma(Number("${user_point}")));
 	}
+	
+	
+	if(g_total_price-point == 0) {
+		$("#ordering_btn").attr("disabled", true);
+		$("#ordering_btn").hide();
+		$(".alert-kakao").show();
+		$(".alert-none").hide();
+	}
 }
 
 function getPoint(){
@@ -614,7 +622,8 @@ function inputOrderInfo(){
 	</div>
 	<div class="col-lg-5">
 		<div class="alert-kakao alert alert-danger text-center" role="alert">
-		  1,000,000원을 초과할 수 없습니다!(카카오페이 테스트 결제 금액 초과!)
+		 0원 또는 1,000,000원을 초과할 수 없습니다!<br>
+		 (카카오페이 테스트 결제 금액 오류!)
 		</div>
 		<div class="alert-none alert alert-primary text-center" role="alert">
 		   상품이 없습니다! <a href="${pageContext.request.contextPath}" class="alert-link">(쇼핑하기!)</a>

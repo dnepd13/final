@@ -13,10 +13,13 @@
 	
 	<!-- 검색 -->
 	<select id="search" parameterType="String" resultType="goodsDto">
-		select * from goods G
-		inner join category C
-		on G.category_no = C.category_no
-		where goods_name like '%${keyword}%' or category_middle like '%${keyword}%' or category_small like '%${keyword}%'
+		select * from (
+			select * from goods G
+			inner join category C
+			on G.category_no = C.category_no
+			where goods_name like '%${keyword}%' or category_middle like '%${keyword}%' or category_small like '%${keyword}%'
+			)
+		where goods_status = 'Y'
 	</select>
 	
 	
@@ -116,6 +119,7 @@
 		    ) where RN between 1 and 5
 		) R
 		inner join goods on goods.goods_no =  R.goods_no
+		where goods_status = 'Y'
 		order by Q desc
 	</select>
 	
@@ -123,13 +127,13 @@
 	<select id="getListNew" resultType="goodsDto">
 		select * from(
    			 select rownum RN, RN.* from (
-		        select * from goods order by goods_no desc) RN
+		        select * from goods where goods_status = 'Y' order by goods_no desc) RN
 		) where RN between 1 and 5
 	</select>
 	
 	<!-- 전체 조회  -->
 	<select id="getList" resultType="goodsDto">
-		select * from goods order by goods_no asc
+		select * from goods where goods_status = 'Y' order by goods_no asc
 	</select>
 	
 	<resultMap type="goodsVO" id="getGoodsVO">
