@@ -291,6 +291,26 @@
 
  </update>
  
+ 	<!-- 공지사항 -->
+ 	<select id="getListNotice" resultType="adminQnaDto">
+ 		select *from(
+		    select rownum rn, RN.* from(
+		        select *from admin_qna where admin_qna_head='공지'
+		            connect by prior admin_qna.admin_qna_no = admin_qna.super_no start with admin_qna.super_no is null
+		            order siblings by admin_qna.group_no desc, admin_qna.admin_qna_no asc
+		    )RN
+		)where rn between #{start} and #{finish}
+ 	</select>
+	<select id="getNoticeCount" parameterType="int" resultType="int">
+		select count(*) from admin_qna where admin_qna_head='공지'
+	</select>
+	
+	<select id="getNoticeDetails" parameterType="int" resultType="adminQnaDto">
+		select *from admin_qna
+			where admin_qna_no=#{admin_qna_no} and admin_qna_head='공지'
+	</select>
+ 
+ 
 	<!-- 최근 3일 기준 관리자 문의게시판 내용 -->
 	<select id="getListYesterDay" parameterType="int" resultType="adminQnaDto">
 		select *from(

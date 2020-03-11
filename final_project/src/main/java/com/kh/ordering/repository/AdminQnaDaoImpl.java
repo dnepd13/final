@@ -183,6 +183,22 @@ public class AdminQnaDaoImpl implements AdminQnaDao{
 		AdminQnaDto memberresult = sqlSession.selectOne("adminQnaDto.qnaonemember", adminQnaDto);
 		return memberresult;
 	}
+
+//// 공지사항 //
+	//목록
+	@Override
+	public List<AdminQnaDto> getListNotice(PagingVO paging) {
+		return sqlSession.selectList("adminQnaDto.getListNotice", paging);
+	}
+	@Override
+	public int getNoticeCount() {
+		return sqlSession.selectOne("adminQnaDto.getNoticeCount");
+	}
+	//상세
+	@Override
+	public AdminQnaDto getNoticeDetails(int admin_qna_no) {
+		return sqlSession.selectOne("adminQnaDto.getNoticeDetails", admin_qna_no);
+	}
 	
 	// 최근 3일기준 관리자 문의게시판 작성 List	
 	@Override
@@ -194,9 +210,6 @@ public class AdminQnaDaoImpl implements AdminQnaDao{
 		return sqlSession.selectOne("adminQnaDto.getYesterDayCount", member_no);
 
 	}
-
-
-
 
 
 }
