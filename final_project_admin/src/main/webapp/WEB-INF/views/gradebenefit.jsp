@@ -73,6 +73,12 @@
 			})
 		});
 		
+		$("#gradeinsert").on("blur",function(){
+			var grade = $(this).val();
+			console.log(grade);
+			if(grade == )
+		});
+		
 	});
 </script>
 
@@ -98,13 +104,9 @@
 
 <h3>등급 혜택 등록하기</h3>
 <form action="" method="post">
-	<select name="grade_benefit_grade">
-		<option>브론즈</option>
-		<option>실버</option>
-		<option>골드</option>
-	</select>
-	<input type="number" name="grade_benefit_rate" placeholder="혜택율" required="required">
-	<input type="submit" value="등록">	
+	<input id="gradeinsert" type="text" name="grade_benefit_grade" placeholder="등급" required="required">
+	<input id="rateinsert" type="number" name="grade_benefit_rate" placeholder="혜택율" required="required">
+	<input id="insertbutton" type="submit" value="등록" disabled="">	
 </form>
 <table class="table table-hover">
   <thead>
@@ -117,8 +119,8 @@
   <tbody>
   <c:forEach var="list" items="${list }">
     <tr>
-      <th scope="row">${list.grade_benefit_grade }</th>
-      <td>${list.grade_benefit_rate }</td>
+      <th scope="row" id="grade">${list.grade_benefit_grade }</th>
+      <td id="rate">${list.grade_benefit_rate }</td>
       <td data-grade-benefit-no="${list.grade_benefit_no }" >
    			<button type="button" class="btn-modify" >수정</button>
    			<button type="button" class="btn-delete" >삭제</button>
