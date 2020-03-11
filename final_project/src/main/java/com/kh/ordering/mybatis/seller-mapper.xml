@@ -47,7 +47,7 @@
 	<!-- 판매자 로그인 구문 -->
 	<!-- 비밀번호 암호화 -->
 	<select id="login" parameterType="seller" resultType="seller">
-		select*from seller where seller_id =#{seller_id}
+		select * from seller where seller_id =#{seller_id}
 	</select>
 	<!-- 판매자 아이디 찾기 -->
 	<select id="find_id" parameterType="seller" resultType="seller">
