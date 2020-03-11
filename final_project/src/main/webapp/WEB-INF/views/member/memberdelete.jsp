@@ -30,7 +30,7 @@
 	<form action="memberdelete" method="post">
 		<fieldset>
 	    	<div class="form-group">
-				<label for="exampleInputId">ID:</label>
+				<label for="exampleInputId"></label>
 				<input type="hidden" name="member_id"  id="exampleInputId" class="form-control" value="${memberdelete.member_id}" required>
 	 			<div class="row-empty-20"></div>
 	 			<label for="exampleInputPassword1">PW:</label>
