@@ -17,15 +17,15 @@
 
 
 <c:choose>
-<c:when test="${admin_qna_writer == admin}">	
+<c:when test="${param.admin_qna_no >0}">	
+	<h1>수정 할 수 없는 게시글 입니다.</h1>
+</c:when>
+<c:otherwise>
 	<div class="btn-group-vertical">
 	<a href="${pageContext.request.contextPath}/board/editreport?admin_qna_no=${ReportGetOne.admin_qna_no}">
 		<button type="button" class="btn btn-primary">수정</button>
 	</a>
 </div> 
-</c:when>
-<c:otherwise>
-	<h1>관리자의 답변입니다.</h1>
 
 </c:otherwise>
 </c:choose>
@@ -51,7 +51,7 @@
 	
 	<tr>
 		<th></th>
-		<td width="600px" align="left">${ReportGetOne.admin_qna_content}</td>
+				<td width="600px" align="left">${ReportGetOne.admin_qna_content}</td>
 	</tr>
 </tbody>
 

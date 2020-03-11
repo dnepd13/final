@@ -45,6 +45,18 @@
             	//}
     });
    });
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 // 		.validate-form은 처음에 숨기고 이메일 전송시만 표시
 $(function() {
 	//	$("#check_email_code").hide();
@@ -115,6 +127,20 @@ $(function() {
 			});
 		});
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function test() {
 	if ($('input[name="seller_id"]').val() == "") {
 		window.alert("아이디를 입력해주세요");
