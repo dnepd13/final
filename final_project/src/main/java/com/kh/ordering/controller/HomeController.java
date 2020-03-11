@@ -3,11 +3,14 @@ package com.kh.ordering.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.ordering.entity.CompanyDto;
 import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.repository.GoodsDao;
 import com.kh.ordering.repository.GoodsReviewDao;
@@ -19,7 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class HomeController {
-	
+	@Autowired
+	private SqlSession sqlSession;
 	@Autowired
 	private GoodsService goodsService;
 	
@@ -66,5 +70,12 @@ public class HomeController {
 	//			model.addAttribute("VOList", VOlist);
 		
 		return "/home";
+	}
+	
+	// 푸터 기업정보. 비동기
+	@GetMapping("/company")
+	@ResponseBody
+	public CompanyDto companyInfo() {
+		return sqlSession.selectOne("company.getInfo");
 	}
 }
