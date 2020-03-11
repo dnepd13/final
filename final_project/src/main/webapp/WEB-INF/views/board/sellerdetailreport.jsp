@@ -15,20 +15,19 @@
 <h1>문의 게시판 상세보기</h1>
 <h2><a href="http://localhost:8001/ordering/board/sellerqna">목록으로</a></h2>
 
-
 <c:choose>
-<c:when test="${admin_qna_writer == admin}">	
+<c:when test="${param.admin_qna_no >0}">	
+	<h1>수정 할 수 없는 게시글 입니다.</h1>
+</c:when>
+<c:otherwise>	
 	<div class="btn-group-vertical">
 	<a href="${pageContext.request.contextPath}/board/sellereditreport?admin_qna_no=${sellerreportrone.admin_qna_no}">
 		<button type="button" class="btn btn-primary">수정</button>
 	</a>
 </div> 
-</c:when>
-<c:otherwise>
-	<h1>관리자의 답변입니다.</h1>
-
 </c:otherwise>
 </c:choose>
+
 <table class="table table-hover">
 <tbody>
 	<tr>

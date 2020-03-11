@@ -276,10 +276,12 @@
  	<update id="memberedit" parameterType="member">
  		update member
  		set
+ 			member_name= #{member_name},
+ 			member_birth= #{member_birth},
  			member_email = #{member_email},
  			member_phone = #{member_phone}
  		where
- 			member_no = #{member_no}
+ 			member_id = #{member_id}
  	</update>
 	
 	
@@ -309,6 +311,13 @@
 	<!-- 포인트 조회 -->
 	<select id="getPoint" parameterType="int" resultType="int">
 		select sum(member_point_change) from member_point where member_no = #{member_no}
+	</select>
+	
+	
+	
+		<!-- 회원 개인 정보 조회 -->
+	<select id="membergetUpdate" parameterType="member" resultType="member">
+		select * from member where member_id=#{member_id}
 	</select>
 	
 	<!-- 회원 포인트 추가 -->
