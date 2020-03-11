@@ -295,6 +295,9 @@ public class SellerController {
 						model.addAttribute("sellerDto",info);
 		return"redirect:/seller/info_edit";
 	}
+	
+	
+	
 ///////////판매자 정보 수정하기/////////////////////
 	@GetMapping("/info_edit")
 	public String info_edit(Model model,HttpSession session) {
@@ -307,6 +310,7 @@ public class SellerController {
 	}
 	@PostMapping("/info_edit")
 	public String info_edit(@ModelAttribute SellerDto sellerDto,HttpSession session) {
+		log.info("sellerDtoedit={}",sellerDto);
 		String seller_id=(String)session.getAttribute("seller_id");
 		sellerDto.setSeller_id(seller_id);
 		SellerDto info_edit=sellerDao.info_edit(sellerDto);

@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.databind.deser.impl.ExternalTypeHandler.Builder;
 import com.kh.ordering.entity.AdminQnaDto;
 import com.kh.ordering.vo.PagingVO;
 
@@ -50,8 +51,9 @@ public class AdminQnaDaoImpl implements AdminQnaDao{
 	}
 
 	@Override
-	public AdminQnaDto qnaGetOne(AdminQnaDto adminQnaDto) {
+	public AdminQnaDto qnaGetOne(AdminQnaDto adminQnaDto, int getNo) {
 		AdminQnaDto result1 = sqlSession.selectOne("adminQnaDto.QnaGetOne", adminQnaDto);
+
 		return result1;
 	}
 
@@ -174,6 +176,12 @@ public class AdminQnaDaoImpl implements AdminQnaDao{
 		sqlSession.update("adminQnaDto.sellerreportUpdate", adminQnaDto);
 
 		}
+
+	@Override
+	public AdminQnaDto qnaonemember(AdminQnaDto adminQnaDto) {
+		AdminQnaDto memberresult = sqlSession.selectOne("adminQnaDto.qnaonemember", adminQnaDto);
+		return memberresult;
+	}
 
 
 

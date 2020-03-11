@@ -19,7 +19,7 @@ public interface AdminQnaDao {
 
 	List<AdminQnaDto> getListQna(PagingVO pagingVO);
 
-	public AdminQnaDto qnaGetOne(AdminQnaDto adminQnaDto);
+	public AdminQnaDto qnaGetOne(AdminQnaDto adminQnaDto, int getNo);
 
 	int QnaSeq();
 
@@ -66,6 +66,8 @@ public interface AdminQnaDao {
 	AdminQnaDto sellerreportgetupdate(int admin_qna_no);
 
 	void sellerreportUpdate(AdminQnaDto adminQnaDto);
+
+	AdminQnaDto qnaonemember(AdminQnaDto adminQnaDto);
 
 
 

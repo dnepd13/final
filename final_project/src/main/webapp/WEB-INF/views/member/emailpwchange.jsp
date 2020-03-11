@@ -24,29 +24,6 @@
  	
 </style>
 
-<script type="text/javascript"> 
-      $(function(){
-    	$("#submit").attr("disabled", true); 
-    	$("#alert-success").hide(); 
-    	$("#alert-danger").hide();
-		$("input").keyup(function(){ 
-				var password1= document.twin.password1.value;
-				var password2=document.twin.password2.value;
-				if(password1 != "" || password2 != ""){ 
-					if(password1 == password2){ 
-					$("#alert-success").show();
-					$("#alert-danger").hide(); 
-					$("#submit").attr("disabled", false); 
-				}else{
-					$("#alert-success").hide();
-					$("#alert-danger").show(); 
-					$("#submit").attr("disabled", true); 
-				} 
-			} 
-		});
-	}); 
-
-  </script>
 
 
  
@@ -70,7 +47,7 @@
 
                <div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div>
  <div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
-                <button type="submit" class="btn btn-secondary disabled btn-block">비밀번호 변경하기</button>
+                <button type="submit" id="frm" onclick="test();">비밀번호 변경하기</button>
              </form>
           </div>
        </div>
