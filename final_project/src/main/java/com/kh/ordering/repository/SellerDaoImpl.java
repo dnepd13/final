@@ -2,13 +2,13 @@ package com.kh.ordering.repository;
 
 
 
-import javax.mail.Session;
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.ordering.entity.GoodsDto;
 import com.kh.ordering.entity.SellerDto;
 
 @Repository
@@ -110,8 +110,11 @@ public class SellerDaoImpl implements SellerDao {
 		return sqlSession.selectOne("seller.getSellerNo", seller_id);
 	}
 	
-	
-	
+	// 등록한 상품 정보 가져오기
+	@Override
+	public List<GoodsDto> getGoodsList(String seller_id) {
+		return sqlSession.selectList("seller.getGoodsList", this.getSellerNo(seller_id));
+	}
 	
 	
 	//회원 문의글 번호 얻기

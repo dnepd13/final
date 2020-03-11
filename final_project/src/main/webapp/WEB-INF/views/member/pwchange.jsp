@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
-<
+
 <style>
 	.login-area {
 		width: 500px;
@@ -39,15 +39,7 @@
                	 <label for="pw-input">비밀번호 입력 </label>
                  <input class="form-control" type="password" id="pw-input1" name="member_pw" required>
                </div>
-                 <!--비밀번호 재 입력창-->
-               <div class="form-group">
-                  <label for="pw-input">비밀번호 재입력 </label>
-                  <input class="form-control" type="password" id="pw-input2" required>
-               </div>
-
-               <div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div>
- <div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
-                <button type="submit" id="frm" onclick="test();">비밀번호 변경하기</button>
+                <button type="submit" id="frm" class="btn btn-secondary disabled btn-block">비밀번호 변경하기</button>
              </form>
           </div>
        </div>

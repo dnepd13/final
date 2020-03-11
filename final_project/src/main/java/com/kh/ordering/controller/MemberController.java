@@ -1,3 +1,4 @@
+
  package com.kh.ordering.controller;
 
 import java.util.ArrayList;
@@ -266,15 +267,29 @@ public class MemberController {
 
 			memberDao.memberdelete(login);
 			session.removeAttribute("member_id");
-			return "redirect:/ordering/member/deleteSuccess";
+			return "redirect:/member/deleteSuccess";
 		}
 		else {
-			return "redirect:/ordering/member/deleteFail";
+			return "redirect:/member/deleteFail";
 		}
 		}catch(Exception e) {
 		e.printStackTrace();
 		return "redirect:/?error";	
 		}
+	}
+	
+	//비밀번호 실패 
+	@GetMapping("deleteFail")
+	public String deleteFail() {
+		
+		return "member/deleteFail";
+	}
+	
+	
+	@GetMapping("deleteSuccess")
+	public String deleteSuccess() {
+		
+		return "member/deleteSuccess";
 	}
 	
 	
@@ -302,7 +317,7 @@ public class MemberController {
 	// 회원 로그인	
 		
 	@GetMapping("/login")
-	@RegueiredAuth
+	
 	public String login() {
 		return "member/login"; 
 	}
@@ -366,7 +381,7 @@ public class MemberController {
 	//회원 로그아웃
 	
 	@GetMapping("/logout")
-	@RegueiredAuth
+	
 	public String logout(HttpSession session ) {
 		
 		

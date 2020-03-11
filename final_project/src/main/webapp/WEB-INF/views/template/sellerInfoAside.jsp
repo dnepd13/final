@@ -88,6 +88,7 @@
 				<li><a href="${pageContext.request.contextPath}/seller/info">판매자 정보 조회</a></li>
 				<li><a href="${pageContext.request.contextPath}/seller/check_pw">비밀번호 변경</a></li>
 				<li><a href="${pageContext.request.contextPath}/seller/delete">탈퇴하기</a></li>
+				<li><a href="${pageContext.request.contextPath}/seller/logout">로그아웃</a></li>
 		       </ul>
 		   </li>	
 	   </ul>

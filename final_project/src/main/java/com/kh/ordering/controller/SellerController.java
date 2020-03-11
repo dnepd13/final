@@ -55,7 +55,7 @@ public class SellerController {
 	private SqlSession sqlSession;
 	//판매자 메인 홈
 	@GetMapping("/main")
-	@RegueiredAuth
+
 	public String main() {
 		return "/seller/main";
 	}
@@ -208,7 +208,7 @@ public class SellerController {
 	
 ///////////////////////////판매자 로그인///////////////////////////////////////
 	@GetMapping("login")
-	@RegueiredAuth
+
 	private String login( ) {
 		return "seller/login";
 		
@@ -232,10 +232,11 @@ public class SellerController {
 			log.info("current={}",correct);
 					if(correct == true) {   //비밀번호일치
 						session.setAttribute("seller_id", find.getSeller_id());
+						log.info("session={}"+session);
 						return "redirect:/seller/main";				
 					}
 					else {
-//						log.info("asda");
+	//				log.info("asda");
 						return "redirect:/seller/login?error";
 					}		
 		}
@@ -244,7 +245,7 @@ public class SellerController {
 	
 ////////////////////////////판매자 로그아웃///////////////////////////////////
 	@GetMapping("/logout")
-	@RegueiredAuth
+
 		public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";		
@@ -333,25 +334,17 @@ public class SellerController {
 	@PostMapping("/change_pw")
 	public String change_pw(@ModelAttribute SellerDto sellerDto,HttpSession session) {
 		String seller_id = (String)session.getAttribute("seller_id"); 
-	//	log.info("seller_id={}", seller_id);
+
 		sellerDto.setSeller_id(seller_id);
-		//log.info("sellerDto={}",sellerDto);
-//		SellerDto login =sellerDao.login(sellerDto);
-	//	log.info("seller_login={}", login);
+
 		sellerDto.setSeller_pw(passwordEncoder.encode(sellerDto.getSeller_pw()));
-		//SellerDto change_pw=SellerDto.builder().seller_id(seller_id).build();
+
 		sellerDto.setSeller_id(seller_id); 
-			sellerDao.change_pw(sellerDto);
-			return"redirect:/seller/change_pw_success";
+		sellerDao.change_pw(sellerDto);
 		
-//		session.setAttribute("seller_id",sellerDto.getSeller_id());
-//		boolean correct = encoder.matches(sellerDto.getSeller_pw(), change_pw.getSeller_pw());
-//		if(correct==true) {
-//					}
-//		else {
-//			return"redirect:/seller/change_pw";
-//		}
-//		
+		session.removeAttribute("seller_id");
+			
+			return"redirect:/seller/change_pw_success";	
 	}
 	//판매자 비밀번호 변경 성공 페이지
 	@GetMapping("/change_pw_success")
