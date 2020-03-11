@@ -4,6 +4,10 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="order">
+	<select id="getOrdering_no" parameterType="String" resultType="int">
+		select ordering_no from ordering where partner_order_id = #{partner_order_id} and ordering_status = '결제완료'
+	</select>
+
 	<select id="getCartInfoNo" parameterType="String" resultType="int">
 		select cart_info_no from cart_info where partner_order_id = #{partner_order_id}
 	</select>
