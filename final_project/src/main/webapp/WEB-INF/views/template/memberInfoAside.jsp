@@ -54,8 +54,10 @@
 			method : "get",
 			url: "${pageContext.request.contextPath}/member/memberInfoAside",
 			success: function(resp){
+				var name = resp.member_name;
 				var grade = resp.member_grade;
-				$(".myGrade").text(grade);
+				$(".myName").append(name+" 님 안녕하세요");
+				$(".myGrade").append(grade);
 			}
 		});
 		
@@ -85,6 +87,7 @@
 <aside>
 	<div class="aside-title">
 		<a href="${pageContext.request.contextPath}/member/membermyinfo">마이페이지</a>
+		<span class="myName"></span>
 	</div>
 	<div class="aside-grade">
 		나의 등급
@@ -95,9 +98,12 @@
 	</div>
 	<div class="aside-content">
 		<ul>
-		     <h3>상품관리</h3><br>
-			<li><a href="${pageContext.request.contextPath}/member/cartList">주문/배송</a><li>
-			<li><a href="#">교환/환불</a><li>
+			<li>주문내역
+				<ul>
+					<li><a href="${pageContext.request.contextPath}/member/cartList">주문/배송</a><li>
+					<li><a href="#">교환/환불</a><li>
+				</ul>
+			</li>
 		</ul>
 		<ul>
 			<li>주문제작

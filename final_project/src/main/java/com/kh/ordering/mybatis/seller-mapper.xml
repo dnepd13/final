@@ -274,13 +274,12 @@
 	</delete>
 	<delete id="deleteAlarm" parameterType="int">
 		delete member_alarm where seller_custom_order_no= #{seller_custom_order_no}
-	</delete>
+	</delete>	
 	
-	
-	
-	
-	
-	
+	<!-- 차단판매자 -->
+	<select id="getBlock" parameterType="int" resultType="int">
+		select count(*) from block where seller_no=#{seller_no} and block_group='판매자'
+	</select>
 
 	
 	
