@@ -44,4 +44,7 @@ public interface OrderDao {
 	
 	// 카테고리번호 기준 판매량 top5 판매자 조회
 	List<CartInfoVO> getTopSales(int category_no);
+
+	// 회원 마이페이지 메인: 최근 3일 주문내역 4개
+	List<CartInfoVO> getListYesterDay(int member_no);
 }

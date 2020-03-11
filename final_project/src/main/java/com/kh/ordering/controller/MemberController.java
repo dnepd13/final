@@ -33,11 +33,13 @@ import com.kh.ordering.repository.MemberCustomDao;
 import com.kh.ordering.repository.MemberDao;
 import com.kh.ordering.repository.Member_AddrDao;
 import com.kh.ordering.repository.Member_PointDao;
+import com.kh.ordering.repository.OrderDao;
 import com.kh.ordering.service.BoardQnaService;
 import com.kh.ordering.service.EmailService;
 import com.kh.ordering.service.GoodsOptionService;
 import com.kh.ordering.service.MemberService;
 import com.kh.ordering.service.RandomService;
+import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.CartVO;
 import com.kh.ordering.vo.ItemVO;
 import com.kh.ordering.vo.ItemVOList;
@@ -58,6 +60,8 @@ public class MemberController {
 	
 	@Autowired
 	private JavaMailSender sender;
+	@Autowired
+	private OrderDao orderDao;
 	
 	@Autowired
 	private MemberService memberService;
@@ -856,6 +860,12 @@ public class MemberController {
 		int member_no = memberDao.getNo(member_id);
 		model.addAttribute("member_no", member_no);
 		
+		// 최근 구매내역
+		List<CartInfoVO> cartYesterDay = orderDao.getListYesterDay(member_no);
+		model.addAttribute("cartYeseterDay", cartYesterDay);
+		log.info("yesterday={}", cartYesterDay);
+		
+		// 최근 문의게시판 작성내역
 		PagingVO result= boardQnaService.myInfoQnaPaging(pageNo, member_no);
 		model.addAttribute("paging", result);
 		List<AdminQnaDto> getListYesterDay= adminQnaDao.getListYesterDay(result);
