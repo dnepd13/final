@@ -28,18 +28,24 @@
 //	@Override
 //	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 //			throws Exception {
-//		String seller_id = (String) request.getAttribute("seller_id");
+//		String block_id = (String) request.getSession().getAttribute("seller_id");
+//		log.info("session={}",block_id);
 //		// String member_id = (String) request.getAttribute("member_id");
-//		int count;
-//		if (seller_id != null) {//판매자가 로그인을 하면
-//			count = sqlSession.selectOne("block.seller", seller_id);
-//			if(count==1) {//차단된 판매자라면 
+//		int count=0;
+//		log.info(block_id);
+//		log.info("count={}", count);
+//		if (block_id != null) {//판매자가 로그인을 하면
+//			count = sqlSession.selectOne("Block.seller", block_id);
+//			log.info("countttt={}", count);
+//			if(count==1) {//차단된 판매자라면                                                                                                                  
 //				//차단되었다는 페이지로 보내준다
 //				response.sendRedirect(request.getContextPath()+"/block/user");
+//				log.info("count1={}", count);
 //				return false;//여기도 차단
 //			}
 //			else {
 //				//차단되지 않은 판매자라면 통과
+//				log.info("count2={}", count);
 //				return true;
 //			}
 //		} else {//판매자가 아니라면//차단된 판매자라면 문의게시판 빼고 다 저 login.jsp 404페이지로뜬다 

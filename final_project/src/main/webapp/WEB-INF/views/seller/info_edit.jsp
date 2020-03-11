@@ -3,12 +3,17 @@
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
   </script>
+  <style>
+  .aaa{
+  	width: 600px;font-size: 1.2rem;
+  }
+  </style>
   <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
  <div class="container-fluid">
         <div class="row">
             <div class="offset-md-4 col-md-4 ">
-				<div class = "card border-secondary mb-3"style = "max-width : 500rem;">
+				<div class = "card border-secondary mb-3"style = "width: 600px;font-size: 1.2rem;">
   				<div class = "card-header">
   				  <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"size="4";>Seller Information </font></font>
   				</div>

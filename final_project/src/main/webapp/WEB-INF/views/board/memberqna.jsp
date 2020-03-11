@@ -11,6 +11,7 @@
 <style>
 .ordering_area {
 	margin: 30px 0px;
+
 }
 .cart_table {
 	border-top: 2px solid #171717;
