@@ -39,7 +39,7 @@ public class HomeController {
 		model.addAttribute("listNew", listNew);
 		model.addAttribute("starListNew", starListNew);
 		
-		List<GoodsFileVO> listBest = goodsService.getListNew();
+		List<GoodsFileVO> listBest = goodsService.getListBest();
 		List<Integer> starListBest = new ArrayList<>();
 		for (GoodsFileVO goodsFileVO : listBest) {
 			starListBest.add(goodsReviewDao.getStarAvg(goodsFileVO.getGoodsDto().getGoods_no()));
