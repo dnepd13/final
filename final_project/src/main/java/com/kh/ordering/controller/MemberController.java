@@ -412,17 +412,11 @@ public class MemberController {
 	@PostMapping("pwfind")
 	public String pwfind(@ModelAttribute MemberDto memberDto, HttpSession session)
 	{
-
-		
-
 		MemberDto login = memberDao.emaillogin(memberDto);
 		
-		//콘솔  상에 에러 부분
+		//세션으로 로그인을 집어넣는다
 		session.setAttribute("member_id", login.getMember_id());
-//			
-				
 
-//			session.setAttribute("member_grade", login.getMember_grade());
 			memberDao.lastLogin(memberDto);
 		
 		return "redirect:/member/emailpwchange";
