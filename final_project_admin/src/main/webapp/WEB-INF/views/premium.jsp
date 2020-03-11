@@ -28,11 +28,21 @@
 				var price = priceCell.children().val();
 				var rate = rateCell.children().val();
 				
-				var upprice = $(this).parent().parent().prev().prev();
-				var downprice = $(this).parent().parent().next();
+				var upprice = $(this).parent().parent().prev().children(".premium").text();
+				var downprice = $(this).parent().parent().next().children(".premium").text();
 				
 				console.log(upprice);
 				console.log(downprice);
+				
+				if(price >= parseInt(upprice)){
+					window.alert("조건을 다시 입력하세요");
+					return false;
+				}
+				if(price <= parseInt(downprice)){
+					window.alert("조건을 다시 입력하세요");
+					return false;
+				}
+				
 				priceCell.empty();
 				rateCell.empty();
 				
@@ -59,6 +69,8 @@
 						console.log(resp);
 					}
 				});
+					
+				
 			}
 		});
 		
