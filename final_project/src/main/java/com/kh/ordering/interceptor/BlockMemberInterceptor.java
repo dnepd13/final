@@ -19,7 +19,7 @@
 ///*차단된 판매자와회원이 로그인 했을때 속행 하게 하겠다=return true*/
 //@Slf4j
 //@Service
-//public class BlockmemberInterceptor extends HandlerInterceptorAdapter {
+//public class BlockMemberInterceptor extends HandlerInterceptorAdapter {
 //	@Autowired
 //	private SqlSession sqlSession;
 //	@Autowired
@@ -28,17 +28,22 @@
 //	@Override
 //	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 //			throws Exception {
-// String member_id = (String) request.getAttribute("member_id");
-//		int count;
-//		if (member_id != null) {//일반회원이 로그인을 하면
-//			count = sqlSession.selectOne("block.member", member_id);
+//		String block_id = (String) request.getSession().getAttribute("member_id");
+//	log.info("session={}",block_id);
+// 		int count=0;
+//		log.info(block_id);
+//		log.info("count={}", count);
+//		if ( block_id != null) {//일반회원이 로그인을 하면
+//			count = sqlSession.selectOne("Block.member",  block_id);
 //			if(count==1) {//차단된 회원이라면 
 //				//차단되었다는 페이지로 보내준다
 //				response.sendRedirect(request.getContextPath()+"/block/user");
+//				log.info("count1={}", count);
 //				return false;//여기도 차단
 //			}
 //			else {
 //				//차단되지 않은 멤버라면 통과
+//				log.info("count2={}", count);
 //				return true;
 //			}
 //		} else {//회원이 아니라면 

@@ -58,7 +58,7 @@
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
 		<div class="cart_title">
-			<h3>문의게시판</h3>
+			<h3>문의게시판 글 등록 ${member_id }</h3>
 		</div>
 	</div>
 </div>

@@ -75,6 +75,7 @@ $(function() {
 			$.ajax({
 				url: "send",
 				type:"post",
+				contetType: "application/x-www-form-urlencoded; charset=UTF-8",
 				data: {
 					'seller_id' : $("input[name='seller_id']").val(),
 					'seller_email' : $("input[name='seller_email']").val()				
@@ -102,6 +103,7 @@ $(function() {
 			$.ajax({
 				url:"validate",
 				type:"post",
+				contetType: "application/x-www-form-urlencoded; charset=UTF-8",
 				data:{
 					'cert' :$("input[name='cert']").val()
 				},
