@@ -9,6 +9,7 @@
 /*	부트스트랩 nav */
 	.navbar {
 	    padding: 3px 4rem;
+	    width: 1500px;
 	}
 
 </style>

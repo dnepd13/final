@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -285,6 +284,7 @@ public class MemberController {
 		return "member/deleteFail";
 	}
 	
+	//
 	
 	@GetMapping("deleteSuccess")
 	public String deleteSuccess() {
@@ -413,17 +413,11 @@ public class MemberController {
 	@PostMapping("pwfind")
 	public String pwfind(@ModelAttribute MemberDto memberDto, HttpSession session)
 	{
-
-		
-
 		MemberDto login = memberDao.emaillogin(memberDto);
 		
-		//콘솔  상에 에러 부분
+		//세션으로 로그인을 집어넣는다
 		session.setAttribute("member_id", login.getMember_id());
-//			
-				
 
-//			session.setAttribute("member_grade", login.getMember_grade());
 			memberDao.lastLogin(memberDto);
 		
 		return "redirect:/member/emailpwchange";
@@ -844,7 +838,14 @@ public class MemberController {
 
 		return "redirect:/member/addrinfo";
 	}
-		
+	
+	// 주소 List 개수 검사. 비동기.
+	@GetMapping("/getAddrList")
+	@ResponseBody
+	public List<Member_AddrDto> getListAddr(@RequestParam int member_no) {
+		log.info("member_no={}",member_no);
+		return member_AddrDao.getListAddr(member_no);
+	}
 	
 	//포인트를 확인 할 수 있는 게시판
 	
@@ -878,7 +879,6 @@ public class MemberController {
 		// 최근 구매내역
 		List<CartInfoVO> cartYesterDay = orderDao.getListYesterDay(member_no);
 		model.addAttribute("cartYeseterDay", cartYesterDay);
-		log.info("yesterday={}", cartYesterDay);
 		
 		// 최근 문의게시판 작성내역
 		PagingVO result= boardQnaService.myInfoQnaPaging(pageNo, member_no);

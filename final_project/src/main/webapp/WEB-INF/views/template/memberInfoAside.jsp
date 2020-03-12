@@ -127,14 +127,12 @@
 			</li>
 		</ul>
 		<ul>
+<%-- 			<li><a href="javascript:void(window.open('${pageContext.request.contextPath}/board/qnaregist','관리자에게 문의하기','width=400px, height=800px'))">문의하기</a></li> --%>
 			<li><a href="${pageContext.request.contextPath}/board/memberqna">문의하기</a></li>
 			<li><a href="${pageContext.request.contextPath}/board/memberrepert">신고하기</a></li>
 		</ul>
 		<ul>
 			<li><a href="${pageContext.request.contextPath}/member/memberdelete">회원탈퇴</a></li>
-		</ul>
-		<ul>
-			<li><a href="/ordering/member/style">style</a></li>
 		</ul>
 	</div>
 </aside>

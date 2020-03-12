@@ -55,22 +55,43 @@
 	}
 </style>
 
+<script>
+
+	$(function(){
+		
+		// 기업정보
+		$.ajax({
+			method : "get",
+			url: "${pageContext.request.contextPath}/company",
+			success: function(resp){
+				console.log(resp);
+				$("#co_name").append(resp.co_name);
+				$("#co_ceo").append(resp.co_ceo);
+				$("#co_location").append(resp.co_location);
+				$("#co_call").append(resp.co_call);
+				$("#co_email").append(resp.co_email);
+			}
+		});
+		
+	});
+</script>
+
 <footer>
 <div class="footer_area">
 	<ul class="footer_title">
-		<li><strong>ORDERING</strong></li>
+		<li><strong><span id="co_name"></span></strong></li>
 	</ul>
 	<ul class="footer_company">
-		<li>대표이사: 없음</li>
+		<li>대표이사: <span id="co_ceo"></span></li>
 		<li>개인정보보호 책임자: 모름</li>
-		<li>주소: 서울특별시 영등포구 선유동2로 57 이레빌딩</li>
+		<li>주소: <span id="co_location"></span></li>
 		<li>사업자등록번호: 000-00-12345</li>
 	</ul>
 	<ul class="footer_cs">
 		<li><span><a href="${pageContext.request.contextPath }/board/memberreport">신고하기</a></span><br>
-				<strong>고객센터: 02-1234-5678</strong> (평일 09:00~18:00)</li>		
+				<strong>고객센터: <span id="co_call">02-1234-5678</span></strong> (평일 09:00~18:00)</li>		
 		<li>팩스: 02-123-4567</li>
-		<li>이메일: ordering.kh@gmail.com</li>
+		<li>이메일: <span id="co_email"></span></li>
 	</ul>
 </div>
 </footer>
