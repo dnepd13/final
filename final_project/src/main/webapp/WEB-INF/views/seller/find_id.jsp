@@ -27,14 +27,14 @@
 
 <div class="login-area">
 	<div><h4 align="center">아이디 찾기</h4></div>
-	<form action="find_id" method="post">
+	<form action="memberfind_id" method="post">
 		<fieldset>
 	    	<div class="form-group">
 				<label for="exampleInputId">이름</label>
-				<input type="text" name="seller_name" id="exampleInputId" class="form-control" placeholder="Name" required>
+				<input type="text" name="seller_name" id="exampleInputId" class="form-control" placeholder="이름" required>
 	 			<div class="row-empty-20"></div>
-	 			<label for="exampleInputPassword1">이메일:</label>
-	 			<input type="text" name="seller_email" class="form-control" id="exampleInputPassword1" placeholder="Email" required>
+	 			<label for="exampleInputPassword1">PW:</label>
+	 			<input type="text" name="seller_email" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
 				<div class="row-empty-20"></div>
 				<input type="submit" value="아이디찾기" class="enter btn btn-secondary" style="width:100%;">
 			</div>

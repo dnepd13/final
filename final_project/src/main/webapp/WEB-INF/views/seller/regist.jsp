@@ -129,20 +129,6 @@ $(function() {
 			});
 		});
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function test() {
 	if ($('input[name="seller_id"]').val() == "") {
 		window.alert("아이디를 입력해주세요");
@@ -220,7 +206,7 @@ function test() {
 	}
 	
 </script>
-</head> 
+</head> 
 <body>
 <div class="continer-fluid">
 	<div class="row"  style="padding:50px;">
@@ -331,4 +317,3 @@ function test() {
 		</div>
    </div>
  </body>
-   

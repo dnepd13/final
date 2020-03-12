@@ -82,7 +82,3 @@ public class SellerGoodsController {
 		return "redirect:/seller/category_insert";
 	}
 }
-
-
-
-
