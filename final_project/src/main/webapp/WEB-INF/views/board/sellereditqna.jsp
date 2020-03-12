@@ -3,6 +3,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 
 
+<!-- 판매자 문의 수정페이지 -->
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>

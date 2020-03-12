@@ -6,7 +6,10 @@
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
 
 
-  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+<!-- 회원 가입창 -->
+
+ <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+ 
   
 
   <script>  
@@ -48,8 +51,34 @@
 	            	//}
 	    });
 	   });
-	  
-	  
+/* $(function(){
+	var member_pw = document.twin.wUserPW.value;
+	var confirmPW = document.twin.wUserPWConfirm.value;
+	if(pw.length <6 || pw.length >16){
+		window.alert('비밀번호는 6글자 이상, 16글자 이하만 이용 가능합니다.');
+		document.getElementByid('pw').value=document.getElementById('pwCheck').value='';
+		document.getElementById('same').innerHTML='';
+	}
+	if(document.getElementById('pw').value!-=''&&  document.getElementById('pwCheck').value!=''){
+		if(document.getElementById('pw').value==document.getElementById('pwCheck').value){
+			document.getElementById('same').innerHTML='비밀번호가 일치합니다.';
+			document.getElementById('same').style.color='blue';
+		}	
+		else{
+			document.getElementById('same').innerHTML='비밀번호가 일치하지 않습니다.';
+			document.getElementById('same').style.coller='red';
+		}
+		
+	}
+			if(resp ==0){
+				window.alert("비밀 번호를 입력해주세요")
+				console.log($(""))
+			}
+		})
+	})
+	
+	
+})  */
 	  
 	  
 	  
@@ -194,7 +223,11 @@
               <!-- 비밀번호 입력창 -->
                <div class="form-group">
   				<label class="col-form-label" >PW : </label>
-  				<input type="password" class="form-control" name="member_pw"required>
+  				<input type="password" class="form-control" name="member_pw" onchange="isSame()" required>
+			  </div>
+			  <div>
+			  	<label class="col-form-label" >PW 확인 : </label>
+			  	<input type="password" class="form-control" name="wUserPWConfirm" id="pwCheck" onchange="isSame()" required/>&nbsp;$nbsp;
 			  </div>
 			  <!-- 이름 입력창 -->
 			  <div class="form-group">

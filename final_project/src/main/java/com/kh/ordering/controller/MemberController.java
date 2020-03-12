@@ -487,37 +487,42 @@ public class MemberController {
 	
 	
 //	//회원 정보 수정
-	@GetMapping("editmember")
-	public String editmember(Model model, HttpSession session)
-	{
-	
-		String member_id = (String)session.getAttribute("member_id");
-		
-		MemberDto memberDto = MemberDto.builder().member_id(member_id).build();
-										
-		
-		
-		MemberDto my = memberDao.membergetUpdate(memberDto);
-		model.addAttribute("memberDto", my);
-		
-		
-		return "member/editmember";
-	}
-	
+//	@GetMapping("editmember")
+//	public String editmember(Model model, HttpSession session)
+//	{
+//	
+//		String member_id = (String)session.getAttribute("member_id");
+//		int member_no = memberDao.getNo(member_id);
+////		MemberDto memberDto = MemberDto.builder().member_id(member_id).build();
+//		MemberDto memberDto = MemberDto.builder().member_no(member_no).build();					
+//		
+//		
+//		MemberDto my = memberDao.membergetUpdate(memberDto);
+//		model.addAttribute("memberDto", my);
+//		
+//		
+//		return "member/editmember";
+//	}
+//	
+//
+//	@PostMapping("editmember")
+//	public String editmember(@ModelAttribute MemberDto memberDto ,HttpSession session) {
+//	
+//		String member_id = (String)session.getAttribute("member_id");
+//		memberDto.setMember_id(member_id);
+//		
+//		MemberDto my = memberDao.memberedit(memberDto);
+//	
+//
+//		
+//		return "redirect:/member/membermyinfo";
+//	}
+	@PostMapping("/memberedit")
+	public void memberedit(@ModelAttribute MemberDto memberDto) {
 
-	@PostMapping("editmember")
-	public String editmember(@ModelAttribute MemberDto memberDto ,HttpSession session) {
-	
-		String member_id = (String)session.getAttribute("member_id");
-		memberDto.setMember_id(member_id);
-		MemberDto my = memberDao.memberedit(memberDto);
-	
-
-		
-		return "redirect:/member/membermyinfo";
-	}
-	
-	
+	log.info("updmember={}", memberDto);
+	memberDao.memberedit(memberDto);
+}
 	
 	//회원체크
 	@GetMapping("/membercheck")
