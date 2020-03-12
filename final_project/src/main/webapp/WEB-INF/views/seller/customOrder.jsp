@@ -3,6 +3,8 @@
 
  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
  
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
+
  <style>
  	.articleBox {
  		width: 500px;
@@ -176,3 +178,6 @@
 <div class="row-empty-40"></div>
 
 </article>
+
+
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>

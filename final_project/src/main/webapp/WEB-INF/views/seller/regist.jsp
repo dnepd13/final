@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+    
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
   </script>
   <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
@@ -316,4 +320,9 @@ function test() {
 		   </div>
 		</div>
    </div>
+
  </body>
+
+
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

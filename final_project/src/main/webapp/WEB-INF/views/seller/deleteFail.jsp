@@ -19,6 +19,9 @@
 	}
 </style>
 
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
+
+
 <div class="redirect-box row justify-content-center">
 
 <div class="redirect-content">
@@ -26,9 +29,7 @@
 	(입력하신 비밀번호가 잘못되었습니다)
 	</h4><br><br>
 	<div class="row-empty-40"><br>
-	<span><a href="${pageContext.request.contextPath }/">메인으로</a></span>
-	 &verbar; 
-	<span><a href="${pageContext.request.contextPath }/seller/main">마이 페이지로</a></span>
+	<span><a href="${pageContext.request.contextPath }/seller/main">메인으로</a></span>
 	</div>
 </div>
 
@@ -39,4 +40,4 @@
 
 
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>

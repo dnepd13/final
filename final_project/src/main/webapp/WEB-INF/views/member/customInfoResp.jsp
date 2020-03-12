@@ -111,7 +111,7 @@
 			<form action="${pageContext.request.contextPath }/order/custom" method="POST">
 				<input type="hidden" name="seller_custom_order_no" value="${getListInfoResp.seller_custom_order_no }">
 				<c:if test="${getListInfoResp.custom_order_status=='읽음'}">
-				<input type="submit" class="btn_clean btn_pay" value="수락 및 결제하기" disabled>
+				<input type="submit" class="btn_clean btn_pay" value="수락 및 결제하기">
 				&verbar;
 				</c:if> 
 				<a href="${pageContext.request.contextPath }/member/customListResp">목록으로</a>		
