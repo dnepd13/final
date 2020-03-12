@@ -25,6 +25,8 @@ public class MemberDaoImpl implements MemberDao{
 	@Autowired
 	private MemberDao memberDao;
 
+	private int result;
+
 //	!지우지마세요, 포인트 관련  (월용) //////////////////////////
 	
 	// 회원 포인트 조회
@@ -56,7 +58,7 @@ public class MemberDaoImpl implements MemberDao{
 	public boolean minusPointOrder(int member_no, int point) {
 		if(this.checkPoint(member_no, point)) {
 			MemberPointVO memberPointVO = MemberPointVO.builder()
-										.member_point_status("차감")
+										.member_point_status("사용")
 										.member_point_change(-point)
 										.member_point_content("상품 구매에 사용")
 										.member_no(member_no)
@@ -258,11 +260,14 @@ public class MemberDaoImpl implements MemberDao{
 			return result;
 		}
 
+		
 		@Override
-		public void memberedit(MemberDto member) {
-			sqlSession.update("member.memberedit", member);
-			
+		public MemberDto memberedit(MemberDto member) {
+			result = sqlSession.update("member.memberedit" , member);
+			return member;
 		}
+		
+		
 
 		@Override
 		public void memberdelete(MemberDto memberDto) {
@@ -281,6 +286,13 @@ public class MemberDaoImpl implements MemberDao{
 			MemberDto login = sqlSession.selectOne("member.emaillogin", memberDto);
 
 			return login;
+		}
+
+		@Override
+		public MemberDto membergetUpdate(MemberDto memberDto) {
+		 MemberDto my = sqlSession.selectOne("member.membergetUpdate", memberDto);
+			
+		 return my;
 		}
 
 	

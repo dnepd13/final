@@ -15,7 +15,7 @@
 <style>
 	.articleBox {
 		width: 1200px;
-		height: 800px;
+		height: 1000px;
 		margin: 0 auto;
 	}
 	.req_wrap {
@@ -53,6 +53,10 @@
 	.close {
 		float: right;
 	}
+	
+	#emailHelp a:link { text-decoration: none;}
+    #emailHelp a:visited { text-decoration: none;}
+    #semailHelp a:hover { text-decoration: none;}
 </style>
     
 <script>
@@ -89,7 +93,7 @@
 				<div class="row-empty-40"></div>
 				<p>
 					<small id="emailHelp" class="form-text text-muted">
-						&check; "<span style="color: #52B1E0;">요청서</span>"는 개인 주문제작을 의뢰하기 위한 문서입니다. <br>
+						&check; "<span style="color: #52B1E0;"><a href="${pageContext.request.contextPath }/member/customCate" style="color: #52B1E0;">요청서</a></span>"는 개인 주문제작을 의뢰하기 위한 문서입니다. <br>
 						&nbsp;&nbsp;&nbsp;상품 상세페이지의 '<strong>1:1요청서</strong>' 또는 웹페이지 최상단의 '<strong>주문제작</strong>'을 통해 보내실 수 있습니다.<br>
 						&nbsp;&nbsp;&nbsp;원하는 상품이 없으시다면 판매자에게 주문제작을 의뢰해보는건 어떠신가요?
 					</small>

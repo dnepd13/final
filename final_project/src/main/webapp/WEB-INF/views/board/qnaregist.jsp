@@ -58,7 +58,7 @@
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
 		<div class="cart_title">
-			<h3>문의게시판 ${member_id }</h3>
+			<h3>문의게시판 글 등록 ${member_id }</h3>
 		</div>
 	</div>
 </div>
@@ -66,6 +66,7 @@
 <section class="section2">
 <div class="insert_req form-group">
 	<form action="qnaregist" method="post">
+
 			<input type="text" name="admin_qna_title" value="" required class="form-control" placeholder="제목">
 			<div class="row-empty-20"></div>
 		<textarea name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용"></textarea>

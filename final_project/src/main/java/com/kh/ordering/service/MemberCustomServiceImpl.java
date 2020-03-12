@@ -236,7 +236,7 @@ public class MemberCustomServiceImpl implements MemberCustomService{
 			catch(Exception e){
 				pno = 1;
 			}
-			int pageSize= 4;
+			int pageSize= 5;
 			int finish= pno*pageSize;
 			int start= finish-(pageSize-1);
 				

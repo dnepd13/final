@@ -28,6 +28,30 @@
 				var price = priceCell.children().val();
 				var rate = rateCell.children().val();
 				
+				var upprice = $(this).parent().parent().prev().children(".premium").text();
+				var downprice = $(this).parent().parent().next().children(".premium").text();
+				
+				var uprate = $(this).parent().parent().prev().children(".rate").text();
+				var downrate = $(this).parent().parent().next().children(".rate").text();
+				console.log(upprice);
+				console.log(downprice);
+				
+				if(price >= parseInt(upprice)){
+					window.alert("수수료 조건을 다시 입력하세요");
+					return false;
+				}
+				if(price <= parseInt(downprice)){
+					window.alert("수수료 조건을 다시 입력하세요");
+					return false;
+				}
+				if(rate <=parseInt(uprate)){
+					window.alert("수수료를 다시 입력하세요");
+					return false;
+				}
+				if(rate >= parseInt(downrate)){
+					window.alert("수수료를 다시 입력하세요");
+					return false;
+				}
 				priceCell.empty();
 				rateCell.empty();
 				
@@ -54,6 +78,8 @@
 						console.log(resp);
 					}
 				});
+					
+				
 			}
 		});
 		
@@ -89,9 +115,6 @@
 			else{
 			$(".premium").each(function(){
 				var premium = $(this).text();
-				console.log("premium"+premium);
-				
-				
 				
 				if(premiumprice == parseInt(premium)){
 					window.alert("이미 존재하는 값입니다");
@@ -101,12 +124,14 @@
 					if(premiumprice > parseInt($(this).text())){
 						console.log(premiumprice);
 						console.log($(this).text());
+						
 						var thisrate = parseInt($(this).next().text());
 						var nextrate = parseInt($(this).parent().prev().children(".rate").text());
 						
 						console.log($(this).next().text());
 						console.log($(this).parent().prev().children(".rate").text());
 						console.log(premiumrate);
+					
 						if(premiumrate < parseInt(thisrate)){
 							if($(this).parent().prev().children(".rate").length == 0){
 								$(".premiumForm").submit();

@@ -80,7 +80,7 @@
 		
 			<!-- 판매자 회원탈퇴 -->
 			<delete id="delete" parameterType="seller">
-			delete seller where seller_id=#{seller_id} 
+			delete from seller where seller_no=#{seller_no} 
 			</delete>
 
 
@@ -274,16 +274,19 @@
 	</delete>
 	<delete id="deleteAlarm" parameterType="int">
 		delete member_alarm where seller_custom_order_no= #{seller_custom_order_no}
-	</delete>
-	
-	
-	
-	
-	
-	
+	</delete>	
 
-	
-	
+
+	<!-- 등록한 상품 조회 -->
+	<select id="getGoodsList" parameterType="int" resultType="goodsDto">
+		select * from goods where seller_no = ${seller_no}
+	</select>
+
+	<!-- 차단판매자 -->
+	<select id="getBlock" parameterType="int" resultType="int">
+		select count(*) from block where seller_no=#{seller_no} and block_group='판매자'
+	</select>
+
    
 
 	

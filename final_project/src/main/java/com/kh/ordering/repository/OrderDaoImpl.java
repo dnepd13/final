@@ -53,10 +53,7 @@ public class OrderDaoImpl implements OrderDao {
 	@Transactional
 	@Override
 	public boolean updatePointAndStock(String partner_order_id) throws Exception {
-		
-		
-		
-		
+
 		// 처리 실패시 취소로 보내버리기
 		// ### 처리할것들
 		// - 주문번호로 상품검색해서 상품 수량 차감 (차감안되면 취소로 보내기)
@@ -248,6 +245,11 @@ public class OrderDaoImpl implements OrderDao {
 	@Override // 카테고리번호 기준 판매량 top5
 	public List<CartInfoVO> getTopSales(int category_no) {
 		return sqlSession.selectList("order.getTopSales", category_no);
+	}
+
+	@Override // 회원 마이페이지 메인: 최근 3일 주문내역 4개
+	public List<CartInfoVO> getListYesterDay(int member_no) {
+		return sqlSession.selectList("order.getListYesterDay", member_no);
 	}
 	
 }

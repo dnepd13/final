@@ -29,6 +29,36 @@
 
 </style>
 
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+
+<script>
+	$(function(){
+		var seller_no = "${getListInfoResp.seller_no }";
+		var sellerblock ="${sellerblock}";
+		console.log(seller_no);
+		console.log(sellerblock);
+		// 차단 판매자인가 아닌가
+		
+// 		$.ajax({
+// 			url: "${pageContext.request.contextPath}/member/blockSeller",
+// 			data: {"seller_no": seller_no},
+// 			method: "get",
+// 			success: function(resp){
+// 				console.log(resp);
+// 				if(resp){
+// 					if(resp==seller_no){
+// 						$(".btn_pay").prop("disbled", true);
+// 					}
+// 				}
+// 				else{
+// 					$(".btn_pay").prop("disbled", false);
+// 				}
+// 			}
+// 		});
+		
+	});
+</script>
+
 <article class="articleBox">
 <jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 <div class="resp_wrap">
@@ -81,7 +111,7 @@
 			<form action="${pageContext.request.contextPath }/order/custom" method="POST">
 				<input type="hidden" name="seller_custom_order_no" value="${getListInfoResp.seller_custom_order_no }">
 				<c:if test="${getListInfoResp.custom_order_status=='읽음'}">
-				<input type="submit" class="btn_clean" value="수락 및 결제하기">
+				<input type="submit" class="btn_clean btn_pay" value="수락 및 결제하기" disabled>
 				&verbar;
 				</c:if> 
 				<a href="${pageContext.request.contextPath }/member/customListResp">목록으로</a>		

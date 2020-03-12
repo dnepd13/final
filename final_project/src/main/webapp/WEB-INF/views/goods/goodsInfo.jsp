@@ -111,8 +111,14 @@
     });
 </script>
 <script>
+var goodsOptionVOList = JSON.parse('${jsonGoodsOptionVOList}');
+var goodsVO = JSON.parse('${jsonGoodsVO}');
+var VOindex = 0;
+var final_price = 0;
+var final_qtt = 0;
+var count = 0;
+
 $(function(){
-	
 	//슬라이드
 	$("#contentImage_slide").slick({
 		autoplay : false,
@@ -132,18 +138,34 @@ $(function(){
 	});
 	
 	
-	var goodsOptionVOList = JSON.parse('${jsonGoodsOptionVOList}');
-	var goodsVO = JSON.parse('${jsonGoodsVO}');
-	var VOindex = 0;
-	var final_price = 0;
-	var final_qtt = 0;
-	var count = 0;
+	
+	// 최대 구매 수량 설정
+	$(".alert_option_stock").hide();
+	$(".alert_goods_stock").hide();
+	
+	
+	// 옵션 수량 품절 처리
+	$(".alert_soldout").hide();
+	var stock = 0;
+	for (var i = 0; i < goodsOptionVOList.length; i++) {
+		stock = 0;
+		for(var j = 0; j < goodsOptionVOList[i].goodsOptionList.length; j++){
+			stock += goodsOptionVOList[i].goodsOptionList[j].goods_option_stock;
+		}
+		if(stock == 0) {
+			$(".order_btn").hide();
+			$(".alert_soldout").show();
+		}
+	}
 	
 	$(".one_btn").click(function(e){
 		e.preventDefault();
 		var url = $(".alink").attr("href");
 		$(location).attr('href', url);
 	});
+	
+// 	var arr_option_stock = new Array();
+// 	var arr_final_stock = [];
 	
 	// 옵션 선택 이벤트
 	$(".options").change(function(){
@@ -154,15 +176,19 @@ $(function(){
 				return false;
 			}
 		});
-		
+
 		// 옵션 전체 선택했을 때
 		if(selectedAll){
+			var all_goods_result = false;
+			var all_option_result = false;
+			
 			count++;
 			if(goodsVO.goods_stock < 1) {
 				count=0;
 				window.alert("품절된 상품입니다.");
 				return;
 			}
+			
 			$(".submit_ordering").attr("disabled",false);
 			$(".add_cart_btn").attr("disabled",false);
 			
@@ -171,15 +197,16 @@ $(function(){
 			var content;
 			var option_price;
 			var option_no_list = new Array();
-			var qtty;
+			var qtty = 1;
 			
 			var div = $("<div class='total_price_area col-12'></div>"); // 선택 상품+옵션 그룹div
 			
 			// 옵션 선택 정보 저장 (옵션번호리스트, 가격합계)
+			
 			$(".options").each(function(i){
-				var no = $(this).val();
-				var arr = goodsOptionVOList[i].goodsOptionList;
-				var index = arr.findIndex(dto => dto.goods_option_no == no);
+				var no = $(this).val(); // 선택된 옵션 번호
+				var arr = goodsOptionVOList[i].goodsOptionList; // 옵션 dto 배열
+				var index = arr.findIndex(dto => dto.goods_option_no == no); // 옵션번호 일치하는 dto배열의 인덱스
 				price += arr[index].goods_option_price;
 				title = goodsOptionVOList[i].goods_option_title;
 				content = arr[index].goods_option_content;
@@ -190,11 +217,11 @@ $(function(){
 				div.append(option_info);
 				
 				// div에 no 추가
-				var option_no = $("<input type='hidden' name='itemVOList["+VOindex+"].option_no_list' value='"+no+"'>");
-				div.append(option_no);
+				var option_no = $("<input class='option_no' type='hidden' name='itemVOList["+VOindex+"].option_no_list' value='"+no+"'>");
+				div.append(option_no); 	
+				
 			});
-			
-			
+
 			
 			// div에 나머지 기능 추가
 			var goods_name = $("<h5>" + goodsVO.goods_name + "</h5>");
@@ -204,7 +231,7 @@ $(function(){
 			var delete_btn = $("<a class='delete_btn' href='#'>X</a>");
 			
 			// div에 수량 추가
-			var quantity = $("<input class='quantity' name='itemVOList["+VOindex+"].quantity' type='text' value='1'>");
+			var quantity = $("<input class='quantity group_"+VOindex+"' name='itemVOList["+VOindex+"].quantity' type='text' value='1'>");
 			
 			// div에 상품번호 추가
 			var hidden_goods_no = $("<input type='hidden' name='itemVOList["+VOindex+"].goods_no' value='"+goodsVO.goods_no+"'>");
@@ -229,7 +256,7 @@ $(function(){
 				price = total_price * (parseInt(qtt)+1);
 				$(this).siblings(".quantity").val(parseInt(qtt)+1);
 				span.html(addComma(price) + "원");
-				setFinalArea();
+				calculate();
 			});
 			
 			// - 버튼
@@ -240,72 +267,55 @@ $(function(){
 					price = total_price * (parseInt(qtt)-1);
 					$(this).siblings(".quantity").val(parseInt(qtt)-1);
 					span.html(addComma(price) + "원");
-					setFinalArea();
+					calculate();
 				}
 			});
 			
 			// 수량 수정
-			quantity.blur(function(){ 
-				var qtt = $(this).val();
+			quantity.on("blur", function(){
+				var qtt = Number($(this).val());
 				if(qtt>=1) {
 					qtty = parseInt(qtt);
 					price = total_price * (parseInt(qtt));
 					$(this).val(parseInt(qtt));
 					span.html(addComma(price) + "원");
-					setFinalArea();
 				} else {
 					$(this).val(1);
 					qtt = 1;
 					qtty = 1;
 					price = total_price * (parseInt(qtt));
 					span.html(addComma(price) + "원");
-					setFinalArea();
 				}
+				calculate();
 			});
 			
 			// X 버튼
 			delete_btn.click(function(e){
 				e.preventDefault();
 				$(this).parent(".total_price_area").remove();
-// 				VOindex--;
-				setFinalArea();
-				
-				count--;
-				if(count < 1) {
-					$(".submit_ordering").attr("disabled",true);
-					$(".add_cart_btn").attr("disabled",true);
-				}
-				
+				calculate();
 			});
 			
 			// 리셋
 			$(".options").val("");
 			
-			// VOindex++
 			VOindex++;
-			
-			// 총 상품금액(수량) 업데이트
-			setFinalArea();
+			calculate();
 		}
-		
 	});
+	
 	// 장바구니
 	$(".add_cart_btn").click(function(e){		
 		
 		e.preventDefault();
 		
-<%-- 		var member_id = "<%=session.getAttribute("member_id")%>"; --%>
+		if('${member_id}'==''){
+			var url = "${pageContext.request.contextPath}" + "/member/login";
+			$(location).attr('href', url);
+		}
 		
-// 		if(member_id == null){
-// 			var url = "${pageContext.request.contextPath}" + "/member/login";
-// 			$(location).attr('href', url);
-// 		}
-		
-		setFinalArea();
-		//버튼 바로 위에 있는 form을 데이터화하여 전송
 		var form = $(this).parents("#form_box");
 		var url = "../member/addCart";
-//			var data = {이름:값, 이름:값};
 		var data = form.serialize();
 		$.ajax({
 			type: "POST",
@@ -318,30 +328,10 @@ $(function(){
 	});	
 	
 	// 총 상품금액(수량) 업데이트
-	function setFinalArea(){
-		var fPrice = 0;
-		var fQuantity = 0;
-		$(".total_price_area").each(function(){
-			fQuantity += parseInt($(this).children(".quantity").val());
-			fPrice += $(this).children(".hPrice").val() * parseInt($(this).children(".quantity").val());
-		});
-		
-		$(".final_price").html(addComma(fPrice) + "원");
-		$(".final_qtt").html(" ("+fQuantity+")개");
-	}
-	
-	function addComma(num){
-		var regexp = /\B(?=(\d{3})+(?!\d))/g;
-		return num.toString().replace(regexp, ',');
-	}
-	
-	
 	// 배송정보
 	var delivery_option = '${deliveryDto.delivery_option}';
 	var delivery_op_price = '${deliveryDto.delivery_op_price}';
 
-	console.log(delivery_option);
-	console.log(delivery_op_price);
 	switch (delivery_option) {
 	case '무료': $(".delivery_option").html(" (무료)");
 		break;
@@ -353,6 +343,133 @@ $(function(){
 		break;
 	}
 }); 
+
+//수량 체크
+
+var goods_stock = Number('${goods_stock}');
+function goodsStockCheck(){
+	var result = true;
+	var quantity = 0;
+	$(".quantity").each(function(){
+		quantity += Number($(this).val());
+	});
+	
+	if(quantity > goods_stock) {
+		$(".alert_goods_stock").show();
+		result = true;
+	} else {
+		$(".alert_goods_stock").hide();
+		result = false;
+	}
+	
+	return result;
+}
+
+function order_btn_switch(result){
+	if(result){
+		$(".order_btn").attr("disabled", true);
+	} else {
+		$(".order_btn").attr("disabled", false);
+	}
+}
+
+function setFinalArea(fPrice, fQuantity){
+	
+	$(".final_price").html(addComma(fPrice) + "원");
+	$(".final_qtt").html(" ("+fQuantity+")개");
+	
+	if(fPrice < 1) {
+		order_btn_switch(true);
+	}
+}
+
+function addComma(num){
+	var regexp = /\B(?=(\d{3})+(?!\d))/g;
+	return num.toString().replace(regexp, ',');
+}
+
+function calculate(){
+	//총 수량, 총 금액 계산용 변수
+	var total_price = 0;
+	var total_count = 0;
+	
+	//선택한 수량을 각각 구하고 금액을 각각 계산해서 결과를 하단에 출력하고 수량 초과시 경고를 출력
+	
+	//옵션을 복사하여 일일이 카운트 계산
+	var cloneList = JSON.parse(JSON.stringify(goodsOptionVOList));
+// 	console.log(cloneList);
+	
+	//.total_price_area 를 기준으로 반복을 수행해서 각각을 계산
+	$(".total_price_area").each(function(i){
+// 		console.log("---------------[ "+(i+1)+" 번째 영역 시작 ]---------------");
+		//1개의 옵션 영역
+		//찾아야 하는 것 : 입력수량(.quantity), 옵션가격, 총 금액
+		var quantity = parseInt($(this).find(".quantity").val());
+		var hprice = parseInt($(this).find(".hPrice").val());
+		var total = quantity * hprice;	
+		$(this).find(".option_no").each(function(){
+			var option_no = parseInt($(this).val());
+// 			console.log("option_no = " + option_no);
+			
+			//cloneList에서 option_no를 찾아서 quantity만큼 제거
+			$(cloneList).each(function(){
+				$(this.goodsOptionList).each(function(){
+					if(this.goods_option_no == option_no){
+						//같은 번호의 옵션을 만나면 재고 차감
+						this.goods_option_stock -= quantity;
+					}
+				});
+			});
+		});
+		
+		
+// 		console.log("quantity = ", quantity);
+// 		console.log("hPrice = " + hprice);
+// 		console.log("total =  " + total);
+// 		console.log("---------------[ "+(i+1)+" 번째 영역 종료 ]---------------");
+		//합계 계산
+		total_price += total;
+		total_count += quantity;
+		
+// 		console.log("totallllllll"+total);
+// 		console.log("quaaaaaaaaa"+quantity);
+		
+// 		console.log("칼큘 실행");
+	});
+	setFinalArea(total_price, total_count);
+	
+// 	수량이 부족한지 아닌지 체크
+	var o_canOrder = false;
+	$(cloneList).each(function(){
+		$(this.goodsOptionList).each(function(){
+			if(this.goods_option_stock < 0){
+				o_canOrder = true;
+				return true;
+			}
+		});
+	});
+	
+// 	console.log(cloneList);
+// 	console.log("결과금액 : "+total_price+", 결과개수 : "+total_count);
+// 	console.log("주문가능여부 : "+g_canOrder);
+	
+// 	구한 값에 따라서 화면에 변화를 주고 전송에 필요한 값을 설정
+	
+	var g_canOrder = goodsStockCheck();
+	
+// 	console.log(g_canOrder || o_canOrder);
+	if(o_canOrder){
+// 		console.log("보여줘");
+		$(".alert_option_stock").show();
+	} else {
+// 		console.log("보여주지마");
+		$(".alert_option_stock").hide();
+	}
+	order_btn_switch(g_canOrder || o_canOrder);
+	if(total_price < 1) {
+		order_btn_switch(true);
+	}
+}
 
 
 ////////////////////문의, 리뷰 영역///////////////
@@ -381,7 +498,29 @@ $(function(){
             $(".qna_member").find(".close").click(function(){
             	qna_member.style.display="none";
             });
-            
+         // 글자 수 제한
+         $(".goods_qna_content").keyup(function(){
+			var text_length=$(this).val().length;
+			var max_length=300;
+			
+			htmls="";
+			htmls+=text_length;
+			$(".text_limit").html(htmls);
+			
+			if(text_length>max_length){
+				alert("문의는 "+max_length+"자를 초과할 수 없습니다.");
+				non_pass();
+			}
+			else{
+				pass();
+			}
+		});
+         function non_pass(){
+ 			$(".btn_send").prop("disabled", true); // submit 버튼 비활성화
+ 		}
+ 		function pass(){
+ 			$(".btn_send").prop("disabled", false);
+ 		}
 	// 문의 작성
 			$(".qna_member").find("form").submit(function(e){
 				e.preventDfault();
@@ -518,7 +657,7 @@ $(function(){
 	    
 	    // 리뷰 댓글 수정
 	    $(".btn_reviewUpdate").click(function(){
-		    console.log($(this).text());
+		    
 	    	if($(this).text()=="수정"){
 
 			    var contentCell = $(this).parent().parent().prev().find("#reply_content");
@@ -559,7 +698,31 @@ $(function(){
 			}
 	     });
 	    
+		
+	 // 글자 수 제한 리뷰 댓글
+        $(".goods_review_reply_content").keyup(function(){
 
+			var text_length=$(this).val().length;
+			var max_length=300;
+			
+			htmls="";
+			htmls+=text_length;
+			$(this).next().children(".text_limit").html(htmls);
+			
+			if(text_length>max_length){
+				alert("댓글은 "+max_length+"자를 초과할 수 없습니다.");
+				non_pass();
+			}
+			else{
+				pass();
+			}
+		});
+        function non_pass(){
+			$(".btn_send").prop("disabled", true); // submit 버튼 비활성화
+		}
+		function pass(){
+			$(".btn_send").prop("disabled", false);
+		}
 });
 
 </script>
@@ -611,7 +774,7 @@ $(function(){
 }
 .mainImage_box > img {
 	width: 100%;
-	height: auto;
+	height: 100%;
 }
 .contentImage_box {
 	width: 100%;
@@ -626,11 +789,12 @@ $(function(){
 
 .contentImage_box > img {
 	width: 95%;
-	height: auto;
+	height: 100%;
 	margin: 5px;
 }
 .options {
 	margin-left: 10px;
+	width: 100%;
 }
 
 .submit_ordering {
@@ -651,11 +815,6 @@ $(function(){
 .btn_area {
 	padding: 0px 5px;
 }
-
-.options {
-	width: 50%;
-}
-
 
 .contentImage_box {
 	margin: 5px;
@@ -747,34 +906,43 @@ $(function(){
 				</div>
 					<div class="selected_area row">
 					</div>
+					<div class="alert_goods_stock alert alert-warning">
+					  <strong>상품 수량이 부족합니다!</strong>
+					</div>
+					<div class="alert_option_stock alert alert-warning">
+					  <strong>옵션 수량이 부족합니다!</strong>
+					</div>					
 				<div class="row">
 					<div class="total_area col-12">
 						<h4>총 상품금액(수량)</h4>
 						<span class="final_price">0원 </span><span class="final_qtt">(0개)</span>
 				</div>
 					</div>
-				<div class="row">
+				<div class="row order_btn_area">
 					<div class="col-4 btn_area">
-						<input class="submit_ordering btn btn-primary btn-block" type="submit" value="주문하기" disabled>
+						<input id="submit_btn" class="order_btn submit_ordering btn btn-primary btn-block" type="submit" value="주문하기" disabled>
 					</div>
 					<div class="col-4 btn_area">
-						<button class="add_cart_btn btn btn-primary btn-block" disabled>장바구니</button>
+						<button class="order_btn add_cart_btn btn btn-primary btn-block" disabled>장바구니</button>
 					</div>
 					<div class="col-4 btn_area">
 						<span>
 							<c:choose>
 								<c:when test="${member_id !=null }">
 									<a class="alink" href="${pageContext.request.contextPath}/member/customOrder?seller_no=${goodsVO.seller_no }">
-										<button class="one_btn btn btn-primary btn-block">1:1 요청서</button>
+										<button class="order_btn one_btn btn btn-primary btn-block">1:1 요청서</button>
 									</a>
 								</c:when>
 								<c:otherwise>
 									<a class="alink" href="${pageContext.request.contextPath}/member/login">
-										<button class="one_btn btn btn-primary btn-block">1:1 요청서</button>
+										<button class="order_btn one_btn btn btn-primary btn-block">1:1 요청서</button>
 									</a>
 								</c:otherwise>
 							</c:choose>
 						</span>
+					</div>
+					<div class="col-12 alert_soldout alert alert-danger text-center" role="alert">
+						 [구매불가]옵션 수량이 부족합니다!
 					</div>
 				</div>
 			</div>		
@@ -843,13 +1011,13 @@ $(function(){
 									<option value="배송문의">배송문의</option>
 								</select>
 								<br>
-								<textarea name="goods_qna_content" class="form-control" required></textarea><br>
-								<br>
+								<textarea name="goods_qna_content" class="form-control goods_qna_content" required></textarea><br>
+								<p align="right">(<span class="text_limit"></span> / 300)</p>
 								<h6> &middot; 개인정보(주민번호, 연락처, 주소, 계좌번호, 카드번호 등)가 타인에게 노출되지 않도록 주의해 주시기 바랍니다.</h6>
 								<h6> &middot; 문의와 관련없는 비방, 광고, 불건전한 내용 등이 포함될 경우 사전동의 없이 삭제될 수 있습니다.</h6>
 			      		</div>
 			      		<div class="modal-footer">
-							<input type="submit" value="문의하기" class="btn_custom">
+							<input type="submit" value="문의하기" class="btn_custom btn_send">
 						</div>
 					</div>
 				</form>
@@ -935,8 +1103,8 @@ $(function(){
 							<input type="hidden" name="goods_qna_no" value="${qna.goods_qna_no }">
 							<input type="hidden" name="member_no" value="${qna.member_no }">
 							<br>
-							<textarea class="form-control" name="goods_qna_content" required></textarea><br>
-							<p align="right"><input type="submit" value="답변하기" class="btn_custom"></p>
+							<textarea class="form-control goods_qna_content" name="goods_qna_content" required></textarea><br>
+							<p align="right"><input type="submit" value="답변하기" class="btn_custom btn_send"></p>
 						</form>
 					</td>
 				</tr>
@@ -1030,10 +1198,9 @@ $(function(){
 			<td colspan="2">
 				<form action="../member/insertReply" method="post">
 					<input type="hidden" name="goods_review_no" value="${review.goods_review_no }">
-					<input type="hidden">
-					<textarea name="goods_review_reply_content" class="form-control" required></textarea>
-					<br>
-					<p align="right"><input type="submit" value="댓글등록" class="btn_custom"></p>					
+					<input type="hidden"> 
+					<textarea name="goods_review_reply_content" class="form-control goods_review_reply_content" required></textarea>
+					<p align="right">(<span class="text_limit"></span> / 300)<input type="submit" value="댓글등록" class="btn_custom btn_send"></p>					
 				</form>
 				</td>
 		</tr>
@@ -1047,7 +1214,7 @@ $(function(){
 								<fmt:parseDate value="${reviewReply.goods_review_reply_date }" var="reply_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 								<fmt:formatDate value="${reply_date }" pattern="yyyy/MM/dd HH:mm:ss"/>							
 							</span>
-							<div id="reply_content">${reviewReply.goods_review_reply_content }</div>
+							<div id="reply_content" class="review_reply">${reviewReply.goods_review_reply_content }</div>
 					</div>
 					<c:if test="${reviewReply.member_no == member_no}">
 						<form action="../member/deleteReply" method="post" class="delete_reply_form"

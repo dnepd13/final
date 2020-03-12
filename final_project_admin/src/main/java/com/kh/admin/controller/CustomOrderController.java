@@ -46,9 +46,9 @@ public class CustomOrderController {
 		vo.setKey(paging.getKey());
 		vo.setSearch(paging.getSearch());
 		List<CustomOrderVO> list = customorderDao.getList(vo);
+		log.info("list={}",list);
 		model.addAttribute("paging", vo);
 		model.addAttribute("list", list);
-		
 		return "custom/list";
 	}
 	

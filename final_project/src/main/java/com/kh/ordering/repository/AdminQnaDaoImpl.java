@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.databind.deser.impl.ExternalTypeHandler.Builder;
 import com.kh.ordering.entity.AdminQnaDto;
 import com.kh.ordering.vo.PagingVO;
 
@@ -50,8 +51,9 @@ public class AdminQnaDaoImpl implements AdminQnaDao{
 	}
 
 	@Override
-	public AdminQnaDto qnaGetOne(AdminQnaDto adminQnaDto) {
+	public AdminQnaDto qnaGetOne(AdminQnaDto adminQnaDto, int getNo) {
 		AdminQnaDto result1 = sqlSession.selectOne("adminQnaDto.QnaGetOne", adminQnaDto);
+
 		return result1;
 	}
 
@@ -175,6 +177,28 @@ public class AdminQnaDaoImpl implements AdminQnaDao{
 
 		}
 
+
+	@Override
+	public AdminQnaDto qnaonemember(AdminQnaDto adminQnaDto) {
+		AdminQnaDto memberresult = sqlSession.selectOne("adminQnaDto.qnaonemember", adminQnaDto);
+		return memberresult;
+	}
+
+//// 공지사항 //
+	//목록
+	@Override
+	public List<AdminQnaDto> getListNotice(PagingVO paging) {
+		return sqlSession.selectList("adminQnaDto.getListNotice", paging);
+	}
+	@Override
+	public int getNoticeCount() {
+		return sqlSession.selectOne("adminQnaDto.getNoticeCount");
+	}
+	//상세
+	@Override
+	public AdminQnaDto getNoticeDetails(int admin_qna_no) {
+		return sqlSession.selectOne("adminQnaDto.getNoticeDetails", admin_qna_no);
+	}
 	
 	// 최근 3일기준 관리자 문의게시판 작성 List	
 	@Override
@@ -184,10 +208,8 @@ public class AdminQnaDaoImpl implements AdminQnaDao{
 	@Override
 	public int getYesterDayCount(int member_no) {
 		return sqlSession.selectOne("adminQnaDto.getYesterDayCount", member_no);
+
 	}
-
-
-
 
 
 }

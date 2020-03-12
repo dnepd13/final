@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.ordering.entity.BlockDto;
 import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
@@ -50,6 +52,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/member")
 @Slf4j
 public class MemberCustomController {
+	@Autowired
+	private SqlSession sqlSession;
 	
 	@Autowired
 	private MemberCustomService memberCustomService;	
@@ -198,6 +202,13 @@ public class MemberCustomController {
 		List<FilesVO>  filesVO = sellerCustomService.filesList(seller_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
 		
+		// 차단판매자 데려오기
+		BlockDto blockDto = sqlSession.selectOne("Block.getSellerInfo", content.getSeller_no());
+
+		//		int sellerblock = sqlSession.selectOne("seller.getblock", content.getSeller_no());
+//		log.info("sellerblock={}",sellerblock);
+//		model.addAttribute("sellerblock", sellerblock);
+		
 		return "member/customInfoResp";
 	}
 
@@ -243,8 +254,10 @@ public class MemberCustomController {
 			
 			int seller_no = alarmList.get(0).getSeller_no();
 			SellerDto sellerDto= sellerDao.sellerDto(seller_no);
-			String seller_id = sellerDto.getSeller_id();
-			model.addAttribute("seller_id", seller_id);
+			if(sellerDto!=null) {
+				String seller_id = sellerDto.getSeller_id();
+				model.addAttribute("seller_id", seller_id);
+			}
 
 			return "member/customInfoReq";
 		}
@@ -308,6 +321,22 @@ public class MemberCustomController {
 		// 회원 신규 견적서 알람 check N count 개수		
 		return memberCustomDao.customAlarm(member_no);
 	}
+	
+	// 받은 견적서의 판매자가 차단된 사람인가 아닌가
+//	@GetMapping("/blockSeller")
+//	@ResponseBody
+//	public boolean blockSeller(int seller_no) {
+//		boolean sellerblock=sqlSession.selectOne("seller.getBlock", seller_no);
+//		log.info("sellerblock={}",sellerblock);
+//		if(sellerblock) {
+//			return sqlSession.selectOne("seller.getBlock", seller_no);
+//		}
+//		else {
+//			return false;
+//		}
+//		
+//	}
+	
 	
 // 파일 이미지 다운로드
 	@GetMapping("/download")

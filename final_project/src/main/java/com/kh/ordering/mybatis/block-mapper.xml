@@ -7,17 +7,26 @@
  <mapper namespace="Block">
  <!-- 맞겠지? -->
  <!-- 차단된 판매자 리스트 조회-->
-  <select id="seller" parameterType="BlockDto" resultType="int">
- select count(*) from block where block_id= #{seller_id} and block_group = '판매자'
+  <select id="seller" parameterType="string" resultType="int">
+ select count(*) from block where block_id= #{block_id} and block_group = '판매자'
  </select>
  <!-- 차단된 회원 리스트 조회-->
-  <select id="member" parameterType="BlockDto" resultType="int">
- select count(*) from block where block_id= #{member_id} and block_group = '구매자'
+  <select id="member" parameterType="string" resultType="int">
+ select count(*) from block where block_id= #{block_id} and block_group = '구매자'
  </select>
  
 
  
- 
+	<!-- seller_no에 대한 차단 정보 조회 -->
+	<select id="getSellerInfo" parameterType="int" resultType="BlockDto">
+		select *from block where seller_no=#{seller_no} and block_group='판매자'
+	</select>
+	
+	<!-- member_no에 대한 차단 정보 조회 -->
+	<select id="getMemberInfo" parameterType="int" resultType="BlockDto">
+		select *from block where member_no=#{member_no} and block_group='구매자'
+	</select>
+
  
  
  </mapper>
