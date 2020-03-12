@@ -886,16 +886,16 @@ $(function(){
 					</table>
 					<div class="option_area col-12">
 						<c:forEach items="${goodsOptionVOList}" var="goodsOptionVO" varStatus="status">
-							<p>${goodsOptionVO.goods_option_title}</p>
+							<p style="font-weight: bold;">${goodsOptionVO.goods_option_title}</p>
 							<select class="options form-control">
 								<option value="">선택</option>
 								<c:forEach items="${goodsOptionVO.goodsOptionList}" var="goodsOptionDto">
 									<c:choose>
 										<c:when test="${goodsOptionDto.goods_option_stock>0}">
-											<option value="${goodsOptionDto.goods_option_no}">${goodsOptionDto.goods_option_content}(${goodsOptionDto.goods_option_price}원)(남은수량:${goodsOptionDto.goods_option_stock}개)</option>
+											<option value="${goodsOptionDto.goods_option_no}">${goodsOptionDto.goods_option_content} (${goodsOptionDto.goods_option_price}원) (남은수량:${goodsOptionDto.goods_option_stock}개)</option>
 										</c:when>
 										<c:otherwise>
-											<option disabled value="${goodsOptionDto.goods_option_no}">[품절]${goodsOptionDto.goods_option_content}(${goodsOptionDto.goods_option_price}원)(남은수량:${goodsOptionDto.goods_option_stock}개)</option>
+											<option disabled value="${goodsOptionDto.goods_option_no}">[품절]${goodsOptionDto.goods_option_content} (${goodsOptionDto.goods_option_price}원) (남은수량:${goodsOptionDto.goods_option_stock}개)</option>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
