@@ -13,6 +13,7 @@
 <script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
 <script>
 $(function(){
+
 	$(".goods_box").click(function(){
 		var url = $(this).children(".goods_img").attr("href");
 		$(location).attr('href', url);
@@ -34,61 +35,61 @@ $(function(){
 
 <style>
 .goods_box{
-	cursor: pointer;
-	padding: 15px;
+   cursor: pointer;
+   padding: 15px;
 }
 
 /* .goods_box > p { */
-/* 	margin: 0px; */
+/*    margin: 0px; */
 /* } */
 
 .goods_img {
-	width: 100%;
-	height: 230px;
+   width: 100%;
+   height: 230px;
 }
 
 .goods_img > img {
-	width: 100%;
-	height: 250px;
-	margin: 10px auto;
+   width: 100%;
+   height: 250px;
+   margin: 10px auto;
 }
 
 .goods_name{
-	margin: 5px 0px;
-	font-size: 1.1rem;
-	font-weight: bold;
+   margin: 5px 0px;
+   font-size: 1.1rem;
+   font-weight: bold;
 }
 
 .goods_price{
-	margin-top: 7px;
-	margin-bottom: 5px;
-	font-size: 1.1rem;
-	font-weight: bold;
+   margin-top: 7px;
+   margin-bottom: 5px;
+   font-size: 1.1rem;
+   font-weight: bold;
 }
 
 .goods_content{
-	margin: 5px 0px;
-	font-size: 1rem;
+   margin: 5px 0px;
+   font-size: 1rem;
 }
 
 .best_area {
-	margin: 50px 0px;
+   margin: 50px 0px;
 }
 
 .new_area {
-	margin: 50px 0px;
+   margin: 50px 0px;
 }
 
 .all_area {
-	margin: 50px 0px;
+   margin: 50px 0px;
 }
 
 .soldout {
-	text-decoration: line-through;
+   text-decoration: line-through;
 }
 
 .badge {
-	margin-left: 10px;
+   margin-left: 10px;
 }
 
 </style>

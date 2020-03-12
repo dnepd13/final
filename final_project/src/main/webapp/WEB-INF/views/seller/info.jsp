@@ -5,7 +5,7 @@
   </script>
   <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
-  
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
   <jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
   
    <!--  <div class = "jumbotron">

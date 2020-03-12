@@ -80,10 +80,7 @@
 	.nav_login a:link { color: black; text-decoration: none;}
     .nav_login a:visited { color: black; text-decoration: none;}
     .nav_login a:hover { color: rgb(142,140,132); text-decoration: underline;}
-	
-	.cur_pointer {
-		cursor: pointer;
-	}
+
 </style>
 
 </head>

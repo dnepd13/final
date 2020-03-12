@@ -9,7 +9,7 @@
   </script>
   <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
-  
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
   <script>  
   $(function() {
 	 // $(".buttontest").attr("disabled", true);
@@ -133,20 +133,6 @@ $(function() {
 			});
 		});
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function test() {
 	if ($('input[name="seller_id"]').val() == "") {
 		window.alert("아이디를 입력해주세요");
@@ -224,7 +210,7 @@ function test() {
 	}
 	
 </script>
-</head> 
+</head> 
 <body>
 <div class="continer-fluid">
 	<div class="row"  style="padding:50px;">
@@ -335,6 +321,8 @@ function test() {
 		</div>
    </div>
 
+ </body>
+
+
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
-   
