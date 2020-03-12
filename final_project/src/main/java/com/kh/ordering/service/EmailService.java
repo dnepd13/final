@@ -4,7 +4,7 @@ import javax.mail.MessagingException;
 
 public interface EmailService {
 
-		String sendCert(String member_email, String cert);
+		String sendCert(String email, String cert);
 
 		void sendChangePasswordMail(String email) throws MessagingException;
 

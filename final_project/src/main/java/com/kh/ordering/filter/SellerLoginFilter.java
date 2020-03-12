@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
 
-@Service("memberFilter")
-public class MemberFilter implements Filter{
+@Service("sellerLoginFilter")
+public class SellerLoginFilter implements Filter{
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -21,13 +21,14 @@ public class MemberFilter implements Filter{
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 		
-		String login = (String) req.getSession().getAttribute("member_id");
+		String login = (String) req.getSession().getAttribute("seller_id");
 		
 		if(login!=null) {
 			chain.doFilter(request, response);
 		}
 		else {
-			resp.sendError(403);
+			resp = (HttpServletResponse) response;
+			resp.sendRedirect(req.getContextPath()+"/seller/login");
 		}
 	}
 

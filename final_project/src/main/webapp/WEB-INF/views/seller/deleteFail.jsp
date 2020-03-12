@@ -5,7 +5,7 @@
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <style>
 	.redirect-box {
 		border: 1px solid #A6A6A6;

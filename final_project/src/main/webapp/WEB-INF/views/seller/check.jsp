@@ -5,6 +5,7 @@
     
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 	<script>
 	$(function(){
 // 		.validate-form은 처음에 숨기고 이메일 전송시만 표시
@@ -73,3 +74,4 @@
 
 
 <jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>
+

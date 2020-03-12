@@ -9,9 +9,11 @@
 <head>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
 <script>
 $(function(){
+
 	$(".goods_box").click(function(){
 		var url = $(this).children(".goods_img").attr("href");
 		$(location).attr('href', url);
@@ -25,9 +27,7 @@ $(function(){
 // 		$(this).removeClass("rounded border border-light shadow p-3 mb-5 bg-white");
 // 	});
 	
-	$(".soldout").click(function(){
-		window.alert("품절된 상품입니다.");
-	});
+	
 	Hakademy.PointManager.factory(".star-wrap");
 });
 </script>
@@ -35,61 +35,61 @@ $(function(){
 
 <style>
 .goods_box{
-	cursor: pointer;
-	padding: 15px;
+   cursor: pointer;
+   padding: 15px;
 }
 
 /* .goods_box > p { */
-/* 	margin: 0px; */
+/*    margin: 0px; */
 /* } */
 
 .goods_img {
-	width: 100%;
-	height: 230px;
+   width: 100%;
+   height: 230px;
 }
 
 .goods_img > img {
-	width: 100%;
-	height: 250px;
-	margin: 10px auto;
+   width: 100%;
+   height: 250px;
+   margin: 10px auto;
 }
 
 .goods_name{
-	margin: 5px 0px;
-	font-size: 1.1rem;
-	font-weight: bold;
+   margin: 5px 0px;
+   font-size: 1.1rem;
+   font-weight: bold;
 }
 
 .goods_price{
-	margin-top: 7px;
-	margin-bottom: 5px;
-	font-size: 1.1rem;
-	font-weight: bold;
+   margin-top: 7px;
+   margin-bottom: 5px;
+   font-size: 1.1rem;
+   font-weight: bold;
 }
 
 .goods_content{
-	margin: 5px 0px;
-	font-size: 1rem;
+   margin: 5px 0px;
+   font-size: 1rem;
 }
 
 .best_area {
-	margin: 50px 0px;
+   margin: 50px 0px;
 }
 
 .new_area {
-	margin: 50px 0px;
+   margin: 50px 0px;
 }
 
 .all_area {
-	margin: 50px 0px;
+   margin: 50px 0px;
 }
 
 .soldout {
-	text-decoration: line-through;
+   text-decoration: line-through;
 }
 
 .badge {
-	margin-left: 10px;
+   margin-left: 10px;
 }
 
 </style>
@@ -119,7 +119,7 @@ $(function(){
   	 		</c:when>
   	 		<c:otherwise>
   	 			<div class="col-sm-4 goods_box soldout">
-		  			<a class="goods_img" href="#">
+		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
 		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
 		  			</a>
 			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
@@ -158,7 +158,7 @@ $(function(){
 	 	</c:when>
 	 	<c:otherwise>
 	  		<div class="col-lg-4 goods_box soldout">
-	  			<a class="goods_img" href="#">
+	  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
 	  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
 	  			</a>
 	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
@@ -197,7 +197,7 @@ $(function(){
 		 	</c:when>
 		 	<c:otherwise>
 		  		<div class="col-lg-4 goods_box soldout">
-		  			<a class="goods_img" href="#">
+		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
 		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
 		  			</a>
 			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>

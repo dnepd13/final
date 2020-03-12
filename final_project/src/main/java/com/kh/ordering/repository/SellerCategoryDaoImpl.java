@@ -24,6 +24,7 @@ public class SellerCategoryDaoImpl implements SellerCategoryDao{
 		int seller_no = sqlSession.selectOne("seller.getNo", seller_id);
 	    return seller_no;
 	}	
+
 	//-------------------------판매자 카테고리 관리----------------//
 	@Override
 	public int categoryCount() {
@@ -56,8 +57,7 @@ public class SellerCategoryDaoImpl implements SellerCategoryDao{
 	public List<CategoryDto> seller_category_name_list(List<Integer> list) {		
 		return sqlSession.selectList("seller_category.get_category_name_list",list);
 	}
-				
-	
+
 }
 	
 
