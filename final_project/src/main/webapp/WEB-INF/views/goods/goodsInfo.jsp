@@ -770,7 +770,7 @@ $(function(){
 .mainImage_box {
 	padding: 10px;
 	width: 100%;
-	height: auto;
+	height: 300px;
 }
 .mainImage_box > img {
 	width: 100%;

@@ -61,6 +61,35 @@
 	</servlet-mapping>
 	
 	<filter>
+		<filter-name>memberLoginFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>memberLoginFilter</filter-name>
+		<url-pattern>/member/cartList</url-pattern>
+		<url-pattern>/member/cart</url-pattern>
+		<url-pattern>/order/*</url-pattern>
+		<url-pattern>/pay/kakao/*</url-pattern>
+		<url-pattern>/member/cart</url-pattern>
+		<url-pattern>/member/addCart</url-pattern>
+		<url-pattern>/member/deleteCart</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>sellerLoginFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>sellerLoginFilter</filter-name>
+		<url-pattern>/goods/insert</url-pattern>
+	</filter-mapping>
+	
+	
+	<filter>
 		<filter-name>sellerFilter</filter-name>
 		<filter-class>
 			org.springframework.web.filter.DelegatingFilterProxy
@@ -105,7 +134,6 @@
 	
 	<filter-mapping>
 		<filter-name>memberFilter</filter-name>
-		<url-pattern>/member/cart</url-pattern>
 		<url-pattern>/member/memberdelete</url-pattern>
 		<url-pattern>/member/logout</url-pattern>
 		<url-pattern>/member/memberinfo</url-pattern>
@@ -132,7 +160,6 @@
 		<url-pattern>/member/deleteReq</url-pattern>
 		<url-pattern>/member/deleteResp</url-pattern>
 		<url-pattern>/member/alarmCount</url-pattern>
-		<url-pattern>/member/cartList</url-pattern>
 		<url-pattern>/member/cartDetailPay</url-pattern>
 		<url-pattern>/member/cartDetailCustom</url-pattern>
 		<url-pattern>/member/cartDetailGoods</url-pattern>
@@ -144,11 +171,7 @@
 		<url-pattern>/member/membercheck</url-pattern>
 		
 		
-		<url-pattern>/order/*</url-pattern>
-		<url-pattern>/pay/kakao/*</url-pattern>
-		<url-pattern>/member/cart</url-pattern>
-		<url-pattern>/member/addCart</url-pattern>
-		<url-pattern>/member/deleteCart</url-pattern>
+		
 	</filter-mapping>
 
 	<filter>
