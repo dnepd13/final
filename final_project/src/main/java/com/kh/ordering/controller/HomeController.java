@@ -3,6 +3,8 @@ package com.kh.ordering.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +36,7 @@ public class HomeController {
 	private GoodsDao goodsDao;
 	
 	@GetMapping("/")
-	public String home(Model model) {
+	public String home(Model model, HttpSession session) {
 		List<GoodsFileVO> listNew = goodsService.getListNew();
 		List<Integer> starListNew = new ArrayList<>();
 		for (GoodsFileVO goodsFileVO : listNew) {
@@ -68,6 +70,11 @@ public class HomeController {
 		model.addAttribute("starList", starList);
 		model.addAttribute("list", VOlist);
 	//			model.addAttribute("VOList", VOlist);
+		
+		String seller_id = (String)session.getAttribute("seller_id");
+		if(seller_id!=null) {
+			model.addAttribute("seller_id", seller_id);
+		}
 		
 		return "/home";
 	}

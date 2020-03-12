@@ -90,9 +90,11 @@
  	<div id="sidebar-wrapper">
 		<ul class="sidebar-nav">
 			<li class="sidebar-brand sidebar-home">
-				<a href="${pageContext.request.contextPath}/seller/main" class="navbar-brand" style="color:white;">ODERING</a>
+				<a href="${pageContext.request.contextPath}/" class="navbar-brand">
+					<img src="${pageContext.request.contextPath}/resources/img/logo-ordering-seller.png" style="width:150px; height: autopx;'">
+				</a>
+				<a href="${pageContext.request.contextPath}/seller/main" class="navbar-brand" style="color:white;">관리페이지</a>
 			</li>
-     		<li class="nav-item">00님 안녕하세요.</li>
 			<li class="nav-item">상품관리
 				<ul>
 					<li><a href="${pageContext.request.contextPath}/goods/insert">상품등록</a></li>

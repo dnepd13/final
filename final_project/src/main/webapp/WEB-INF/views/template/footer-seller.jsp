@@ -94,7 +94,7 @@
 		<li>사업자등록번호: 000-00-12345</li>
 	</ul>
 	<ul class="footer_cs">
-		<li><span><a href="${pageContext.request.contextPath }/board/memberreport">신고하기</a></span><br>
+		<li><span><a href="${pageContext.request.contextPath }/board/sellerreport">신고하기</a></span><br>
 				<strong>고객센터: <span id="co_call">02-1234-5678</span></strong> (평일 09:00~18:00)</li>		
 		<li>팩스: 02-123-4567</li>
 		<li>이메일: <span id="co_email"></span></li>
