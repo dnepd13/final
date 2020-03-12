@@ -26,7 +26,7 @@
 <div class="redirect-content">
 	<h4 align="center">견적서를 전송하였습니다.</h4><br>
 	<div class="row-empty-40"><br>
-	<span><a href="${pageContext.request.contextPath }/seller/management">메인으로</a></span>
+	<span><a href="${pageContext.request.contextPath }/seller/main">메인으로</a></span>
 	 &verbar; 
 	<span><a href="${pageContext.request.contextPath }/seller/customListResp">보낸 견적서 확인하기</a></span>
 	</div>
