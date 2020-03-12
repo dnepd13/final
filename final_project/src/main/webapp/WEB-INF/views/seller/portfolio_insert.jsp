@@ -6,15 +6,15 @@
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css">  
 
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
+
 <style>
 	.portfolio_area {
-		width: 1000px;
-		margin: 0 auto;
+
 	}
-	.portfolio_content{
-		width: 850px;
-		margin: 0 auto;
-	}
+ 	.portfolio_content{ 
+
+ 	} 
 	.btn_delete {
 		float: right;
 	}
@@ -60,13 +60,6 @@
 				}
 			}
 		});
-		
-		// 파일 미리보기 삭제
-// 		$(".filesDelete").click(function(){
-// 			$(this).remove();
-// 			$(this).prev(".filesSize").text().remove();
-// 			$(this).prev().prev(".filesName").text().remove();
-// 		});
 		
 		$(".btn_delete").click(function(e){
 			if(confirm('포트폴리오를 삭제하시겠습니까?')){
@@ -135,4 +128,4 @@
 	</c:if>   
 	</div>
  
-<%--  <jsp:include page="/WEB-INF/views/seller/portfolio_img.jsp"/> --%>
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>

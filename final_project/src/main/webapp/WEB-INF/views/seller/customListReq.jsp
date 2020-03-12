@@ -4,15 +4,13 @@
 <%@ taglib prefix="functions" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<jsp:include page="/WEB-INF/views/template/header-sellerMain.jsp"/>
-
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <style>
 	.articleBox {
 		width: 1000px;
-		height: 800px;
+		height: 100%;
 		margin: 0 auto;
 	}
 	.dataEmpty {
@@ -52,13 +50,13 @@
 			
 </script> 
 
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
 
-<h3>판매자가 받은 요청서 customListReq.jsp</h3>
 
 <h4>확인 안 한 요청서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
 
 <article class="articleBox">
-<jsp:include page="/WEB-INF/views/template/sellerInfoAside.jsp"/>
+
 <table class="table table-hover listBox">
 	<c:forEach var="memberReq" items="${getListReq }">
 	<tr>
@@ -128,6 +126,5 @@
 </div>
 </article>
 
-<div class="row-empty-40"></div>
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>
