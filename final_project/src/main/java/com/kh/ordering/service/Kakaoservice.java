@@ -361,9 +361,11 @@ public class Kakaoservice implements payService {
 		// 회원 포인트 차감내용 추가
 		CartInfoDto cartInfoDto = payDao.getCartInfoDto(successReadyVO.getPartner_order_id());
 		int used_point = cartInfoDto.getUsed_point();
-		Member_PointDto memberPointDto = Member_PointDto.builder().member_no(member_no)
-				.member_point_change(-1 * used_point).member_point_content("상품 구매에 사용").build();
-		memberPointDao.usedPoint(memberPointDto);
+		if(used_point!=0) {
+			Member_PointDto memberPointDto = Member_PointDto.builder().member_no(member_no)
+					.member_point_change(-1 * used_point).member_point_content("상품 구매에 사용").build();
+			memberPointDao.usedPoint(memberPointDto);			
+		}
 
 		// 주문제작 상태 update
 		// 문자열 잘라서 넣기

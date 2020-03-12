@@ -243,7 +243,7 @@
 							${getListInfoReq.custom_order_price}
 						</fmt:formatNumber> 원
 					</li>
-				<li class="list-group-item card-text">
+					<li class="list-group-item card-text">
 					<h6 class="card-subtitle text-muted">희망날짜&Tab;</h6>
 					${getListInfoReq.custom_order_hopedate}
 					</li>
