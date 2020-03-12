@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
 
-@Service("memberFilter")
-public class MemberFilter implements Filter{
+@Service("memberLoginFilter")
+public class MemberLoginFilter implements Filter{
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -27,7 +27,8 @@ public class MemberFilter implements Filter{
 			chain.doFilter(request, response);
 		}
 		else {
-			resp.sendError(403);
+			resp = (HttpServletResponse) response;
+			resp.sendRedirect(req.getContextPath()+"/member/login");
 		}
 	}
 
