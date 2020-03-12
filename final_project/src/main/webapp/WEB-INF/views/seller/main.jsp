@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>  
 
 <jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 	셀러 메인 화면입니다. 내용 채우시면됩니다
 
 	와아아아아아
