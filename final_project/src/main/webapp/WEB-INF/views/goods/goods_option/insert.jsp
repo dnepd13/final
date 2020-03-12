@@ -23,3 +23,4 @@
 	</select><br><br>
 	<input type="submit" value="등록">
 </form>
+
