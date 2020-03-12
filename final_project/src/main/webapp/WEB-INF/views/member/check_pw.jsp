@@ -4,13 +4,15 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 
 <div class="container-fluid">
      <div class="row">
          <div class="offset-md-4 col-md-4 ">
-            <div class="row justify-content-center"><h1>현재 비밀번호를 입력해주세요</h1></div>
+            <div class="row justify-content-center"><h2>현재 비밀번호를 입력해주세요</h2></div>
             <br><br><br>
     		<form action="check_pw" method="post">
     		   <!--비밀번호 입력창-->
@@ -24,3 +26,4 @@
       </div>
 </div>             
             
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

@@ -168,8 +168,7 @@ ul{
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
 
 <section class="section1">
 <form action="insert" method="post" enctype="Multipart/form-data">
@@ -369,4 +368,4 @@ ul{
 
 </form>
 </section>
-<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"></jsp:include>

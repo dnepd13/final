@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>  
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<!-- 배송지 기본 목록 게시판 -->  
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
@@ -156,18 +158,20 @@
 		var insert_modal = document.querySelector(".insert_modal");
 
 		$(".btn_addrExtra").click(function(){
-			var data = $(this).parents().children().find(".member_no").data("member_no");
-
-			// 비동기로 회원의 주소 List 가져오기
-			$.ajax ({
-				url:"${pageContext.request.contextPath}/member/getAddrList",
-				data: data,
-				type: "get",
-				success: function(resp){
-					console.log(resp.length);
-					insert_modal.style.display = "block";
-				}
-			});
+			
+			insert_modal.style.display = "block";
+// 			var data = $(this).parents().children().find(".member_no").data("member_no");
+				
+// 			// 비동기로 회원의 주소 List 가져오기
+// 			$.ajax ({
+// 				url:"${pageContext.request.contextPath}/member/getAddrList",
+// 				data: data,
+// 				type: "get",
+// 				success: function(resp){
+// 					console.log(resp.length);
+					
+// 				}
+// 			});
 			
 		});
 		$(".close").click(function(){

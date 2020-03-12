@@ -4,6 +4,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
  
  <style>
  	.articleBox {
@@ -159,6 +161,7 @@
 	});
 </script>
 
+
 <h3>Seller Custom Info Resp.jsp</h3>
 
 <article class="articleBox">
@@ -248,3 +251,6 @@
 </div>
 
 </article>
+
+
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>

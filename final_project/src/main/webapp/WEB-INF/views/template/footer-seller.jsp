@@ -2,28 +2,33 @@
     pageEncoding="UTF-8"%>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
+
 <style>
 	
 /*	footer */
 	footer {
 		bottom: 0;
-		left: 0;
+		left:0;
 		right: 0;
 		height: 150px;
-		position: absolute;
-		background: #F3F5F8;
+		position: relative;
+		background: black;
+		margin-left: 250px;
+		z-index: 0;
 	}
 	footer div {
 		width: 100%;
 		height: 150px;
 		bottom: 0;
-		background: #F3F5F8;
+		background: black;
 		padding: 15px 0 ;
 	}
 	.footer_area * {
 		list-style: none;
 		padding: 0;
+		color: white;
 	}
+	/* 푸터 내부 정보*/
 	.footer_area ul {
 		float: left;
 		position: relative;
@@ -63,7 +68,7 @@
 			method : "get",
 			url: "${pageContext.request.contextPath}/company",
 			success: function(resp){
-
+				console.log(resp);
 				$("#co_name").append(resp.co_name);
 				$("#co_ceo").append(resp.co_ceo);
 				$("#co_location").append(resp.co_location);
@@ -75,6 +80,8 @@
 	});
 </script>
 
+
+</div>
 <footer>
 <div class="footer_area">
 	<ul class="footer_title">
@@ -87,7 +94,7 @@
 		<li>사업자등록번호: 000-00-12345</li>
 	</ul>
 	<ul class="footer_cs">
-		<li><span><a href="${pageContext.request.contextPath }/board/memberreport">신고하기</a></span><br>
+		<li><span><a href="${pageContext.request.contextPath }/board/sellerreport">신고하기</a></span><br>
 				<strong>고객센터: <span id="co_call">02-1234-5678</span></strong> (평일 09:00~18:00)</li>		
 		<li>팩스: 02-123-4567</li>
 		<li>이메일: <span id="co_email"></span></li>

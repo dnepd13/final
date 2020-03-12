@@ -281,7 +281,7 @@
  			member_email = #{member_email},
  			member_phone = #{member_phone}
  		where
- 			member_id = #{member_id}
+ 			member_no = #{member_no}
  	</update>
 	
 	

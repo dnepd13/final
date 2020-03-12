@@ -52,7 +52,6 @@
     color: #fff;
     background: rgba(255, 255, 255, 0.2);
   }
-  
 
 	.sidebar-nav > .sidebar-home {
     font-size: 2em;

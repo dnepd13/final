@@ -65,7 +65,7 @@ $(function(){
       		<form action="reset" method="post">
       			<input type="hidden" name="admin_no" value="${list.admin_no }">
       			<input class="adminPw" type="password" name="admin_pw" value="123456789a">
-      			<button class="btn btn-primary" >초기화</button>
+      			<button type ="submit" class="btn btn-primary" >초기화</button>
       		</form>
       </td>
     </tr>
