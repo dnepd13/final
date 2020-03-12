@@ -20,8 +20,6 @@
     height: 100%;
     margin-left: -250px;
     background: #000;
-    overflow-x: hidden;
-    overflow-y: auto;
   }
   
   #page-content-wrapper {
@@ -52,7 +50,6 @@
     color: #fff;
     background: rgba(255, 255, 255, 0.2);
   }
-  
 
 	.sidebar-nav > .sidebar-home {
     font-size: 2em;

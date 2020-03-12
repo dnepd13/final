@@ -81,9 +81,13 @@ card border-body {
 }
 
 </style>
+ <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
-   <div class="container-fluid">
+   <div class="container-fluid" style="padding-top:100px;">
         <div class="row">
             <div class="offset-md-4 col-md-4 ">
 				<div class = "card border-secondary mb-5" style = "max-width : 700rem;">
@@ -124,4 +128,5 @@ card border-body {
  		</div> 
  	</div>	 
  
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+ 
+ <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
