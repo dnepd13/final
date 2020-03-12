@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
-
 <style>
 	
 /*	footer */

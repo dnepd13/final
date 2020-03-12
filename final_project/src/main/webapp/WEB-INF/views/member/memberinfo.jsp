@@ -4,15 +4,18 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
   </script>
   <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
-  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+ <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
-   <div class="container-fluid">
+   <div class="container-fluid" style="padding-top:100px;">
         <div class="row">
             <div class="offset-md-4 col-md-4 ">
-				<div class = "card border-secondary mb-3"style = "max-width : 500rem;">
-  				<div class = "card-header">
-  				   <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"size="4";>멤버 회원정보 </font></font>
+				<div class = "card border-secondary mb-3"style = "max-width : 500rem;" >
+  				<div class = "card-header" >
+  				   <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"size="4"; >멤버 회원정보 </font></font>
   				</div>
   				<div class = "card-body">
   				  <form action="memberinfo" method="post">
@@ -31,4 +34,6 @@
  		</div> 
  	</div>	 
  
+ 
+ <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
 
