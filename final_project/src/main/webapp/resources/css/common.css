@@ -1,6 +1,8 @@
 @charset "UTF-8";
 
-	* {box-sizing: border-box;}
+	* {box-sizing: border-box;
+		font-family: ProximaNova-Regular, NanumSquareR, sans-serif;
+	}
 	html,
 	body{
 		margin:0px;
@@ -18,6 +20,21 @@
 	    font-family:NotosanBlack;
 	    src:url("../font/Notosan/NotoSansCJKkr-Black.otf");
 */
+
+@font-face{
+    font-family: sans-serif;
+	src: url("../font/SansSerif.ttf");
+}
+
+@font-face{
+	font-family: ProximaNova-Regular;
+	src: url("../font/ProximaNova-Regular.otf");
+}
+
+@font-face{
+	font-family: NanumSquareR;
+	src: url("../font/NanumSquareR.ttf");
+}
 
 
 /* 자체제작 버튼스타일 1 : 흰배경, 테두리만 있음 */

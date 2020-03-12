@@ -37,6 +37,10 @@
 				$("#insertpoint").focus();
 				return false;
 			}
+			if(insertpoint <= 0){
+				window.alert("음수의 포인트는 적립할 수 없습니다.");
+				return false;
+			}
 			if(checkRow.length == 0){
 				window.alert("회원을 선택하세요");
 				return false;
