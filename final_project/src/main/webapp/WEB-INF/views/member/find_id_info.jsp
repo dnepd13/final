@@ -3,8 +3,16 @@
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
   </script>
+ 
+ <!-- 회원id 찾기 결과창 -->
+  
   <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+  
+  <jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+  
+  
   
    <div class="container-fluid">
         <div class="row">
@@ -23,4 +31,5 @@
 		 </div>
 	</div>
 	
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>	
          
