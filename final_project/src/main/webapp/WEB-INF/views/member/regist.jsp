@@ -4,7 +4,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
 </script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
-
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
 <!-- 회원 가입창 -->
 
@@ -266,5 +267,5 @@
    </div>
  </body>
  
-
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
 
