@@ -17,4 +17,9 @@ public class SellerBlockDaoImpl implements SellerBlockDao{
 		return sqlSession.selectOne("block.seller", id);
 	}
 
+	@Override // seller 번호로 블락내용 좀 가져가겠습니다 ...
+	public BlockDto blockDto(int seller_no) {
+		return sqlSession.selectOne("block.getSellerInfo", seller_no);
+	}
+
 }

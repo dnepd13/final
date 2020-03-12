@@ -58,7 +58,7 @@ public class MemberDaoImpl implements MemberDao{
 	public boolean minusPointOrder(int member_no, int point) {
 		if(this.checkPoint(member_no, point)) {
 			MemberPointVO memberPointVO = MemberPointVO.builder()
-										.member_point_status("차감")
+										.member_point_status("사용")
 										.member_point_change(-point)
 										.member_point_content("상품 구매에 사용")
 										.member_no(member_no)

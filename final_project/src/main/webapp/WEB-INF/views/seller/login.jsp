@@ -14,7 +14,8 @@
 	.login-area {
 		width: 500px;
 		margin: 0 auto;
-		padding-top: 50px;
+		padding-top: 200px;
+		padding-bottom: 200px;
 	}
 	.login input[type=text],
 	.login input[type=password],

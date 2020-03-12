@@ -218,14 +218,15 @@ public class AdminController {
 	}
 	//---------------------------愿�由ъ옄媛��엯李�----------------------------------
 	@PostMapping("/regist")
-	public String regist(@ModelAttribute AdminDto adminDto) {
+	public String regist(@ModelAttribute AdminDto adminDto, Model model) {
 			
 		
 		adminDto.setAdmin_pw(passwordEncoder.encode(adminDto.getAdmin_pw()));
 		
 		
 		adminDao.regist(adminDto);
-
+		String success = "회원가입에 성공했습니다";
+		model.addAttribute("success", success);
 		return "/regist";
 	}
 	

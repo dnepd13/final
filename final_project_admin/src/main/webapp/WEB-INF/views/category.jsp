@@ -134,12 +134,7 @@
 					<option>${middle.category_middle }</option>
 				</c:forEach>
 			</datalist>
-			<input type="text" name="category_small" placeholder="소분류" required="required" list="itemListSmall">
-			<datalist id="itemListSmall">
-				<c:forEach var="small" items="${small }">
-					<option>${small.category_small }</option>
-				</c:forEach>
-			</datalist>
+			<input type="text" name="category_small" placeholder="소분류" required="required">
 			<input type="submit" value="등록">
 		</div>
 	</form>
