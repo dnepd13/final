@@ -142,4 +142,4 @@
 
 <div class="row-empty-40"></div>
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+<%-- <jsp:include page="/WEB-INF/views/template/footer.jsp"/> --%>
