@@ -13,7 +13,7 @@
 		height: 150px;
 		position: relative;
 		background: black;
-		margin-left: 260px;
+		margin-left: 250px;
 		z-index: 0;
 	}
 	footer div {

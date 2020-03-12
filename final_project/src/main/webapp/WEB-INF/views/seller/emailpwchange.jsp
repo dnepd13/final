@@ -6,6 +6,8 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
+
 <style>
 	.redirect-box {
 		border: 1px solid #A6A6A6;
@@ -18,6 +20,7 @@
 		padding: 50px;
 	}
 </style>
+>
 
 <div class="redirect-box row justify-content-center">
 
@@ -35,6 +38,4 @@
 
 
 
-
-
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>

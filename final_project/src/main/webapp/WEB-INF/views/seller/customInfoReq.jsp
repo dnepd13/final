@@ -6,6 +6,9 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
  
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
+ 
+ 
  <style>
  	.articleBox {
  		width: 500px;
@@ -15,6 +18,7 @@
  </style>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 
 <article class="articleBox">
 
@@ -75,4 +79,4 @@
     
 <div class="row-empty-40"></div>
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>
