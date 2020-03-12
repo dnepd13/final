@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+     
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>     
+     
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
 
@@ -36,14 +39,15 @@
  
 				<!--비밀번호 입력창-->
                <div class="form-group">
-               	 <label for="pw-input">비밀번호 입력 </label>
+               	 <label for="pw-input">변경할 비밀번호를 입력 해주세요. </label>
                  <input class="form-control" type="password" id="pw-input1" name="seller_pw" required>
                </div>
                 <button type="submit" id="frm" class="btn btn-secondary disabled btn-block">비밀번호 변경하기</button>
              </form>
           </div>
        </div>
+
 </div>
  
-
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>
  

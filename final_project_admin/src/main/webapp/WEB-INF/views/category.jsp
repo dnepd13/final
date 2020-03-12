@@ -6,6 +6,40 @@
 <script>
 	
 	$(function(){
+		
+		$(".insertcategory").click(function(){
+			var big = $(".bigcategory").val();
+			var middle = $(".middlecategory").val();
+			var small = $(".smallcategory").val();
+			var bigcount = 0;
+			var middlecount = 0;
+			var smallcount = 0;
+			$(".bigcate").each(function(){
+				if(big == $(this).text()){
+					bigcount =1;					
+				}
+			});
+			$(".middlecate").each(function(){
+				if(middle == $(this).text()){
+					middlecount =1;					
+				}
+			});
+			$(".smallcate").each(function(){
+				if(small == $(this).text()){
+					smallcount =1;					
+				}
+			});
+			
+			if((bigcount+middlecount+smallcount) == 3){
+				window.alert("중복된 카테고리가 존재합니다.");
+				return false;
+			}
+			
+			$(".insertcategoryform").submit();
+			
+		});
+		
+		
 		$(".btn-modify").click(function(){
 			console.log("ddd");
 			if($(this).text()=="수정"){
@@ -36,6 +70,30 @@
 				var large = largeCell.children().val();
 				var middle = middleCell.children().val();
 				var small = smallCell.children().val();
+				
+				var largecount = 0;
+				var middlecount = 0;
+				var smallcount = 0;
+				$(".bigcate").each(function(){
+					if(large == $(this).text()){
+						largecount =1;					
+					}
+				});
+				$(".middlecate").each(function(){
+					if(middle == $(this).text()){
+						middlecount =1;					
+					}
+				});
+				$(".smallcate").each(function(){
+					if(small == $(this).text()){
+						smallcount =1;					
+					}
+				});
+				
+				if((smallcount+middlecount+largecount) == 3){
+					window.alert("이미 존재하는 카테고리입니다");
+					return false;
+				}
 				
 				largeCell.empty();
 				middleCell.empty();
@@ -120,22 +178,22 @@
 <div class="row justify-content-center"  style="padding: 20px;"><h1>카테고리 관리</h1></div>
 
 <div>
-	<form  action="category" method="post">
+	<form  class="insertcategoryform" action="category" method="post">
 		<div>
-			<input type="text" name="category_large" placeholder="대분류" required="required" list="itemListBig">
+			<input class="bigcategory" type="text" name="category_large" placeholder="대분류" required="required" list="itemListBig">
 			<datalist id="itemListBig">
 				<c:forEach var="big" items="${big }">
 					<option>${big.category_large }</option> 
 				</c:forEach>
 			</datalist>
-			<input type="text" name="category_middle" placeholder="중분류" required="required" list="itemListMiddle">
+			<input class="middlecategory" type="text" name="category_middle" placeholder="중분류" required="required" list="itemListMiddle">
 			<datalist id="itemListMiddle">
 				<c:forEach var="middle" items="${middle }">
 					<option>${middle.category_middle }</option>
 				</c:forEach>
 			</datalist>
-			<input type="text" name="category_small" placeholder="소분류" required="required">
-			<input type="submit" value="등록">
+			<input class="smallcategory" type="text" name="category_small" placeholder="소분류" required="required">
+			<button  class="insertcategory btn btn-primary"  type="button">등록</button>
 		</div>
 	</form>
 </div>
@@ -154,9 +212,9 @@
     <c:forEach var="list" items="${list }">
     <tr class="table-light"">
       <th scope="row" id="category_no">${list.category_no }</th>
-      <td >${list.category_large }</td>
-      <td>${list.category_middle }</td>
-      <td>${list.category_small }</td>
+      <td class="bigcate">${list.category_large }</td>
+      <td class="middlecate" >${list.category_middle }</td>
+      <td class="smallcate" >${list.category_small }</td>
       <td data-category-no="${list.category_no}" 
  						data-category-large="${list.category_large}" 
  						data-category-middle="${list.category_middle}" 

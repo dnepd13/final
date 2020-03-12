@@ -6,6 +6,9 @@
   <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
   
+  <jsp:include page="/WEB-INF/views/template/header.jsp"/>
+ <jsp:include page="/WEB-INF/views/template/menu.jsp"/>                  
+  
    <div class="container-fluid">
         <div class="row">
             <div class="offset-md-4 col-md-4 ">
@@ -21,6 +24,7 @@
          		<button type="submit" class="btn btn-secondary disabled" onclick="location.href = '#' ">비밀번 찾기</button>
 			</div>
 		 </div>
+
 	</div>
 	<!-- <h1>판매자 아이디는</h1>
     <form action="find_id_info" method="post">
@@ -28,4 +32,6 @@
 
    <input   type="submit" value="로그인하기"> 
          </form>  -->	
-         
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>         
+

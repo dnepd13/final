@@ -1,41 +1,60 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<!--이메일 찾기의 비밀번호 변경 페이지>-->
 
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
+
+
 <style>
-	.redirect-box {
-		border: 1px solid #A6A6A6;
-		width: 400px;
-		height: 200px;
-		margin-top: 10%;
-		margin-left: 35%;
+	.login-area {
+		width: 500px;
+		margin: 0 auto;
+		padding-top: 50px;
 	}
-	.redirect-content {
-		padding: 50px;
-	}
+	.login input[type=text],
+	.login input[type=password],
+	.login input[type=submit]{
+		width: 100%;
+		border: 1px solid lightgray;
+		border-radius: 5px;
+ 	}
+ 	
 </style>
 
-<div class="redirect-box row justify-content-center">
 
-<div class="redirect-content">
-	<h4 align="center">탈퇴처리되었습니다. 그동안 이용해주셔서 감사합니다.</h4><br>
-	<div class="row-empty-40"><br>
-	<span><a href="${pageContext.request.contextPath }/">메인으로</a></span>
-	 &verbar; 
-	<span><a href="${pageContext.request.contextPath }/seller/main">마이 페이지로</a></span>
-	</div>
+
+
+ 
+<div class="container-fluid">
+     <div class="row">
+         <div class="offset-md-4 col-md-4 ">
+            <div class="row justify-content-center"><h1>비밀번호 변경 페이지</h1></div>
+            <br><br><br>
+            <form action="emailpwchange" method="post">
+ 
+				<!--비밀번호 입력창-->
+               <div class="form-group">
+               	 <label for="pw-input">비밀번호 입력 </label>
+                 <input class="form-control" type="password" id="pw-input1" name="seller_pw" required>
+               </div>
+                <button type="submit" class="btn btn-secondary disabled" id="frm" onclick="test();">비밀번호 변경하기</button>
+             </form>
+          </div>
+       </div>
 </div>
 
-</div>
 
 
 
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>
 
-
-
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>

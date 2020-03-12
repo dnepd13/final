@@ -13,6 +13,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.kh.ordering.entity.BlockDto;
+import com.kh.ordering.entity.MemberDto;
+import com.kh.ordering.entity.SellerDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,12 +26,20 @@ public class BlockMemberInterceptor extends HandlerInterceptorAdapter {
 	private SqlSession sqlSession;
 	@Autowired
 	private BlockDto blockDto;
-
+	@Autowired
+	private SellerDto sellerDto;
+	@Autowired
+	private MemberDto memberDto;
 	@Override
+	
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		String seller_id=(String) request.getSession().getAttribute("seller_id");
+		if(seller_id!=null) {
+			return true;
+		}
 		String block_id = (String) request.getSession().getAttribute("member_id");
-	log.info("session={}",block_id);
+		log.info("session={}",block_id);
  		int count=0;
 		log.info(block_id);
 		log.info("count={}", count);

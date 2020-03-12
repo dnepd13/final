@@ -13,6 +13,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.kh.ordering.entity.BlockDto;
+import com.kh.ordering.entity.SellerDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,12 +23,14 @@ import lombok.extern.slf4j.Slf4j;
 public class BlockSellerInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
 	private SqlSession sqlSession;
-	@Autowired
-	private BlockDto blockDto;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		String member_id =(String)request.getSession().getAttribute("member_id");
+		if(member_id !=null) {
+			return true;
+		}
 		String block_id = (String) request.getSession().getAttribute("seller_id");
 		log.info("session={}",block_id);
 		// String member_id = (String) request.getAttribute("member_id");
@@ -47,6 +50,7 @@ public class BlockSellerInterceptor extends HandlerInterceptorAdapter {
 				//차단되지 않은 판매자라면 통과
 				log.info("count2={}", count);
 				return true;
+				
 			}
 		} else {//판매자가 아니라면//차단된 판매자라면 문의게시판 빼고 다 저 login.jsp 404페이지로뜬다 
 		//판매자 로그인 페이지로

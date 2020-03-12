@@ -162,10 +162,13 @@ ul{
 }
 
 </style>
+
+<script>
+</script>
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
 
 <section class="section1">
 <form action="insert" method="post" enctype="Multipart/form-data">
@@ -181,7 +184,7 @@ ul{
 							  <div class="input-group-prepend">
 							    <span class="input-group-text" id="inputGroup-sizing-default">상품명</span>
 							  </div>
-							<input type="text" class="form-control" name="goods_name" required>
+							<input  maxlength="50" type="text" class="form-control" name="goods_name" required>
 							</div>
 						</div>
 					</div>
@@ -251,7 +254,7 @@ ul{
 								<span class="input-group-text">상품사진</span>
 							</div>
 							<div class="custom-file">
-								<input id="inputGroupFile02" class="custom-file-input" type="file" multiple="multiple" name="goods_content_image">
+								<input required id="inputGroupFile02" class="custom-file-input" type="file" multiple="multiple" name="goods_content_image">
 								<label class="custom-file-label content_label" for="inputGroupFile02">파일 찾기</label>	
 							</div>
 						</div>
@@ -365,4 +368,4 @@ ul{
 
 </form>
 </section>
-<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"></jsp:include>

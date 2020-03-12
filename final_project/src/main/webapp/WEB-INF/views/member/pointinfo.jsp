@@ -7,6 +7,8 @@
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
 
+<!-- 회원 포인트 info -->
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
