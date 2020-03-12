@@ -115,14 +115,14 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th width="9%"><input type="checkbox" name="checkAll" id="th_checkAll" onclick="checkAll();"></th>
+      <th width="7%"><input type="checkbox" name="checkAll" id="th_checkAll" onclick="checkAll();"></th>
       <th width="5%">아이디</th>
-      <th width="5%">이름</th>
+      <th width="7%">이름</th>
       <th width="10%">이메일</th>
-      <th width="10%">연락처</th>
-      <th width="2%">등급</th>
+      <th width="8%">연락처</th>
+      <th width="9%">등급</th>
       <th width="10%">가입일</th>
-      <th width="15%">마지막 접속일시</th>
+      <th width="10%">마지막 접속일시</th>
       <th width = "8%">상세보기</th>
       <th width = "8%">차단</th>
       <th width="15%">비밀번호초기화</th>
