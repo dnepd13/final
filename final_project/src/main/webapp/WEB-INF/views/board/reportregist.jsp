@@ -42,49 +42,34 @@ h4{
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
 		<div class="cart_title">
-<h3>신고 작성하기</h3>
-</div>
-<div>
-	<h4>허위 신고로 적발될 경우 불이익을 받을 수 있습니다.</h4>
-</div>
+			<h3>신고 작성하기</h3>
+		</div>
+		<div>
+			<h4>허위 신고로 적발될 경우 불이익을 받을 수 있습니다.</h4>
+		</div>
 
 <form action="reportregist" method="post">
-	<div class="btn-group-vertical" style="float:right;">
-	<a><button class="btn btn-primary">등록</button></a>
-	</div>
-</div>
-</section>
-<section class="section2">
-<div class="insert_req form-group">
-	<form action="reportregist" method="post">
-
-			<input type="text" name="admin_qna_title" value="" required class="form-control" placeholder="제목">
-			<div class="row-empty-20"></div>
-		<textarea name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용"></textarea>
-			<div class="row-empty-20"></div>
-		<p align="right">
-			<button class="btn btn-primary regist" value="등록 ">등록</button>&nbsp;&nbsp;
-			<a href="${pageContext.request.contextPath}/board/memberreport"><button class="btn btn-primary regist" type="button">목록으로</button></a>
-		</p>
-	</form>
-	<p align="right"></p>
-</div>
-</section>
-
+	<div style="width:1000px;">
+<table>
 	<tr>
-		<th><input type="text" name="admin_qna_title" placeholder="제목을 입력하세요 ex)판매자 xxx를 신고합니다" required style="width:900px;"></th>
+		<th>
+		<input type="text" name="admin_qna_title" placeholder="제목을 입력하세요 ex)판매자 xxx를 신고합니다" required style="width:1000px;">
+		</th>
 	</tr>
 	<tr>
 		<td >	
-		<textarea name="admin_qna_content" rows="15" cols="125.5" style="resize:none;">내용을 입력하세요</textarea>
+		<textarea name="admin_qna_content" rows="15" cols="140" style="resize:none;">내용을 입력하세요</textarea>
 		</td>
 	</tr>
 </table>
+</div>
+	<div class="btn-group-vertical" style="float:right;">
+		<button class="btn btn-primary" style="float:right;">등록</button>
+	</div>
+
 </form>
 </div>
 </div>
 </section>
-<div class="row-empty-40"></div>
-
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
