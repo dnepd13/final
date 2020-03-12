@@ -20,7 +20,6 @@
 	body{
 		margin: 0;
 		height: 100%;
-		border: 1px gray dotted;
 	}
 	.wrap {
 		min-height: 100%;
@@ -28,7 +27,6 @@
 		padding-bottom: 150px;
 		padding-top: 100px;
 		margin-left: 350px;
-		border: 1px red dotted;
 	}
 
 	.row-empty-20 {

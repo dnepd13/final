@@ -63,7 +63,7 @@
 			method : "get",
 			url: "${pageContext.request.contextPath}/company",
 			success: function(resp){
-				console.log(resp);
+
 				$("#co_name").append(resp.co_name);
 				$("#co_ceo").append(resp.co_ceo);
 				$("#co_location").append(resp.co_location);
