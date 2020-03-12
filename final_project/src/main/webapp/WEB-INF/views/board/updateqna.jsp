@@ -3,7 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
@@ -49,22 +51,13 @@
  	}
 </style>
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
-
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-
 
 <section class="section1">
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
 		<div class="cart_title">
-			<h3>문의 게시판 글 상세보기 ${member_id }</h3>
+			<h3>문의 게시판 글 상세보기</h3>
 		</div>
-	</div>
-</div>
-</section>
-<section class="section2">
 <div class="insert_req form-group">
 	<form action="updateqna" method="post">
 	<input type="hidden" name="admin_qna_no" value="${updateget.admin_qna_no }">
@@ -82,38 +75,5 @@
 </section>
 
 <div class="row-empty-40"></div>
-<div class="row-empty-40"></div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
-<!-- <form action="updateqna" method="post"> -->
-<!-- <div align="center" class="btn-group-vertical"> -->
-
-<%-- <input type="hidden" name="admin_qna_no" value="${updateget.admin_qna_no }"> --%>
-<%-- 	<input type="hidden" name="admin_qna_no" value="${updateget.admin_qna_no }"> --%>
-
-<!-- 	<div class="btn-group-vertical"> -->
-<!-- 	<a><button class="btn btn-primary" value="수정">수정</button></a> -->
-<!-- 	</div> -->
-<!-- <table class="table table-hover" > -->
-
-<!-- <tbody> -->
-
-<!-- 	<tr> -->
-<!-- 		<td class="">제목</td> -->
-<%-- 		<th><input type="text" name="admin_qna_title" value="${updateget.admin_qna_title}" required></th> --%>
-<!-- 	</tr> -->
-
-<!-- 	<tr> -->
-<!-- 		<td width="100px">	<textarea name="admin_qna_content" rquired rows="15" cols="100" style="resize:none;"> -->
-<%-- 		${updateget.admin_qna_content}</textarea> --%>
-<!-- 	</td> -->
-
-<!-- </tbody> -->
-
-	
-
-<!-- </table> -->
-<!-- </form> -->
-<!-- </div> -->
-
-<%-- <jsp:include page="/WEB-INF/views/template/footer.jsp"/> --%>

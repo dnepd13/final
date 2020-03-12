@@ -134,6 +134,7 @@
 		<ul>
 			<li><a href="${pageContext.request.contextPath}/member/memberdelete">회원탈퇴</a></li>
 		</ul>
+
 	</div>
 </aside>
 </c:if>
