@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
  <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<!-- 비밀번호 찾기 이메일 인증창 -->
     
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
@@ -38,7 +39,7 @@ $(function() {
 							console.log($('input[name="idcheck2"]'));
                		}
                		else{
-               			window.alert("중복된 아이디 입니다")
+               			window.alert("확인 가능한 아이디 입니다")
                			$('input[name="idcheck2"]').val("Y");
                			console.log($('input[name="idcheck2"]').val());
                			
@@ -185,7 +186,7 @@ function test() {
 			    				<td><input type="text" class="form-control" name="member_id" placeholder="아이디를 입력하세요" required>
 			    						
 			    				</td>
-			    				<td><input class="btn btn-secondary disabled" type="button" id="id_check" value="중복확인" ><br></td>
+			    				<td><input class="btn btn-secondary disabled" type="button" id="id_check" value="확인" ><br></td>
 			    				<td><input type="hidden" name="idcheck2" value="N"></td>
 			    			</tr>
 			    			<tr class="input_email">
@@ -195,8 +196,8 @@ function test() {
 			    						<input type="text" name="cert" class="form-control" placeholder="인증번호 입력" required>
 			    						<input type="hidden" name="checkemailcode2">
 			    				</td>
-			    				<td><input type="button" id="check_email" value="인증번호 보내기">
-			    						<input type="button" name="check_email_code" id="check_email_code" value="인증코드확인">
+			    				<td><input class="btn btn-secondary disabled" type="button" id="check_email" value="인증번호 보내기">
+			    						<input class="btn btn-secondary disabled" type="button" name="check_email_code" id="check_email_code" value="인증코드확인">
 			    				</td>
 			    			</tr>
 			    			<tr>
