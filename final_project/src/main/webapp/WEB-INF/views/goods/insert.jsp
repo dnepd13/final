@@ -191,7 +191,7 @@ ul{
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="main_image_box">
-								<img class="main_image rounded" src="https://placehold.it/291x250/F8F5F0/495057?text=Main-image">
+								<img class="main_image rounded" src="https://placehold.it/291x250/E9ECEF/495057?text=Main-image">
 							</div>
 							<div class="input-group">
 							  <div class="input-group-prepend">
@@ -264,7 +264,7 @@ ul{
 					
 				<div class="form-group goods_content_box">
 			      <label class="input-group-text" for="content">상품 설명</label>
-			      <textarea class="form-control" id="content" rows="3" name="goods_content"></textarea>
+			      <input type="text" class="form-control" id="content" name="goods_content">
 			    </div>
 				
 				
