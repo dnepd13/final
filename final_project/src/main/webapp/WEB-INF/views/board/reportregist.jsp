@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
@@ -51,7 +52,24 @@ h4{
 	<div class="btn-group-vertical" style="float:right;">
 	<a><button class="btn btn-primary">등록</button></a>
 	</div>
-<table class="table table-hover" >
+</div>
+</section>
+<section class="section2">
+<div class="insert_req form-group">
+	<form action="reportregist" method="post">
+
+			<input type="text" name="admin_qna_title" value="" required class="form-control" placeholder="제목">
+			<div class="row-empty-20"></div>
+		<textarea name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용"></textarea>
+			<div class="row-empty-20"></div>
+		<p align="right">
+			<button class="btn btn-primary regist" value="등록 ">등록</button>&nbsp;&nbsp;
+			<a href="${pageContext.request.contextPath}/board/memberreport"><button class="btn btn-primary regist" type="button">목록으로</button></a>
+		</p>
+	</form>
+	<p align="right"></p>
+</div>
+</section>
 
 	<tr>
 		<th><input type="text" name="admin_qna_title" placeholder="제목을 입력하세요 ex)판매자 xxx를 신고합니다" required style="width:900px;"></th>
@@ -66,5 +84,7 @@ h4{
 </div>
 </div>
 </section>
+<div class="row-empty-40"></div>
+
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

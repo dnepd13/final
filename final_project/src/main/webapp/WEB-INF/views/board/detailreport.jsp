@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
@@ -59,7 +59,7 @@ h4{
 
 </c:otherwise>
 </c:choose>
-<table class="table table-hover" ">
+<table class="table table-hover cart_table">
 <tbody>
 	<tr>
 		<th width="121px">제목</th>
@@ -80,16 +80,25 @@ h4{
 	
 	
 	<tr>
-		<th></th>
-				<td width="600px" align="left">${ReportGetOne.admin_qna_content}</td>
+			<th class="row-empty-20"></th>
+	<th><textarea name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용">${ReportGetOne.admin_qna_content}</textarea></th>
+		<th class="row-empty-20"></th>
+<%-- 				<td width="600px" align="left">${ReportGetOne.admin_qna_content}</td> --%>
 	</tr>
 </tbody>
 
 	
 
 </table>
+	<p align="right">
+			<button class="btn btn-primary regist" value="updateqna">수정하기 </button>&nbsp;&nbsp;
+			<a href="${pageContext.request.contextPath}/board/memberqna"><button class="btn btn-primary regist" type="button">목록으로</button></a>
+		</p>
+	<p align="right"></p>
 </div>
 </div>
 </section>
+<div class="row-empty-40"></div>
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"/>>
+

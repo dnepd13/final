@@ -45,18 +45,17 @@
 
 <c:when test="${qnaone.admin_no >0}">	
 	<h1>관리자의 답변입니다.</h1>
-
 </c:when>
 <c:otherwise>
 	<div class="btn-group-vertical" style="float:right;">
 		<a href="${pageContext.request.contextPath}/board/updateqna?admin_qna_no=${qnaone.admin_qna_no}">
-			<button type="button" class="btn btn-primary">수정</button>
+			<button type="button" class="btn btn-primary">수정하기</button>
 		</a>
 	</div> 
 </c:otherwise>
 </c:choose>
 
-<table class="table table-hover">
+<table class="table table-hover cart_table">
 <tbody>
 	<tr>
 		<th width="121px">제목</th>
@@ -74,17 +73,22 @@
 		<th width="121px">작성일</th>
 		<td width="600px">${qnaoneGetOne.admin_qna_date}</td>
 	</tr>
-	
-	
 	<tr>
-		<th></th>
-		<td width="600px" align="left">${qnaoneGetOne.admin_qna_content}</td>
-	</tr>
-</tbody>
-
-</table>
-</div>
+	<th class="row-empty-20"></th>
+		<th><textarea name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용">${qnaoneGetOne.admin_qna_content}</textarea></th>
+			<th class="row-empty-20"></th>
+			</tr>
+	</tbody>
+	</table>
+		<p align="right">
+			<button class="btn btn-primary regist" value="updateqna">수정하기 </button>&nbsp;&nbsp;
+			<a href="${pageContext.request.contextPath}/board/memberqna"><button class="btn btn-primary regist" type="button">목록으로</button></a>
+		</p>
+	<p align="right"></p>
 </div>
 </section>
-
+<div class="row-empty-40"></div>
+<div class="row-empty-40"></div>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+
+
