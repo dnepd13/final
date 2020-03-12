@@ -45,69 +45,65 @@
 		</interceptor>
 	</interceptors>
 	
-<!--  <interceptors> -->
-<!-- 		<interceptor> -->
-<!-- 			<mapping path="/seller/**"/> -->
-<!-- 			<mapping path="/goods/**"/> -->
-<!-- 			<mapping path="/board/**"/> -->
-<!-- 			<mapping path="/pay/**"/> -->
-<!-- 			<mapping path="/order/**"/> -->
-<!-- 			<mapping path="/block/**"/> -->
-<!-- 			<mapping path="/goods/goods_option"/> -->
-<!-- 			<exclude-mapping path="/block/user"/> -->
-<!-- 		 	<exclude-mapping path="/seller/login"/> -->
-<!-- 		 	<exclude-mapping path="/seller/logout"/> -->
-<!-- 		 	<exclude-mapping path="/seller/main"/> -->
-<!-- 		 	<exclude-mapping path="/member/login"/> -->
-<!-- 		 	<exclude-mapping path="/member/logout"/> -->
-<!-- 		 	<exclude-mapping path="/board/memberqna"/> -->
-<!-- 		 	<exclude-mapping path="/board/detailmqna"/>  -->
-<!-- 		 	<exclude-mapping path="/board/qnaregist"/>   -->
-<!-- 		 	<exclude-mapping path="/board/editqna"/>  -->
-<!-- 		 	<exclude-mapping path="board/updateqna"/> -->
-<!-- 		 	<exclude-mapping path="/board/sellerqna"/>  -->
-<!-- 		 	<exclude-mapping path="/board/sellerqnaregist"/>  -->
-<!-- 		 	<exclude-mapping path="/board/sellerdetailmqna"/>  -->
-<!-- 		 	<exclude-mapping path="/board/sellereditqna"/>  -->
+ <interceptors>
+		<interceptor><!-- 차단판매자 -->
+			<mapping path="/seller/**"/>
+			<mapping path="/goods/**"/>
+			<mapping path="/board/**"/>
+			<mapping path="/pay/**"/>
+			<mapping path="/order/**"/>
+			<mapping path="/block/**"/>
+			<mapping path="/goods/goods_option"/>
+			<exclude-mapping path="/block/user"/>
+		 	<exclude-mapping path="/seller/login"/>
+		 	<exclude-mapping path="/seller/logout"/>
+		 	<exclude-mapping path="/seller/main"/>
+		 	<exclude-mapping path="/member/login"/>
+		 	<exclude-mapping path="/member/logout"/>
+		 	<exclude-mapping path="/board/memberqna"/>
+		 	<exclude-mapping path="/board/detailmqna"/> 
+		 	<exclude-mapping path="/board/qnaregist"/>  
+		 	<exclude-mapping path="/board/editqna"/> 
+		 	<exclude-mapping path="board/updateqna"/>
+		 	<exclude-mapping path="/board/sellerqna"/> 
+		 	<exclude-mapping path="/board/sellerqnaregist"/> 
+		 	<exclude-mapping path="/board/sellerdetailmqna"/> 
+		 	<exclude-mapping path="/board/sellereditqna"/> 
 		 	
 		 	
 		
-<!-- 			<beans:bean class="com.kh.ordering.interceptor.BlockSellerInterceptor"></beans:bean> -->
-<!-- 		</interceptor> -->
-<!-- 	</interceptors> -->
-	
-	
-<!-- 	<interceptors> -->
-<!-- 		<interceptor> -->
-<!-- 		<mapping path="/member/**"/> -->
+			<beans:bean class="com.kh.ordering.interceptor.BlockSellerInterceptor"></beans:bean>
+		</interceptor>
+		<interceptor><!-- 차단회원-->
+		<mapping path="/member/**"/>
 		
-<!-- 			<mapping path="/goods/**"/> -->
-<!-- 			<mapping path="/board/**"/> -->
-<!-- 			<mapping path="/pay/**"/> -->
-<!-- 			<mapping path="/order/**"/> -->
-<!-- 			<mapping path="/block/**"/> -->
-<!-- 			<mapping path="/goods/goods_option"/> -->
-<!-- 			<exclude-mapping path="/block/user"/> -->
-<!-- 		 	<exclude-mapping path="/seller/login"/> -->
-<!-- 		 	<exclude-mapping path="/seller/logout"/> -->
-<!-- 		 	<exclude-mapping path="/seller/main"/> -->
-<!-- 		 	<exclude-mapping path="/member/login"/> -->
-<!-- 		 	<exclude-mapping path="/member/logout"/> -->
-<!-- 		 	<exclude-mapping path="/board/memberqna"/> -->
-<!-- 		 	<exclude-mapping path="/board/detailmqna"/>  -->
-<!-- 		 	<exclude-mapping path="/board/qnaregist"/>   -->
-<!-- 		 	<exclude-mapping path="/board/editqna"/>  -->
-<!-- 		 	<exclude-mapping path="board/updateqna"/> -->
-<!-- 		 	<exclude-mapping path="/board/sellerqna"/>  -->
-<!-- 		 	<exclude-mapping path="/board/sellerqnaregist"/>  -->
-<!-- 		 	<exclude-mapping path="/board/sellerdetailmqna"/>  -->
-<!-- 		 	<exclude-mapping path="/board/sellereditqna"/>  -->
+			<mapping path="/goods/**"/>
+			<mapping path="/board/**"/>
+			<mapping path="/pay/**"/>
+			<mapping path="/order/**"/>
+			<mapping path="/block/**"/>
+			<mapping path="/goods/goods_option"/>
+			<exclude-mapping path="/block/user"/>
+		 	<exclude-mapping path="/seller/login"/>
+		 	<exclude-mapping path="/seller/logout"/>
+		 	<exclude-mapping path="/seller/main"/>
+		 	<exclude-mapping path="/member/login"/>
+		 	<exclude-mapping path="/member/logout"/>
+		 	<exclude-mapping path="/board/memberqna"/>
+		 	<exclude-mapping path="/board/detailmqna"/> 
+		 	<exclude-mapping path="/board/qnaregist"/>  
+		 	<exclude-mapping path="/board/editqna"/> 
+		 	<exclude-mapping path="board/updateqna"/>
+		 	<exclude-mapping path="/board/sellerqna"/> 
+		 	<exclude-mapping path="/board/sellerqnaregist"/> 
+		 	<exclude-mapping path="/board/sellerdetailmqna"/> 
+		 	<exclude-mapping path="/board/sellereditqna"/> 
 		 	
 		 	
 	
-<!-- 			<beans:bean class="com.kh.ordering.interceptor.BlockMemberInterceptor"></beans:bean> -->
-<!-- 		</interceptor> -->
-<!-- 	</interceptors> -->
+			<beans:bean class="com.kh.ordering.interceptor.BlockMemberInterceptor"></beans:bean>
+		</interceptor>
+	</interceptors>
 	
 	
 
