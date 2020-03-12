@@ -57,7 +57,7 @@
 <tbody>
 	<tr>
 		<th width="121px">제목</th>
-		<td width="600px">${qnaoneGetOne.admin_qna_title}</td>
+		<td width="600px" style="word-break:break-all;">${qnaoneGetOne.admin_qna_title}</td>
 	</tr>
 		<tr>
 		<th width="121px">작성자구분</th>
@@ -71,10 +71,9 @@
 		<th width="121px">작성일</th>
 		<td width="600px">${qnaoneGetOne.admin_qna_date}</td>
 	</tr>
-	<tr>
-	<th class="row-empty-20"></th>
-		<th><name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용">${qnaoneGetOne.admin_qna_content}</textarea></th>
-			<th class="row-empty-20"></th>
+		<tr>
+		<th width="121px">내용</th>
+		<td width="600px" style="word-break:break-all;">${qnaoneGetOne.admin_qna_content}</td>
 	</tr>
 	</tbody>
 	</table>
