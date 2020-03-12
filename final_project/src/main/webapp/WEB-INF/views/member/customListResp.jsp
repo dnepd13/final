@@ -15,7 +15,7 @@
     
 <script>
 	$(function(){
-		
+
 		$(".delete_resp").click(function(e){
 
 			var status = $(this).parents("#resp_data").data("custom_order_status");

@@ -76,12 +76,12 @@
 			    	</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="cartYesterDay" items="${cartYesterDay }">
-				    <tr align="left">
+				<c:forEach var="cartYesterDay" items="${cartYeseterDay}">
+				    <tr>
 							<td scope="row">${cartYesterDay.partner_order_id }</td>
-							<td scope="row">${cartYesterDay.item_name }</td>
+							<td scope="row" align="left">${cartYesterDay.item_name }</td>
 							<td scope="row" align="right">${cartYesterDay.total_price }</td>
-							<td scope="row" align="right">${cartYesterDay.cart_info_status }</td>
+							<td scope="row" align="center">${cartYesterDay.cart_info_status }</td>
 						<td scope="row">
 							<fmt:parseDate value="${cartYesterDay.process_time}" var="cart_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 							<fmt:formatDate value="${cart_date}" pattern="yyyy/MM/dd HH:mm:ss"/>

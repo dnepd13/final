@@ -84,6 +84,22 @@
     .nav_login a:hover { color: rgb(142,140,132); text-decoration: underline;}
 </style>
 
+<script>
+	$(function(){
+		
+		// 받은 견적서 알람
+		$.ajax({
+			method : "get",
+			url: "${pageContext.request.contextPath}/seller/alarmCount",
+			success: function(resp){
+				$(".badge").text(resp);
+			}
+		});
+		
+	});
+</script>
+
+
 </head>
 <body>
 

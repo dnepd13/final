@@ -203,7 +203,7 @@ public class SellerCustomServiceImpl implements SellerCustomService{
 			pno = 1;
 		}
 		
-		int pageSize= 4;
+		int pageSize= 5;
 		int finish= pno*pageSize;
 		int start= finish-(pageSize-1);
 		

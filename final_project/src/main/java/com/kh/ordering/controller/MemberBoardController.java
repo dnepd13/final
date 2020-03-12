@@ -551,6 +551,29 @@ public class MemberBoardController {
 					adminQnaDao.sellerqnaUpdate(adminQnaDto);
 
 					return "redirect:/board/sellerqna";
-				}		
+				}
+
+// 공지사항 게시판
+	@GetMapping("/notice")
+	public String getListNotice(Model model,
+													@RequestParam(value="pageNo", required=false, defaultValue="0") String pageNo){
+		
+		PagingVO result= boardQnaService.noticePaging(pageNo);
+		model.addAttribute("paging", result);
+		List<AdminQnaDto> getNotice = adminQnaDao.getListNotice(result);
+		model.addAttribute("getNotice", getNotice);
+		
+		return "board/notice";
+	}
+	@GetMapping("/noticeDetails")
+	public String getNoticeDetails(Model model,
+															@RequestParam int admin_qna_no) {
+		
+		AdminQnaDto adminQnaDto = adminQnaDao.getNoticeDetails(admin_qna_no);
+		model.addAttribute("notice", adminQnaDto);
+		
+		return "board/noticeDetails";
+	}
+	
 }
 	

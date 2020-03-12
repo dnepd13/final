@@ -79,7 +79,8 @@ public class AdminManageController {
 	public String changepw(
 			@RequestParam String admin_pw,
 			@RequestParam String new_admin_pw,
-			@RequestParam int admin_no
+			@RequestParam int admin_no,
+			Model model
 			) {
 		
 		AdminDto adminDto =  adminManage.adminCheckPw(admin_no);
@@ -96,6 +97,8 @@ public class AdminManageController {
 			newAdminPw.setAdmin_no(admin_no);
 			
 			adminManage.adminChangePw(newAdminPw);
+			String success = "비밀번호 변경을 성공했습니다";
+			model.addAttribute(success);
 			return "redirect:/admin/my";
 		}
 	}

@@ -156,7 +156,19 @@
 		var insert_modal = document.querySelector(".insert_modal");
 
 		$(".btn_addrExtra").click(function(){
-			insert_modal.style.display = "block";
+			var data = $(this).parents().children().find(".member_no").data("member_no");
+
+			// 비동기로 회원의 주소 List 가져오기
+			$.ajax ({
+				url:"${pageContext.request.contextPath}/member/getAddrList",
+				data: data,
+				type: "get",
+				success: function(resp){
+					console.log(resp.length);
+					insert_modal.style.display = "block";
+				}
+			});
+			
 		});
 		$(".close").click(function(){
 			insert_modal.style.display="none";
@@ -199,7 +211,10 @@
 					<c:otherwise>
 						<c:forEach var="addrInfo" items="${addrinfo}">
 						    <tr>
-								<td scope="row" style="padding:20px;">${addrInfo.member_name_extra}</td>
+								<td scope="row" style="padding:20px;"
+															class="member_no"
+															data-member_no ="${addrInfo.member_no}">
+									${addrInfo.member_name_extra}</td>
 								<td scope="row">
 									(${addrInfo.member_addr_post})
 									${addrInfo.member_addr_basic}<br>

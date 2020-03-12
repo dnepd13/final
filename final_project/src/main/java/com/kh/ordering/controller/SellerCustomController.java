@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
@@ -242,6 +243,17 @@ public class SellerCustomController {
 		return "redirect:/seller/customListResp";
 	}
 
+	// 받은 견적서 알람. (aside에서 비동기로 부를 것)
+	@GetMapping("/alarmCount")
+	@ResponseBody
+	public int alarmCount(HttpSession session, Model model) {
+		String seller_id = (String)session.getAttribute("seller_id");
+		int seller_no = sellerCustomDao.getNo(seller_id);
+
+		// 회원 신규 견적서 알람 check N count 개수		
+		return sellerCustomDao.customAlarm(seller_no);
+	}
+	
 //	파일 이미지 다운로드
 	@GetMapping("/download")
 	public ResponseEntity<ByteArrayResource> CustomReqFile(@RequestParam int files_no) throws IOException{

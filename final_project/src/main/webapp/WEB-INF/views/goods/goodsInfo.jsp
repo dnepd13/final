@@ -498,7 +498,29 @@ $(function(){
             $(".qna_member").find(".close").click(function(){
             	qna_member.style.display="none";
             });
-            
+         // 글자 수 제한
+         $(".goods_qna_content").keyup(function(){
+			var text_length=$(this).val().length;
+			var max_length=300;
+			
+			htmls="";
+			htmls+=text_length;
+			$(".text_limit").html(htmls);
+			
+			if(text_length>max_length){
+				alert("문의는 "+max_length+"자를 초과할 수 없습니다.");
+				non_pass();
+			}
+			else{
+				pass();
+			}
+		});
+         function non_pass(){
+ 			$(".btn_send").prop("disabled", true); // submit 버튼 비활성화
+ 		}
+ 		function pass(){
+ 			$(".btn_send").prop("disabled", false);
+ 		}
 	// 문의 작성
 			$(".qna_member").find("form").submit(function(e){
 				e.preventDfault();
@@ -635,7 +657,7 @@ $(function(){
 	    
 	    // 리뷰 댓글 수정
 	    $(".btn_reviewUpdate").click(function(){
-		    console.log($(this).text());
+		    
 	    	if($(this).text()=="수정"){
 
 			    var contentCell = $(this).parent().parent().prev().find("#reply_content");
@@ -676,7 +698,31 @@ $(function(){
 			}
 	     });
 	    
+		
+	 // 글자 수 제한 리뷰 댓글
+        $(".goods_review_reply_content").keyup(function(){
 
+			var text_length=$(this).val().length;
+			var max_length=300;
+			
+			htmls="";
+			htmls+=text_length;
+			$(this).next().children(".text_limit").html(htmls);
+			
+			if(text_length>max_length){
+				alert("댓글은 "+max_length+"자를 초과할 수 없습니다.");
+				non_pass();
+			}
+			else{
+				pass();
+			}
+		});
+        function non_pass(){
+			$(".btn_send").prop("disabled", true); // submit 버튼 비활성화
+		}
+		function pass(){
+			$(".btn_send").prop("disabled", false);
+		}
 });
 
 </script>
@@ -965,13 +1011,13 @@ $(function(){
 									<option value="배송문의">배송문의</option>
 								</select>
 								<br>
-								<textarea name="goods_qna_content" class="form-control" required></textarea><br>
-								<br>
+								<textarea name="goods_qna_content" class="form-control goods_qna_content" required></textarea><br>
+								<p align="right">(<span class="text_limit"></span> / 300)</p>
 								<h6> &middot; 개인정보(주민번호, 연락처, 주소, 계좌번호, 카드번호 등)가 타인에게 노출되지 않도록 주의해 주시기 바랍니다.</h6>
 								<h6> &middot; 문의와 관련없는 비방, 광고, 불건전한 내용 등이 포함될 경우 사전동의 없이 삭제될 수 있습니다.</h6>
 			      		</div>
 			      		<div class="modal-footer">
-							<input type="submit" value="문의하기" class="btn_custom">
+							<input type="submit" value="문의하기" class="btn_custom btn_send">
 						</div>
 					</div>
 				</form>
@@ -1057,8 +1103,8 @@ $(function(){
 							<input type="hidden" name="goods_qna_no" value="${qna.goods_qna_no }">
 							<input type="hidden" name="member_no" value="${qna.member_no }">
 							<br>
-							<textarea class="form-control" name="goods_qna_content" required></textarea><br>
-							<p align="right"><input type="submit" value="답변하기" class="btn_custom"></p>
+							<textarea class="form-control goods_qna_content" name="goods_qna_content" required></textarea><br>
+							<p align="right"><input type="submit" value="답변하기" class="btn_custom btn_send"></p>
 						</form>
 					</td>
 				</tr>
@@ -1152,10 +1198,9 @@ $(function(){
 			<td colspan="2">
 				<form action="../member/insertReply" method="post">
 					<input type="hidden" name="goods_review_no" value="${review.goods_review_no }">
-					<input type="hidden">
-					<textarea name="goods_review_reply_content" class="form-control" required></textarea>
-					<br>
-					<p align="right"><input type="submit" value="댓글등록" class="btn_custom"></p>					
+					<input type="hidden"> 
+					<textarea name="goods_review_reply_content" class="form-control goods_review_reply_content" required></textarea>
+					<p align="right">(<span class="text_limit"></span> / 300)<input type="submit" value="댓글등록" class="btn_custom btn_send"></p>					
 				</form>
 				</td>
 		</tr>
@@ -1169,7 +1214,7 @@ $(function(){
 								<fmt:parseDate value="${reviewReply.goods_review_reply_date }" var="reply_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 								<fmt:formatDate value="${reply_date }" pattern="yyyy/MM/dd HH:mm:ss"/>							
 							</span>
-							<div id="reply_content">${reviewReply.goods_review_reply_content }</div>
+							<div id="reply_content" class="review_reply">${reviewReply.goods_review_reply_content }</div>
 					</div>
 					<c:if test="${reviewReply.member_no == member_no}">
 						<form action="../member/deleteReply" method="post" class="delete_reply_form"
