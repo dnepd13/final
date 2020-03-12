@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.ordering.entity.CartInfoDto;
+import com.kh.ordering.entity.CartInfoGoodsDto;
 import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
@@ -82,8 +83,25 @@ public class GoodsCartReviewController {
 													@RequestParam String partner_order_id) {
 		
 		List<CartInfoVO> payDetails = orderDao.getCartPay(partner_order_id);
-		
+
 		model.addAttribute("payDetails", payDetails.get(0));
+		
+		// 상품 1에 대해 구매확정 시 취소 불가
+		int count = 0;
+		List<CartInfoGoodsDto> list = new ArrayList<>();
+		List<CartOkDto> cartOk = new ArrayList<>();
+		for(int i=0 ; i<payDetails.size() ; i++) {
+			list.addAll(orderDao.getCartInfoGoods(payDetails.get(i).getCart_info_no()));
+			
+			for(int k =0 ; k<list.size() ; k++) {
+				cartOk.add(k, orderDao.getCartOk(list.get(i).getCart_info_goods_no()));
+				String status= cartOk.get(k).getCart_ok_status();
+				if(status !=null) {
+					count ++;
+				}
+			}
+		}
+		model.addAttribute("okCount", count);
 		
 		return "member/cartDetailPay";
 	}

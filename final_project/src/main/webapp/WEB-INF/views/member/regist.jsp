@@ -227,7 +227,7 @@
 			  </div>
 			  <div>
 			  	<label class="col-form-label" >PW 확인 : </label>
-			  	<input type="password" class="form-control" name="wUserPWConfirm" id="pwCheck" onchange="isSame()" required/>&nbsp;$nbsp;
+			  	<input type="password" class="form-control" name="wUserPWConfirm" id="pwCheck" onchange="isSame()" required/>&nbsp;
 			  </div>
 			  <!-- 이름 입력창 -->
 			  <div class="form-group">
