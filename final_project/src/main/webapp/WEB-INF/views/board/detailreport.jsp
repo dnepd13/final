@@ -65,40 +65,30 @@ h4{
 		<th width="121px">제목</th>
 		<td width="600px">${ReportGetOne.admin_qna_title}</td>
 	</tr>
-		<tr>
+	<tr>
 		<th width="121px">작성자구분</th>
 		<td width="600px">${ReportGetOne.admin_qna_usertype}</td>
 	</tr>
-		<tr>
+	<tr>
 		<th width="121px">작성자</th>
 		<td width="600px">${ReportGetOne.admin_qna_writer}</td>
 	</tr>
-		<tr>
+	<tr>
 		<th width="121px">작성일</th>
 		<td width="600px">${ReportGetOne.admin_qna_date}</td>
 	</tr>
-	
-	
 	<tr>
-			<th class="row-empty-20"></th>
-	<th><textarea name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용">${ReportGetOne.admin_qna_content}</textarea></th>
-		<th class="row-empty-20"></th>
-<%-- 				<td width="600px" align="left">${ReportGetOne.admin_qna_content}</td> --%>
+		<th width="121px" >내용</th>
+		<td width="600px">
+		<textarea name="admin_qna_content" readonly="readonly" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용">${ReportGetOne.admin_qna_content}</textarea>
+		</th>
 	</tr>
 </tbody>
 
-	
-
 </table>
-	<p align="right">
-			<button class="btn btn-primary regist" value="updateqna">수정하기 </button>&nbsp;&nbsp;
-			<a href="${pageContext.request.contextPath}/board/memberqna"><button class="btn btn-primary regist" type="button">목록으로</button></a>
-		</p>
-	<p align="right"></p>
 </div>
 </div>
 </section>
-<div class="row-empty-40"></div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>>
 

@@ -20,6 +20,8 @@
     height: 100%;
     margin-left: -250px;
     background: #000;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   
   #page-content-wrapper {
