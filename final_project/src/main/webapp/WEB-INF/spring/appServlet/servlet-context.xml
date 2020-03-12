@@ -57,7 +57,7 @@
 			<exclude-mapping path="/block/user"/>
 		 	<exclude-mapping path="/seller/login"/>
 		 	<exclude-mapping path="/seller/logout"/>
-		 	<exclude-mapping path="/seller/regist"/>
+<!-- 		 	<exclude-mapping path="/seller/regist"/> -->
 		 	<exclude-mapping path="/seller/main"/>
 		 	<exclude-mapping path="/board/sellerqna"/> 
 		 	<exclude-mapping path="/board/sellerqnaregist"/> 
@@ -75,7 +75,7 @@
 			<exclude-mapping path="/block/user"/>
 		 	<exclude-mapping path="/member/login"/>
 		 	<exclude-mapping path="/member/logout"/>
-		 	<exclude-mapping path="/member/regist"/>
+<!-- 		 	<exclude-mapping path="/member/regist"/> -->
 		 	<exclude-mapping path="/board/memberqna"/>
 		 	<exclude-mapping path="/board/detailmqna"/> 
 		 	<exclude-mapping path="/board/qnaregist"/>  

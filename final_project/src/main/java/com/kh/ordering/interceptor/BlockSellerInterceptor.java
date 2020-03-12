@@ -58,8 +58,8 @@ public class BlockSellerInterceptor extends HandlerInterceptorAdapter {
 		} else {//판매자가 아니라면//차단된 판매자라면 문의게시판 빼고 다 저 login.jsp 404페이지로뜬다 
 		//판매자 로그인 페이지로
 	//		response.sendRedirect(response.getContextPath()+"/seller/login");
-			response.sendRedirect(request.getContextPath()+"/seller/login");
-			return false;
+			//response.sendRedirect(request.getContextPath()+"/seller/login");
+			return true;
 		}
 		
 		

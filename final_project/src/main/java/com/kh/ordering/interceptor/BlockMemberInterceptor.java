@@ -58,8 +58,8 @@ public class BlockMemberInterceptor extends HandlerInterceptorAdapter {
 			}
 		} else {//회원이 아니라면 
 		//회원 로그인 페이지로
-			response.sendRedirect(request.getContextPath()+"/member/login");
-			return false;
+			//response.sendRedirect(request.getContextPath()+"/member/login");
+			return true;
 		}
 		
 		
