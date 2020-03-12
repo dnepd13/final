@@ -80,7 +80,10 @@
 	.nav_login a:link { color: black; text-decoration: none;}
     .nav_login a:visited { color: black; text-decoration: none;}
     .nav_login a:hover { color: rgb(142,140,132); text-decoration: underline;}
-
+	
+	.cur_pointer {
+		cursor: pointer;
+	}
 </style>
 
 </head>
@@ -94,13 +97,13 @@
 		<li class="left_line main_line"><a href="${pageContext.request.contextPath }/member/login">문의하기</a></li>
 		<li class="left_line main_line"><a href="${pageContext.request.contextPath }/member/login">신고하기</a></li>
 		<li class="right_line main_line" style="margin-right:50px;"><a href="${pageContext.request.contextPath }/member/login">주문제작</a></li>
-		<li class="right_line main_line">회원가입
+		<li class="right_line main_line cur_pointer">회원가입
 			<ul class="sub_line" style="border: 1px solid lightgray;">
 				<li class=""><a href="${pageContext.request.contextPath }/member/regist">일반회원</a></li>
 				<li class=""><a href="${pageContext.request.contextPath }/seller/regist">판매자</a></li>
 			</ul>
 		</li>
-		<li class="right_line main_line">로그인
+		<li class="right_line main_line cur_pointer">로그인
 			<ul class="sub_line" style="border: 1px solid lightgray;">
 				<li class=""><a href="${pageContext.request.contextPath }/member/login">일반회원</a></li>
 				<li class=""><a href="${pageContext.request.contextPath }/seller/login">판매자</a></li>
