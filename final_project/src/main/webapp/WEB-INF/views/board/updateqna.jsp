@@ -5,12 +5,7 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-<<<<<<< HEAD
 
-
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
-=======
->>>>>>> refs/remotes/origin/master
 
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
@@ -62,7 +57,7 @@
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
 		<div class="cart_title">
-			<h3>문의 게시판 글 상세보기</h3>
+			<h3>문의 게시판 글 수정</h3>
 		</div>
 <div class="insert_req form-group">
 	<form action="updateqna" method="post">
