@@ -32,7 +32,7 @@
 
 	<tr>
 		<td width="100px">제목</td>
-		<th><input type="text" name="admin_qna_title" value="${sellerupdateget.admin_qna_title}" required></th>
+		<th><input type="text" name="admin_qna_title" value="${sellerupdateget.admin_qna_title}" maxlength="68" required></th>
 	</tr>
 
 	<tr>

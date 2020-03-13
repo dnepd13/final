@@ -6,9 +6,10 @@
   <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
  
  <!-- 회원 내 정보 수정 페이지 -->
- 
-  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
-  <jsp:include page="/WEB-INF/views/template/header.jsp"/>
+ <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
   
   
@@ -65,6 +66,8 @@ $(function(){
 		}
 	});
 });
+
+
 </script>
 <style>
 input {
@@ -81,7 +84,7 @@ card border-body {
 }
 
 </style>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
+
 
 
    <div class="container-fluid" style="padding-top:100px;">
@@ -95,17 +98,6 @@ card border-body {
   				<div class = "card-body">
   				<form action="memberinfo" method="post">
                <!--     <h4 class = "card-title"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"> Seller Information </font> </font> </h4> -->
-    			  	<thead>
-    			  	<tr>
-  						<th scope="row">아이디</th>
-  						<td><p class = "grade"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"> ${memberDto.member_id} </font></font></p></td>
-  						<th width="20%">이름</th>
-  						<th width="20%">등급</th>
-  						<th width="20%">생년월일</th>
-  						<th width="20%">이메일</th>
-  						<th width="20%">연락처</th>
-  					</tr>
-    				</thead>
     		
     				<p class = "grade"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"> ${memberDto.member_id} </font></font></p>
     			   <p class = "rate"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;">${memberDto.member_name} </font></font></p>
@@ -127,3 +119,4 @@ card border-body {
  
  
  <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+

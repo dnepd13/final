@@ -5,6 +5,12 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<<<<<<< HEAD
+
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
+=======
+>>>>>>> refs/remotes/origin/master
 
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
@@ -61,7 +67,7 @@
 <div class="insert_req form-group">
 	<form action="updateqna" method="post">
 	<input type="hidden" name="admin_qna_no" value="${updateget.admin_qna_no }">
-	<input type="text" name="admin_qna_title"value="${updateget.admin_qna_title}" required required class="form-control" placeholder="제목">
+	<input type="text" name="admin_qna_title"value="${updateget.admin_qna_title}" required required class="form-control" maxlength="68" placeholder="제목">
 			<div class="row-empty-20"></div>
 		<textarea name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용">${updateget.admin_qna_content}</textarea>
 			<div class="row-empty-20"></div>

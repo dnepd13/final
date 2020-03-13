@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 
+<!--111  -->
 <style>
  	aside { 
  		float : left; 
@@ -128,8 +129,10 @@
 		</ul>
 		<ul>
 <%-- 			<li><a href="javascript:void(window.open('${pageContext.request.contextPath}/board/qnaregist','관리자에게 문의하기','width=400px, height=800px'))">문의하기</a></li> --%>
+
 			<li><a href="${pageContext.request.contextPath}/board/qnaregist">문의하기</a></li>
 			<li><a href="${pageContext.request.contextPath}/board/reportregist">신고하기</a></li>
+
 		</ul>
 		<ul>
 			<li><a href="${pageContext.request.contextPath}/member/memberdelete">회원탈퇴</a></li>
