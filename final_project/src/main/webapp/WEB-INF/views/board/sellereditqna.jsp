@@ -52,7 +52,7 @@
  	}
 </style>
 
-
+<!-- 수정해땅 -->
 <section class="section1">
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
