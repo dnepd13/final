@@ -11,7 +11,7 @@ import com.kh.ordering.vo.PagingVO;
 public interface SellerCategoryDao {
 	public int categoryCount();
 	//판매자 아이디로 번호 가져오기
-		int getNo(@RequestParam String seller_id);
+	int getNo(@RequestParam String seller_id);
 		
 	void seller_category_insert(SellerCategoryDto sellerCategoryDto);
 

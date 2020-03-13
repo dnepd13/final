@@ -5,6 +5,9 @@
   </script>
   <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
+  <jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
+  
    <!--  <div class = "jumbotron">
   <h1 class = "display-3"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"> 판매자 정보 조회 페이지 </ font> </ font> </ h1>
   <p class = "lead"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"> 주요 선택 나 정보에 특별한주의를 선택해야합니다. 힘든 영웅 장치입니다. </ font> </ font> </ p>
@@ -48,3 +51,5 @@
  		  </div>
  		</div> 
  	</div>	 
+
+ 	<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>

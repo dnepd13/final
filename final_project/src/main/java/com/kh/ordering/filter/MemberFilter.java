@@ -29,7 +29,6 @@ public class MemberFilter implements Filter{
 		else {
 			resp.sendError(403);
 		}
-		
 	}
 
 }

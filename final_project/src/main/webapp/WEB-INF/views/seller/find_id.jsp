@@ -6,7 +6,7 @@
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <style>

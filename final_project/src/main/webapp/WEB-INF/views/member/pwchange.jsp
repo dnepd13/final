@@ -5,12 +5,10 @@
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
 
 <!-- 회원 비밀번호 변경창 -->
-
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
-
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 
 
@@ -29,14 +27,11 @@
  	}
  	
 </style>
-
-
-
  
 <div class="container-fluid">
      <div class="row">
          <div class="offset-md-4 col-md-4 ">
-            <div class="row justify-content-center"><h1>비밀번호 변경 페이지</h1></div>
+            <div class="row justify-content-center" style="padding-top:150px;"><h1>비밀번호 변경 페이지</h1></div>
             <br><br><br>
             <form action="pwchange" method="post">
  
@@ -50,6 +45,8 @@
           </div>
        </div>
 </div>
+ <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+
  
  
  <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

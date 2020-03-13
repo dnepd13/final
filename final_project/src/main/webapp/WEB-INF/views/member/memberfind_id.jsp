@@ -17,7 +17,7 @@
    <div class="container-fluid">
         <div class="row">
             <div class="offset-md-4 col-md-4 ">
-                <div class="row justify-content-center"><h1>회원 아이디 찾기</h1></div>
+                <div class="row justify-content-center" style="padding-top:100px;"><h1>회원 아이디 찾기</h1></div>
                 <br><br><br>
                 <form action="memberfind_id" method="post">  
                 <!-- 이름 입력창 -->

@@ -26,6 +26,7 @@ import com.kh.ordering.entity.BlockDto;
 import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
+import com.kh.ordering.entity.MemberCustomAlarmDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
 import com.kh.ordering.entity.SellerCategoryDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
@@ -181,21 +182,28 @@ public class MemberCustomController {
 	public String memberCustomResp(HttpSession session,
 																	@RequestParam int seller_custom_order_no, Model model) {
 
-		// 상세페이지 이동하면 구매자 알람테이블의 '알람체크','알람 확인시간' update
 		String member_id=(String)session.getAttribute("member_id");
 		int member_no = memberCustomDao.getNo(member_id);
 		
-		memberCustomDao.updateAlarm(member_no, seller_custom_order_no);
-		
-		// 해당 견적서에 대한 주문제작 테이블 상태 "읽음" 업데이트
-		SellerCustomOrderDto sellerCustomDto = sellerCustomDao.getSellerCustom(seller_custom_order_no);
-		CustomOrderDto customOrderDto
-												= CustomOrderDto.builder()
-																					.custom_order_no(sellerCustomDto.getCustom_order_no())
-																					.custom_order_status("읽음")
-																					.build();
-		memberCustomDao.updateCustomStatus(customOrderDto);
+		// 견적대기 상태인지 아닌지
+		MemberCustomAlarmDto memberAlarm =  memberCustomDao.getMemberAlarm(seller_custom_order_no);
+		String check = memberAlarm.getMember_alarm_check();
+		if(check.equals("견적대기")) {
+			// 상세페이지 이동하면 구매자 알람테이블의 '알람체크','알람 확인시간' update
+			memberCustomDao.updateAlarm(member_no, seller_custom_order_no);
+			
+			// 해당 견적서에 대한 주문제작 테이블 상태 "읽음" 업데이트
+			SellerCustomOrderDto sellerCustomDto = sellerCustomDao.getSellerCustom(seller_custom_order_no);
+			
+			CustomOrderDto customOrderDto
+													= CustomOrderDto.builder()
+																						.custom_order_no(sellerCustomDto.getCustom_order_no())
+																						.custom_order_status("읽음")
+																						.build();
+			memberCustomDao.updateCustomStatus(customOrderDto);
 
+		}
+				
 		CustomOrderVO content = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("getListInfoResp", content);
 

@@ -81,7 +81,7 @@
  	}
  	.insert_review textarea{
  		resize: none;
- 		height: 250px;
+ 		height: 200px;
  	}
  	
  	.files_table {
@@ -108,7 +108,7 @@
     	$(".btn_confirm").click(function(){
     		var btn_confirm = $(this);
     		
-    		if(confirm("구매를 확정하시겠습니까?")){
+    		if(confirm("구매를 확정하시겠습니까? 구매확정 시 결제 취소가 불가능합니다.")){
         		var cart_info_goods_no=$(this).data("cart_info_goods_no")
         		
         		$.ajax({

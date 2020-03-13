@@ -48,38 +48,34 @@
  	}
 </style>
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
-
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
 <section class="section1">
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
-		<div class="cart_title">
-			<h3>문의게시판 글 등록 ${member_id }</h3>
+		<div class="cart_title" style="padding-bottom:50px;">
+			<h3>문의게시판 글 등록</h3>
 		</div>
-	</div>
-</div>
-</section>
-<section class="section2">
-<div class="insert_req form-group">
+<div class="insert_req form-group ">
 	<form action="qnaregist" method="post">
 
-			<input type="text" name="admin_qna_title" value="" required class="form-control" maxlength="68" placeholder="제목">
+
+			<input type="text" name="admin_qna_title" value="" required class="form-control" maxlength="68" placeholder="제목" width=1000px;>
+
 			<div class="row-empty-20"></div>
-		<textarea name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용"></textarea>
+		<textarea name="admin_qna_content" required rows="15" cols="140" style="resize:none;" class="form-control" placeholder="내용"></textarea>
 			<div class="row-empty-20"></div>
 		<p align="right">
 			<button class="btn btn-primary regist" value="등록 ">등록</button>&nbsp;&nbsp;
 			<a href="${pageContext.request.contextPath}/board/memberqna"><button class="btn btn-primary regist" type="button">목록으로</button></a>
 		</p>
 	</form>
-	<p align="right"></p>
+	</div>
+</div>
 </div>
 </section>
 
-<div class="row-empty-40"></div>
 <div class="row-empty-40"></div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

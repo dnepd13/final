@@ -1,5 +1,4 @@
-
- package com.kh.ordering.controller;
+package com.kh.ordering.controller;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -162,10 +162,13 @@ ul{
 }
 
 </style>
+
+<script>
+</script>
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
 
 <section class="section1">
 <form action="insert" method="post" enctype="Multipart/form-data">
@@ -181,14 +184,14 @@ ul{
 							  <div class="input-group-prepend">
 							    <span class="input-group-text" id="inputGroup-sizing-default">상품명</span>
 							  </div>
-							<input type="text" class="form-control" name="goods_name" required>
+							<input  maxlength="50" type="text" class="form-control" name="goods_name" required>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="main_image_box">
-								<img class="main_image rounded" src="https://placehold.it/291x250/F8F5F0/495057?text=Main-image">
+								<img class="main_image rounded" src="https://placehold.it/291x250/E9ECEF/495057?text=Main-image">
 							</div>
 							<div class="input-group">
 							  <div class="input-group-prepend">
@@ -251,7 +254,7 @@ ul{
 								<span class="input-group-text">상품사진</span>
 							</div>
 							<div class="custom-file">
-								<input id="inputGroupFile02" class="custom-file-input" type="file" multiple="multiple" name="goods_content_image">
+								<input required id="inputGroupFile02" class="custom-file-input" type="file" multiple="multiple" name="goods_content_image">
 								<label class="custom-file-label content_label" for="inputGroupFile02">파일 찾기</label>	
 							</div>
 						</div>
@@ -261,7 +264,7 @@ ul{
 					
 				<div class="form-group goods_content_box">
 			      <label class="input-group-text" for="content">상품 설명</label>
-			      <textarea class="form-control" id="content" rows="3" name="goods_content"></textarea>
+			      <input type="text" class="form-control" id="content" name="goods_content">
 			    </div>
 				
 				
@@ -365,4 +368,4 @@ ul{
 
 </form>
 </section>
-<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"></jsp:include>

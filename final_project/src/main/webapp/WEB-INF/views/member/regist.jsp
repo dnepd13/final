@@ -1,17 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
 </script>
 <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 
 <!-- 회원 가입창 -->
 
  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
+
  
   <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
+
+
 
   <script>  
   
@@ -54,16 +60,8 @@
 	    });
 	   });
   
-
 	
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
+
 	  
 //	 		.validate-form은 처음에 숨기고 이메일 전송시만 표시
 	$(function() {
@@ -134,6 +132,7 @@
 					}
 				});
 			});
+
 	});
   
   
@@ -189,10 +188,11 @@
 		$("#frm").submit();
 	}
 </script>
-
+</head>
 <body>
 <div class="continer-fluid">
 	<div class="row"  style="padding:50px;">
+
 		<div class="offset-md-4 col-md-4 ">
 	 	 <div class="row justify-content-center" style="padding: 20px;"><h1>회원가입</h1></div>
          <br><br><br>
@@ -251,6 +251,9 @@
 		</div>
    </div>
  </body>
+
  
+
  <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+
 

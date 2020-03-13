@@ -24,7 +24,9 @@
 <h1>${one.admin_qna_title}</h1>
 <h3>${one.admin_qna_usertype} ${one.admin_qna_writer} ${one.admin_qna_date}</h3>
 <hr>
-<h3>${one.admin_qna_content}</h3>
+<textarea readonly="readonly" rows="10" cols="170">
+	${one.admin_qna_content}
+</textarea>
 <hr>
 <div class="offset-md-4 col-md-4">
 

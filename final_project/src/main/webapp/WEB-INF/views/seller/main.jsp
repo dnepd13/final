@@ -1,103 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>  
-    <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
- 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>order-링</title>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
-<jsp:include page="/WEB-INF/views/template/sellerInfoAside.jsp"/>
+	셀러 메인 화면입니다. 내용 채우시면됩니다
 
-<style>
-	* {box-sizing: border-box;
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;}
-	html,
-	body{
-		margin: 0;
-		height: 100%;
-	}
-	.wrap {
-		min-height: 100%;
-		position: relative;
-		padding-bottom: 150px;
-	}
+	와아아아아아
 	
-	.basic_color {
-		color: rgb(248,245,240);
-	}
-	.row-empty-20 {
-   		height: 20px;
-	}
-	
-/*	로그인 navbar 전체 style*/
-	.nav_login * {
-		list-style: none;
-		margin: 0 0;
-		box-sizing: border-box;
-		overflow: hidden;
-	}
-	.nav_login .left_line {
-		float: left;
-		padding: 5px 20px;
-	}
-	.nav_login .right_line {
-		float: right;
-		padding: 5px 20px;
-	}
-	@media screen and (max-width:720px){
-		.nav_login .left_line {
-			display: none;
-		}
-	}
-	/* 로그인 nav 서브메뉴 스타일 */
-	.nav_login .sub_line {
-		padding: 0 ;
-		display: none; /* 평소에는 안 보이게 */
-		box-shadow: 0px 0px 3px 0px darkgray;
-		background-color: white;
-		width: 100px;
-		margin-top: 5px;
-		position: absolute;
-	}
-	.nav_login .main_line:hover .sub_line {
-		display: block;
-		overflow: visible;
-	} 
-	.nav_login ::after {
-		content: "";
-		display: block;
-		clear: both;
-	}
-	
-	/* 로고이미지 */
-	.logo-area {
-		margin: 20px 0;
-	}
-	
-	.nav_login a:link { color: black; text-decoration: none;}
-    .nav_login a:visited { color: black; text-decoration: none;}
-    .nav_login a:hover { color: rgb(142,140,132); text-decoration: underline;}
-</style>
 
-<script>
-	$(function(){
-		
-		// 받은 견적서 알람
-		$.ajax({
-			method : "get",
-			url: "${pageContext.request.contextPath}/seller/alarmCount",
-			success: function(resp){
-				$(".badge").text(resp);
-			}
-		});
-		
-	});
-</script>
 
 
 </head>
@@ -142,4 +52,7 @@
 
 <div class="row-empty-40"></div>
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+<%-- <jsp:include page="/WEB-INF/views/template/footer.jsp"/> --%>
+
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>
+

@@ -132,14 +132,14 @@
 	<select id="getListYesterDay" parameterType="int" resultType="cartInfoVO">
 		select *from(
 		    select rownum rn, RN.*from(
-		        select distinct a.*,
+		        select a.*,
 		            ordering.item_name, ordering.process_time
 		                from
 		                cart_info A inner join ordering on A.partner_order_id = ordering.partner_order_id
 		                where A.cart_info_status='결제완료' or A.cart_info_status='결제취소'
-		                order by a.cart_info_no desc
-		        )RN where RN.member_no=#{member_no}
-		    )where rn between 1 and 4
+		                order by a.cart_info_no desc, ordering.process_time desc
+			)RN where rn.member_no=#{member_no}
+		)where rn between 1 and 4
 	</select>
 	
 </mapper>

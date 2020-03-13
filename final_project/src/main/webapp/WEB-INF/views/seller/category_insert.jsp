@@ -1,13 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 
-<!DOCTYPE html>
-<html>
-<head>
- <meta charset="UTF-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
+
  <script src="https://code.jquery.com/jquery-latest.js"></script>
  <script src="${pageContext.request.contextPath}/resources/js/goodsOption.js"></script>
  <script>
@@ -145,5 +142,6 @@
     
 
 </form>
-</body>
-</html>
+
+
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>

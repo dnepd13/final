@@ -45,60 +45,55 @@ h4{
 		<div class="cart_title">
 			<h3>신고 게시판 상세보기</h3>
 		</div>
-
-<c:choose>
-<c:when test="${param.admin_qna_no >0}">	
-	<h4>수정 할 수 없는 게시글 입니다.</h4>
-</c:when>
-<c:otherwise>
-	<div class="btn-group-vertical" style="float:right;">
-	<a href="${pageContext.request.contextPath}/board/editreport?admin_qna_no=${ReportGetOne.admin_qna_no}">
-		<button type="button" class="btn btn-primary">수정</button>
-	</a>
 </div> 
-
-</c:otherwise>
-</c:choose>
 <table class="table table-hover cart_table">
 <tbody>
 	<tr>
 		<th width="121px">제목</th>
 		<td width="600px">${ReportGetOne.admin_qna_title}</td>
 	</tr>
-		<tr>
+	<tr>
 		<th width="121px">작성자구분</th>
 		<td width="600px">${ReportGetOne.admin_qna_usertype}</td>
 	</tr>
-		<tr>
+	<tr>
 		<th width="121px">작성자</th>
 		<td width="600px">${ReportGetOne.admin_qna_writer}</td>
 	</tr>
-		<tr>
+	<tr>
 		<th width="121px">작성일</th>
 		<td width="600px">${ReportGetOne.admin_qna_date}</td>
 	</tr>
-	
-	
 	<tr>
-			<th class="row-empty-20"></th>
-	<th><textarea name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용">${ReportGetOne.admin_qna_content}</textarea></th>
-		<th class="row-empty-20"></th>
-<%-- 				<td width="600px" align="left">${ReportGetOne.admin_qna_content}</td> --%>
+		<th width="121px" >내용</th>
+		<td width="600px">
+		<textarea name="admin_qna_content" readonly="readonly" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용">${ReportGetOne.admin_qna_content}</textarea>
+		</th>
 	</tr>
 </tbody>
 
-	
-
 </table>
-	<p align="right">
-			<button class="btn btn-primary regist" value="updateqna">수정하기 </button>&nbsp;&nbsp;
-			<a href="${pageContext.request.contextPath}/board/memberqna"><button class="btn btn-primary regist" type="button">목록으로</button></a>
-		</p>
-	<p align="right"></p>
+<p align="right">
+			<c:choose>
+				<c:when test="${qnaone.admin_no >0}">	
+					<h4>관리자의 답변입니다.</h4>
+				</c:when>
+			<c:otherwise>
+			<div class="btn-group-vertical"  style="float:right;">
+				<a href="${pageContext.request.contextPath}/board/editreport?admin_qna_no=${ReportGetOne.admin_qna_no}">
+					<button type="button" class="btn btn-primary">수정하기</button>
+				</a>
+					</div> 
+			</c:otherwise>
+			</c:choose>
+			<div style="float:right;">
+				<a href="${pageContext.request.contextPath}/board/memberreport"><button class="btn btn-primary regist" type="button">목록으로</button></a>
+			</div>
+</p>
+<p align="right"></p>
 </div>
 </div>
 </section>
-<div class="row-empty-40"></div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>>
 

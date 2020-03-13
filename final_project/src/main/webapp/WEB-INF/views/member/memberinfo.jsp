@@ -86,6 +86,7 @@ card border-body {
 </style>
 
 
+
    <div class="container-fluid" style="padding-top:100px;">
         <div class="row">
             <div class="offset-md-4 col-md-4 ">

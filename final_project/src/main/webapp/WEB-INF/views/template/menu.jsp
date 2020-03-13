@@ -33,6 +33,9 @@
       <li class="nav-item">
         <a class="nav-link" href="${pageContext.request.contextPath}/goods/search?keyword=팔찌" style="padding: 0 15px;">팔찌</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/goods/search?keyword=귀걸이" style="padding: 0 15px;">귀걸이</a>
+      </li>
     </ul>
     <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/goods/search" method="GET">
       <input class="form-control mr-sm-2" type="text" placeholder="Search" name="keyword">
