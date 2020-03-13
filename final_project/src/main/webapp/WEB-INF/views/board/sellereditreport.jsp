@@ -1,50 +1,85 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<!-- 판매자 신고 수정페이지 -->
-
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
+<!-- 회원 신고사항 수정 페이지 -->
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
+
+
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
+<style>
+.section1{
+	margin: 0 auto;
+	width: 1500px;
+}
+.section2{
+	margin: 0 auto;
+	width: 1000px;
+	padding-left: 200px;
+}
+.ordering_area {
+	margin: 30px 0px;
+}
 
-<div align="center" class="btn-group-vertical">
+.col-lg-8 {
+	margin: 25px 0px;
+}
 
-<h1>문의 게시판 상세보기</h1>
-<h2><a href="http://localhost:8001/ordering/board/sellerqna">목록으로</a></h2>
+.cart_table_title {
+	border-bottom: 1px solid #171717;
+}
+ 	.insert_cate,
+ 	.insert_req  {
+ 		width: 80%;
+ 	}
+ 	.insert_req * {
+ 		width: 100%;
+ 	}
+ 	.text-primary {
+ 		font-weight: bold; 
+ 	}
+ 	.insert_req textarea{
+ 		resize: none;
+ 		height: 25%;
+ 	}
+ 	.insert_req .regist {
+ 		height: 30px;
+ 		width: 100px;
+ 	}
+</style>
 
-<form action="sellereditreport" method="post">
+
+<section class="section1">
+<div class="ordering_area row justify-content-center">
+	<div class="col-lg-8 cart_area">
+		<div class="cart_title">
+			<h3>신고  글 수정</h3>
+		</div>
+<div class="insert_req form-group">
+	<form action="sellereditreport" method="post">
 	<input type="hidden" name="admin_qna_no" value="${sellerupdateget.admin_qna_no }">
-
-	<div class="btn-group-vertical">
-	<a><button class="btn btn-primary" value="수정">수정 확인</button></a>
-	</div>
-<table class="table table-hover" >
-
-<tbody class="col-lg-4 col-md-6">
-
-	<tr>
-		<td width="100px">제목</td>
-		<th><input type="text" name="admin_qna_title" value="${sellerupdateget.admin_qna_title}" maxlength="68" required></th>
-	</tr>
-
-	<tr>
-		<td width="100px">	<textarea name="admin_qna_content" rquired rows="15" cols="100" style="resize:none;">
-		${sellerupdateget.admin_qna_content}</textarea>
-	</td>
-
-</tbody>
-
-	
-
-</table>
-</form>
+	<input type="text" name="admin_qna_title"value="${sellerupdateget.admin_qna_title}" required required class="form-control" maxlength="68" placeholder="제목">
+			<div class="row-empty-20"></div>
+		<textarea name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용">${sellerupdateget.admin_qna_content}</textarea>
+			<div class="row-empty-20"></div>
+		<p align="right">
+			<button class="btn btn-primary regist" value="등록 ">수정하기</button>&nbsp;&nbsp;
+			<a href="${pageContext.request.contextPath}/board/sellerreport"><button class="btn btn-primary regist" type="button">목록으로</button></a>
+		</p>
+	</form>	
+	<p align="right"></p>
 </div>
+</section>
+
+<div class="row-empty-40"></div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+
+
+
