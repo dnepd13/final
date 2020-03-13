@@ -31,7 +31,7 @@ public class SellerBlockFilter implements Filter{
 		
 		String seller = (String)req.getSession().getAttribute("seller_id");
 		BlockDto block = sellerBlockDao.sellerBlock(seller);
-		
+	
 		if(seller != null) {
 			resp.sendError(403);
 		}
