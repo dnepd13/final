@@ -134,15 +134,15 @@ public class KakaoPayController {
 	
 	@GetMapping("/revoke")
 	public String revoke(@RequestParam int ordering_no) {
-		
+		System.out.println(ordering_no);
 		try {
 			KakaoPayRevokeReturnVO vo = payService.revoke(ordering_no);
 			return "redirect:/pay/kakao/cancel";
-	
+			
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 			return "redirect:/pay/kakao/list";
-
+			
 		}
 		
 		
@@ -208,10 +208,11 @@ public class KakaoPayController {
 	
 	@GetMapping("/customPayRevoke")
 	public String customPayRevoke(@RequestParam int ordering_no) throws URISyntaxException {
+		
 			PayDto payDto = payDao.get(ordering_no);
 		
 			KakaoPayRevokeReturnVO revokeReturnVO = payService.customRevokeVO(payDto);
-
+		
 
 		return "redirect:/member/cartDetailPay?partner_order_id="+payDto.getPartner_order_id();
 	}

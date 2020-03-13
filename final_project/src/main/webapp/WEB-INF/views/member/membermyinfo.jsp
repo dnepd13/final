@@ -117,7 +117,9 @@
 						<c:choose>
 							<c:when test="${qna.admin_qna_head=='답변' }">
 								<td scope="row"></td>
-								<td scope="row" align="left">[${qna.admin_qna_head}] ${qna.admin_qna_title}</td>
+								<td scope="row" align="left">
+									<a href="${pageContext.request.contextPath }/board/detailmqna?admin_qna_no=${qna.admin_qna_no}">[${qna.admin_qna_head}] ${qna.admin_qna_title}</a>
+								</td>
 							</c:when>
 							<c:otherwise>
 								<td scope="row">${qna.admin_qna_head}</td>

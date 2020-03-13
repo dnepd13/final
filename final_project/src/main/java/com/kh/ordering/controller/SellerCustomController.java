@@ -125,14 +125,20 @@ public class SellerCustomController {
 		String seller_id = (String)session.getAttribute("seller_id");
 		int seller_no = sellerCustomDao.getNo(seller_id);
 		
-		// 판매자 알람 및 주문제작 상태(읽음) 업데이트 후
-		sellerCustomDao.updateAlarm(seller_no, member_custom_order_no);
-		MemberCustomOrderDto memberCustomDto = memberCustomDao.getMemberCustom(member_custom_order_no);
-		CustomOrderDto customOrderDto = CustomOrderDto.builder()
-																										.custom_order_no(memberCustomDto.getCustom_order_no())
-																										.custom_order_status("읽음")
-																										.build();
-		sellerCustomDao.updateCustomStatus(customOrderDto);
+		// 요청대기 상태인지 아닌지
+		List<SellerCustomAlarmDto> sellerAlarm =  sellerCustomDao.getSellerAlarm(member_custom_order_no);
+		String check = sellerAlarm.get(0).getSeller_alarm_check();
+		if(check.equals("요청대기")) {
+			// 판매자 알람 및 주문제작 상태(읽음) 업데이트 후
+			sellerCustomDao.updateAlarm(seller_no, member_custom_order_no);
+			MemberCustomOrderDto memberCustomDto = memberCustomDao.getMemberCustom(member_custom_order_no);
+			CustomOrderDto customOrderDto = CustomOrderDto.builder()
+																											.custom_order_no(memberCustomDto.getCustom_order_no())
+																											.custom_order_status("읽음")
+																											.build();
+			sellerCustomDao.updateCustomStatus(customOrderDto);
+			
+		}
 		
 		// 상세페이지 보기
 		CustomOrderVO content = sellerCustomDao.customOrderVO1(member_custom_order_no, seller_no);

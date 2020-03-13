@@ -48,14 +48,24 @@
 
 
 <script>
-	function payConfirm(){
-		if(confirm("결제를 취소하시겠습니까? 취소하실 정보를 다시 한 번 확인해주세요.")){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
+
+	$(function(){
+	
+		$(".payCancel").click(function(e){
+			e.preventDefault();
+			
+			if(confirm("결제를 취소하시겠습니까? 취소하실 정보를 다시 한 번 확인해주세요.")){
+				$("form").submit();
+				return true;
+			}
+			else{
+				return false;
+			}
+			
+		});
+	
+	});
+
 </script>
 
 <article class="articleBox">
@@ -99,10 +109,12 @@
 					<fmt:parseDate value="${payDetails.process_time }" var="process_time" pattern="yyyy-MM-dd HH:mm:ss"/>
 					(<fmt:formatDate value="${process_time }" pattern="yyyy/MM/dd HH:mm:ss"/>)
 					<c:if test="${payDetails.cart_info_status == '결제완료'}">
-					<a href="${pageContext.request.contextPath }/pay/kakao/customPayRevoke?ordering_no=${payDetails.ordering_no}">
-						<button class="btn btn-warning payCancel" style="float:right;" onclick="payConfirm();">
-							결제취소</button>
-					</a>
+							<c:if test="${ okCount ==0 }">
+								<form action="../pay/kakao/customPayRevoke" method="get">
+									<input type="hidden" name="ordering_no" value="${payDetails.ordering_no}">
+									<p align="right"><button class="btn btn-warning payCancel">결제취소</button></p>
+								</form>
+							</c:if>
 					</c:if>
 			</td>
 		</tr>
