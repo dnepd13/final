@@ -11,8 +11,6 @@
 <jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
-
-
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
@@ -42,11 +40,6 @@
 	width: 1500px;
 }
 </style>
-
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
-
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
 <section class="section1">
 <div class="ordering_area row justify-content-center">

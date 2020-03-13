@@ -156,7 +156,8 @@
 					  		</tbody>
 					  	</table>
 					  </div>
-			        <p align="right"><button type="submit" class="btn btn-secondary btn_upload">업로드하기</button></p>   
+					  <br>
+			        <p align="center"><button type="submit" class="btn btn-secondary btn_upload">업로드하기</button></p>   
 				</form>
 				</div>
 				

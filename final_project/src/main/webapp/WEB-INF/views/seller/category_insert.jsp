@@ -105,8 +105,12 @@
 	 });
 	 
  </script>
-<body>
-<h1>카테고리 관리 페이지</h1>
+<div class="container-fluid">
+        <div class="row" style="padding: 50px;">
+            <div class="offset-md-1 col-md-10">
+<div class="row justify-content-center"  style="padding: 20px;"><h1>${seller_id}님의 카테고리 관리페이지</h1></div>
+
+<div>
 <form action="category_insert_proc" method="post">
 <select class="category_large" name="category_large">
 <option class="largeChild">선택</option>
@@ -119,29 +123,44 @@
 </select>
 <!-- 리스트 -->
 	<input class="submit_btn" type="submit" value="등록" >
-	
-	
-	<div class="form-group">
-  <fieldset>
-    <label class="control-label" for="seller_id">판매자 아이디</label>
-    <input class="form-control" id="seller_id" type="text" value="${seller_id}">S
-  </fieldset>
+	<table class="table table-hover">
+  <thead>
+    <tr>
+      <th width="10%">번호</th>
+      <th width="20%">카테고리 대</th>
+      <th width="30%">카테고리 중</th>
+      <th width="30%">카테고리 소</th>
+      <th width="10%">수정 및 삭제</th>
+    </tr>
+  </thead>
+  <tbody>
+	<input type="hidden" id="sellerNo" name="sellerNo" value="${seller_no}"/>
+	<c:forEach var ="list" items="${category_list}">
+  <tr class="table-light"">
+      <th scope="row" id="category_no">${list.category_no }</th>
+      <td class="bigcate">${list.category_large }</td>
+      <td class="middlecate" >${list.category_middle }</td>
+      <td class="smallcate" >${list.category_small }</td>
+      <td data-category-no="${list.category_no}" 
+ 						data-category-large="${list.category_large}" 
+ 						data-category-middle="${list.category_middle}" 
+ 						data-category-small="${list.category_small}">
+   		 		<td><button type="button" class="deleteButton">삭제</button></td>
+      </td>
+    </tr>
+	</c:forEach>
+  </tbody>
+  </form>
 </div>
-    <input type="hidden" id="sellerNo" name="sellerNo" value="${seller_no}"/>
-    <c:forEach var ="list" items="${category_list}">
-	    <table>
-	    	<tr>
-	    		<td>${list.category_no}</td>
-	    		<td>${list.category_large}</td>
-	    		<td>${list.category_middle}</td>
-	    		<td>${list.category_small}</td>
-	    		<td><button type="button" class="deleteButton">삭제</button></td>
-	    	</tr>
-	    </table>
-    </c:forEach>
-    
+</div>
+</div>
+</table>	
+</div>
+   </div>
+        </div>
+    </div>
 
-</form>
+
 
 
 <jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>

@@ -39,7 +39,7 @@ $(function() {
 							console.log($('input[name="idcheck2"]'));
                		}
                		else{
-               			window.alert("중복된 아이디 입니다")
+               			window.alert("아이디가 확인 되었습니다")
                			$('input[name="idcheck2"]').val("Y");
                			console.log($('input[name="idcheck2"]').val());
                			
@@ -133,7 +133,7 @@ function test() {
 	}
 	var idcheck2 =$('input[name="idcheck2"]').val(); 
 	if(idcheck2 != 'Y'){
-		alert("아이디 중복체크를 해주세요.");
+		alert("아이디 체크를  해주세요.");
 		return false;
 	}
 	
@@ -186,7 +186,7 @@ function test() {
 			    				<td><input type="text" class="form-control" name="seller_id" placeholder="아이디를 입력하세요" required>
 			    						
 			    				</td>
-			    				<td><input class="btn btn-secondary disabled" type="button" id="id_check" value="중복확인" ><br></td>
+			    				<td><input class="btn btn-secondary disabled" type="button" id="id_check" value="아이디 확인" ><br></td>
 			    				<td><input type="hidden" name="idcheck2" value="N"></td>
 			    			</tr>
 			    			<tr class="input_email">
@@ -196,8 +196,8 @@ function test() {
 			    						<input type="text" name="cert" class="form-control" placeholder="인증번호 입력" required>
 			    						<input type="hidden" name="checkemailcode2">
 			    				</td>
-			    				<td><input type="button" id="check_email" value="인증번호 보내기">
-			    						<input type="button" name="check_email_code" id="check_email_code" value="인증코드확인">
+			    				<td><input type="button" id="check_email"  class="btn_regist btn btn-secondary disabled btn-block" value="인증번호 보내기">
+			    						<input type="button"  class="btn_regist btn btn-secondary disabled btn-block" name="check_email_code" id="check_email_code" value="인증코드확인">
 			    				</td>
 			    			</tr>
 			    			<tr>
