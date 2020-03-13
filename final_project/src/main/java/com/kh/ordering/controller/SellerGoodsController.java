@@ -51,7 +51,10 @@ public class SellerGoodsController {
 		String seller_id=(String)session.getAttribute("seller_id");
 		int seller_no=sellerCategoryDao.getNo(seller_id);
 		List<Integer> list = sellerCategoryDao.seller_category_list(seller_no);
-		List<CategoryDto> category_list =sellerCategoryDao.seller_category_name_list(list);
+		List<CategoryDto> category_list=null;
+		if(list.size()>0) {
+			category_list =sellerCategoryDao.seller_category_name_list(list);	
+		}
 		mv.addObject("seller_id", seller_id);
 		mv.addObject("category_list",category_list);
 		mv.addObject("seller_no", seller_no);

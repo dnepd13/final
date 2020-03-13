@@ -50,10 +50,13 @@
     
 		<!-- 카테고리 리스트 -->
 	<select id="get_category_name_list" resultType="CategoryDto">
-		select category_large , category_middle , category_small , category_no from category where category_no in (
+		select category_large , category_middle , category_small , category_no from category 
+		
+		where category_no in (
 		<foreach item="item" collection="list" separator="," close=")">
 				#{item}
 		</foreach>
+		
 		
 		
 	</select>

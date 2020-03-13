@@ -25,7 +25,7 @@
                      $.ajax({
                               url : "id_check",
                               type : "get",
-                              contetType: "application/x-www-form-urlencoded; charset=UTF-8",
+                              contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                               data : {
                                  'seller_id' : seller_id
                               },
@@ -79,7 +79,7 @@ $(function() {
 			$.ajax({
 				url: "send",
 				type:"post",
-				contetType: "application/x-www-form-urlencoded; charset=UTF-8",
+			      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 				data: {
 					'seller_id' : $("input[name='seller_id']").val(),
 					'seller_email' : $("input[name='seller_email']").val()				
@@ -107,7 +107,7 @@ $(function() {
 			$.ajax({
 				url:"validate",
 				type:"post",
-				contetType: "application/x-www-form-urlencoded; charset=UTF-8",
+			      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 				data:{
 					'cert' :$("input[name='cert']").val()
 				},
@@ -161,10 +161,10 @@ function test() {
 		alert("사업장 연락처를 입력해주세요.");
 		return false;
 	}
-	if ($('input[name="seller_birth"]').val() == "") {
-		alert("사업자 번호를 입력해주세요.");
-		return false;
-	}
+// 	if ($('input[name="seller_birth"]').val() == "") {
+// 		alert("사업자 번호를 입력해주세요.");
+// 		return false;
+// 	}
 	if ($('input[name="seller_addr_post"]').val() == "") {
 		alert("사업장 우편번호를 입력해주세요.");
 		return false;
@@ -201,10 +201,10 @@ function test() {
 		alert("사업장 은행 예금주를 입력해주세요.");
 		return false;
 	}
-	if ($('input[name="seller_bank_birth"]').val() == "") {
-		alert("사업장 은행 주민등록번호를 입력해주세요.");
-		return false;
-	}
+// 	if ($('input[name="seller_bank_birth"]').val() == "") {
+// 		alert("사업장 은행 주민등록번호를 입력해주세요.");
+// 		return false;
+// 	}
 	
 		$("#frm").submit();
 	}
@@ -253,10 +253,11 @@ function test() {
   				<input type="tel" class="form-control" name="seller_phone"required>
 			  </div>
 			  <!--주민등록번호/사업자번호 입력창 -->
-			  <div class="form-group">
-  				<label class="col-form-label">사업자번호 : </label>
-  				<input type="number" class="form-control" name="seller_birth"required>
-			  </div>
+<!-- 			  <div class="form-group"> -->
+<!--   				<label class="col-form-label">사업자번호 : </label> -->
+<!--   				<input type="number" class="form-control" name="seller_birth" required> -->
+  				<input type="hidden" name="seller_birth" value="0000">
+<!-- 			  </div> -->
 			  <!--사업장 우편번호 입력창 -->
 			  <div class="form-group">
   				<label class="col-form-label">사업장 우편번호 : </label>
@@ -287,7 +288,7 @@ function test() {
   				<label class="col-form-label">사업장 팩스번호 : </label>
   				<input type="number" class="form-control" name="seller_store_fax"required>
 			  </div>
-			  <!--사업장 은행명 (코드)입력창 -->
+			  <!--사업장 은행명(코드)입력창 -->
 			  <div class="form-group">
   				<label class="col-form-label">사업장 은행 : </label>
   				<input type="text" class="form-control"name="seller_bank_code"required>
@@ -306,8 +307,9 @@ function test() {
 			   <!--사업장 은행 주민등록번호 입력창 -->
 			  <div class="form-group">
   				<label class="col-form-label">사업장 은행 주민등록번호 : </label>
-  				<input type="text" class="form-control" name="seller_bank_birth"required>
-			  </div>
+							<!--은행 api못 써서 hidden으 받겟당  -->
+  				<input type="hidden" class="form-control" name="seller_bank_birth" value="0000" required>
+<!-- 			  </div> -->
 			   <!--가입일 숨겨서 온다-->
 			  <div class="form-group">
 			  	<input type="hidden" name="seller_agree_date" value="${param.dTime }">

@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.SellerDto;
+import com.kh.ordering.repository.SellerCategoryDao;
 import com.kh.ordering.repository.SellerDao;
 import com.kh.ordering.service.EmailService;
 import com.kh.ordering.service.RandomService;
@@ -53,11 +54,33 @@ public class SellerController {
 	private SellerDto sellerDto;
 	@Autowired
 	private SqlSession sqlSession;
+	@Autowired
+	private SellerCategoryDao sellerCategoryDao;
 	//판매자 메인 홈
 	@GetMapping("/main")
 
-	public String main() {
+	public String main1(Model model,HttpSession session) {
+		String seller_id =(String)session.getAttribute("seller_id");
+		log.info("seller_id={}", seller_id);
+		SellerDto sellerDto=SellerDto.builder().seller_id(seller_id).
+				build();
+		log.info("sellerDto={}",sellerDto);
+			sellerDto.setSeller_id(seller_id);
+SellerDto info=sellerDao.info(sellerDto);
+
+model.addAttribute("sellerDto",info);
 		return "/seller/main";
+	}
+	@PostMapping("main")
+	public String main(Model model,HttpSession session) {
+		String seller_id =(String)session.getAttribute("seller_id");
+		SellerDto sellerDto=SellerDto.builder().seller_id(seller_id).
+				build();
+SellerDto info=sellerDao.info(sellerDto);
+
+model.addAttribute("sellerDto",info);
+		
+		return"redirect:/seller/main";
 	}
 	//회원가입 전 이용약관동의 받기
 	@GetMapping("/regist_agree")
@@ -93,7 +116,7 @@ public class SellerController {
 		sellerDto.setSeller_pw(passwordEncoder.encode(sellerDto.getSeller_pw()));
 		sellerService.regist(sellerDto);
 	//	return"redirect:/seller/regist_success";
-		return"redirect:/seller/regist_success";
+		return"redirect:/seller/login";
 	}
 	//판매자 이메일 인증
 	@PostMapping("/send")//jsp로 결과가 나가면 안된다
@@ -187,14 +210,14 @@ public class SellerController {
 /////////////가입완료후 페이지////////////////
 	@GetMapping("/regist_success")
 	public String regist_success() {
-		return "seller/regist_success";
+		return "redirect:/seller/regist_success";
 	}
 	
 
-	@PostMapping("/regist_success")
-	private String regist_success(@ModelAttribute SellerDto sellerDto) {
-		return "redirect:seller/regist_success";
-	}
+//	@PostMapping("/regist_success")
+//	private String regist_success(@ModelAttribute SellerDto sellerDto) {
+//		return "redirect:seller/regist_success";
+//	}
 	
 ///////////////////////////판매자 로그인///////////////////////////////////////
 	@GetMapping("login")

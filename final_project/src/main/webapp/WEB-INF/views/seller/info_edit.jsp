@@ -4,8 +4,12 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
   </script>
   <style>
-  .aaa{
-  	width: 600px;font-size: 1.2rem;
+  .container-fluid{
+  	width: 500px;
+  	margin: 
+  }
+  .card-text{
+   border-bottom: 1px solid#DCDCDC;
   }
   </style>
   <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
@@ -16,7 +20,7 @@
  <div class="container-fluid">
         <div class="row">
             <div class="offset-md-4 col-md-4 ">
-				<div class = "card border-secondary mb-3"style = "width: 600px;font-size: 1.2rem;">
+				<div class = "card border-secondary mb-3"style = "width: 500px;">
   				<div class = "card-header">
   				  <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"size="4";>Seller Information </font></font>
   				</div>
@@ -27,7 +31,7 @@
     			   <p class = "card-text"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"> 이름 :${sellerDto.seller_name} </font></font></p>
     			   <div class="form-group">
    				   	<p class = "card-text"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"> 
-   				   	   이메일 : <input style="width:15rem;" class="form-control form-control-sm" type="text" name="seller_email" value="${sellerDto.seller_email}"> </font></font></p>
+   				   	   이메일 : <input class="form-control form-control-sm" type="text" name="seller_email" value="${sellerDto.seller_email}"> </font></font></p>
     			   </div>
     			   <p class = "card-text"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"> 
     			   	   연락처 : <input class="form-control form-control-sm" type="text" name="seller_phone" value="${sellerDto.seller_phone}"> </font></font></p>
@@ -46,7 +50,7 @@
           		   </div>
           		   <div class="form-group">
           		     <p class = "card-text"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"> 
-          		     	사업장 은행명(코드) : <input class="form-control form-control-sm" type="text" name="seller_bank_code"value="${sellerDto.seller_bank_code}"> </font></font></p>
+          		     	사업장 은행명코드 : <input class="form-control form-control-sm" type="text" name="seller_bank_code"value="${sellerDto.seller_bank_code}"> </font></font></p>
     			   </div>
     			   <div class="form-group">
     			     <p class = "card-text"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;">
@@ -56,10 +60,10 @@
     			     <p class = "card-text"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"> 
     			     	사업장 은행 예금주 : <input class="form-control form-control-sm" type="text" name="seller_bank_username" value="${sellerDto.seller_bank_username}"> </font></font></p>
     			   </div>
-    			   <div class="form-group">
-    			     <p class = "card-text"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"> 
-    			     	사업장 은행 주민 등록번호 : <input class="form-control form-control-sm" type="text" name="seller_bank_birth" value="${sellerDto.seller_bank_birth}"> </font></font></p>
-    			   </div>    
+<!--     			   <div class="form-group"> -->
+<!--     			     <p class = "card-text"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;">  -->
+<%--     			     	사업장 은행 주민 등록번호 : <input class="form-control form-control-sm" type="text" name="seller_bank_birth" value="${sellerDto.seller_bank_birth}"> </font></font></p> --%>
+<!--     			   </div>     -->
     			   <p class = "card-text"> <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"> 등급 :${sellerDto.seller_grade} </font></font></p>			  
     			   <button type="submit" class="btn btn-secondary disabled btn-block">수정하기</button>
     			 </form>
