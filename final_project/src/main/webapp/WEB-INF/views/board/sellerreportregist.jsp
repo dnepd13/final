@@ -29,7 +29,7 @@
 
 	<tr>
 		<td style="width:100px;">제목</td>
-		<th><input type="text" name="admin_qna_title" value="" required></th>
+		<th><input type="text" name="admin_qna_title" value="" maxlength="68" required></th>
 	</tr>
 
 	<tr>

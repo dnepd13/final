@@ -255,12 +255,12 @@
 			<div class="modal-body form-group">
 				<form action="insertaddr" method="post">
 	
-					<input class="form-control" type="text" name="member_name_extra" placeholder="받는 사람" required style="width:45%;"><br>
-					<input class="form-control" id="sample6_postcode" type="text" name="member_addr_post" placeholder="우편번호" required style="width:45%;">
+					<input class="form-control" type="text" name="member_name_extra" placeholder="받는 사람" required style="width:45%;" maxlength="16"><br>
+					<input class="form-control" id="sample6_postcode" type="text" name="member_addr_post" placeholder="우편번호" required style="width:45%;" maxlength="12">
 					<button type="button" class="btn_custom btn_findPost" onclick="sample6_execDaumPostcode()">우편번호 찾기</button><br><br>
-					<input class="form-control" id="sample6_address" type="text" name="member_addr_basic" placeholder="기본주소" required><br>
-					<input class="form-control" id="sample6_detailAddress" type="text" name="member_addr_extra" placeholder="상세주소" required><br>
-					<input class="form-control" type="text" id="sample6_extraAddress" placeholder="참고항목"><br>
+					<input class="form-control" id="sample6_address" type="text" name="member_addr_basic" placeholder="기본주소" required maxlength="48"><br>
+					<input class="form-control" id="sample6_detailAddress" type="text" name="member_addr_extra" placeholder="상세주소" required maxlength="48"><br>
+					<input class="form-control" type="text" id="sample6_extraAddress" placeholder="참고항목" maxlength="48"><br>
 					<p align="right"><input class="btn btn-primary" type="submit" value="배송지 추가"></p>
 			
 				</form>

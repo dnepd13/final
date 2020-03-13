@@ -23,11 +23,11 @@
                 <!-- 이름 입력창 -->
 			  <div class="form-group">
   				<label class="col-form-label" for="inputDefault">이름 : </label>
-  				<input type="text" class="form-control"id="inputDefault"name="member_name"required>
+  				<input type="text" class="form-control"id="inputDefault"name="member_name" maxlength="19" required>
 			  </div>
 			  <div class="form-group">			 
   				<label class="col-form-label" for="email">이메일 : </label>
-  				<input type="email" class="form-control"id="email"name="member_email"placeholder="이메일 입력" required>
+  				<input type="email" class="form-control"id="email"name="member_email"placeholder="이메일 입력" maxlength="48" required>
   			  </div>
   			   
   			   <button type="submit" class="btn btn-secondary disabled btn-block">아이디 찾기</button>

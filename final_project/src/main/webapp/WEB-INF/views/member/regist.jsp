@@ -10,7 +10,8 @@
 
  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
  
-  
+  <jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
   <script>  
   
@@ -200,31 +201,31 @@
               <!--아이디 입력창-->
 			  <div class="form-group">
   				<label class="col-form-label">ID : </label>
-  				<input type="text" class="form-control" name="member_id"required>
+  				<input type="text" class="form-control" name="member_id"required maxlength="28">
 			  	 <!--  name = 값 controller에있는파라미터값변수명하고 일치해야함 -->
-			  	<input type="button"class="btn btn-secondary disabled" id="id_check" value="중복확인" ><br>
+			  	<input type="button"class="btn btn-secondary disabled" id="id_check" value="중복확인" maxlength="28"><br>
 			  	 <input type="hidden"name="idcheck2" value="N">
 			  </div>
               <!-- 비밀번호 입력창 -->
                <div class="form-group">
   				<label class="col-form-label" >PW : </label>
-  				<input type="password" class="form-control" name="member_pw"  required>
+  				<input type="password" class="form-control" name="member_pw"  required maxlength="28">
 			  </div>
 			  <div>
 			  	<label class="col-form-label" >PW 확인 창: </label>
-			  	<input type="password" class="form-control" name="member_pwcheck"  required/>
+			  	<input type="password" class="form-control" name="member_pwcheck" maxlength="28" required/>
 			  </div>
 			  <!-- 이름 입력창 -->
 			  <div class="form-group">
   				<label class="col-form-label">이름 : </label>
-  				<input type="text" class="form-control"name="member_name"required>
+  				<input type="text" class="form-control"name="member_name" maxlength="28" required>
 			  </div>
 			   <!-- 이메일 입력창 -->
 			  <div class="form-group">			 
   				<label class="col-form-label" for="email">이메일 : </label>
-  				<input type="email" class="form-control"id="email"name="member_email"placeholder="이메일 입력" required>
-			  	<input type="button" class="btn btn-secondary disabled" id="check_email" value="인증번호 보내기">
-				<input type="text" name="cert" placeholder="인증번호 입력" style="">
+  				<input type="email" class="form-control"id="email"name="member_email"placeholder="이메일 입력" maxlength="48" required>
+			  	<input type="button" class="btn btn-secondary disabled" id="check_email" value="인증번호 보내기" maxlength=>
+				<input type="text" name="cert" placeholder="인증번호 입력" style="" maxlength="28" >
 				<input type="button" class="btn btn-secondary disabled" name="check_email_code" id="check_email_code" value="인증번호확인"style="">
 				<input type="hidden"name="checkemailcode2" value="N">	
 				<!-- <p id="msg">이메일 인증에 실패하였습니다</p> -->
@@ -232,10 +233,10 @@
 			  <!-- 전화번호 입력창 -->
 			  <div class="form-group">
   				<label class="col-form-label">전화번호 : </label>
-  				<input type="tel" class="form-control" name="member_phone"required>
+  				<input type="tel" class="form-control" name="member_phone" maxlength="11" required>
   					  <div class="form-group">
   				<label class="col-form-label">회원 생년월일 : </label>
-  				<input type="text" class="form-control" name="member_birth"required>
+  				<input type="text" class="form-control" name="member_birth" maxlength="6" required>
 			 			   <!--가입일 숨겨서 온다-->
 			  <div class="form-group">
 			  	<input type="hidden" name="member_agree_date" value="${param.dTime }">
@@ -251,5 +252,5 @@
    </div>
  </body>
  
-
+ <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
 

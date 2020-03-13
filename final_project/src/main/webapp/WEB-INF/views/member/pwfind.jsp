@@ -183,7 +183,7 @@ function test() {
 		    			<tbody>
 			    			<tr class="form-group">
 			    				<td><label class="col-form-label">ID:</label></td>
-			    				<td><input type="text" class="form-control" name="member_id" placeholder="아이디를 입력하세요" required>
+			    				<td><input type="text" class="form-control" name="member_id" placeholder="아이디를 입력하세요" maxlength="28" required>
 			    						
 			    				</td>
 			    				<td><input class="btn btn-secondary disabled" type="button" id="id_check" value="확인" ><br></td>
@@ -192,8 +192,8 @@ function test() {
 			    			<tr class="input_email">
 			    				<td>이메일</td>
 			    				<td>
-			    						<input type="email" id="email" name="member_email" placeholder="이메일 주소를 입력하세요" class="form-control" required>
-			    						<input type="text" name="cert" class="form-control" placeholder="인증번호 입력" required>
+			    						<input type="email" id="email" name="member_email" placeholder="이메일 주소를 입력하세요" maxlength="48" class="form-control" required>
+			    						<input type="text" name="cert" class="form-control" placeholder="인증번호 입력" maxlength="7" required>
 			    						<input type="hidden" name="checkemailcode2">
 			    				</td>
 			    				<td><input class="btn btn-secondary disabled" type="button" id="check_email" value="인증번호 보내기">

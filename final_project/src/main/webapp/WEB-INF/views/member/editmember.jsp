@@ -72,8 +72,8 @@ $(function(){
   				  <font style = "vertical-align : inherit;"> <font style = "vertical-align : inherit;"size="4";>회원정보 수정 등록 </font></font>
   				</div>
   				<form action="" method="post">
-					<input id="gradeinsert" type="text" name="grade_benefit_grade" placeholder="이메일" required="required">
-					<input id="rateinsert" type="number" name="member_phone" placeholder="전화번호" required="required">
+					<input id="gradeinsert" type="text" name="grade_benefit_grade" placeholder="이메일" maxlength="48" required="required">
+					<input id="rateinsert" type="number" name="member_phone" placeholder="전화번호" maxlength="12" required="required">
 					<input class="insertbutton" type="submit" value="등록" disabled="">
 					<div><span id="span"></span>	</div>
 					<div><span id="span2"></span></div>
