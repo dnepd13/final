@@ -325,6 +325,10 @@
 	<!-- 회원 포인트 추가 -->
 	<insert id="registPoint" parameterType="memberPointVO">
 		insert into member_point 
+				(member_point_no, member_point_status,
+				member_point_date, member_point_limit,
+				member_point_change, member_point_content,
+				member_point_no)
 			values(
 				member_point_seq.nextval, 
 				#{member_point_status},

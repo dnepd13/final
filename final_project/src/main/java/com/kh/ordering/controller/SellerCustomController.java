@@ -126,8 +126,8 @@ public class SellerCustomController {
 		int seller_no = sellerCustomDao.getNo(seller_id);
 		
 		// 요청대기 상태인지 아닌지
-		List<SellerCustomAlarmDto> sellerAlarm =  sellerCustomDao.getSellerAlarm(member_custom_order_no);
-		String check = sellerAlarm.get(0).getSeller_alarm_check();
+		CustomOrderVO customOrder = sellerCustomDao.customOrderVO1(member_custom_order_no, seller_no);
+		String check = customOrder.getCustom_order_status();
 		if(check.equals("요청대기")) {
 			// 판매자 알람 및 주문제작 상태(읽음) 업데이트 후
 			sellerCustomDao.updateAlarm(seller_no, member_custom_order_no);
