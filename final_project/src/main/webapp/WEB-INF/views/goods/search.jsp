@@ -102,7 +102,6 @@ $(function(){
 	margin-left: 10px;
 }
 
-
 </style>
 <hr>
 <div class="search_area">
