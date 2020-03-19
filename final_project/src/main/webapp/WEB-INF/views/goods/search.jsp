@@ -102,7 +102,6 @@ $(function(){
 	margin-left: 10px;
 }
 
-
 </style>
 <hr>
 <div class="search_area">
@@ -117,6 +116,11 @@ $(function(){
   			<a class="goods_img" href="${pageContext.request.contextPath}/goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
   				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
   			</a>
+  			<p class="category">
+  				${categoryList[status.index].category_large} >
+  				 ${categoryList[status.index].category_middle} >
+  				 ${categoryList[status.index].category_small}
+  			</p>
 	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
 	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
 	  		<p class="goods_price">

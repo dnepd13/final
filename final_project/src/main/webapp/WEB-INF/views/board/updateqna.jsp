@@ -7,6 +7,7 @@
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
 
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
@@ -56,12 +57,12 @@
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
 		<div class="cart_title">
-			<h3>문의 게시판 글 상세보기</h3>
+			<h3>문의 게시판 글 수정</h3>
 		</div>
 <div class="insert_req form-group">
 	<form action="updateqna" method="post">
 	<input type="hidden" name="admin_qna_no" value="${updateget.admin_qna_no }">
-	<input type="text" name="admin_qna_title"value="${updateget.admin_qna_title}" required required class="form-control" placeholder="제목">
+	<input type="text" name="admin_qna_title"value="${updateget.admin_qna_title}" required required class="form-control" maxlength="68" placeholder="제목">
 			<div class="row-empty-20"></div>
 		<textarea name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용">${updateget.admin_qna_content}</textarea>
 			<div class="row-empty-20"></div>

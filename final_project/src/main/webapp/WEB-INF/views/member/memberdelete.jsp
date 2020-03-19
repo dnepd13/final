@@ -33,10 +33,10 @@
 		<fieldset>
 	    	<div class="form-group">
 				<label for="exampleInputId"></label>
-				<input type="hidden" name="member_id"  id="exampleInputId" class="form-control" value="${memberdelete.member_id}" required>
+				<input type="hidden" name="member_id"  id="exampleInputId" class="form-control" value="${memberdelete.member_id}" maxlength="38" required>
 	 			<div class="row-empty-20"></div>
 	 			<label for="exampleInputPassword1">PW:</label>
-				<input type="password" name="member_pw" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+				<input type="password" name="member_pw" class="form-control" id="exampleInputPassword1" placeholder="Password" maxlength="28" required>
 				<div class="row-empty-20"></div>
 				<input type="submit" value="탈퇴" class="enter btn btn-secondary" style="width:100%;">
 			</div>

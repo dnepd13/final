@@ -939,6 +939,14 @@ public class MemberController {
 			}
 		}
 		
+		//비밀번호 확인창
+		@GetMapping("/pwchangeCheck")
+		public String pwchangeCheck() {
+			
+			return"/member/pwchangeCheck";
+		}
+		
+		
 		//비밀번호 변경 완료
 		@GetMapping("/pwchange")
 		public String pwchange () {

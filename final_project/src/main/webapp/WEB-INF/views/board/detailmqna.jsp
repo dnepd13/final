@@ -3,6 +3,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 
+
+<!-- 회원 문의 상세 페이지 -->
+
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
@@ -39,6 +42,7 @@ h4{
 </style>
 
 
+
 <section class="section1">
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
@@ -50,7 +54,7 @@ h4{
 <tbody>
 	<tr>
 		<th width="121px">제목</th>
-		<td width="600px">${qnaoneGetOne.admin_qna_title}</td>
+		<td width="600px" style="word-break:break-all;">${qnaoneGetOne.admin_qna_title}</td>
 	</tr>
 		<tr>
 		<th width="121px">작성자구분</th>
@@ -64,11 +68,13 @@ h4{
 		<th width="121px">작성일</th>
 		<td width="600px">${qnaoneGetOne.admin_qna_date}</td>
 	</tr>
+
 	<tr>
 		<th width="121px">내용</th>
 		<td width="600px" >
 			<textarea readonly="readonly" rows="15" cols="100" style="resize:none;" class="form-control">	${qnaoneGetOne.admin_qna_content}</textarea>
 		</td>
+
 	</tr>
 	</tbody>
 	</table>

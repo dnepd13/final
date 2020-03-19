@@ -53,8 +53,9 @@ h4{
 <table>
 	<tr>
 		<th>
-		<input type="text" name="admin_qna_title" placeholder="제목을 입력하세요 ex)판매자 xxx를 신고합니다" required style="width:1000px;">
+		<input type="text" name="admin_qna_title" placeholder="제목을 입력하세요 ex)판매자 xxx를 신고합니다" maxlength="68" required style="width:1000px;">
 		</th>
+
 	</tr>
 	<tr>
 		<td >	
