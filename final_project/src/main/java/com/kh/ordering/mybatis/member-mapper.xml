@@ -336,7 +336,8 @@
 				sysdate+30,
 				#{member_point_change},
 				#{member_point_content},
-				#{member_no}
+				#{member_no},
+				'admin'
 				)
 	</insert>	
 	
