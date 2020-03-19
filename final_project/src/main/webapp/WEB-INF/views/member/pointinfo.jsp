@@ -60,6 +60,16 @@
 		display: block;
 		clear: both;	
 	}
+	#exampleSelect1 {
+		width: 100px;
+		height: calc(1.5em + 0.75rem + 2px);
+   		padding: 0.375rem 0.75rem;
+   		color: #495057;
+	    background-color: #fff;
+	    background-clip: padding-box;
+	    border: 1px solid #ced4da;
+	    border-radius: 0.25rem;
+	}
 	.point_list {
 		margin: 30px auto;
 		width: 90%;
@@ -92,6 +102,15 @@
 					${totalPoint } 
 				</fmt:formatNumber> point
 			</div>
+		</div>
+		<div class="point_list" align="right" style="border:0;">
+			<form action="pointinfo" method="get">
+				<select name="key" id="exampleSelect1">
+					<option value="">전체</option>
+					<option value="사용">사용</option><option value="적립">적립</option><option value="소멸">소멸</option>
+				</select>
+				<input type="submit" value="조회" class="btn btn-primary">
+			</form>
 		</div>
 		<div class="point_list">
 			<table class="table">
@@ -164,6 +183,6 @@
 	</div>
 </div>
 
-<div class="row-empty-40"></div>
+<div style="height:100px;"></div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>

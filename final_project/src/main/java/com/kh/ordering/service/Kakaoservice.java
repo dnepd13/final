@@ -205,11 +205,13 @@ public class Kakaoservice implements payService {
 		payDao.insertRevoke(payDto2);
 		// 취소 되면 포인트 돌려주고,
 		int used_point = orderDao.getCartInfo(payDto.getPartner_order_id()).getUsed_point();
-		MemberPointVO memberPointVO = MemberPointVO.builder()
-				.member_no(orderDao.getMember_no(payDto.getPartner_order_id())).member_point_change(used_point)
-				.member_point_status("적립").member_point_content("결제 취소").build();
+		if(used_point !=0 ) {
+			MemberPointVO memberPointVO = MemberPointVO.builder()
+					.member_no(orderDao.getMember_no(payDto.getPartner_order_id())).member_point_change(used_point)
+					.member_point_status("적립").member_point_content("결제 취소").build();
 
-		memberDao.registPoint(memberPointVO);
+			memberDao.registPoint(memberPointVO);
+		}		
 
 		return null;
 	}
@@ -422,11 +424,13 @@ public class Kakaoservice implements payService {
 		
 		// 포인트 취소
 		int used_point = orderDao.getCartInfo(payDto.getPartner_order_id()).getUsed_point();
-		MemberPointVO memberPointVO = MemberPointVO.builder()
-				.member_no(orderDao.getMember_no(payDto.getPartner_order_id())).member_point_change(used_point)
-				.member_point_status("적립").member_point_content("결제 취소").build();
-
-		memberDao.registPoint(memberPointVO);
+		if(used_point !=0) {
+			MemberPointVO memberPointVO = MemberPointVO.builder()
+					.member_no(orderDao.getMember_no(payDto.getPartner_order_id())).member_point_change(used_point)
+					.member_point_status("적립").member_point_content("결제 취소").build();
+			
+			memberDao.registPoint(memberPointVO);		
+		}
 		
 		// 주문제작 상태 update
 		String custom_order = revokeReturnVO.getPartner_order_id().substring(revokeReturnVO.getPartner_order_id().lastIndexOf("C")+1);

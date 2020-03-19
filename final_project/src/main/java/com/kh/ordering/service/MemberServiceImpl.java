@@ -93,7 +93,7 @@ public class MemberServiceImpl implements MemberService{
 
 // 포인트 내역 페이징
 	@Override
-	public PagingVO pointInfoPaging(String pageNo, int member_no) {
+	public PagingVO pointInfoPaging(String pageNo, int count) {
 		// 주소로 받은 pageNo를 int 형태로 변환
 			int pno;
 			try {
@@ -103,13 +103,14 @@ public class MemberServiceImpl implements MemberService{
 			catch(Exception e){
 				pno = 1;
 			}
-				
+			
 			int pageSize= 10;
 			int finish= pno*pageSize;
 			int start= finish-(pageSize-1);
 				
 			// 하단 네비게이터
-			int totalCount = memberPointDao.getListCount(member_no);
+			int totalCount = count;
+			
 			int navSize= 5;
 			int pageCount= (totalCount+pageSize-1)/pageSize;
 				
@@ -120,7 +121,7 @@ public class MemberServiceImpl implements MemberService{
 				finishBlock=pageCount;
 			}
 			
-			PagingVO pagingVO = PagingVO.builder()
+			PagingVO result = PagingVO.builder()
 																	.pno(pno)
 																	.navsize(navSize)
 																	.count(pageCount)
@@ -130,10 +131,9 @@ public class MemberServiceImpl implements MemberService{
 																	.finishBlock(finishBlock)
 																	.start(start)
 																	.finish(finish)
-																	.member_no(member_no)
 																	.build();
 				
-			return pagingVO;
+			return result;
 	}
 	
 	

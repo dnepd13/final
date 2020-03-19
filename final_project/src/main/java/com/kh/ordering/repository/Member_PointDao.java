@@ -17,7 +17,8 @@ public interface Member_PointDao {
 	
 	// 포인트 상세 정보보기 테이블
 	List<Member_PointDto> getListPoint(PagingVO pagingVO);
-	int getListCount(int member_no);
+	int getListCount(int member_no); // 전체조회 count
+	int getStatusCount(int member_no, String member_point_status); // 검색 조회 count
 	
 	// 현재 총 포인트
 	int getTotalPoint(int member_no);

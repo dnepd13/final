@@ -21,4 +21,6 @@ public class PagingVO {
 		private int member_no;
 		
 		private int goods_no;
+		
+		private String key;
 }

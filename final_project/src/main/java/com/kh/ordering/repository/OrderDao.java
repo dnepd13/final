@@ -8,6 +8,7 @@ import com.kh.ordering.entity.CartInfoOpDto;
 import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.entity.PayDto;
 import com.kh.ordering.vo.CartDetailsVO;
 import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.OrderVO;
@@ -45,6 +46,6 @@ public interface OrderDao {
 	// 카테고리번호 기준 판매량 top5 판매자 조회
 	List<CartInfoVO> getTopSales(int category_no);
 
-	// 회원 마이페이지 메인: 최근 3일 주문내역 4개
-	List<CartInfoVO> getListYesterDay(int member_no);
+	// 회원 마이페이지 메인: 최근 3일 주문내역 5개
+	List<PayDto> getListYesterDay(int member_no);
 }

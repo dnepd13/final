@@ -6,6 +6,6 @@
  
  <mapper namespace="company">
 	<select id="getInfo" resultType="com.kh.ordering.entity.CompanyDto">
-		select *from companyinfo where co_name='ORDERING'
+		select *from companyinfo
 	</select>
  </mapper>

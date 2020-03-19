@@ -13,6 +13,7 @@ import com.kh.ordering.entity.CartInfoOpDto;
 import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.entity.PayDto;
 import com.kh.ordering.service.payService;
 import com.kh.ordering.vo.CartDetailsVO;
 import com.kh.ordering.vo.CartInfoGoodsVO;
@@ -247,8 +248,8 @@ public class OrderDaoImpl implements OrderDao {
 		return sqlSession.selectList("order.getTopSales", category_no);
 	}
 
-	@Override // 회원 마이페이지 메인: 최근 3일 주문내역 4개
-	public List<CartInfoVO> getListYesterDay(int member_no) {
+	@Override // 회원 마이페이지 메인: 최근 3일 주문내역 5개
+	public List<PayDto> getListYesterDay(int member_no) {
 		return sqlSession.selectList("order.getListYesterDay", member_no);
 	}
 	

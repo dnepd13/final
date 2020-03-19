@@ -25,6 +25,7 @@ import com.kh.ordering.entity.GoodsCartDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.entity.Member_PointDto;
+import com.kh.ordering.entity.PayDto;
 import com.kh.ordering.repository.AdminQnaDao;
 import com.kh.ordering.repository.CertDao;
 import com.kh.ordering.repository.GoodsDao;
@@ -38,7 +39,6 @@ import com.kh.ordering.service.EmailService;
 import com.kh.ordering.service.GoodsOptionService;
 import com.kh.ordering.service.MemberService;
 import com.kh.ordering.service.RandomService;
-import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.CartVO;
 import com.kh.ordering.vo.ItemVO;
 import com.kh.ordering.vo.ItemVOList;
@@ -722,15 +722,35 @@ public class MemberController {
 	
 		@GetMapping("/pointinfo")
 		public String pointinfo (HttpSession session, Model model, 
-													@RequestParam(value="pageNo", required=false, defaultValue="0")String pageNo ) {
+											@RequestParam(value="pageNo", required=false, defaultValue="0")String pageNo,
+											@ModelAttribute PagingVO pagingVO) {
 			String member_id = (String)session.getAttribute("member_id");
 			int member_no = memberDao.getNo(member_id);
-			
-			PagingVO result = memberService.pointInfoPaging(pageNo, member_no);
-			model.addAttribute("paging",result);
-			List<Member_PointDto> pointlist = member_PointDao.getListPoint(result);
-			
-			model.addAttribute("pointinfo",pointlist);
+		
+			int count;
+			if(pagingVO.getKey()==null || pagingVO.getKey()=="") {
+				count = member_PointDao.getListCount(member_no);
+				PagingVO result = memberService.pointInfoPaging(pageNo, count);
+				
+				result.setMember_no(member_no);
+				
+				model.addAttribute("paging",result);
+				
+				List<Member_PointDto> pointlist = member_PointDao.getListPoint(result);
+				model.addAttribute("pointinfo",pointlist);
+			}
+			else {
+				count = member_PointDao.getStatusCount(member_no, pagingVO.getKey());
+				PagingVO result = memberService.pointInfoPaging(pageNo, count);
+				
+				result.setMember_no(member_no);
+				result.setKey(pagingVO.getKey());
+				
+				model.addAttribute("paging",result);
+				
+				List<Member_PointDto> pointlist = member_PointDao.getListPoint(result);
+				model.addAttribute("pointinfo",pointlist);
+			}
 			// 회원 현재 총 포인트
 			int totalPoint= member_PointDao.getTotalPoint(member_no);
 			model.addAttribute("totalPoint", totalPoint);
@@ -748,7 +768,7 @@ public class MemberController {
 		model.addAttribute("member_no", member_no);
 		
 		// 최근 구매내역
-		List<CartInfoVO> cartYesterDay = orderDao.getListYesterDay(member_no);
+		List<PayDto> cartYesterDay = orderDao.getListYesterDay(member_no);
 		model.addAttribute("cartYeseterDay", cartYesterDay);
 		
 		// 최근 문의게시판 작성내역

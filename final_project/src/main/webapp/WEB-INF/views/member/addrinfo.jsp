@@ -12,7 +12,6 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <style>
-	* {box-sizing: border-box;}
 	.myInfo_wrap {
 		width: 1200px;
 		height: 800px;
@@ -72,7 +71,7 @@
 		width: 90%;
 	}
 	
- /*추가 modal 전체 스타일 */
+ /* modal 전체 스타일 */
  	.modal {
  		display: none;
  		z-index: 1;
