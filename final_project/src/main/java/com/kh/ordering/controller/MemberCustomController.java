@@ -186,8 +186,9 @@ public class MemberCustomController {
 		int member_no = memberCustomDao.getNo(member_id);
 		
 		// 견적대기 상태인지 아닌지
-		MemberCustomAlarmDto memberAlarm =  memberCustomDao.getMemberAlarm(seller_custom_order_no);
-		String check = memberAlarm.getMember_alarm_check();
+		CustomOrderVO customOrder =memberCustomDao.customOrderVO1(seller_custom_order_no);
+		String check = customOrder.getCustom_order_status();
+
 		if(check.equals("견적대기")) {
 			// 상세페이지 이동하면 구매자 알람테이블의 '알람체크','알람 확인시간' update
 			memberCustomDao.updateAlarm(member_no, seller_custom_order_no);
