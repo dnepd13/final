@@ -61,10 +61,10 @@ public class SellerController {
 
 	public String main1(Model model,HttpSession session) {
 		String seller_id =(String)session.getAttribute("seller_id");
-		log.info("seller_id={}", seller_id);
+	//	log.info("seller_id={}", seller_id);
 		SellerDto sellerDto=SellerDto.builder().seller_id(seller_id).
 				build();
-		log.info("sellerDto={}",sellerDto);
+	//	log.info("sellerDto={}",sellerDto);
 			sellerDto.setSeller_id(seller_id);
 SellerDto info=sellerDao.info(sellerDto);
 
@@ -123,7 +123,7 @@ model.addAttribute("sellerDto",info);
 	@ResponseBody//내가 반환하는 내용이 곧 결과물
 	public String send(@RequestParam String seller_email,HttpSession session) {
 //		String cert ="1236";//세션에 저장된 판매자 이름과 판매자 아이디를 넣어서 서버에 있는 아이디랑 이메일이 같다면 인증번호를 보내라 
-	    System.out.println("seller email"+seller_email);	 
+//	    System.out.println("seller email"+seller_email);	 
 		String cert = randomService.generateCertificationNumber(6);
 	    	  session.setAttribute("cert", cert);
 	    	  return emailService.sendCertMessege(seller_email, cert);
@@ -182,7 +182,7 @@ model.addAttribute("sellerDto",info);
 			sellerDao.change_pw(sellerDto);
 		
 			session.removeAttribute("seller_id");
-			log.info("session ={}", session);
+			//log.info("session ={}", session);
 			
 		return"redirect:/seller/login";
 		}
@@ -192,12 +192,12 @@ model.addAttribute("sellerDto",info);
 			@GetMapping(value = "/id_check",produces ="application/text; charset=utf-8")
 			@ResponseBody //ajax로 보낼때 사용하는 어노테이션
 			public String id_check(String seller_id, Model model) {
-		 System.out.println("Controller.idCheck() 호출");
+//		 System.out.println("Controller.idCheck() 호출");
 		 
 		 int result = sqlSession.selectOne("seller.id_check", seller_id);
-		log.info("들어오나");
-		log.info("1={}",seller_id);
-		log.info("result={}", result);
+//		log.info("들어오나");
+//		log.info("1={}",seller_id);
+//		log.info("result={}", result);
 		String a = Integer.toString(result);
 		if(result == 1) {
 			return a;
@@ -232,20 +232,20 @@ model.addAttribute("sellerDto",info);
 		//비밀번호 암호화
 		//아이디 검색을 하고 결과 유무 확인
 			SellerDto find = sellerService.login(sellerDto);
-			System.out.println(sellerDto);
-			log.info("id={}",find);
-			log.info("sellerDto={}",sellerDto);
+//			System.out.println(sellerDto);
+//			log.info("id={}",find);
+//			log.info("sellerDto={}",sellerDto);
 		if(find == null) {
-			log.info("asd={}",find);
+//			log.info("asd={}",find);
 				return "redirect:/seller/login?error";
 		}
 		else {//id가  잇으면--->비밀번호 매칭검사
 			boolean correct =passwordEncoder.matches(sellerDto.getSeller_pw(),find.getSeller_pw());
 //			boolean correct = sellerDto.getSeller_pw().equals(find.getSeller_pw());
-			log.info("current={}",correct);
+//			log.info("current={}",correct);
 					if(correct == true) {   //비밀번호일치
 						session.setAttribute("seller_id", find.getSeller_id());
-						log.info("session={}"+session);
+//						log.info("session={}"+session);
 						return "redirect:/seller/main";				
 					}
 					else {
@@ -305,7 +305,7 @@ model.addAttribute("sellerDto",info);
 	}
 	@PostMapping("/info_edit")
 	public String info_edit(@ModelAttribute SellerDto sellerDto,HttpSession session) {
-		log.info("sellerDtoedit={}",sellerDto);
+//		log.info("sellerDtoedit={}",sellerDto);
 		String seller_id=(String)session.getAttribute("seller_id");
 		sellerDto.setSeller_id(seller_id);
 		SellerDto info_edit=sellerDao.info_edit(sellerDto);
@@ -424,22 +424,6 @@ model.addAttribute("sellerDto",info);
 			String a = passwordEncoder.encode(input_pw);
 			sellerDto.setSeller_id(seller_id);
 			SellerDto login = sellerDao.login(sellerDto);
-	//		log.info("seller_login={}", login);
-//			SellerDto find=SellerDto.builder().seller_id(seller_id).build();
-																	//유저에서가져온 값, db에서 가져온 값
-			//matche(인풋박스에서 유저가 입력한 텍스트 그대로 , 뒤는 맞);
-			//boolean correct = passwordEncoder.matches("rrrr", login.getSeller_pw());
-//		
-//			if(login == null) {
-//				return "redirect:/";
-//				 }					
-//			else {
-//				session.invalidate();
-//				sellerDao.delete(login);		
-//				return "redirect:/seller/main";
-//				
-//			}
-			//나중에 지워
 			return "seller/delete";
 	}
 	///////////////////////////////////////////////////
@@ -454,15 +438,15 @@ model.addAttribute("sellerDto",info);
 
 	public String find_id(HttpSession session,@RequestParam String seller_email,
 			@RequestParam String seller_name,Model model) {
-			log.info("1= {}", seller_email);
-			log.info("2= {}", seller_name);
+//			log.info("1= {}", seller_email);
+//			log.info("2= {}", seller_name);
 			SellerDto sellerDto =SellerDto.builder().seller_name(seller_name) //sellerDto에 이름과이메일을 넣는다
 																	   .seller_email(seller_email)
 																	   .build();
-			log.info("2sellerDto={}",sellerDto);
+//			log.info("2sellerDto={}",sellerDto);
 			SellerDto find_id=sellerDao.find_id(sellerDto);
-			log.info("2find_id={}",sellerDto);
-			log.info("2find_id={}",find_id);
+//			log.info("2find_id={}",sellerDto);
+//			log.info("2find_id={}",find_id);
 			model.addAttribute("sellerDto",find_id);
 		return "/seller/find_id_info";
 				
@@ -478,9 +462,9 @@ model.addAttribute("sellerDto",info);
 			SellerDto sellerDto =SellerDto.builder().seller_name(seller_name) //sellerDto에 이름과이메일을 넣는다
 																	   .seller_email(seller_email)
 																	   .build();
-			log.info("sellerDto={}",sellerDto);
+//			log.info("sellerDto={}",sellerDto);
 			SellerDto find_id=sellerDao.find_id(sellerDto);
-				log.info("find_id={}",find_id);
+//				log.info("find_id={}",find_id);
 		//	model.addAttribute("sellerDto",find_id);
 		
 		return "seller/find_id_info";
@@ -495,9 +479,9 @@ model.addAttribute("sellerDto",info);
 			SellerDto sellerDto =SellerDto.builder().seller_name(seller_name) //sellerDto에 이름과이메일을 넣는다
 																	   .seller_email(seller_email)
 																	   .build();
-			log.info("sellerDto={}",sellerDto);
+//			log.info("sellerDto={}",sellerDto);
 			SellerDto find_id=sellerDao.find_id(sellerDto);
-			log.info("find_id={}",find_id);
+//			log.info("find_id={}",find_id);
 //			model.addAttribute("sellerDto",find_id);
 		return "redirect:/seller/login";
 }

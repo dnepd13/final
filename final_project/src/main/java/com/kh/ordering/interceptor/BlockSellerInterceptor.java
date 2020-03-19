@@ -35,23 +35,23 @@ public class BlockSellerInterceptor extends HandlerInterceptorAdapter {
 			return true;
 		}
 		String block_id = (String) request.getSession().getAttribute("seller_id");
-		log.info("session={}",block_id);
+//		log.info("session={}",block_id);
 		// String member_id = (String) request.getAttribute("member_id");
 		int count=0;
-		log.info(block_id);
-		log.info("count={}", count);
+//		log.info(block_id);
+//		log.info("count={}", count);
 		if (block_id != null) {//판매자가 로그인을 하면
 			count = sqlSession.selectOne("Block.seller", block_id);
-			log.info("countttt={}", count);
+//			log.info("countttt={}", count);
 			if(count==1) {//차단된 판매자라면                                                                                                                  
 				//차단되었다는 페이지로 보내준다
 				response.sendRedirect(request.getContextPath()+"/block/user");
-				log.info("count1={}", count);
+//				log.info("count1={}", count);
 				return false;//여기도 차단
 			}
 			else {
 				//차단되지 않은 판매자라면 통과
-				log.info("count2={}", count);
+//				log.info("count2={}", count);
 				return true;
 				
 			}
