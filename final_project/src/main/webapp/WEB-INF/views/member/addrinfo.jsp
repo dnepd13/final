@@ -12,7 +12,6 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <style>
-	* {box-sizing: border-box;}
 	.myInfo_wrap {
 		width: 1200px;
 		height: 800px;
@@ -72,7 +71,7 @@
 		width: 90%;
 	}
 	
- /*추가 modal 전체 스타일 */
+ /* modal 전체 스타일 */
  	.modal {
  		display: none;
  		z-index: 1;
@@ -153,27 +152,34 @@
 	$(function(){
 		var insert_modal = document.querySelector(".insert_modal");
 		$(".btn_addrExtra").click(function(){
-
 			
-			insert_modal.style.display = "block";
-// 			var data = $(this).parents().children().find(".member_no").data("member_no");
-				
-// 			// 비동기로 회원의 주소 List 가져오기
-// 			$.ajax ({
-// 				url:"${pageContext.request.contextPath}/member/getAddrList",
-// 				data: data,
-// 				type: "get",
-// 				success: function(resp){
-// 					console.log(resp.length);
-					
-// 				}
-// 			});
+			var member_no = $(this).parents().children().find(".member_no").data("member_no");
+			var url="${pageContext.request.contextPath}/member/getAddrList";
+	
+			// 비동기로 회원의 주소 List 가져오기
+			$.ajax ({
+				url: url,
+				data: {"member_no":member_no},
+				method: "get",
+				success: function(resp){
+					if(resp.length==4){
+						alert("배송지는 4개 이상 등록하실 수 없습니다.");
+						return false;
+					}
+					else {
+						// 배송지 등록 modal 보이기
+						insert_modal.style.display = "block";
+					}
+				}
+			});
 
 			
 		});
+		
 		$(".close").click(function(){
 			insert_modal.style.display="none";
 		});
+		
 	});
 </script>
 
@@ -243,7 +249,7 @@
 			</table>  
 		</div>
 		<div class="btn_area" align="right">
-			<button type="button" class="btn btn-primary btn_addrExtra">배송추가</button>
+			<button type="button" class="btn btn-primary btn_addrExtra">배송지추가</button>
 		</div>
 	</div>
 </div>

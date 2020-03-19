@@ -44,6 +44,10 @@
 		margin:30px auto;
 		width: 90%;
 	}
+	.payCancel,
+	.cartReturn {
+		float: right;
+	}
 </style>
 
 
@@ -105,17 +109,23 @@
 		</tr>
 		<tr>
 			<td>결제상태</td>
-			<td>${payDetails.cart_info_status } 
+			<td><p>${payDetails.cart_info_status } 
 					<fmt:parseDate value="${payDetails.process_time }" var="process_time" pattern="yyyy-MM-dd HH:mm:ss"/>
 					(<fmt:formatDate value="${process_time }" pattern="yyyy/MM/dd HH:mm:ss"/>)
 					<c:if test="${payDetails.cart_info_status == '결제완료'}">
-							<c:if test="${ okCount ==0 }">
+						<c:choose>
+							<c:when test="${ okCount ==0 }">
 								<form action="../pay/kakao/customPayRevoke" method="get">
 									<input type="hidden" name="ordering_no" value="${payDetails.ordering_no}">
-									<p align="right"><button class="btn btn-warning payCancel">결제취소</button></p>
+									<button class="btn btn-warning payCancel">결제취소</button>
 								</form>
-							</c:if>
+							</c:when>
+							<c:otherwise>
+								<button class="btn btn-warning cartReturn">교환/환불</button>
+							</c:otherwise>
+						</c:choose>
 					</c:if>
+				</p>
 			</td>
 		</tr>
 	</table>

@@ -25,6 +25,7 @@ import com.kh.ordering.entity.GoodsCartDto;
 import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.entity.Member_PointDto;
+import com.kh.ordering.entity.PayDto;
 import com.kh.ordering.repository.AdminQnaDao;
 import com.kh.ordering.repository.CertDao;
 import com.kh.ordering.repository.GoodsDao;
@@ -38,7 +39,6 @@ import com.kh.ordering.service.EmailService;
 import com.kh.ordering.service.GoodsOptionService;
 import com.kh.ordering.service.MemberService;
 import com.kh.ordering.service.RandomService;
-import com.kh.ordering.vo.CartInfoVO;
 import com.kh.ordering.vo.CartVO;
 import com.kh.ordering.vo.ItemVO;
 import com.kh.ordering.vo.ItemVOList;
@@ -198,51 +198,7 @@ public class MemberController {
 			
 			return "redirect:/member/registsuccess"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
 		}
-	
-	
-//		//회원 이메일 인증창
-//		@GetMapping("/getpwid") 
-//		public String getpwid(@ModelAttribute MemberDto memberDto) {
-//			
-//			sqlSession.selectOne("memberDto.getpwid", memberDto);
-//			return "member/pwupdate1";
-//		}
-//		
-//		@PostMapping("/getpwid1")
-//		public String pwupdate1(@ModelAttribute MemberDto memberDto,
-//				Model model) {
-//			
-//			memberDao.getpwid1(memberDto);
-//			
-//			return "redirect:/member/pwupdatesuper";
-//		}
-//		
-		
-		
-		
-		
-		//회원 비밀번호 수정
-//		@GetMapping("/pwupdate1")
-//		public String pwupdate1(@ModelAttribute MemberDto memberDto) {
-//			String member_id = "member2";
-//			
-//			
-//			memberDto=memberDao.pwget(member_id);
-//			
-//			return "member/pwupdate1";
-//		}
-//		
-//		@PostMapping("/pwupdate1")
-//		public String pwupdate(@ModelAttribute MemberDto member) {
-//			
-//			
-//			return "redirect:/member/pwupdate1";
-//		}
-		
-		
-		
-		
-		
+
 		
 	//회원 탈퇴
 	@GetMapping("memberdelete")
@@ -296,20 +252,7 @@ public class MemberController {
 	public String registsuccess() {
 		return "member/registsuccess";//완료한뒤 인덱스페이지로 보낼것을 준비
 	}
-//	
-//	@PostMapping("/registsuccess")
-//	public String registsuccess(
-//			@ModelAttribute Member_PointDto member_pointDto) {
-//	
-//	member_PointDao.registsuccess(member_pointDto);
-//		
-//		
-//		return "redirect:home"; //완료후 다른페이지로 이동시 리다이렉트로 보낸다
-//	}	
-	
-	
-	
-	
+
 	
 	
 		
@@ -482,39 +425,6 @@ public class MemberController {
 		
 		return "redirect:/member/editmember";
 	}
-	
-	
-//	//회원 정보 수정
-//	@GetMapping("editmember")
-//	public String editmember(Model model, HttpSession session)
-//	{
-//	
-//		String member_id = (String)session.getAttribute("member_id");
-//		int member_no = memberDao.getNo(member_id);
-////		MemberDto memberDto = MemberDto.builder().member_id(member_id).build();
-//		MemberDto memberDto = MemberDto.builder().member_no(member_no).build();					
-//		
-//		
-//		MemberDto my = memberDao.membergetUpdate(memberDto);
-//		model.addAttribute("memberDto", my);
-//		
-//		
-//		return "member/editmember";
-//	}
-//	
-//
-//	@PostMapping("editmember")
-//	public String editmember(@ModelAttribute MemberDto memberDto ,HttpSession session) {
-//	
-//		String member_id = (String)session.getAttribute("member_id");
-//		memberDto.setMember_id(member_id);
-//		
-//		MemberDto my = memberDao.memberedit(memberDto);
-//	
-//
-//		
-//		return "redirect:/member/membermyinfo";
-//	}
 	@PostMapping("/memberedit")
 	public void memberedit(@ModelAttribute MemberDto memberDto) {
 
@@ -664,14 +574,7 @@ public class MemberController {
 					return "member/addrinfo";
 				}
 				
-				
-				//배송지 1/1보기
-//				@GetMapping("/addrpage")
-//				public String addrpage() {
-//					
-//					return "member/addrpage";
-//				}
-				
+
 				// 배송지 한개 테이블 리스트
 	
 	@GetMapping("/addrpage")
@@ -754,44 +657,7 @@ public class MemberController {
 		
 		return "redirect:/member/addrinfo";
 	}
-	
-//
-//	@GetMapping("/editaddr")
-//	public String editaddr(@RequestParam int member_addr_no,Model model) {
 
-//
-////		AdminQnaDto result1= AdminQnaDto.builder().admin_qna_no(admin_qna_no).build();
-//		
-//		Member_AddrDto result1 = Member_AddrDao.addrgetupdate(member_addr_no);
-
-//		model.addAttribute("updategetreport",result1);
-//		
-
-//
-//		return "board/editreport";
-//	}
-//
-//	
-//	@PostMapping("/editreport")
-//	public String editreport(@ModelAttribute AdminQnaDto adminQnaDto,
-//							Model model ) {
-//
-
-//
-////		AdminQnaDto result = adminQnaDao.qnagetupdate(adminQnaDto);
-//
-//
-
-//
-//
-
-//		adminQnaDao.reportUpdate(adminQnaDto);
-//
-//		return "redirect:/board/memberreport";
-//	}
-//	
-	
-	
 	//배송지 추가 테이블
 	
 	@PostMapping("/insertaddr")
@@ -848,6 +714,7 @@ public class MemberController {
 	@ResponseBody
 	public List<Member_AddrDto> getListAddr(@RequestParam int member_no) {
 		log.info("member_no={}",member_no);
+//		int memberNo = Integer.parseInt(member_no);
 		return member_AddrDao.getListAddr(member_no);
 	}
 	
@@ -855,15 +722,35 @@ public class MemberController {
 	
 		@GetMapping("/pointinfo")
 		public String pointinfo (HttpSession session, Model model, 
-													@RequestParam(value="pageNo", required=false, defaultValue="0")String pageNo ) {
+											@RequestParam(value="pageNo", required=false, defaultValue="0")String pageNo,
+											@ModelAttribute PagingVO pagingVO) {
 			String member_id = (String)session.getAttribute("member_id");
 			int member_no = memberDao.getNo(member_id);
-			
-			PagingVO result = memberService.pointInfoPaging(pageNo, member_no);
-			model.addAttribute("paging",result);
-			List<Member_PointDto> pointlist = member_PointDao.getListPoint(result);
-			
-			model.addAttribute("pointinfo",pointlist);
+		
+			int count;
+			if(pagingVO.getKey()==null || pagingVO.getKey()=="") {
+				count = member_PointDao.getListCount(member_no);
+				PagingVO result = memberService.pointInfoPaging(pageNo, count);
+				
+				result.setMember_no(member_no);
+				
+				model.addAttribute("paging",result);
+				
+				List<Member_PointDto> pointlist = member_PointDao.getListPoint(result);
+				model.addAttribute("pointinfo",pointlist);
+			}
+			else {
+				count = member_PointDao.getStatusCount(member_no, pagingVO.getKey());
+				PagingVO result = memberService.pointInfoPaging(pageNo, count);
+				
+				result.setMember_no(member_no);
+				result.setKey(pagingVO.getKey());
+				
+				model.addAttribute("paging",result);
+				
+				List<Member_PointDto> pointlist = member_PointDao.getListPoint(result);
+				model.addAttribute("pointinfo",pointlist);
+			}
 			// 회원 현재 총 포인트
 			int totalPoint= member_PointDao.getTotalPoint(member_no);
 			model.addAttribute("totalPoint", totalPoint);
@@ -881,7 +768,7 @@ public class MemberController {
 		model.addAttribute("member_no", member_no);
 		
 		// 최근 구매내역
-		List<CartInfoVO> cartYesterDay = orderDao.getListYesterDay(member_no);
+		List<PayDto> cartYesterDay = orderDao.getListYesterDay(member_no);
 		model.addAttribute("cartYeseterDay", cartYesterDay);
 		
 		// 최근 문의게시판 작성내역

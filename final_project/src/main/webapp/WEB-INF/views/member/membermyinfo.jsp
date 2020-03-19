@@ -77,18 +77,27 @@
 			    	</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="cartYesterDay" items="${cartYeseterDay}">
-				    <tr>
-							<td scope="row">${cartYesterDay.partner_order_id }</td>
-							<td scope="row" align="left">${cartYesterDay.item_name }</td>
-							<td scope="row" align="right">${cartYesterDay.total_price }</td>
-							<td scope="row" align="center">${cartYesterDay.cart_info_status }</td>
-						<td scope="row">
-							<fmt:parseDate value="${cartYesterDay.process_time}" var="cart_date" pattern="yyyy-MM-dd HH:mm:ss"/>
-							<fmt:formatDate value="${cart_date}" pattern="yyyy/MM/dd HH:mm:ss"/>
-						</td>
-					</tr>
-				</c:forEach>
+				<c:choose>
+					<c:when test="${empty cartYeseterDay}">
+						<tr>
+							<td colspan="5" class="title1">최근 구매내역이 없습니다.</td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+						<c:forEach var="cartYesterDay" items="${cartYeseterDay}">
+						    <tr>
+									<td scope="row">${cartYesterDay.partner_order_id }</td>
+									<td scope="row" align="left">${cartYesterDay.item_name }</td>
+									<td scope="row" align="right">${cartYesterDay.total_amount }</td>
+									<td scope="row" align="center">${cartYesterDay.ordering_status }</td>
+								<td scope="row">
+									<fmt:parseDate value="${cartYesterDay.process_time}" var="cart_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+									<fmt:formatDate value="${cart_date}" pattern="yyyy/MM/dd HH:mm:ss"/>
+								</td>
+							</tr>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
 			  </tbody>
 			</table>
 		</div>
@@ -112,26 +121,35 @@
 			    	</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="qna" items="${getListYesterDay}">
-				    <tr>
-						<c:choose>
-							<c:when test="${qna.admin_qna_head=='답변' }">
-								<td scope="row"></td>
-								<td scope="row" align="left">
-									<a href="${pageContext.request.contextPath }/board/detailmqna?admin_qna_no=${qna.admin_qna_no}">[${qna.admin_qna_head}] ${qna.admin_qna_title}</a>
+				<c:choose>
+					<c:when test="${empty getListYesterDay}">
+						<tr>
+							<td colspan="3" class="title2">최근 문의내역이 없습니다.</td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+						<c:forEach var="qna" items="${getListYesterDay}">
+						    <tr>
+								<c:choose>
+									<c:when test="${qna.admin_qna_head=='답변' }">
+										<td scope="row"></td>
+										<td scope="row" align="left">
+											<a href="${pageContext.request.contextPath }/board/detailmqna?admin_qna_no=${qna.admin_qna_no}">[${qna.admin_qna_head}] ${qna.admin_qna_title}</a>
+										</td>
+									</c:when>
+									<c:otherwise>
+										<td scope="row">${qna.admin_qna_head}</td>
+										<td scope="row" align="left">${qna.admin_qna_title}</td>
+									</c:otherwise>
+								</c:choose>
+								<td scope="row">
+									<fmt:parseDate value="${qna.admin_qna_date}" var="qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+									<fmt:formatDate value="${qna_date}" pattern="yyyy/MM/dd HH:mm:ss"/>
 								</td>
-							</c:when>
-							<c:otherwise>
-								<td scope="row">${qna.admin_qna_head}</td>
-								<td scope="row" align="left">${qna.admin_qna_title}</td>
-							</c:otherwise>
-						</c:choose>
-						<td scope="row">
-							<fmt:parseDate value="${qna.admin_qna_date}" var="qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
-							<fmt:formatDate value="${qna_date}" pattern="yyyy/MM/dd HH:mm:ss"/>
-						</td>
-					</tr>
-				</c:forEach>
+							</tr>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
 			  </tbody>
 			</table>
 		</div>
