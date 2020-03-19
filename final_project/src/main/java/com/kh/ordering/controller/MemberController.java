@@ -333,6 +333,7 @@ public class MemberController {
 		
 		if(login == null) {//아이디가 없으면
 
+		//리턴 값
 			return "redirect:/member/login?error";
 		}
 		
