@@ -22,6 +22,9 @@ import com.kh.ordering.vo.OrderDeliveryVO;
 import com.kh.ordering.vo.OrderVO;
 import com.kh.ordering.vo.PagingVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class OrderDaoImpl implements OrderDao {
 
 	@Autowired
@@ -96,7 +99,7 @@ public class OrderDaoImpl implements OrderDao {
 		}
 
 		// 포인트 검사, 감소
-		if (!memberDao.minusPointOrder(member_no, orderVO.getUsed_point())) {
+		if (orderVO.getUsed_point() > 0 && !memberDao.minusPointOrder(member_no, orderVO.getUsed_point())) {
 			payService.revoke(orderDao.getOrdering_no(partner_order_id));
 			System.out.println("포인트부족");
 			throw new Exception();
@@ -104,7 +107,6 @@ public class OrderDaoImpl implements OrderDao {
 		
 		// 상품 구매 포인트 적용
 		memberDao.registOrderPoint(member_no, orderVO.getTotal_price());
-		
 		// 구매확정 테이블 추가
 //		CartOkDto cartOkDto = CartOkDto.
 //		memberDao.insertCartOK(cartOkDto);
