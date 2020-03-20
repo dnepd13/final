@@ -71,7 +71,7 @@ public class FilesDaoImpl implements FilesDao {
 		
 		for(FilesDto filesDto : filesDtoList) {
 			Map<String, Integer> map = new HashMap<>();
-			log.info("22222{}", filesDto.getFiles_no());
+	//		log.info("22222{}", filesDto.getFiles_no());
 			map.put("files_no", filesDto.getFiles_no());
 			map.put("goods_no", goods_no);
 			sqlSession.insert("files.insertFilesGoods", map);

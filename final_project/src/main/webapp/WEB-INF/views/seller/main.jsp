@@ -38,7 +38,7 @@
 	}
 </style>
 
-
+<h1 style="text-align:center;">판매자 마이페이지</h1>
 <article class="articleBox">
 <jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 <div class="BigStore">

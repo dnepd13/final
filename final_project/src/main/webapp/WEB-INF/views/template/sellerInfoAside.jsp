@@ -82,6 +82,9 @@
     line-height: 3em;
     
   }
+  .nav-item{
+  color: #fff;
+  }
 
 </style>
 

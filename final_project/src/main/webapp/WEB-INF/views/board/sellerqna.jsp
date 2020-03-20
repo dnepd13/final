@@ -7,9 +7,7 @@
 
 <!-- 판매자 문의 info  -->
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/> 
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
@@ -49,7 +47,7 @@
 		</div>
 		<div class="btn-group-vertical" style="float:right;">
 			<a href="${pageContext.request.contextPath}/board/sellerqnaregist">
-				<button type="button" class="btn btn-primary">글쓰기</button>
+				<button type="button" class="btn btn-secondary">글쓰기</button>
 			</a>
 		</div>
 <table class="table table-borderless cart_table">

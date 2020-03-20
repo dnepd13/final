@@ -12,7 +12,7 @@
 <div class="container-fluid">
      <div class="row">
          <div class="offset-md-4 col-md-4 ">
-            <div class="row justify-content-center"><h1>현재 비밀번호</h1></div>
+            <div class="row justify-content-center"><h1>비밀번호 변경</h1></div>
             <br><br><br>
     		<form action="check_pw" method="post">
     		   <!--비밀번호 입력창-->
@@ -27,8 +27,5 @@
 
 </div>             
             
-<!-- 현재비밀번호<input type="password" name="seller_pw">
-<input type="submit" value="변경하기">
-</form> -->
 
 <jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>

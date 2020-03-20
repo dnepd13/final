@@ -68,7 +68,7 @@ h4{
 </table>
 </div>
 	<div class="btn-group-vertical" style="float:right;">
-		<button class="btn btn-primary" style="float:right;">등록</button>
+		<button class="btn btn-secondary" style="float:right;">등록</button>
 	</div>
 
 </form>
