@@ -14,6 +14,7 @@ public class MemberPointVO {
 						member_point_status,
 						member_point_date,
 						member_point_limit,
-						member_point_content;
+						member_point_content,
+						member_point_admin;
 	
 }

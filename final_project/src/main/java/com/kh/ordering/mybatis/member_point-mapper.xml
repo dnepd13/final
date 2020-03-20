@@ -37,7 +37,8 @@
  		member_point_limit,
  		member_point_change,
  		member_point_content,
- 		member_no)
+ 		member_no,
+ 		member_point_admin)
  		values(
  		member_point_seq.nextval,
  		'적립',
@@ -45,7 +46,8 @@
  		sysdate+30,
  		500,
  		'가입을 축하합니다',
- 		#{member_no}
+ 		#{member_no},
+ 		'admin'
 		)
 	</insert>
 	
@@ -70,19 +72,19 @@
 	<insert id="insertPoint" parameterType="member_PointDto">
 		insert into member_point(member_point_no, member_point_status,
 							                        member_point_date, member_point_limit,
-							                        member_point_change, member_point_content, member_no)
+							                        member_point_change, member_point_content, member_no, member_point_admin)
 		            values(member_point_seq.nextval, '적립',
 			                    sysdate, sysdate+30,
-			                    #{member_point_change}, #{member_point_content}, #{member_no})
+			                    #{member_point_change}, #{member_point_content}, #{member_no}, '없음')
 	</insert>
 	<!-- 포인트 사용 추가 -->
 	<insert id="usedPoint" parameterType="member_PointDto">
 		insert into member_point(member_point_no, member_point_status,
 							                        member_point_date, member_point_limit,
-							                        member_point_change, member_point_content, member_no)
+							                        member_point_change, member_point_content, member_no, member_point_admin)
 		            values(member_point_seq.nextval, '사용',
 			                    sysdate, sysdate+30,
-			                    #{member_point_change}, #{member_point_content}, #{member_no})
+			                    #{member_point_change}, #{member_point_content}, #{member_no},'없음')
 	</insert>
 
  </mapper> 
