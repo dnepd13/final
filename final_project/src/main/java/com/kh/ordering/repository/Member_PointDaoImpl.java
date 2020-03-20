@@ -37,9 +37,18 @@ public class Member_PointDaoImpl implements Member_PointDao{
 
 		return sqlSession.selectList("member_PointDto.getListPoint",pagingVO);
 	}
-	@Override
+	@Override // 전체조회 count
 	public int getListCount(int member_no) {
 		return sqlSession.selectOne("member_PointDto.getListCount", member_no);
+	}
+	@Override // 검색조회 count
+	public int getStatusCount(int member_no, String member_point_status) {
+
+		Member_PointDto memberPointDto = Member_PointDto.builder()
+																							.member_no(member_no)
+																							.member_point_status(member_point_status)
+																							.build();
+		return sqlSession.selectOne("member_PointDto.getStatusCount", memberPointDto);
 	}
 
 	@Override

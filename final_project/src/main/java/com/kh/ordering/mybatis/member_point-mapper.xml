@@ -52,13 +52,27 @@
 	</insert>
 	
 	<!-- 회원 포인트 조회 -->
+		<!-- 전체목록 count -->
 	<select id="getListCount" resultType="int" parameterType="int">
 		select count(*) from member_point where member_no=#{member_no}
+	</select>
+		<!-- status에 따른 조회 -->
+	<select id="getStatusCount" resultType="int" parameterType="pagingVO">
+		select count(*) from member_point where member_no=#{member_no} and member_point_status=#{member_point_status}
 	</select>
 	<select id="getListPoint" parameterType="int" resultType="member_PointDto">
 		select *from(
 			select rownum rn, RN.* from(
-				select * from member_point where member_no = #{member_no} order by member_point_no desc
+				select * from member_point
+				<choose>
+					<when test='key == null'>
+						where member_no = #{member_no}
+					</when>
+					<when test='key != null' >
+						where member_no = #{member_no} and member_point_status = #{key} 
+					</when>
+				</choose>	
+					order by member_point_no desc
 				)RN
 		)where rn between #{start} and #{finish}
 	</select>
@@ -66,6 +80,10 @@
 	<!-- 현재 총 포인트 -->
 	<select id="getTotalPoint" resultType="int" parameterType="int"> 
 		select sum(member_point_change) from member_point where member_no=#{member_no}
+	</select>
+	<!-- status 포인트 합산 -->
+	<select id="getStatusPoint">
+		select sum(member_point_change) from member_point where member_no=#{member_no} and member_point_status = #{key} 
 	</select>
 	
 	<!-- 포인트 적립 추가-->

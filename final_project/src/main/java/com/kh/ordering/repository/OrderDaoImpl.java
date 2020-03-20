@@ -13,6 +13,7 @@ import com.kh.ordering.entity.CartInfoOpDto;
 import com.kh.ordering.entity.CartOkDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.GoodsOptionDto;
+import com.kh.ordering.entity.PayDto;
 import com.kh.ordering.service.payService;
 import com.kh.ordering.vo.CartDetailsVO;
 import com.kh.ordering.vo.CartInfoGoodsVO;
@@ -22,6 +23,9 @@ import com.kh.ordering.vo.OrderDeliveryVO;
 import com.kh.ordering.vo.OrderVO;
 import com.kh.ordering.vo.PagingVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class OrderDaoImpl implements OrderDao {
 
 	@Autowired
@@ -96,7 +100,7 @@ public class OrderDaoImpl implements OrderDao {
 		}
 
 		// 포인트 검사, 감소
-		if (!memberDao.minusPointOrder(member_no, orderVO.getUsed_point())) {
+		if (orderVO.getUsed_point() > 0 && !memberDao.minusPointOrder(member_no, orderVO.getUsed_point())) {
 			payService.revoke(orderDao.getOrdering_no(partner_order_id));
 			System.out.println("포인트부족");
 			throw new Exception();
@@ -104,7 +108,6 @@ public class OrderDaoImpl implements OrderDao {
 		
 		// 상품 구매 포인트 적용
 		memberDao.registOrderPoint(member_no, orderVO.getTotal_price());
-		
 		// 구매확정 테이블 추가
 //		CartOkDto cartOkDto = CartOkDto.
 //		memberDao.insertCartOK(cartOkDto);
@@ -247,8 +250,8 @@ public class OrderDaoImpl implements OrderDao {
 		return sqlSession.selectList("order.getTopSales", category_no);
 	}
 
-	@Override // 회원 마이페이지 메인: 최근 3일 주문내역 4개
-	public List<CartInfoVO> getListYesterDay(int member_no) {
+	@Override // 회원 마이페이지 메인: 최근 3일 주문내역 5개
+	public List<PayDto> getListYesterDay(int member_no) {
 		return sqlSession.selectList("order.getListYesterDay", member_no);
 	}
 	

@@ -12,13 +12,16 @@
 	</select>
 	
 	<!-- 검색 -->
-	<select id="search" parameterType="String" resultType="goodsDto">
+	<select id="search" parameterType="java.util.ArrayList" resultType="goodsDto">
 		select * from (
 			select * from goods G
 			inner join category C
 			on G.category_no = C.category_no
-			where goods_name like '%${keyword}%' or category_middle like '%${keyword}%' or category_small like '%${keyword}%'
-			)
+			where 
+		<foreach collection="array" item="keyword" index="index" separator="OR" close=")">
+			upper(goods_name) like upper('%${keyword}%') or upper(category_middle) like upper('%${keyword}%') 
+			or upper(category_small) like upper('%${keyword}%')
+		</foreach>
 		where goods_status = 'Y'
 	</select>
 	

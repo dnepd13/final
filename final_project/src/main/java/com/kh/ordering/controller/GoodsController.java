@@ -26,9 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.FilesDto;
 import com.kh.ordering.entity.GoodsDto;
-import com.kh.ordering.entity.GoodsOptionDto;
 import com.kh.ordering.entity.GoodsQnaDto;
 import com.kh.ordering.entity.GoodsReviewDto;
 import com.kh.ordering.entity.GoodsReviewReplyDto;
@@ -50,8 +50,6 @@ import com.kh.ordering.vo.DeliveryVO;
 import com.kh.ordering.vo.FilesVO;
 import com.kh.ordering.vo.GoodsFileVO;
 import com.kh.ordering.vo.GoodsVO;
-import com.kh.ordering.vo.ItemVO;
-import com.kh.ordering.vo.ItemVOList;
 import com.kh.ordering.vo.PagingVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -211,6 +209,7 @@ public class GoodsController {
 		List<GoodsDto> list = goodsService.search(keyword);
 		List<GoodsFileVO> VOlist = new ArrayList<>();
 		List<Integer> starList = new ArrayList<>();
+		List<CategoryDto> categoryList = new ArrayList<>();
 		for (GoodsDto goodsDto : list) {
 			GoodsFileVO goodsFileVO = GoodsFileVO.builder()
 					.goodsDto(goodsDto)
@@ -218,7 +217,12 @@ public class GoodsController {
 					.build();
 			VOlist.add(goodsFileVO);
 			starList.add(goodsReviewDao.getStarAvg(goodsDto.getGoods_no()));
+			
+			CategoryDto categoryDto = categoryDao.get(goodsDto.getCategory_no());
+			categoryList.add(categoryDto);
 		}
+		
+		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("list", VOlist);
 		model.addAttribute("listSize", list.size());
 		model.addAttribute("starList", starList);

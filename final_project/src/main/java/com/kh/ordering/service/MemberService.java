@@ -29,5 +29,5 @@ public interface MemberService {
 	void deleteCart(int goods_cart_no);
 
 	// 포인트 페이징
-	PagingVO pointInfoPaging(String pageNo, int member_no);
+	PagingVO pointInfoPaging(String pageNo, int count);
 }

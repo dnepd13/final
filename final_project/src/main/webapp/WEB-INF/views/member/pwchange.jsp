@@ -10,6 +10,8 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
+
+
 <style>
 	.login-area {
 		width: 500px;
@@ -36,15 +38,15 @@
 				<!--비밀번호 입력창-->
                <div class="form-group">
                	 <label for="pw-input">비밀번호 입력 </label>
-                 <input class="form-control" type="password" id="pw-input1" name="member_pw" required>
+                 <input class="form-control" type="password" id="pw-input1" name="member_pw" maxlength="48" required>
                </div>
                 <button type="submit" id="frm" class="btn btn-secondary disabled btn-block">비밀번호 변경하기</button>
              </form>
           </div>
        </div>
 </div>
- <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
-
  
+ 
+ <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
 
  

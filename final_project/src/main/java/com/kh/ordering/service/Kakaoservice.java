@@ -82,7 +82,7 @@ public class Kakaoservice implements payService {
 		body.add("total_amount", String.valueOf(vo.getTotal_amount()));
 		body.add("vat_amount", String.valueOf(vo.getVat_amount()));
 		body.add("tax_free_amount", String.valueOf(vo.getTax_free_amount()));
-
+		
 		String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().port(8080).path("/pay/kakao/")
 				.toUriString();
 
@@ -95,17 +95,25 @@ public class Kakaoservice implements payService {
 		URI uri = new URI("https://kapi.kakao.com/v1/payment/ready");
 
 		KakaoPayReadyReturnVO returnVO = template.postForObject(uri, entity, KakaoPayReadyReturnVO.class);
-
+		
 		int member_no = sqlSession.selectOne("member.getNo", session.getAttribute("member_id"));
 
 		ObjectMapper mapper = new ObjectMapper();
 		OrderVO orderVO = mapper.readValue(jsonOrderVO, OrderVO.class);
-
+		
+		int rate = memberDao.getGradeBenefitRate(memberDao.getMember(member_no).getMember_grade());
+		int used_point = orderVO.getUsed_point();
+		
 		PayDto payDto = PayDto.builder().cid("TC0ONETIME").tid(returnVO.getTid()).member(member_no)
-				.partner_order_id(vo.getPartner_order_id()).partner_user_id(vo.getPartner_user_id())
-				.item_name(vo.getItem_name()).process_time(returnVO.getCreated_at()).quantity(vo.getQuantity())
-				.total_amount(vo.getTotal_amount()).used_point(orderVO.getUsed_point())
-				.vat_amount(vo.getTotal_amount() / 10).build();
+					.partner_order_id(vo.getPartner_order_id())
+					.partner_user_id(vo.getPartner_user_id())
+					.item_name(vo.getItem_name())
+					.process_time(returnVO.getCreated_at())
+					.quantity(vo.getQuantity())
+					.total_amount(vo.getTotal_amount())
+					.used_point(used_point*rate/100)
+					.vat_amount(vo.getTotal_amount() / 10)
+				.build();
 
 		payDao.insertReady(payDto, orderVO);
 
@@ -142,10 +150,17 @@ public class Kakaoservice implements payService {
 		
 //		log.info("2번");
 		PayDto payDto = PayDto.builder().cid(returnVO.getCid()).tid(returnVO.getTid()).member(member_no)
-				.process_time(returnVO.getCreated_at()).item_name(returnVO.getItem_name())
-				.partner_order_id(returnVO.getPartner_order_id()).partner_user_id(returnVO.getPartner_user_id())
-				.quantity(returnVO.getQuantity()).total_amount(returnVO.getAmount().getTotal()).aid(returnVO.getAid())
-				.used_point(returnVO.getAmount().getPoint()).vat_amount(returnVO.getAmount().getVat()).build();
+				.process_time(returnVO.getCreated_at())
+				.item_name(returnVO.getItem_name())
+				.partner_order_id(returnVO.getPartner_order_id())
+				.partner_user_id(returnVO.getPartner_user_id())
+				.quantity(returnVO.getQuantity())
+				.total_amount(returnVO.getAmount()
+				.getTotal()).aid(returnVO.getAid())
+				.used_point(returnVO.getAmount().getPoint())
+				.vat_amount(returnVO.getAmount()
+				.getVat())
+			.build();
 
 		payDao.insertSuccess(payDto);
 
@@ -205,11 +220,13 @@ public class Kakaoservice implements payService {
 		payDao.insertRevoke(payDto2);
 		// 취소 되면 포인트 돌려주고,
 		int used_point = orderDao.getCartInfo(payDto.getPartner_order_id()).getUsed_point();
-		MemberPointVO memberPointVO = MemberPointVO.builder()
-				.member_no(orderDao.getMember_no(payDto.getPartner_order_id())).member_point_change(used_point)
-				.member_point_status("적립").member_point_content("결제 취소").build();
+		if(used_point !=0 ) {
+			MemberPointVO memberPointVO = MemberPointVO.builder()
+					.member_no(orderDao.getMember_no(payDto.getPartner_order_id())).member_point_change(used_point)
+					.member_point_status("적립").member_point_content("결제 취소").build();
 
-		memberDao.registPoint(memberPointVO);
+			memberDao.registPoint(memberPointVO);
+		}		
 
 		return null;
 	}
@@ -219,10 +236,15 @@ public class Kakaoservice implements payService {
 		ObjectMapper mapper = new ObjectMapper();
 		OrderVO orderVO = mapper.readValue(jsonOrderVO, OrderVO.class);
 
-		KakaoPayReadyVO kakaoPayReadyVO = KakaoPayReadyVO.builder().partner_order_id(payDao.getPartnerOrderId())
-				.partner_user_id(orderVO.getPartner_user_id()).item_name(payDao.getItem_name(orderVO))
-				.quantity(orderVO.getTotal_quantity()).total_amount(orderVO.getTotal_price())
-				.vat_amount(orderVO.getTotal_price() / 10).tax_free_amount(0).build();
+		KakaoPayReadyVO kakaoPayReadyVO = KakaoPayReadyVO.builder()
+							.partner_order_id(payDao.getPartnerOrderId())
+							.partner_user_id(orderVO.getPartner_user_id())
+							.item_name(payDao.getItem_name(orderVO))
+							.quantity(orderVO.getTotal_quantity())
+							.total_amount(orderVO.getTotal_price())
+							.vat_amount(orderVO.getTotal_price() / 10)
+							.tax_free_amount(0)
+						.build();
 
 		return kakaoPayReadyVO;
 	}
@@ -422,11 +444,13 @@ public class Kakaoservice implements payService {
 		
 		// 포인트 취소
 		int used_point = orderDao.getCartInfo(payDto.getPartner_order_id()).getUsed_point();
-		MemberPointVO memberPointVO = MemberPointVO.builder()
-				.member_no(orderDao.getMember_no(payDto.getPartner_order_id())).member_point_change(used_point)
-				.member_point_status("적립").member_point_content("결제 취소").build();
-
-		memberDao.registPoint(memberPointVO);
+		if(used_point !=0) {
+			MemberPointVO memberPointVO = MemberPointVO.builder()
+					.member_no(orderDao.getMember_no(payDto.getPartner_order_id())).member_point_change(used_point)
+					.member_point_status("적립").member_point_content("결제 취소").build();
+			
+			memberDao.registPoint(memberPointVO);		
+		}
 		
 		// 주문제작 상태 update
 		String custom_order = revokeReturnVO.getPartner_order_id().substring(revokeReturnVO.getPartner_order_id().lastIndexOf("C")+1);
