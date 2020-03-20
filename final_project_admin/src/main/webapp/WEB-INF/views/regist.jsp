@@ -9,7 +9,7 @@
 	$(function(){
 		
 			var success = '${success}';
-			console.log(success);
+// 			console.log(success);
 			if(success!=""){
 				window.alert(success);
 			}

@@ -7,7 +7,6 @@
 
 <script>
 		var success = '${param.string}';
-		console.log(success);
 		if(success!=""){
 			window.alert(success);
 		}

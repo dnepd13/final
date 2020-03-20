@@ -36,7 +36,7 @@
 						return false;
 					}
 				});
-				console.log(confirm);
+// 				console.log(confirm);
 				if(confirm ==1){
 					return false;
 				}
@@ -47,7 +47,7 @@
 						return false;
 					}
 				});
-				console.log(rateconfirm);
+// 				console.log(rateconfirm);
 				if(rateconfirm == 1){
 					return false;
 				}
@@ -148,8 +148,8 @@
 					$(".insertbutton").attr('disabled', true);
 				}
 			});
-			console.log("grade"+comfirm1);
-			console.log("rate"+comfirm2);
+// 			console.log("grade"+comfirm1);
+// 			console.log("rate"+comfirm2);
 			if(comfirm1==0&&comfirm2==0){
 				$(".insertbutton").attr('disabled', false);
 			}

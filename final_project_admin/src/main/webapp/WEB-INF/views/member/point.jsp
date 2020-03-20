@@ -30,10 +30,11 @@
   <thead>
     <tr>
       <th width="10%">포인트 사용량</th>
-      <th width="20%">포인트 상태</th>
+      <th width="10%">포인트 상태</th>
       <th width="20%">포인트 날짜</th>
       <th width="20%">포인트 기간</th>
       <th width="20%">포인트 사용 내역</th>
+      <th width="10%">담당자</th>
       <th width="10%">삭제</th>
     </tr>
   </thead>
@@ -45,6 +46,7 @@
 	      <td>${list.member_point_date }</td>
 	      <td>${list.member_point_limit.substring(0,10) }</td>
 	      <td>${list.member_point_content }</td>
+	      <td>${list.member_point_admin }</td>
 	      <td>
 	      		<form action="" method="post">
 	      		  <input type="hidden" name="member_point_no" value="${list.member_point_no }">
