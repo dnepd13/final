@@ -6,9 +6,7 @@
 
 <!-- 판매자 신고 info -->
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/> 
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
@@ -45,16 +43,16 @@
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
 		<div class="cart_title">
-			<h3>문의게시판</h3>
+			<h3>신고게시판</h3>
 		</div>
 		<div class="btn-group-vertical" style="float:right;">
 			<a href="${pageContext.request.contextPath}/board/sellerreportregist">
-				<button type="button" class="btn btn-primary">글쓰기</button>
+				<button type="button" class="btn btn-secondary">글쓰기</button>
 			</a>
 		</div>
 		<div class="btn-group-vertical" style="float:right;">
 			<a href="${pageContext.request.contextPath}/seller/main">
-				<button type="button" class="btn btn-primary">홈으로</button>
+				<button type="button" class="btn btn-secondary">홈으로</button>
 			</a>
 		</div>
 		<table class="table table-borderless cart_table">

@@ -33,7 +33,7 @@
 <div class="container-fluid">
      <div class="row">
          <div class="offset-md-4 col-md-4 ">
-            <div class="row justify-content-center"><h1>비밀번호 변경 페이지</h1></div>
+            <div class="row justify-content-center"><h1>비밀번호 변경</h1></div>
             <br><br><br>
             <form action="change_pw" method="post">
  
