@@ -44,6 +44,7 @@ public class MemberDaoImpl implements MemberDao{
 	// 포인트 추가,차감
 	@Override
 	public void registPoint(MemberPointVO memberPointVO) {
+		log.info("member={}", memberPointVO);
 		sqlSession.insert("member.registPoint", memberPointVO);
 	}
 	

@@ -41,7 +41,7 @@
 		
 		
 		$(".btn-modify").click(function(){
-			console.log("ddd");
+// 			console.log("ddd");
 			if($(this).text()=="수정"){
 				var largeCell = $(this).parent().prev().prev().prev();
 				var middleCell = $(this).parent().prev().prev();
@@ -114,10 +114,10 @@
 				var td = $(this).parent();
 				var category_no = td.data("category-no");
 				
-				console.log(category_no);
-				console.log(category_large);
-				console.log(category_middle);
-				console.log(category_small);
+// 				console.log(category_no);
+// 				console.log(category_large);
+// 				console.log(category_middle);
+// 				console.log(category_small);
 				
 				$.ajax({
 					url:"categoryUpdate",
@@ -129,7 +129,7 @@
 						"category_small": category_small
 					},
 					success : function(resp){
-						console.log(resp);
+// 						console.log(resp);
 					}
 				});
 			}
@@ -148,7 +148,7 @@
 					"category_no":category_no
 				},
 				success:function(resp){
-					console.log(resp);
+// 					console.log(resp);
 				}
 			});
 		});
