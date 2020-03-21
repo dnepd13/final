@@ -434,15 +434,15 @@ model.addAttribute("sellerDto",info);
 		return "seller/find_id";
 				
 	}
-	@PostMapping("/find_id")
+	@PostMapping("/find_id_info")
 
-	public String find_id(HttpSession session,@RequestParam String seller_email,
-			@RequestParam String seller_name,Model model) {
+	public String find_id(HttpSession session,@RequestParam String seller_name,@RequestParam String seller_email,
+			Model model) {
 //			log.info("1= {}", seller_email);
 //			log.info("2= {}", seller_name);
-			SellerDto sellerDto =SellerDto.builder().seller_name(seller_name) //sellerDto에 이름과이메일을 넣는다
-																	   .seller_email(seller_email)
-																	   .build();
+			SellerDto sellerDto =SellerDto.builder().seller_name(seller_name) 
+													.seller_email(seller_email)
+													.build();
 //			log.info("2sellerDto={}",sellerDto);
 			SellerDto find_id=sellerDao.find_id(sellerDto);
 //			log.info("2find_id={}",sellerDto);
@@ -453,11 +453,12 @@ model.addAttribute("sellerDto",info);
 }
 	@GetMapping("/find_id_info")
 	
-	public String find_id_info2(HttpSession session,@RequestParam(value = "seller_email",required = false ,defaultValue = "" ) String seller_email,
+	public String find_id_info2(HttpSession session,
 			@RequestParam (value = "seller_name",required = false ,defaultValue = "" ) String seller_name,
+			@RequestParam(value = "seller_email",required = false ,defaultValue = "" ) String seller_email,
 				Model model) {
-	String name =(String)session.getAttribute("seller_name");
-	String email =(String)session.getAttribute("seller_email");
+			String name =(String)session.getAttribute("seller_name");
+			String email =(String)session.getAttribute("seller_email");
 		
 			SellerDto sellerDto =SellerDto.builder().seller_name(seller_name) //sellerDto에 이름과이메일을 넣는다
 																	   .seller_email(seller_email)
@@ -465,24 +466,10 @@ model.addAttribute("sellerDto",info);
 //			log.info("sellerDto={}",sellerDto);
 			SellerDto find_id=sellerDao.find_id(sellerDto);
 //				log.info("find_id={}",find_id);
-		//	model.addAttribute("sellerDto",find_id);
+				model.addAttribute("sellerDto",find_id);
 		
-		return "seller/find_id_info";
+			return "seller/find_id_info";
 				
 	}
-	@PostMapping("/find_id_info")
 
-	public String find_id_info(HttpSession session,@RequestParam(value = "seller_email",required = false ,defaultValue = "" ) String seller_email,
-			@RequestParam(value = "seller_name",required = false ,defaultValue = "" ) String seller_name,Model model) {
-	String name =(String)session.getAttribute("seller_name");
-		String email =(String)session.getAttribute("seller_email");
-			SellerDto sellerDto =SellerDto.builder().seller_name(seller_name) //sellerDto에 이름과이메일을 넣는다
-																	   .seller_email(seller_email)
-																	   .build();
-//			log.info("sellerDto={}",sellerDto);
-			SellerDto find_id=sellerDao.find_id(sellerDto);
-//			log.info("find_id={}",find_id);
-//			model.addAttribute("sellerDto",find_id);
-		return "redirect:/seller/login";
-}
 }

@@ -8,7 +8,9 @@
   </script>
   <script src="${pageContext.request.contextPath}/resources/js/secom.js"></script>
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
+
 <div class="container-fluid">
      <div class="row">
          <div class="offset-md-4 col-md-4 ">

@@ -25,7 +25,11 @@
 <div class="redirect-box row justify-content-center">
 
 <div class="redirect-content">
-	<h4 align="center">탈퇴처리되었습니다. 그동안 이용해주셔서 감사합니다.</h4><br>
+	<h4 align="center">탈퇴처리되었습니다.</h4>
+	</div>
+	<div>
+	<h4> 그동안 이용해주셔서 감사합니다.</h4>
+	</div>
 	<div class="row-empty-40"><br>
 	<span><a href="${pageContext.request.contextPath }/seller/main">메인으로</a></span>
 	</div>
