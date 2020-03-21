@@ -53,10 +53,10 @@
 </script> 
 
 
-<h4>확인 안 한 요청서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
 
 <article class="articleBox">
 
+<h4>받은 요청서</h4>	
 <table class="table table-hover listBox">
 	<c:forEach var="memberReq" items="${getListReq }">
 	<tr>

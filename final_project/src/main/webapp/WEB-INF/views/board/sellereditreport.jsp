@@ -5,9 +5,7 @@
 
 <!-- 회원 신고사항 수정 페이지 -->
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
 
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"> 
@@ -79,7 +77,7 @@
 
 <div class="row-empty-40"></div>
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>
 
 
 

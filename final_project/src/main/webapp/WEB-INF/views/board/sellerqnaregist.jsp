@@ -7,9 +7,7 @@
 <!-- 판매자 문의 작성 페이지 -->
 
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-<jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
 
@@ -58,11 +56,6 @@
  	}
 </style>
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
-
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
-
 <section class="section1">
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
@@ -93,7 +86,7 @@
 <div class="row-empty-40"></div>
 <div class="row-empty-40"></div>
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>
 
 <!-- <div align="center" class="btn-group-vertical"> -->
 
