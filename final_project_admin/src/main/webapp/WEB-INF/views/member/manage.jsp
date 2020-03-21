@@ -12,6 +12,7 @@
 		if(email!=""){
 			window.alert(email+"에 비밀번호 초기화 이메일을 발송했습니다");
 		}
+		
 	});
 	function checkAll(){
 		if($("#th_checkAll").is(':checked')){
