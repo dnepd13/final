@@ -88,37 +88,48 @@
 
 <!-- 일반회원 home -->
 <c:choose>
-	<c:when test="${member_id == null}">
-	<ul class="nav_login">
-		<li class="left_line main_line"><a href="">공지사항</a></li>
-		<li class="left_line main_line"><a href="${pageContext.request.contextPath }/member/login">문의하기</a></li>
-		<li class="left_line main_line"><a href="${pageContext.request.contextPath }/member/login">신고하기</a></li>
-		<li class="right_line main_line" style="margin-right:50px;"><a href="${pageContext.request.contextPath }/member/login">주문제작</a></li>
-		<li class="right_line main_line">회원가입
-			<ul class="sub_line" style="border: 1px solid lightgray;">
-				<li class=""><a href="${pageContext.request.contextPath }/member/regist">일반회원</a></li>
-				<li class=""><a href="${pageContext.request.contextPath }/seller/regist">판매자</a></li>
-			</ul>
-		</li>
-		<li class="right_line main_line">로그인
-			<ul class="sub_line" style="border: 1px solid lightgray;">
-				<li class=""><a href="${pageContext.request.contextPath }/member/login">일반회원</a></li>
-				<li class=""><a href="${pageContext.request.contextPath }/seller/login">판매자</a></li>
-			</ul>
-		</li>
-	</ul>
+	<c:when test="${member_id != null}">
+		<ul class="nav_login">
+			<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/notice">공지사항</a></li>
+			<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/memberqna">문의하기</a></li>
+			<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/memberreport">신고하기</a></li>
+			
+			<li class="right_line main_line" style="margin-right:50px;"><a href="${pageContext.request.contextPath }/member/customCate">주문제작</a></li>
+			<li class="right_line main_line"><a href="${pageContext.request.contextPath }/member/membermyinfo">마이페이지</a></li>
+			<li class="right_line main_line"><a href="${pageContext.request.contextPath }/member/cart">장바구니</a></li>
+			<li class="right_line main_line"><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></li>
+		</ul>	
 	</c:when>
-	
+	<c:when test="${seller_id != null}">
+		<ul class="nav_login">
+			<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/notice">공지사항</a></li>
+			<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/sellerqna">문의하기</a></li>
+			<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/sellerreport">신고하기</a></li>
+
+			<li class="right_line main_line" style="margin-right:50px;"><a href="${pageContext.request.contextPath }/seller/customListReq">주문제작</a></li>
+			<li class="right_line main_line"><a href="${pageContext.request.contextPath }/seller/main">관리페이지</a></li>
+			<li class="right_line main_line"><a href="${pageContext.request.contextPath}/seller/logout">로그아웃</a></li>
+		</ul>
+	</c:when>
 	<c:otherwise>
-	<ul class="nav_login">
-		<li class="left_line main_line"><a href="#">공지사항</a></li>
-		<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/memberqna">문의하기</a></li>
-		<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/memberreport">신고하기</a></li>
-		<li class="right_line main_line" style="margin-right:50px;"><a href="${pageContext.request.contextPath }/member/customCate">주문제작</a></li>
-		<li class="right_line main_line"><a href="${pageContext.request.contextPath }/member/membermyinfo">마이페이지</a></li>
-		<li class="right_line main_line"><a href="${pageContext.request.contextPath }/member/cart">장바구니</a></li>
-		<li class="right_line main_line"><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></li>
-	</ul>
+		<ul class="nav_login">
+			<li class="left_line main_line"><a href="${pageContext.request.contextPath }/board/notice">공지사항</a></li>
+			<li class="left_line main_line"><a href="${pageContext.request.contextPath }/member/login">문의하기</a></li>
+			<li class="left_line main_line"><a href="${pageContext.request.contextPath }/member/login">신고하기</a></li>
+			<li class="right_line main_line" style="margin-right:50px;"><a href="${pageContext.request.contextPath }/member/login">주문제작</a></li>
+			<li class="right_line main_line">회원가입
+				<ul class="sub_line" style="border: 1px solid lightgray;">
+					<li class=""><a href="${pageContext.request.contextPath }/member/regist">일반회원</a></li>
+					<li class=""><a href="${pageContext.request.contextPath }/seller/regist">판매자</a></li>
+				</ul>
+			</li>
+			<li class="right_line main_line">로그인
+				<ul class="sub_line" style="border: 1px solid lightgray;">
+					<li class=""><a href="${pageContext.request.contextPath }/member/login">일반회원</a></li>
+					<li class=""><a href="${pageContext.request.contextPath }/seller/login">판매자</a></li>
+				</ul>
+			</li>
+		</ul>
 	</c:otherwise>
 </c:choose>
 

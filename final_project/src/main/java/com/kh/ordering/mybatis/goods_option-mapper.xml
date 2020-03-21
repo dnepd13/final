@@ -60,7 +60,7 @@
 	
 	<!-- 상품 옵션 전체 조회 -->
 	<select id="getList" resultType="goodsOptionDto">
-		select * from goods_option
+		select * from goods_option where goods_option_status = 'Y'
 	</select>
 	
 	<!-- 상품 번호로 검색  -->

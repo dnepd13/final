@@ -189,11 +189,9 @@ private CategoryDao categoryDao;
 				.finish(finish)
 			//	.seller_no(seller_no)
 			.build();
-		log.info("vo123123={}", vo);
+	//	log.info("vo123123={}", vo);
 		return vo;	
 	}
 
 	
 				}
-
-

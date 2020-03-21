@@ -11,11 +11,9 @@ import com.kh.ordering.vo.PagingVO;
 public interface SellerCategoryDao {
 	public int categoryCount();
 	//판매자 아이디로 번호 가져오기
-		int getNo(@RequestParam String seller_id);
+	int getNo(@RequestParam String seller_id);
 		
 	void seller_category_insert(SellerCategoryDto sellerCategoryDto);
-
-	void seller_update_category(SellerCategoryDto sellerCategoryDto);
 
 	void seller_delete_category(SellerCategoryDto sellerCategoryDto);
 	
@@ -24,10 +22,6 @@ public interface SellerCategoryDao {
 	public List<Integer> seller_category_list(int seller_no);
 	
 	public List<CategoryDto> seller_category_name_list(List<Integer> list);
-	public List<CategoryDto> categoryGetList(PagingVO vo);
-	public List<CategoryDto> categoryBig();
-	public List<CategoryDto> categoryMiddle();
-	public List<CategoryDto> categorySmall();
 	
 
 

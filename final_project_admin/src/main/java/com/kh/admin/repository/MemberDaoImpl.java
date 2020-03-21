@@ -1,3 +1,4 @@
+
 package com.kh.admin.repository;
 
 import java.util.List;
@@ -11,7 +12,10 @@ import com.kh.admin.vo.BlockMemberVO;
 import com.kh.admin.vo.MemberPointVO;
 import com.kh.admin.vo.PagingVO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Repository
+@Slf4j
 public class MemberDaoImpl implements MemberDao{
 
 	@Autowired
@@ -97,6 +101,22 @@ public class MemberDaoImpl implements MemberDao{
 	@Override
 	public void memberChangePw(MemberDto memberDto) {
 		sqlSession.update("admin.resetPw", memberDto);
+	}
+
+	@Override
+	public List<MemberPointVO> limitPointList() {
+		return sqlSession.selectList("admin.limitPointList");
+	}
+
+	@Override
+	public String limitUsePoint(MemberPointVO memberPointVO) {
+		log.info("memberPointVO={}",memberPointVO);
+		return sqlSession.selectOne("admin.limitUsePoint", memberPointVO);
+	}
+
+	@Override
+	public void extinctPoint(MemberPointVO memberPointVO) {
+		sqlSession.insert("admin.extinctPoint", memberPointVO);
 	}
 
 }

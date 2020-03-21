@@ -4,6 +4,10 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="order">
+	<select id="getOrdering_no" parameterType="String" resultType="int">
+		select ordering_no from ordering where partner_order_id = #{partner_order_id} and ordering_status = '결제완료'
+	</select>
+
 	<select id="getCartInfoNo" parameterType="String" resultType="int">
 		select cart_info_no from cart_info where partner_order_id = #{partner_order_id}
 	</select>
@@ -31,9 +35,9 @@
 		        select distinct A.*, ordering.item_name
 				    from
 				        cart_info A inner join ordering on A.partner_order_id = ordering.partner_order_id
-				    where A.member_no=#{member_no} and cart_info_status='결제완료' or cart_info_status='결제취소'
+				    where cart_info_status='결제완료' or cart_info_status='결제취소'
 				    order by a.cart_info_no desc
-		    )RN
+		    )RN where RN.member_no=#{member_no}
 		)where rn between #{start} and #{finish}
  	</select>
  	<!-- cartinfo No 단일조회 가져오기 -->
@@ -122,4 +126,17 @@
 			)RN
 		)where rn between 1 and 5 and sysdate >= sysdate-30
 	</select>
+	
+	
+	<!-- 회원 마이페이지용 최근 3일 구매내역 5개 -->
+	<select id="getListYesterDay" parameterType="int" resultType="payDto">
+		select *from(
+		    select rownum rn, RN.*from(
+		        select * from ordering
+		                where ordering_status !='결제준비완료'
+		                order by process_time desc, partner_order_id desc
+			)RN where rn.member=#{member}
+		)where rn between 1 and 5
+	</select>
+	
 </mapper>

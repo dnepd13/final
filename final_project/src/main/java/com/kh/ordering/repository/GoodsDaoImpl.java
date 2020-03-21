@@ -12,6 +12,9 @@ import com.kh.ordering.vo.GoodsFileVO;
 import com.kh.ordering.vo.GoodsStockVO;
 import com.kh.ordering.vo.GoodsVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class GoodsDaoImpl implements GoodsDao{
 	
 	@Autowired
@@ -40,10 +43,17 @@ public class GoodsDaoImpl implements GoodsDao{
 //		
 //	}
 	
+	@Override
+	public int getMaxQuantity(int goods_no) {
+		return sqlSession.selectOne("goods.getMaxQuantity", goods_no);
+	}
+	
+	
 	//검색
 	@Override
 	public List<GoodsDto> search(String keyword) {
-		return sqlSession.selectList("goods.search", keyword);
+		log.info("----------{}",String.valueOf(keyword.split(" ")));
+		return sqlSession.selectList("goods.search", keyword.split(" "));
 	}
 	
 	// 메인 이미지 파일번호 가져오기

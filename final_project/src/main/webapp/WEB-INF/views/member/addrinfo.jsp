@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>  
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<!-- 배송지 기본 목록 게시판 -->  
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
@@ -10,7 +12,6 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
 <style>
-	* {box-sizing: border-box;}
 	.myInfo_wrap {
 		width: 1200px;
 		height: 800px;
@@ -70,7 +71,7 @@
 		width: 90%;
 	}
 	
- /*추가 modal 전체 스타일 */
+ /* modal 전체 스타일 */
  	.modal {
  		display: none;
  		z-index: 1;
@@ -104,19 +105,16 @@
         new daum.Postcode({
             oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
                 // 각 주소의 노출 규칙에 따라 주소를 조합한다.
                 // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
                 var addr = ''; // 주소 변수
                 var extraAddr = ''; // 참고항목 변수
-
                 //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
                 if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
                     addr = data.roadAddress;
                 } else { // 사용자가 지번 주소를 선택했을 경우(J)
                     addr = data.jibunAddress;
                 }
-
                 // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
                 if(data.userSelectedType === 'R'){
                     // 법정동명이 있을 경우 추가한다. (법정리는 제외)
@@ -138,7 +136,6 @@
                 } else {
                     document.getElementById("sample6_extraAddress").value = '';
                 }
-
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('sample6_postcode').value = data.zonecode;
                 document.getElementById("sample6_address").value = addr;
@@ -154,13 +151,35 @@
 <script>
 	$(function(){
 		var insert_modal = document.querySelector(".insert_modal");
-
 		$(".btn_addrExtra").click(function(){
-			insert_modal.style.display = "block";
+			
+			var member_no = $(this).parents().children().find(".member_no").data("member_no");
+			var url="${pageContext.request.contextPath}/member/getAddrList";
+	
+			// 비동기로 회원의 주소 List 가져오기
+			$.ajax ({
+				url: url,
+				data: {"member_no":member_no},
+				method: "get",
+				success: function(resp){
+					if(resp.length==4){
+						alert("배송지는 4개 이상 등록하실 수 없습니다.");
+						return false;
+					}
+					else {
+						// 배송지 등록 modal 보이기
+						insert_modal.style.display = "block";
+					}
+				}
+			});
+
+			
 		});
+		
 		$(".close").click(function(){
 			insert_modal.style.display="none";
 		});
+		
 	});
 </script>
 
@@ -199,7 +218,10 @@
 					<c:otherwise>
 						<c:forEach var="addrInfo" items="${addrinfo}">
 						    <tr>
-								<td scope="row" style="padding:20px;">${addrInfo.member_name_extra}</td>
+								<td scope="row" style="padding:20px;"
+															class="member_no"
+															data-member_no ="${addrInfo.member_no}">
+									${addrInfo.member_name_extra}</td>
 								<td scope="row">
 									(${addrInfo.member_addr_post})
 									${addrInfo.member_addr_basic}<br>
@@ -227,7 +249,7 @@
 			</table>  
 		</div>
 		<div class="btn_area" align="right">
-			<button type="button" class="btn btn-primary btn_addrExtra">배송추가</button>
+			<button type="button" class="btn btn-primary btn_addrExtra">배송지추가</button>
 		</div>
 	</div>
 </div>
@@ -244,12 +266,12 @@
 			<div class="modal-body form-group">
 				<form action="insertaddr" method="post">
 	
-					<input class="form-control" type="text" name="member_name_extra" placeholder="받는 사람" required style="width:45%;"><br>
-					<input class="form-control" id="sample6_postcode" type="text" name="member_addr_post" placeholder="우편번호" required style="width:45%;">
+					<input class="form-control" type="text" name="member_name_extra" placeholder="받는 사람" required style="width:45%;" maxlength="16"><br>
+					<input class="form-control" id="sample6_postcode" type="text" name="member_addr_post" placeholder="우편번호" required style="width:45%;" maxlength="12">
 					<button type="button" class="btn_custom btn_findPost" onclick="sample6_execDaumPostcode()">우편번호 찾기</button><br><br>
-					<input class="form-control" id="sample6_address" type="text" name="member_addr_basic" placeholder="기본주소" required><br>
-					<input class="form-control" id="sample6_detailAddress" type="text" name="member_addr_extra" placeholder="상세주소" required><br>
-					<input class="form-control" type="text" id="sample6_extraAddress" placeholder="참고항목"><br>
+					<input class="form-control" id="sample6_address" type="text" name="member_addr_basic" placeholder="기본주소" required maxlength="48"><br>
+					<input class="form-control" id="sample6_detailAddress" type="text" name="member_addr_extra" placeholder="상세주소" required maxlength="48"><br>
+					<input class="form-control" type="text" id="sample6_extraAddress" placeholder="참고항목" maxlength="48"><br>
 					<p align="right"><input class="btn btn-primary" type="submit" value="배송지 추가"></p>
 			
 				</form>

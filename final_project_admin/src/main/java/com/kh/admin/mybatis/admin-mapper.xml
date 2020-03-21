@@ -470,7 +470,8 @@
 				#{member_point_limit},
 				#{member_point_change},
 				#{member_point_content},
-				#{member_no}
+				#{member_no},
+				#{member_point_admin}
 				)
 	</insert>
 	
@@ -483,7 +484,8 @@
 				member_point_limit,
 				member_point_change,
 				member_point_content,
-				member_no
+				member_no,
+				member_point_admin
 			 )
 		  values(
 		 	get_point_seq,
@@ -499,7 +501,8 @@
 		 	</choose>
 		 	#{point.member_point_change},
 		 	#{point.member_point_content},
-		 	#{point.member_no}
+		 	#{point.member_no},
+		 	#{point.member_point_admin}
 		 )
 		</foreach>
 	</insert>
@@ -682,10 +685,10 @@
 	
 	<!-- 상품 review 불러오기 상품별 -->
 	<select id="reviewList" parameterType="int" resultType="review">
-		select 
+		select distinct
 				a.*, b.goods_review_reply_writer, b.goods_review_reply_content, b.goods_review_reply_date, b.goods_review_reply_no 
 			from goods_review a 
-        		left outer join goods_review_reply b 
+        		inner join goods_review_reply b 
        			 on a.goods_review_no = b.goods_review_no where a.goods_no = #{goods_no}
 	</select>
 	
@@ -696,7 +699,7 @@
 	
 	<!-- 회원 등급 혜택 리스트  -->
 	<select id="gradeBenefitList" resultType="gradeBenefitDto">
-		select * from grade_benefit
+		select * from grade_benefit order by grade_benefit_rate asc
 	</select>
 	
 	<!-- 회원 등급 혜택 수정 -->
@@ -1154,6 +1157,44 @@
 			co_termsofuse = #{co_termsofuse},
 			co_privacy = #{co_privacy}
 	</update>
+	
+	<!-- 포인트 유효기간 지난 것 목록 뽑기 -->
+	<select id="limitPointList" resultType="point">
+		select * from member_point 
+		where 
+			to_char(member_point_limit,'YYYYMMDD') = to_char(sysdate-1, 'YYYYMMDD') 
+			and member_point_status = '적립'
+	</select>
+	
+	<!-- 포인트 유효기간 지난 것의 멤버 no로 그 기간동안 사용된 포인트 뽑기 -->
+	<select id="limitUsePoint" parameterType="point" resultType="String">
+		select sum(member_point_change) from member_point 
+			where member_no = #{member_no}
+			and member_point_status = '사용'
+			and 
+				member_point_date
+			    between 
+			    #{member_point_date}
+			    and 
+			    #{member_point_limit}
+		
+	</select>
+	
+	<!-- 포인트 소멸 -->
+	<insert id="extinctPoint" parameterType="point">
+		insert into member_point 
+			values(
+				member_point_seq.nextval, 
+				'소멸',
+				sysdate,
+				#{member_point_limit},
+				#{member_point_change},
+				'유효기간이 지났습니다',
+				#{member_no},
+				#{member_point_admin}
+				)
+	</insert>
+	
  </mapper> 
 	
  

@@ -9,8 +9,11 @@
 <head>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
+<script src="https://cdn.jsdelivr.net/gh/hiphop5782/js/star/hakademy-star.min.js"></script>
 <script>
 $(function(){
+
 	$(".goods_box").click(function(){
 		var url = $(this).children(".goods_img").attr("href");
 		$(location).attr('href', url);
@@ -24,65 +27,69 @@ $(function(){
 // 		$(this).removeClass("rounded border border-light shadow p-3 mb-5 bg-white");
 // 	});
 	
-	$(".soldout").click(function(){
-		window.alert("품절된 상품입니다.");
-	});
+	
+	Hakademy.PointManager.factory(".star-wrap");
 });
 </script>
 </head>
 
 <style>
 .goods_box{
-	cursor: pointer;
-	padding: 15px;
+   cursor: pointer;
+   padding: 15px;
 }
 
-.goods_box > p {
-	margin: 0px;
-}
+/* .goods_box > p { */
+/*    margin: 0px; */
+/* } */
 
 .goods_img {
-	width: 100%;
-	height: 230px;
+   width: 100%;
+   height: 230px;
 }
 
 .goods_img > img {
-	width: 100%;
-	height: 250px;
-	margin: 10px auto;
+   width: 100%;
+   height: 250px;
+   margin: 10px auto;
 }
 
 .goods_name{
-	font-size: 1.1rem;
-	font-weight: bold;
+   margin: 5px 0px;
+   font-size: 1.1rem;
+   font-weight: bold;
 }
 
 .goods_price{
-	font-size: 1rem;
+   margin-top: 7px;
+   margin-bottom: 5px;
+   font-size: 1.1rem;
+   font-weight: bold;
 }
 
 .goods_content{
-	font-size: 1rem;
+   margin: 5px 0px;
+   font-size: 1rem;
 }
 
 .best_area {
-	margin: 50px 0px;
+   margin: 50px 0px;
 }
 
 .new_area {
-	margin: 50px 0px;
+   margin: 50px 0px;
 }
 
 .all_area {
-	margin: 50px 0px;
+   margin: 50px 0px;
 }
 
 .soldout {
-	text-decoration: line-through;
+   text-decoration: line-through;
 }
 
 .badge {
-	margin-left: 10px;
+   margin-left: 10px;
 }
 
 </style>
@@ -95,23 +102,24 @@ $(function(){
 	 <div class="col-12">
 		 <h1 class="title">인기 상품</h1>
 	 </div>
-  	<c:forEach var="goodsFileVO" items="${listBest}">
+  	<c:forEach var="goodsFileVO" items="${listBest}" varStatus="status">
   	 	<c:choose>
   	 		<c:when test="${goodsFileVO.goodsDto.goods_stock>0}">
 		  		<div class="col-sm-4 goods_box">
 		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
 		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
 		  			</a>
-			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
+			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-danger">Hot</span></p>
 			  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
 			  		<p class="goods_price">
 			  			<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber>
 			  		</p>
+	  				<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${starListBest[status.index]}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
 		  		</div>
   	 		</c:when>
   	 		<c:otherwise>
   	 			<div class="col-sm-4 goods_box soldout">
-		  			<a class="goods_img" href="#">
+		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
 		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
 		  			</a>
 			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
@@ -119,6 +127,7 @@ $(function(){
 			  		<p class="goods_price">
 			  			<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber>
 			  		</p>
+			  		<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${starListBest[status.index]}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
 		  		</div>
   	 		</c:otherwise>
   		</c:choose>
@@ -133,7 +142,7 @@ $(function(){
   	<div class="col-12">
 		 <h1 class="title">새로운 상품</h1>
 	 </div>
-  	<c:forEach var="goodsFileVO" items="${listNew}">
+  	<c:forEach var="goodsFileVO" items="${listNew}" varStatus="status">
   	<c:choose>
 	 	<c:when test="${goodsFileVO.goodsDto.goods_stock>0}">
 	 		<div class="col-lg-4 goods_box">
@@ -144,17 +153,19 @@ $(function(){
 	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
 	  		<p class="goods_price">
 	  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+	  		<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${starListNew[status.index]}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
   		</div>
 	 	</c:when>
 	 	<c:otherwise>
 	  		<div class="col-lg-4 goods_box soldout">
-	  			<a class="goods_img" href="#">
+	  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
 	  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
 	  			</a>
 	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
 	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
 	  		<p class="goods_price">
 	  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+	  		<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${starListNew[status.index]}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
 	  		</div>
 	 	</c:otherwise>
 	</c:choose>
@@ -170,28 +181,30 @@ $(function(){
   	<div class="col-12">
 		 <h1 class="title">모든 상품</h1>
 	 </div>
-  	<c:forEach var="goodsFileVO" items="${list}">
+  	<c:forEach var="goodsFileVO" items="${list}" varStatus="status">
   		<c:choose>
 		 	<c:when test="${goodsFileVO.goodsDto.goods_stock>0}">
 		 		<div class="col-lg-4 goods_box">
-  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
-  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
-  			</a>
-	  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
-	  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
-	  		<p class="goods_price">
-	  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
-	  		</div>
+		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
+		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
+		  			</a>
+			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}</p>
+			  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+			  		<p class="goods_price">
+			  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+			  		<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${starList[status.index]}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
+	  			</div>
 		 	</c:when>
 		 	<c:otherwise>
 		  		<div class="col-lg-4 goods_box soldout">
-		  			<a class="goods_img" href="#">
+		  			<a class="goods_img" href="goods/goodsInfo?goods_no=${goodsFileVO.goodsDto.goods_no}">
 		  				<img class="rounded" src="${pageContext.request.contextPath}/goods/mainImageDown?files_no=${goodsFileVO.goods_main_image}">
 		  			</a>
-		  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
-		  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
-		  		<p class="goods_price">
-		  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+			  		<p class="goods_name">${goodsFileVO.goodsDto.goods_name}<span class="badge badge-secondary">품절</span></p>
+			  		<p class="goods_content text-truncate">${goodsFileVO.goodsDto.goods_content}</p>
+			  		<p class="goods_price">
+			  		<fmt:formatNumber pattern="###,###,###" type="number">${goodsFileVO.goodsDto.goods_price}</fmt:formatNumber></p>
+			  		<div class="star-wrap" data-limit="5" data-unitsize="20" data-point="${starList[status.index]}" data-image="http://www.sysout.co.kr/file/image/288" data-readonly></div>
 		  		</div>
 		 	</c:otherwise>
  		</c:choose>

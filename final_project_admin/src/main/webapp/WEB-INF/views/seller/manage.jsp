@@ -8,17 +8,20 @@
 <script>
 $(function(){
 	$(".sellerPw").hide();
-	$(".reset").click(function(){
-		if(confirm("회원의 비밀번호를 초기화하시겠습니까?")){
-			$(".resetForm").submit();
-		}
-		else{
-		}
-	});
+	
+	var email = "${param.email}";
+	if(email!=""){
+		window.alert(email+"에 비밀번호 초기화 이메일을 발송했습니다");
+	}
 	
 });
 </script>
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
 
 <aside>
 <div>
@@ -27,7 +30,7 @@ $(function(){
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
@@ -81,9 +84,9 @@ $(function(){
        <td>
       		<form action="reset" method="post" class="resetForm">
       			<input type="hidden" name="seller_no" value="${list.seller_no }">
-      			<input type="hidden" name="member_email" value="${list.seller_email }">
+      			<input type="hidden" name="seller_email" value="${list.seller_email }">
       			<input class="sellerPw" type="password" name="seller_pw" value="123456789a">
-      			<button class="btn btn-primary reset" type="button">초기화</button>
+      			<button class="btn btn-primary reset" >초기화</button>
       		</form>
       </td>
       

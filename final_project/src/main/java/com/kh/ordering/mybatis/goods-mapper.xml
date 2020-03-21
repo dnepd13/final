@@ -6,12 +6,23 @@
 
 <mapper namespace="goods">
 	
+	<!-- 구매가능 최대수량 -->
+	<select id="getMaxQuantity" parameterType="int" resultType="int">
+		select min(goods_option_stock) from goods_option where goods_no = #{goods_no}
+	</select>
+	
 	<!-- 검색 -->
-	<select id="search" parameterType="String" resultType="goodsDto">
-		select * from goods G
-		inner join category C
-		on G.category_no = C.category_no
-		where goods_name like '%${keyword}%' or category_middle like '%${keyword}%' or category_small like '%${keyword}%'
+	<select id="search" parameterType="java.util.ArrayList" resultType="goodsDto">
+		select * from (
+			select * from goods G
+			inner join category C
+			on G.category_no = C.category_no
+			where 
+		<foreach collection="array" item="keyword" index="index" separator="OR" close=")">
+			upper(goods_name) like upper('%${keyword}%') or upper(category_middle) like upper('%${keyword}%') 
+			or upper(category_small) like upper('%${keyword}%')
+		</foreach>
+		where goods_status = 'Y'
 	</select>
 	
 	
@@ -111,6 +122,7 @@
 		    ) where RN between 1 and 5
 		) R
 		inner join goods on goods.goods_no =  R.goods_no
+		where goods_status = 'Y'
 		order by Q desc
 	</select>
 	
@@ -118,13 +130,13 @@
 	<select id="getListNew" resultType="goodsDto">
 		select * from(
    			 select rownum RN, RN.* from (
-		        select * from goods order by goods_no desc) RN
+		        select * from goods where goods_status = 'Y' order by goods_no desc) RN
 		) where RN between 1 and 5
 	</select>
 	
 	<!-- 전체 조회  -->
 	<select id="getList" resultType="goodsDto">
-		select * from goods order by goods_no asc
+		select * from goods where goods_status = 'Y' order by goods_no asc
 	</select>
 	
 	<resultMap type="goodsVO" id="getGoodsVO">

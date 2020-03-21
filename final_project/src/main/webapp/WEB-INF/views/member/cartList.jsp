@@ -59,29 +59,38 @@
 			</div>
 		</div>	
 		<div class="cartContent">
-		<table class="table table-hover" border="1">
-			  <thead align="center">
-			    <tr class="table_head">
-			      <th scope="col" width="10%">주문번호</th>
-			      <th scope="col" width="45%">주문상품</th>
-			      <th scope="col" width="10%">총 수량</th>
-			      <th scope="col" width="15%">결제금액<br>(배송비)</th>
-			      <th scope="col" width="10%">결제상태</th>
-			    </tr>
-			  </thead>
-			  <tbody>
-			  	<c:forEach var="cartInfo" items="${getCartInfo }">
-			    <tr align="center">
-			      <td scope="row">${cartInfo.partner_order_id }</td>
-			      <td align="left"><a href="${pageContext.request.contextPath }/member/cartDetailGoods?cart_info_no=${cartInfo.cart_info_no}" >${cartInfo.item_name }</a></td>
-			      <td>${cartInfo.total_quantity}</td>	
-			      <td>${cartInfo.total_price } 원<br>(${cartInfo.total_delivery_price } 원)</td>
-			      <td><a href="${pageContext.request.contextPath }/member/cartDetailPay?partner_order_id=${cartInfo.partner_order_id }">${cartInfo.cart_info_status }</a></td>
-			    </tr>
-			    </c:forEach>
-			  </tbody>
+			<table class="table table-hover" border="1">
+				<thead align="center">
+				    <tr class="table_head">
+				      <th scope="col" width="10%">주문번호</th>
+				      <th scope="col" width="45%">주문상품</th>
+				      <th scope="col" width="10%">총 수량</th>
+				      <th scope="col" width="15%">결제금액<br>(배송비)</th>
+				      <th scope="col" width="10%">결제상태</th>
+				    </tr>
+				</thead>
+				<tbody>
+				<c:choose>
+					<c:when test="${empty getCartInfo }">
+						<tr>
+							<td colspan="5" align="center"> 주문 내역이 없습니다. </td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+						<c:forEach var="cartInfo" items="${getCartInfo }">
+					    <tr align="center">
+							<td scope="row">${cartInfo.partner_order_id }</td>
+							<td align="left"><a href="${pageContext.request.contextPath }/member/cartDetailGoods?cart_info_no=${cartInfo.cart_info_no}" >${cartInfo.item_name }</a></td>
+							<td>${cartInfo.total_quantity}</td>	
+							<td>${cartInfo.total_price } 원<br>(${cartInfo.total_delivery_price } 원)</td>
+							<td><a href="${pageContext.request.contextPath }/member/cartDetailPay?partner_order_id=${cartInfo.partner_order_id }">${cartInfo.cart_info_status }</a></td>
+						</tr>
+					    </c:forEach>
+					</c:otherwise>
+				</c:choose>
+				</tbody>
 			</table> 
-			</div>
+		</div>
 			
 			<!-- 내비게이터 -->
 			<div class="row justify-content-center">

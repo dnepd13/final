@@ -25,6 +25,8 @@ public class MemberDaoImpl implements MemberDao{
 	@Autowired
 	private MemberDao memberDao;
 
+	private int result;
+
 //	!지우지마세요, 포인트 관련  (월용) //////////////////////////
 	
 	// 회원 포인트 조회
@@ -42,6 +44,7 @@ public class MemberDaoImpl implements MemberDao{
 	// 포인트 추가,차감
 	@Override
 	public void registPoint(MemberPointVO memberPointVO) {
+		log.info("member={}", memberPointVO);
 		sqlSession.insert("member.registPoint", memberPointVO);
 	}
 	
@@ -56,7 +59,7 @@ public class MemberDaoImpl implements MemberDao{
 	public boolean minusPointOrder(int member_no, int point) {
 		if(this.checkPoint(member_no, point)) {
 			MemberPointVO memberPointVO = MemberPointVO.builder()
-										.member_point_status("차감")
+										.member_point_status("사용")
 										.member_point_change(-point)
 										.member_point_content("상품 구매에 사용")
 										.member_no(member_no)
@@ -238,13 +241,6 @@ public class MemberDaoImpl implements MemberDao{
 
 				}
 		
-//				@Override
-//				public List<MemberDto> memberGetOne(int member_no) {
-//					// TODO Auto-generated method stub
-//					return null;
-//				}
-		
-				
 		@Override
 		public int getNo(String member_id) {
 			int member_no = sqlSession.selectOne("member.getNo", member_id);
@@ -258,11 +254,14 @@ public class MemberDaoImpl implements MemberDao{
 			return result;
 		}
 
+		
 		@Override
-		public void memberedit(MemberDto member) {
-			sqlSession.update("member.memberedit", member);
-			
+		public MemberDto memberedit(MemberDto member) {
+			result = sqlSession.update("member.memberedit" , member);
+			return member;
 		}
+		
+		
 
 		@Override
 		public void memberdelete(MemberDto memberDto) {
@@ -270,57 +269,26 @@ public class MemberDaoImpl implements MemberDao{
 			
 		}
 
-	
+		@Override
+		public void change_pw(MemberDto memberDto) {
+			sqlSession.update("member.change_pw",memberDto);
+		}
 
-//		@Override
-//		public List<MemberDto> memberGetOne(int member_no) {
-//			
-//			return sqlSession.selectOne("member.memberGetOne", member_no);
-//		}
+		@Override
+		public MemberDto emaillogin(MemberDto memberDto) {
+			memberDto.getMember_id();
+			MemberDto login = sqlSession.selectOne("member.emaillogin", memberDto);
 
+			return login;
+		}
 
-
-//		@Override
-//		public void saveNO(MemberDto member) {
-//			
-//			member = ; 
-//			
-//		}
-
-//		//멤버 id로 번호 구하기 (영락)
-//		@Override
-//		public int findno(MemberDto member,int member_no) {
-//			
-//			log.info("member_id= {}", member_id);
-//			
-//			
-//	//맵퍼에 있는 정보를 불러오는것 mapper의 namespace member와 select항목의 finddo를 찾아 불러오는것
-//	//parameterType(보내는값 int String vo, Dto등을 지정) 		
-//			member_no = sqlSession.selectOne("member.findno", member_id);
-//			log.info("member_no={}", member_no);
-//			
-//			return member_no;
-//		} 
-
+		@Override
+		public MemberDto membergetUpdate(MemberDto memberDto) {
+		 MemberDto my = sqlSession.selectOne("member.membergetUpdate", memberDto);
+			
+		 return my;
+		}
 
 	
-
-		
-	
-		
-		
-//		@Override
-//		public MemberDto getMemberDto(int seq) throws Exception {
-//			
-//			MemberDto memberDto = sqlSession.selectOne("getMemberDto", seq);
-//			return memberDto;
-//		}
-
-//		@Override
-//		public MemberDto login(MemberDto memberDto) {
-//			
-//			return sqlSession.selectOne("member.login", memberDto);
-//		}
-
 
 }

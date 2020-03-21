@@ -28,10 +28,29 @@
 			$("input[name='checkRow']:checked").each(function(){
 				checkRow.push($(this).val());
 			});
-			
 			var point = $(this).prev().prev().prev().val();
 			var reason =$(this).prev().prev().val();
 			var lastdate = $(this).prev().val();
+			var insertpoint = $("#insertpoint").val();
+			
+			if(insertpoint == ""){
+				window.alert("포인트를 입력하세요");
+				$("#insertpoint").focus();
+				return false;
+			}
+			if(insertpoint <= 0){
+				window.alert("음수의 포인트는 적립할 수 없습니다.");
+				return false;
+			}
+			if(checkRow.length == 0){
+				window.alert("회원을 선택하세요");
+				return false;
+			}
+			if(reason==""){
+				window.alert("이유를 적어주세요");
+				$("#staticEmail1").focus();
+				return false;
+			}
 			$.ajax({
 				url:"pointAllRegist",
 				type:"post",
@@ -54,6 +73,12 @@
 	});
 </script>
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
+
 <aside>
 <div>
 <jsp:include page="../template/header.jsp"></jsp:include>
@@ -61,7 +86,7 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
@@ -91,14 +116,14 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th width="9%"><input type="checkbox" name="checkAll" id="th_checkAll" onclick="checkAll();"></th>
+      <th width="7%"><input type="checkbox" name="checkAll" id="th_checkAll" onclick="checkAll();"></th>
       <th width="5%">아이디</th>
-      <th width="5%">이름</th>
+      <th width="7%">이름</th>
       <th width="10%">이메일</th>
-      <th width="10%">연락처</th>
-      <th width="2%">등급</th>
+      <th width="8%">연락처</th>
+      <th width="9%">등급</th>
       <th width="10%">가입일</th>
-      <th width="15%">마지막 접속일시</th>
+      <th width="10%">마지막 접속일시</th>
       <th width = "8%">상세보기</th>
       <th width = "8%">차단</th>
       <th width="15%">비밀번호초기화</th>
@@ -135,8 +160,8 @@
       </c:choose>
       <td>
       		<form action="reset" method="post" class="resetForm">
-      			<input type="hidden" name="member_no" value="${list.member_no }">
-      			<input type="hidden" name="member_email" value="${list.member_email }">
+      			<input class="memberNo" type="hidden" name="member_no" value="${list.member_no }">
+      			<input class="memberEmail" type="hidden" name="member_email" value="${list.member_email }">
       			<input class="memberPw" type="password" name="member_pw" value="123456789a">
       			<button class="btn btn-primary reset" >초기화</button>
       		</form>
@@ -206,8 +231,8 @@
 </div>
 
 <form>
-	<input type="number" placeholder="포인트"  required="required" class="offset-md-0 col-md-12">
-	<input type="text"  name="member_point_content"  class="form-control-plaintext" id="staticEmail1" placeholder="축하드립니다" value="축하드립니다">
+	<input id="insertpoint" type="number" placeholder="포인트"  required="required" class="offset-md-0 col-md-12">
+	<input type="text"  name="member_point_content"  class="form-control-plaintext" id="staticEmail1" placeholder="축하드립니다" value="축하드립니다" required="required">
 	<input type="date" min="${today }" max="2099-12-31" name="member_point_limit" class="form-control-plaintext" id="staticEmail2" >
 	<button type="button" class="btn btn-primary btn-regist offset-md-4 col-md-4" >포인트등록</button><br>
 </form>

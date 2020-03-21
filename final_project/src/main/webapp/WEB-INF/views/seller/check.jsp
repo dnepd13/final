@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+    <jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
+    
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 	<script>
 	$(function(){
 // 		.validate-form은 처음에 숨기고 이메일 전송시만 표시
@@ -56,6 +60,7 @@
 		});
 	});
 </script>	
+
 <form class="email-form" action="send" method="post">
 	<input type="email" name="email" placeholder="이메일 입력">
 	<input type="submit" value="인증번호 보내기">
@@ -66,4 +71,7 @@
 	<input type="text" name="cert" placeholder="인증번호 입력">
 	<input type="submit" value="인증하기">
 </form>
+
+
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>
 

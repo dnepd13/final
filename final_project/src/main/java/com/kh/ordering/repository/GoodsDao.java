@@ -25,4 +25,5 @@ public interface GoodsDao {
 	List<GoodsFileVO> getListNew();
 	List<GoodsFileVO> getListBest();
 	List<GoodsDto> search(String keyword);
+	int getMaxQuantity(int goods_no);
 }

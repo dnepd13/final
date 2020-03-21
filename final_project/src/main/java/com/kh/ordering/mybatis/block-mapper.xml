@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ 
+ <mapper namespace="Block">
+ <!-- 맞겠지? -->
+ <!-- 차단된 판매자 리스트 조회-->
+  <select id="seller" parameterType="string" resultType="int">
+ select count(*) from block where block_id= #{block_id} and block_group = '판매자'
+ </select>
+ <!-- 차단된 회원 리스트 조회-->
+  <select id="member" parameterType="string" resultType="int">
+ select count(*) from block where block_id= #{block_id} and block_group = '구매자'
+ </select>
+ 
+
+ 
+	<!-- seller_no에 대한 차단 정보 조회 -->
+	<select id="getSellerInfo" parameterType="int" resultType="BlockDto">
+		select *from block where seller_no=#{seller_no} and block_group='판매자'
+	</select>
+	
+	<!-- member_no에 대한 차단 정보 조회 -->
+	<select id="getMemberInfo" parameterType="int" resultType="BlockDto">
+		select *from block where member_no=#{member_no} and block_group='구매자'
+	</select>
+
+ 
+ 
+ </mapper>
+ 
+ 
+ 
+ 
+ 

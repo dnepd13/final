@@ -97,6 +97,7 @@ public class MemberBoardController {
 
 		List<AdminQnaDto> qnalist = adminQnaDao.getListQna(pagingVO);
 
+		log.info("qnalist={}",qnalist);
 
 		model.addAttribute("getListQna",qnalist);
 		model.addAttribute("paging1",pagingVO);
@@ -123,21 +124,39 @@ public class MemberBoardController {
 
 	//문의 상세보기
 	@GetMapping("/detailmqna")
+
 	public String detailmqna(
 			@ModelAttribute AdminQnaDto adminQnaDto,
-			Model model
+			Model model,HttpSession session
 			) {
-		AdminQnaDto result1 = adminQnaDao.qnaGetOne(adminQnaDto);
-//		log.info("result={}",result1);
 
+		log.info("admindto={}", adminQnaDto);
+		log.info("sessionid={}", session);
+		String member_id = (String)session.getAttribute("member_id");
+		int getNo = memberDao.getNo(member_id);
+		log.info("getNO={}", getNo);
+		AdminQnaDto result1 = adminQnaDao.qnaGetOne(adminQnaDto,getNo);
+		log.info("result11={}", result1);          
+		
+		AdminQnaDto memberresult = adminQnaDao.qnaonemember(adminQnaDto);
+		log.info("memberresult={}",memberresult);
+		
+		//세션에서 가져온 멤버no
+		model.addAttribute("memberno",getNo);
 		model.addAttribute("qnaone",result1);
-		log.info("modalqna={}",model);
+
+		
+		//리스트에서 가져온 memberNo
+		model.addAttribute("qnaoneGetOne",result1);
+		log.info("membersu={}",result1);
+		
 		return "board/detailmqna";
 	}
 
 
 	//문의 게시판 인서트
 	@GetMapping("/qnaregist")
+
 	public String qnaregist()
 	{
 
@@ -149,16 +168,17 @@ public class MemberBoardController {
 	
 
 	@PostMapping("/qnaregist")
+
 	public String qnaregist(@ModelAttribute AdminQnaDto adminQnaDto,
 							HttpSession session, Model model)
 	{
-
+		log.info("adminQnaDto={}", adminQnaDto);
 		//회원 문의 시퀀스 저장
 		int qnaseq = adminQnaDao.QnaSeq();
 
 		String member_id = (String)session.getAttribute("member_id");
 		int member_no = memberDao.getNo(member_id);
-
+	
 //		adminQnaDto.setAdmin_qna_no(qnaseq);
 
 		//중복되어있는 dto라 사용자가 작성한 Dto 데이터가 지워지고 다시 세팅되는 역활을 함
@@ -197,8 +217,9 @@ public class MemberBoardController {
 
 	// 회원 문의게시판 수정
 	@GetMapping("/updateqna")
+
 	public String editqna(@RequestParam int admin_qna_no,Model model) {
-//		log.info("upno={}", admin_qna_no);
+		log.info("upno={}", admin_qna_no);
 
 		AdminQnaDto result = adminQnaDao.qnagetUpdate(admin_qna_no);
 //		log.info("resultup={}",result);
@@ -213,12 +234,10 @@ public class MemberBoardController {
 	public String editqna(@ModelAttribute AdminQnaDto adminQnaDto,
 							Model model ) {
 
-		log.info("adimbefor={}",adminQnaDto);
 
 //		AdminQnaDto result = adminQnaDao.qnagetupdate(adminQnaDto);
 
 
-		log.info("model={}", model);
 
 
 //		log.info("uppoDto= {}",adminQnaDto);
@@ -229,6 +248,7 @@ public class MemberBoardController {
 	}
 	
 	
+
 //	@GetMapping("/deleteqna")
 //	public String deleteqna()
 //	{
@@ -313,6 +333,7 @@ public class MemberBoardController {
 	
 	// 판매자 문의 게시판 처리
 		@GetMapping("/sellerqna")
+
 		public String sellerqna(HttpSession session, Model model,
 						@RequestParam(value="pno2", required = false)
 						String pno2
@@ -332,6 +353,7 @@ public class MemberBoardController {
 
 			return "board/sellerqna";
 			}
+		
 	
 //		//판매 신고 게시판 처리
 		@GetMapping("/sellerreport")
@@ -445,6 +467,7 @@ public class MemberBoardController {
 //				
 //				//판매자 문의 상세보기
 				@GetMapping("/sellerdetailmqna")
+		
 				public String sellerdetailmqna(
 						@ModelAttribute AdminQnaDto adminQnaDto,
 						Model model
@@ -460,6 +483,7 @@ public class MemberBoardController {
 		
 //				//문의 게시판 인서트
 				@GetMapping("/sellerqnaregist")
+		
 				public String sellerqnaregist()
 				{
 					return "board/sellerqnaregist";
@@ -527,6 +551,29 @@ public class MemberBoardController {
 					adminQnaDao.sellerqnaUpdate(adminQnaDto);
 
 					return "redirect:/board/sellerqna";
-				}		
+				}
+
+// 공지사항 게시판
+	@GetMapping("/notice")
+	public String getListNotice(Model model,
+													@RequestParam(value="pageNo", required=false, defaultValue="0") String pageNo){
+		
+		PagingVO result= boardQnaService.noticePaging(pageNo);
+		model.addAttribute("paging", result);
+		List<AdminQnaDto> getNotice = adminQnaDao.getListNotice(result);
+		model.addAttribute("getNotice", getNotice);
+		
+		return "board/notice";
+	}
+	@GetMapping("/noticeDetails")
+	public String getNoticeDetails(Model model,
+															@RequestParam int admin_qna_no) {
+		
+		AdminQnaDto adminQnaDto = adminQnaDao.getNoticeDetails(admin_qna_no);
+		model.addAttribute("notice", adminQnaDto);
+		
+		return "board/noticeDetails";
+	}
+	
 }
 	

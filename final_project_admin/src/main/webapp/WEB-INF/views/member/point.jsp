@@ -3,6 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
 
 <aside>
 <div>
@@ -11,7 +16,7 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 <div class="container-fluid">
         <div class="row">
             <div class="offset-md-1 col-md-10">
@@ -25,10 +30,11 @@
   <thead>
     <tr>
       <th width="10%">포인트 사용량</th>
-      <th width="20%">포인트 상태</th>
+      <th width="10%">포인트 상태</th>
       <th width="20%">포인트 날짜</th>
       <th width="20%">포인트 기간</th>
       <th width="20%">포인트 사용 내역</th>
+      <th width="10%">담당자</th>
       <th width="10%">삭제</th>
     </tr>
   </thead>
@@ -40,6 +46,7 @@
 	      <td>${list.member_point_date }</td>
 	      <td>${list.member_point_limit.substring(0,10) }</td>
 	      <td>${list.member_point_content }</td>
+	      <td>${list.member_point_admin }</td>
 	      <td>
 	      		<form action="" method="post">
 	      		  <input type="hidden" name="member_point_no" value="${list.member_point_no }">

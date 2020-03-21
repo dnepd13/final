@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.SellerDto;
+import com.kh.ordering.repository.SellerCategoryDao;
 import com.kh.ordering.repository.SellerDao;
 import com.kh.ordering.service.EmailService;
 import com.kh.ordering.service.RandomService;
@@ -52,10 +54,33 @@ public class SellerController {
 	private SellerDto sellerDto;
 	@Autowired
 	private SqlSession sqlSession;
+	@Autowired
+	private SellerCategoryDao sellerCategoryDao;
 	//판매자 메인 홈
 	@GetMapping("/main")
-	public String main() {
+
+	public String main1(Model model,HttpSession session) {
+		String seller_id =(String)session.getAttribute("seller_id");
+	//	log.info("seller_id={}", seller_id);
+		SellerDto sellerDto=SellerDto.builder().seller_id(seller_id).
+				build();
+	//	log.info("sellerDto={}",sellerDto);
+			sellerDto.setSeller_id(seller_id);
+SellerDto info=sellerDao.info(sellerDto);
+
+model.addAttribute("sellerDto",info);
 		return "/seller/main";
+	}
+	@PostMapping("main")
+	public String main(Model model,HttpSession session) {
+		String seller_id =(String)session.getAttribute("seller_id");
+		SellerDto sellerDto=SellerDto.builder().seller_id(seller_id).
+				build();
+SellerDto info=sellerDao.info(sellerDto);
+
+model.addAttribute("sellerDto",info);
+		
+		return"redirect:/seller/main";
 	}
 	//회원가입 전 이용약관동의 받기
 	@GetMapping("/regist_agree")
@@ -91,14 +116,14 @@ public class SellerController {
 		sellerDto.setSeller_pw(passwordEncoder.encode(sellerDto.getSeller_pw()));
 		sellerService.regist(sellerDto);
 	//	return"redirect:/seller/regist_success";
-		return"redirect:/seller/regist_success";
+		return"redirect:/seller/login";
 	}
 	//판매자 이메일 인증
 	@PostMapping("/send")//jsp로 결과가 나가면 안된다
 	@ResponseBody//내가 반환하는 내용이 곧 결과물
 	public String send(@RequestParam String seller_email,HttpSession session) {
 //		String cert ="1236";//세션에 저장된 판매자 이름과 판매자 아이디를 넣어서 서버에 있는 아이디랑 이메일이 같다면 인증번호를 보내라 
-	    System.out.println("seller email"+seller_email);	 
+//	    System.out.println("seller email"+seller_email);	 
 		String cert = randomService.generateCertificationNumber(6);
 	    	  session.setAttribute("cert", cert);
 	    	  return emailService.sendCertMessege(seller_email, cert);
@@ -119,31 +144,60 @@ public class SellerController {
 					return "fail";
 					
 				}
-			}
+	}
 	
-//	///아이디 중복검사
-//	@ResponseBody //ajax로 보낼때 사용하는 어노테이션
-//			@GetMapping("/check_id")
-//			public  Map<Object, Object>id_check(@RequestBody String seller_id) {
-//		int count = 0;
-//        Map<Object, Object> map = new HashMap<Object, Object>();
-//        count = sellerService.check_id(seller_id);
-//        map.put("count", count);
-// 
-//        return map;
-//	}
+	//판매자 비밀번호 찾기
+	@GetMapping("/pwfind")
+	public String pwfind(HttpSession session, Model model) {
 
+		return "seller/pwfind"; 
+	}
 	
+	@PostMapping("pwfind")
+	public String pwfind(@ModelAttribute SellerDto sellerDto, HttpSession session)
+	{
+		SellerDto login = sellerDao.emaillogin(sellerDto);
+	session.setAttribute("seller_id", login.getSeller_id());
+	return "redirect:/seller/emailpwchange";
+	}
+	
+	//이메일 비밀번호 변경 완료
+	@GetMapping("/emailpwchange")
+	public String emailpwchange() {
+
+		
+		return "seller/emailpwchange";
+		
+	}	
+	@PostMapping("/emailpwchange")
+	public String emailpwchange(@ModelAttribute SellerDto sellerDto,HttpSession session) {
+		String seller_id = (String)session.getAttribute("seller_id"); 
+	//	log.info("seller_id={}", seller_id);
+		sellerDto.setSeller_id(seller_id);
+		//log.info("sellerDto={}",sellerDto);
+		sellerDto.setSeller_pw(passwordEncoder.encode(sellerDto.getSeller_pw()));
+		
+			sellerDto.setSeller_id(seller_id); 
+		
+			sellerDao.change_pw(sellerDto);
+		
+			session.removeAttribute("seller_id");
+			//log.info("session ={}", session);
+			
+		return"redirect:/seller/login";
+		}
+	
+
 			///아이디 중복검사
 			@GetMapping(value = "/id_check",produces ="application/text; charset=utf-8")
 			@ResponseBody //ajax로 보낼때 사용하는 어노테이션
 			public String id_check(String seller_id, Model model) {
-		 System.out.println("Controller.idCheck() 호출");
+//		 System.out.println("Controller.idCheck() 호출");
 		 
 		 int result = sqlSession.selectOne("seller.id_check", seller_id);
-		log.info("들어오나");
-		log.info("1={}",seller_id);
-		log.info("result={}", result);
+//		log.info("들어오나");
+//		log.info("1={}",seller_id);
+//		log.info("result={}", result);
 		String a = Integer.toString(result);
 		if(result == 1) {
 			return a;
@@ -156,44 +210,46 @@ public class SellerController {
 /////////////가입완료후 페이지////////////////
 	@GetMapping("/regist_success")
 	public String regist_success() {
-		return "seller/regist_success";
+		return "redirect:/seller/regist_success";
 	}
 	
 
-	@PostMapping("/regist_success")
-	private String regist_success(@ModelAttribute SellerDto sellerDto) {
-		return "redirect:seller/regist_success";
-	}
+//	@PostMapping("/regist_success")
+//	private String regist_success(@ModelAttribute SellerDto sellerDto) {
+//		return "redirect:seller/regist_success";
+//	}
 	
 ///////////////////////////판매자 로그인///////////////////////////////////////
-	@GetMapping("/login")
+	@GetMapping("login")
+
 	private String login( ) {
 		return "seller/login";
 		
 	}
-	@PostMapping("/login")
+	@PostMapping("login")
 	private String login(@ModelAttribute SellerDto sellerDto, 
 									HttpSession session) {
 		//비밀번호 암호화
 		//아이디 검색을 하고 결과 유무 확인
 			SellerDto find = sellerService.login(sellerDto);
-			System.out.println(sellerDto);
-			log.info("id={}",find);
-			log.info("sellerDto={}",sellerDto);
+//			System.out.println(sellerDto);
+//			log.info("id={}",find);
+//			log.info("sellerDto={}",sellerDto);
 		if(find == null) {
-			log.info("asd={}",find);
+//			log.info("asd={}",find);
 				return "redirect:/seller/login?error";
 		}
 		else {//id가  잇으면--->비밀번호 매칭검사
 			boolean correct =passwordEncoder.matches(sellerDto.getSeller_pw(),find.getSeller_pw());
 //			boolean correct = sellerDto.getSeller_pw().equals(find.getSeller_pw());
-			log.info("current={}",correct);
+//			log.info("current={}",correct);
 					if(correct == true) {   //비밀번호일치
 						session.setAttribute("seller_id", find.getSeller_id());
+//						log.info("session={}"+session);
 						return "redirect:/seller/main";				
 					}
 					else {
-//						log.info("asda");
+	//				log.info("asda");
 						return "redirect:/seller/login?error";
 					}		
 		}
@@ -202,16 +258,11 @@ public class SellerController {
 	
 ////////////////////////////판매자 로그아웃///////////////////////////////////
 	@GetMapping("/logout")
+
 		public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/seller/login";		
+		return "redirect:/";		
 	}
-	///////////////////////// 판매자 관리 페이지////////////////////////////////////////////////////////////
-	@GetMapping("/management")
-	 public String management(@ModelAttribute SellerDto sellerDto) {
-		return"seller/management";
-	}
-
 //////////////////////////판매자 정보 조회///////////////////////////////////////////////////////
 	@GetMapping("/info")
 	public String info1(Model model,HttpSession session) {
@@ -239,6 +290,9 @@ public class SellerController {
 						model.addAttribute("sellerDto",info);
 		return"redirect:/seller/info_edit";
 	}
+	
+	
+	
 ///////////판매자 정보 수정하기/////////////////////
 	@GetMapping("/info_edit")
 	public String info_edit(Model model,HttpSession session) {
@@ -251,6 +305,7 @@ public class SellerController {
 	}
 	@PostMapping("/info_edit")
 	public String info_edit(@ModelAttribute SellerDto sellerDto,HttpSession session) {
+//		log.info("sellerDtoedit={}",sellerDto);
 		String seller_id=(String)session.getAttribute("seller_id");
 		sellerDto.setSeller_id(seller_id);
 		SellerDto info_edit=sellerDao.info_edit(sellerDto);
@@ -292,25 +347,17 @@ public class SellerController {
 	@PostMapping("/change_pw")
 	public String change_pw(@ModelAttribute SellerDto sellerDto,HttpSession session) {
 		String seller_id = (String)session.getAttribute("seller_id"); 
-	//	log.info("seller_id={}", seller_id);
+
 		sellerDto.setSeller_id(seller_id);
-		//log.info("sellerDto={}",sellerDto);
-//		SellerDto login =sellerDao.login(sellerDto);
-	//	log.info("seller_login={}", login);
+
 		sellerDto.setSeller_pw(passwordEncoder.encode(sellerDto.getSeller_pw()));
-		//SellerDto change_pw=SellerDto.builder().seller_id(seller_id).build();
+
 		sellerDto.setSeller_id(seller_id); 
-			sellerDao.change_pw(sellerDto);
-			return"redirect:/seller/change_pw_success";
+		sellerDao.change_pw(sellerDto);
 		
-//		session.setAttribute("seller_id",sellerDto.getSeller_id());
-//		boolean correct = encoder.matches(sellerDto.getSeller_pw(), change_pw.getSeller_pw());
-//		if(correct==true) {
-//					}
-//		else {
-//			return"redirect:/seller/change_pw";
-//		}
-//		
+		session.removeAttribute("seller_id");
+			
+			return"redirect:/";	
 	}
 	//판매자 비밀번호 변경 성공 페이지
 	@GetMapping("/change_pw_success")
@@ -323,27 +370,61 @@ public class SellerController {
 
 			return "seller/delete";
 			}
+	
 	@PostMapping("/delete")
-		public String delete( HttpSession session,@ModelAttribute SellerDto sellerDto
-	/* ,@RequestParam String seller_pw1 */) {
-	//		log.info("seller_wwww={}", sellerDto);
-			//log.info("seller_pw1={}",seller_pw);
+	public String delete(HttpSession session, @ModelAttribute SellerDto sellerDto) {
+		try {
 			String seller_id = (String)session.getAttribute("seller_id");
 			sellerDto.setSeller_id(seller_id);
+			
 			SellerDto login = sellerDao.login(sellerDto);
-	//		log.info("seller_login={}", login);
-//			SellerDto find=SellerDto.builder().seller_id(seller_id).build();
-																	//유저에서가져온 값, db에서 가져온 값
-			boolean correct = passwordEncoder.matches(sellerDto.getSeller_pw(), login.getSeller_pw());
-			if(login == null) {
-				return "redirect:/seller/management";
-				 }					
-			else {
-				session.invalidate();
-				sellerDao.delete(login);		
-				return "redirect:/seller/main";
+		
+			boolean correct = passwordEncoder.matches(sellerDto.getSeller_pw(),login.getSeller_pw());
+			
+			if(correct) {
 				
-					}
+				sellerDao.delete(login);
+				session.removeAttribute("seller_id");
+				
+				return "redirect:/seller/deleteSuccess";
+			}
+			else {
+				return "redirect:/seller/deleteFail";
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return "redirect:/?error";
+		}
+	}
+	
+	//탈퇴성공
+	@GetMapping("deleteSuccess")
+	public String deleteSuccess() {
+		
+		return "member/deleteSuccess";
+	}
+	//탈퇴 비밀번호 실패 
+	@GetMapping("deleteFail")
+	public String deleteFail() {
+		
+		return "member/deleteFail";
+	}
+	
+	//탈퇴실패
+	@GetMapping("/registsuccess")
+	public String registsuccess() {
+		return "member/registsuccess";//완료한뒤 인덱스페이지로 보낼것을 준비
+	}
+	
+	
+	@PostMapping("/delete_proc")
+		public String delete_proc( HttpSession session,@ModelAttribute SellerDto sellerDto) {
+			String seller_id = (String)session.getAttribute("seller_id");
+			String input_pw = sellerDto.getSeller_pw();
+			String a = passwordEncoder.encode(input_pw);
+			sellerDto.setSeller_id(seller_id);
+			SellerDto login = sellerDao.login(sellerDto);
+			return "seller/delete";
 	}
 	///////////////////////////////////////////////////
 	
@@ -357,15 +438,15 @@ public class SellerController {
 
 	public String find_id(HttpSession session,@RequestParam String seller_email,
 			@RequestParam String seller_name,Model model) {
-			log.info("1= {}", seller_email);
-			log.info("2= {}", seller_name);
+//			log.info("1= {}", seller_email);
+//			log.info("2= {}", seller_name);
 			SellerDto sellerDto =SellerDto.builder().seller_name(seller_name) //sellerDto에 이름과이메일을 넣는다
 																	   .seller_email(seller_email)
 																	   .build();
-			log.info("2sellerDto={}",sellerDto);
+//			log.info("2sellerDto={}",sellerDto);
 			SellerDto find_id=sellerDao.find_id(sellerDto);
-			log.info("2find_id={}",sellerDto);
-			log.info("2find_id={}",find_id);
+//			log.info("2find_id={}",sellerDto);
+//			log.info("2find_id={}",find_id);
 			model.addAttribute("sellerDto",find_id);
 		return "/seller/find_id_info";
 				
@@ -381,9 +462,9 @@ public class SellerController {
 			SellerDto sellerDto =SellerDto.builder().seller_name(seller_name) //sellerDto에 이름과이메일을 넣는다
 																	   .seller_email(seller_email)
 																	   .build();
-			log.info("sellerDto={}",sellerDto);
+//			log.info("sellerDto={}",sellerDto);
 			SellerDto find_id=sellerDao.find_id(sellerDto);
-				log.info("find_id={}",find_id);
+//				log.info("find_id={}",find_id);
 		//	model.addAttribute("sellerDto",find_id);
 		
 		return "seller/find_id_info";
@@ -398,9 +479,9 @@ public class SellerController {
 			SellerDto sellerDto =SellerDto.builder().seller_name(seller_name) //sellerDto에 이름과이메일을 넣는다
 																	   .seller_email(seller_email)
 																	   .build();
-			log.info("sellerDto={}",sellerDto);
+//			log.info("sellerDto={}",sellerDto);
 			SellerDto find_id=sellerDao.find_id(sellerDto);
-			log.info("find_id={}",find_id);
+//			log.info("find_id={}",find_id);
 //			model.addAttribute("sellerDto",find_id);
 		return "redirect:/seller/login";
 }

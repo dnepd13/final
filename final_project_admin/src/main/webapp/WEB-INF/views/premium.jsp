@@ -28,6 +28,30 @@
 				var price = priceCell.children().val();
 				var rate = rateCell.children().val();
 				
+				var upprice = $(this).parent().parent().prev().children(".premium").text();
+				var downprice = $(this).parent().parent().next().children(".premium").text();
+				
+				var uprate = $(this).parent().parent().prev().children(".rate").text();
+				var downrate = $(this).parent().parent().next().children(".rate").text();
+// 				console.log(upprice);
+// 				console.log(downprice);
+				
+				if(price >= parseInt(upprice)){
+					window.alert("수수료 조건을 다시 입력하세요");
+					return false;
+				}
+				if(price <= parseInt(downprice)){
+					window.alert("수수료 조건을 다시 입력하세요");
+					return false;
+				}
+				if(rate <=parseInt(uprate)){
+					window.alert("수수료를 다시 입력하세요");
+					return false;
+				}
+				if(rate >= parseInt(downrate)){
+					window.alert("수수료를 다시 입력하세요");
+					return false;
+				}
 				priceCell.empty();
 				rateCell.empty();
 				
@@ -51,9 +75,11 @@
 						"premium_rate":premium_rate
 					},
 					success:function(resp){
-						console.log(resp);
+// 						console.log(resp);
 					}
 				});
+					
+				
 			}
 		});
 		
@@ -70,7 +96,7 @@
 					"premium_no":premium_no
 				},
 				success:function(resp){
-					console.log(resp);
+// 					console.log(resp);
 				}
 			})
 		});
@@ -80,18 +106,15 @@
 		$(".btn").click(function(){
 			var premiumprice = $(".preminumPrice").val();
 			var premiumrate = $(".preminumRate").val();
-			console.log("premiumprice"+premiumprice);
+// 			console.log("premiumprice"+premiumprice);
 			var tr = $('.table').find('tr').length;
-			console.log(tr);
+// 			console.log(tr);
 			if(tr == 1 ){
 				$(".premiumForm").submit();
 			}
 			else{
 			$(".premium").each(function(){
 				var premium = $(this).text();
-				console.log("premium"+premium);
-				
-				
 				
 				if(premiumprice == parseInt(premium)){
 					window.alert("이미 존재하는 값입니다");
@@ -99,14 +122,16 @@
 				}
 				else{
 					if(premiumprice > parseInt($(this).text())){
-						console.log(premiumprice);
-						console.log($(this).text());
+// 						console.log(premiumprice);
+// 						console.log($(this).text());
+						
 						var thisrate = parseInt($(this).next().text());
 						var nextrate = parseInt($(this).parent().prev().children(".rate").text());
 						
-						console.log($(this).next().text());
-						console.log($(this).parent().prev().children(".rate").text());
-						console.log(premiumrate);
+// 						console.log($(this).next().text());
+// 						console.log($(this).parent().prev().children(".rate").text());
+// 						console.log(premiumrate);
+					
 						if(premiumrate < parseInt(thisrate)){
 							if($(this).parent().prev().children(".rate").length == 0){
 								$(".premiumForm").submit();
@@ -135,6 +160,12 @@
 	});
 </script>
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
+
 <aside>
 <div>
 <jsp:include page="template/header.jsp"></jsp:include>
@@ -142,7 +173,7 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">

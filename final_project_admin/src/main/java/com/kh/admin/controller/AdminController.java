@@ -3,6 +3,7 @@ package com.kh.admin.controller;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -94,7 +96,6 @@ public class AdminController {
 			@ModelAttribute AdminDto adminDto,
 			HttpSession session
 			) {
-			try {
 			AdminDto login= adminDao.login(adminDto);
 			
 			log.info("1={}",login);
@@ -116,17 +117,10 @@ public class AdminController {
 					return "redirect:/?error=error";
 				}
 			}
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/?error";
-		}
-	
 	}
 	//---------------------------�솃李�----------------------------------
 	@GetMapping("/home")
 	public String home(Model model) {
-		try {
 		int memberCount = memberDao.memberCount();
 		int sellerCount = sellerDao.sellerCount();
 		int registTodayCount = adminDao.registToday();
@@ -216,10 +210,6 @@ public class AdminController {
 		}
 		
 		return "/home";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "/home";
-		}
 	}
 	//---------------------------愿�由ъ옄媛��엯李�----------------------------------
 	@GetMapping("/regist")
@@ -228,35 +218,26 @@ public class AdminController {
 	}
 	//---------------------------愿�由ъ옄媛��엯李�----------------------------------
 	@PostMapping("/regist")
-	public String regist(@ModelAttribute AdminDto adminDto) {
-		try {
+	public String regist(@ModelAttribute AdminDto adminDto, Model model) {
 			
 		
 		adminDto.setAdmin_pw(passwordEncoder.encode(adminDto.getAdmin_pw()));
 		
 		
 		adminDao.regist(adminDto);
-
+		String success = "회원가입에 성공했습니다";
+		model.addAttribute("success", success);
 		return "/regist";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "/regist";
-		}
 	}
 	
 	//---------------------------濡쒓렇�븘�썐李�----------------------------------
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
-		try {
 			
 		
 		session.removeAttribute("admin_id");
 		session.removeAttribute("admin_grade");
 		return "redirect:/";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/";
-		}
 	}
 	
 	//---------------------------移댄뀒怨좊━ 愿�由ъ갹----------------------------------
@@ -265,7 +246,6 @@ public class AdminController {
 			Model model,
 			@RequestParam(value="pno1", required = false) String pno1
 			) {
-		try {
 			
 		PagingVO vo = boardService.categoryPagination(pno1);
 		model.addAttribute("paging",vo);
@@ -279,10 +259,6 @@ public class AdminController {
 		model.addAttribute("small", categoryDao.categorySmall());
 		log.info("small={}", categoryDao.categorySmall());
 		return "/category";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "/category";
-		}
 	
 	}
 	//---------------------------移댄뀒怨좊━ �벑濡�----------------------------------
@@ -290,14 +266,9 @@ public class AdminController {
 	public String categoryInsert(
 			@ModelAttribute CategoryDto categoryDto
 			) {
-		try {
 			
 		categoryDao.insertCategory(categoryDto);
 		return "redirect:/category";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/category";
-		}
 	}
 	//---------------------------移댄뀒怨좊━ �뾽�뜲�씠�듃----------------------------------
 	@PostMapping("/categoryUpdate")
@@ -308,8 +279,6 @@ public class AdminController {
 			@RequestParam String category_middle,
 			@RequestParam String category_small
 			) {
-		try {
-			
 		
 		log.info("1={}", category_no);
 		log.info("1={}", category_large);
@@ -325,11 +294,6 @@ public class AdminController {
 		
 		categoryDao.updateCategory(categoryDto);
 		return "/category";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "/category";
-			
-		}
 	}
 	
 	//---------------------------移댄뀒怨좊━ �궘�젣----------------------------------
@@ -338,42 +302,27 @@ public class AdminController {
 	public String categoryDelete(
 			@RequestParam int category_no
 			) {
-		try {
 			
 		
 		categoryDao.deleteCategory(category_no);
 		
 		return "redirect:/category";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/category";
-		}
 	}
 	//---------------------------�닔�닔猷뚯갹----------------------------------
 	@GetMapping("/premium")
 	public String premium(Model model) {
-		try {
 			
 		List<PremiumDto> list = premiumDao.premiumGetList();
 		model.addAttribute("list", list);
 		return "/premium";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "/premium";
-		}
 	}
 	
 	//---------------------------�닔�닔猷� 異붽�----------------------------------
 	@PostMapping("/premium")
 	public String premium(@ModelAttribute PremiumDto premiumDto) {
-		try {
 			
 		premiumDao.premiumInsert(premiumDto);
 		return "redirect:/premium";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/premium";
-		}
 	}
 	//---------------------------�닔�닔猷� 蹂�寃�----------------------------------
 	@PostMapping("premiumUpdate")
@@ -383,7 +332,6 @@ public class AdminController {
 			@RequestParam int premium_price,
 			@RequestParam int premium_rate
 			) {
-		try {
 			
 		PremiumDto premiumDto = PremiumDto.builder()
 																		.premium_no(premium_no)
@@ -392,10 +340,6 @@ public class AdminController {
 																	.build();
 		premiumDao.premiumUpdate(premiumDto);
 		return "redirect:/premium";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/premium";
-		}
 	}
 	
 	
@@ -405,17 +349,12 @@ public class AdminController {
 	public String premiumDelete(
 			@RequestParam int premium_no
 			) {
-		try {
 			
 		PremiumDto premiumDto = PremiumDto.builder()
 																	.premium_no(premium_no)
 																		.build();
 		premiumDao.premiumDelete(premiumDto);
 		return "redirect:/premium";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/premium";
-		}
 	}
 	
 	
@@ -437,8 +376,6 @@ public class AdminController {
 			@RequestParam(value = "seller_no", required = false, defaultValue = "0") int seller_no,
 			Model model
 			) {
-		try {
-			
 		
 		//member_no媛� 0�씠 硫ㅻ쾭瑜� 紐⑤뜽
 		if(member_no != 0) {
@@ -456,10 +393,6 @@ public class AdminController {
 		}
 		
 		return "/block";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "/block";
-		}
 	}
 	
 	@PostMapping("block")
@@ -467,7 +400,6 @@ public class AdminController {
 			@ModelAttribute BlockDto blockDto
 			) {
 		//硫ㅻ쾭 踰덊샇瑜� 媛�吏�怨� �엳�쑝硫� 硫ㅻ쾭瑜� 李⑤떒�븯怨� 硫ㅻ쾭由ъ뒪�듃濡� 由ы꽩
-		try {
 			
 		if(blockDto.getMember_no() != 0) {
 			adminDao.block(blockDto);
@@ -482,10 +414,6 @@ public class AdminController {
 		else {
 			return "redirect:/";
 		}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/";
-		}
 	}
 	
 	// ----------------------------李⑤떒 由ъ뒪�듃 -----------------------------------
@@ -495,7 +423,6 @@ public class AdminController {
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute PagingVO paging
 			) {
-		try {
 			
 			int count;
 			if(paging.getKey()==null) {
@@ -539,24 +466,15 @@ public class AdminController {
 				
 				return "/blocklist";
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "/blocklist";
-		}
 	}
 	
 	@PostMapping("/blocklist")
 	public String blocklist(
 			@ModelAttribute BlockDto blockDto
 			) {
-		try {
 			
 		adminDao.blockDelete(blockDto);
 		return "redirect:/blocklist";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/blocklist";
-		}
 	}
 	
 	//----------------李⑤떒 �빐�젣------------------------------
@@ -565,8 +483,6 @@ public class AdminController {
 			@RequestParam(value="seller_no", required = false, defaultValue = "0") int seller_no,
 			@RequestParam(value="member_no", required = false, defaultValue = "0") int member_no
 			) {
-		try {
-			
 		
 			BlockDto blockDto = new BlockDto();
 				if(seller_no != 0) {
@@ -582,60 +498,38 @@ public class AdminController {
 				else {
 					return "redirect:/blocklist";
 				}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/blocklist";
-		}
 	}
 	
 	
 	//--------------------�벑湲� �삙�깮 --------------------------------------
 	@GetMapping("/gradebenefit")
 	public String benefit(Model model) {
-		try {
 			
 		model.addAttribute("list", gradeBenefitDao.gradeBenefitList());
 		return "gradebenefit";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "gradebenefit";
-		}
 	}
 	
 	@PostMapping("/gradebenefit")
 	public String benefit(@ModelAttribute GradeBenefitDto gradeBenefitDto) {
-		try {
 			
 		gradeBenefitDao.gradeBenefitRegist(gradeBenefitDto);
 		
 		return "redirect:gradebenefit";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:gradebenefit";
-		}
 	}
 	
 	//------------------�벑湲됲삙�깮 �닔�젙-----------------------------------
 	@PostMapping("/gradebenefitupdate")
 	public void gradebenefitupdate(@ModelAttribute GradeBenefitDto gradeBenefitDto) {
-		try {
 			
 		log.info("bene={}", gradeBenefitDto);
 		gradeBenefitDao.gradeBenefitUpdate(gradeBenefitDto);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	//--------------�벑湲됲삙�깮 �궘�젣------------------------------------------
 	@PostMapping("gradebenefitdelete")
 	public void gradebenefitdelete(@ModelAttribute GradeBenefitDto gradeBenefitDto) {
-		try {
 			
 		gradeBenefitDao.gradeBenefitDelete(gradeBenefitDto);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	//---------------------�궗�씠�듃 湲곕낯�젙蹂� �꽕�젙--------------------------
@@ -643,14 +537,9 @@ public class AdminController {
 	public String basicpagesetting(
 			Model model
 			) {
-		try {
 			model.addAttribute("list", companyInfoDao.get());
 			
 		return "basicpagesetting";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "basicpagesetting";
-		}
 	}
 	
 	@PostMapping("/basicpagesetting")
@@ -678,7 +567,22 @@ public class AdminController {
 		}
 	}
 	
+	@GetMapping("/error1")
+	public String error1() {
+		int a = 10/0;
+		return "error1";
+	}
 	
+	//이건 예외 처리 됨
+	
+//	@ExceptionHandler(Exception.class)//예외 처리기
+//	public String handler(Exception ex) {//예외 객체
+//		return "error/500";
+//	}
+	
+	
+	
+//	
 	//---------------------�뿤�뜑-------------------------
 //	@GetMapping("/template/header")
 //	public String header() {

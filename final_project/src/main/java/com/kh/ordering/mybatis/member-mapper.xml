@@ -228,6 +228,12 @@
 
 	</select>
 	
+	<!--  -->
+		<!-- 로그인 -->
+	<select id="emaillogin" parameterType="member" resultType="member">
+			select * from member where member_id = #{member_id}
+
+	</select>
 <!--수정전 정보조회-->
 	<select id="memberGETOne" parameterType="int" resultType="member">
 		select * from member where member_no = #{member_no}
@@ -270,6 +276,8 @@
  	<update id="memberedit" parameterType="member">
  		update member
  		set
+ 			member_name= #{member_name},
+ 			member_birth= #{member_birth},
  			member_email = #{member_email},
  			member_phone = #{member_phone}
  		where
@@ -277,12 +285,18 @@
  	</update>
 	
 	
+
+	
 	<!-- 회원 탈퇴 -->
 	<delete id="memberdelete" parameterType="member">
 		delete from member where member_no = #{member_no}
 	</delete>
 	
-	
+	<!-- 비밀번호 수정 -->
+	<update id="change_pw" parameterType="member">
+	update member set member_pw=#{member_pw} where member_id=#{member_id} 
+						
+	</update>
 
 	
 	
@@ -301,6 +315,13 @@
 		select sum(member_point_change) from member_point where member_no = #{member_no}
 	</select>
 	
+	
+	
+		<!-- 회원 개인 정보 조회 -->
+	<select id="membergetUpdate" parameterType="member" resultType="member">
+		select * from member where member_id=#{member_id}
+	</select>
+	
 	<!-- 회원 포인트 추가 -->
 	<insert id="registPoint" parameterType="memberPointVO">
 		insert into member_point 
@@ -311,7 +332,8 @@
 				sysdate+30,
 				#{member_point_change},
 				#{member_point_content},
-				#{member_no}
+				#{member_no},
+				'admin'
 				)
 	</insert>	
 	

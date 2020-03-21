@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.ordering.entity.BlockDto;
 import com.kh.ordering.entity.CategoryDto;
 import com.kh.ordering.entity.CustomOrderDto;
 import com.kh.ordering.entity.FilesDto;
+import com.kh.ordering.entity.MemberCustomAlarmDto;
 import com.kh.ordering.entity.MemberCustomOrderDto;
 import com.kh.ordering.entity.SellerCategoryDto;
 import com.kh.ordering.entity.SellerCustomAlarmDto;
@@ -50,6 +53,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/member")
 @Slf4j
 public class MemberCustomController {
+	@Autowired
+	private SqlSession sqlSession;
 	
 	@Autowired
 	private MemberCustomService memberCustomService;	
@@ -177,26 +182,41 @@ public class MemberCustomController {
 	public String memberCustomResp(HttpSession session,
 																	@RequestParam int seller_custom_order_no, Model model) {
 
-		// 상세페이지 이동하면 구매자 알람테이블의 '알람체크','알람 확인시간' update
 		String member_id=(String)session.getAttribute("member_id");
 		int member_no = memberCustomDao.getNo(member_id);
 		
-		memberCustomDao.updateAlarm(member_no, seller_custom_order_no);
-		
-		// 해당 견적서에 대한 주문제작 테이블 상태 "읽음" 업데이트
-		SellerCustomOrderDto sellerCustomDto = sellerCustomDao.getSellerCustom(seller_custom_order_no);
-		CustomOrderDto customOrderDto
-												= CustomOrderDto.builder()
-																					.custom_order_no(sellerCustomDto.getCustom_order_no())
-																					.custom_order_status("읽음")
-																					.build();
-		memberCustomDao.updateCustomStatus(customOrderDto);
-		
+		// 견적대기 상태인지 아닌지
+		CustomOrderVO customOrder =memberCustomDao.customOrderVO1(seller_custom_order_no);
+		String check = customOrder.getCustom_order_status();
+
+		if(check.equals("견적대기")) {
+			// 상세페이지 이동하면 구매자 알람테이블의 '알람체크','알람 확인시간' update
+			memberCustomDao.updateAlarm(member_no, seller_custom_order_no);
+			
+			// 해당 견적서에 대한 주문제작 테이블 상태 "읽음" 업데이트
+			SellerCustomOrderDto sellerCustomDto = sellerCustomDao.getSellerCustom(seller_custom_order_no);
+			
+			CustomOrderDto customOrderDto
+													= CustomOrderDto.builder()
+																						.custom_order_no(sellerCustomDto.getCustom_order_no())
+																						.custom_order_status("읽음")
+																						.build();
+			memberCustomDao.updateCustomStatus(customOrderDto);
+
+		}
+				
 		CustomOrderVO content = memberCustomDao.customOrderVO1(seller_custom_order_no);
 		model.addAttribute("getListInfoResp", content);
-		
+
 		List<FilesVO>  filesVO = sellerCustomService.filesList(seller_custom_order_no);
 		model.addAttribute("filesVO", filesVO);
+		
+		// 차단판매자 데려오기
+		BlockDto blockDto = sqlSession.selectOne("Block.getSellerInfo", content.getSeller_no());
+
+		//		int sellerblock = sqlSession.selectOne("seller.getblock", content.getSeller_no());
+//		log.info("sellerblock={}",sellerblock);
+//		model.addAttribute("sellerblock", sellerblock);
 		
 		return "member/customInfoResp";
 	}
@@ -214,7 +234,7 @@ public class MemberCustomController {
 		// 내가 보낸 요청서		
 		List<CustomOrderVO> list = memberCustomDao.getListReq(result);
 		model.addAttribute("getListReq", list);		
-		log.info("list",list);
+
 		return "member/customListReq";
 	}
 	
@@ -243,8 +263,10 @@ public class MemberCustomController {
 			
 			int seller_no = alarmList.get(0).getSeller_no();
 			SellerDto sellerDto= sellerDao.sellerDto(seller_no);
-			String seller_id = sellerDto.getSeller_id();
-			model.addAttribute("seller_id", seller_id);
+			if(sellerDto!=null) {
+				String seller_id = sellerDto.getSeller_id();
+				model.addAttribute("seller_id", seller_id);
+			}
 
 			return "member/customInfoReq";
 		}
@@ -308,6 +330,22 @@ public class MemberCustomController {
 		// 회원 신규 견적서 알람 check N count 개수		
 		return memberCustomDao.customAlarm(member_no);
 	}
+	
+	// 받은 견적서의 판매자가 차단된 사람인가 아닌가
+//	@GetMapping("/blockSeller")
+//	@ResponseBody
+//	public boolean blockSeller(int seller_no) {
+//		boolean sellerblock=sqlSession.selectOne("seller.getBlock", seller_no);
+//		log.info("sellerblock={}",sellerblock);
+//		if(sellerblock) {
+//			return sqlSession.selectOne("seller.getBlock", seller_no);
+//		}
+//		else {
+//			return false;
+//		}
+//		
+//	}
+	
 	
 // 파일 이미지 다운로드
 	@GetMapping("/download")

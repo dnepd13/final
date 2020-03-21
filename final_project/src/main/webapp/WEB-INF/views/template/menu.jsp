@@ -9,11 +9,12 @@
 /*	부트스트랩 nav */
 	.navbar {
 	    padding: 3px 4rem;
+	    width: 100%;
 	}
 
 </style>
 
-<nav class="navbar navbar-expand-md navbar-light" style="border-left:0; border-right:0;">
+<nav class="navbar navbar-expand-md navbar-light" style="border-top: 1px solid #BFC9D9; border-bottom: 1px solid #BFC9D9;">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -31,6 +32,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="${pageContext.request.contextPath}/goods/search?keyword=팔찌" style="padding: 0 15px;">팔찌</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/goods/search?keyword=귀걸이" style="padding: 0 15px;">귀걸이</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/goods/search" method="GET">

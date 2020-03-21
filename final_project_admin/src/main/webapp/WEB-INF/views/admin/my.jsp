@@ -2,6 +2,22 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">    
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script>
+		var success = '${param.string}';
+		console.log(success);
+		if(success!=""){
+			window.alert(success);
+		}
+</script>
+
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
 
 <aside>
 <div>
@@ -10,7 +26,7 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">

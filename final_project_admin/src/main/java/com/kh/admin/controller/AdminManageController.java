@@ -40,7 +40,6 @@ public class AdminManageController {
 			Model model,
 			@RequestParam(value="pno1", required = false) String pno1
 			) {
-		try {
 			
 		
 		PagingVO vo = boardService.pagination(pno1);
@@ -49,24 +48,15 @@ public class AdminManageController {
 		List<AdminDto> list = adminManage.selectBoard(vo);
 		model.addAttribute("list", list);
 		return "admin/manage";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "admin/manage";
-		}
 	}
 	
 	@PostMapping("/manage")
 	public String manage(
 			@RequestParam(value="pno1", required = false) String pno1,
 			@ModelAttribute AdminDto adminDto) {
-		try {
 		adminManage.adminDelete(adminDto);
 		
 		return "redirect:/admin/manage?pno1="+pno1;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/admin/manage?pno1="+pno1;
-		}
 	}
 	
 	@GetMapping("/my")
@@ -89,7 +79,8 @@ public class AdminManageController {
 	public String changepw(
 			@RequestParam String admin_pw,
 			@RequestParam String new_admin_pw,
-			@RequestParam int admin_no
+			@RequestParam int admin_no,
+			Model model
 			) {
 		
 		AdminDto adminDto =  adminManage.adminCheckPw(admin_no);
@@ -106,6 +97,8 @@ public class AdminManageController {
 			newAdminPw.setAdmin_no(admin_no);
 			
 			adminManage.adminChangePw(newAdminPw);
+			String success = "비밀번호 변경을 성공했습니다";
+			model.addAttribute(success);
 			return "redirect:/admin/my";
 		}
 	}

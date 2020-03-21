@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+
+<!-- 배송지 수정 게시판 -->  
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">   
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"/>
@@ -151,13 +154,13 @@
 					<tr>
 						<td scope="row">
 							<input type="hidden" name="member_addr_no" value="${addrupdateget.member_addr_no}">
-							<input type="text" name="member_name_extra" value="${addrupdateget.member_name_extra}"  required>
+							<input type="text" name="member_name_extra" value="${addrupdateget.member_name_extra}" maxlength="48" required>
 						</td>
 						<td scope="row">
-							<input type="text" name="member_addr_post" id="sample6_postcode" value="${addrupdateget.member_addr_post}" required>
+							<input type="text" name="member_addr_post" id="sample6_postcode" value="${addrupdateget.member_addr_post}" maxlength="12" required>
 							<button type="button" class="btn_custom btn_findPost" onclick="sample6_execDaumPostcode()">우편번호 찾기</button>
-							<input type="text" name="member_addr_basic" id="sample6_address" value="${addrupdateget.member_addr_basic}"  required><br>
-							<input type="text" name="member_addr_extra" id="sample6_extraAddress" value="${addrupdateget.member_addr_extra}"  required>
+							<input type="text" name="member_addr_basic" id="sample6_address" value="${addrupdateget.member_addr_basic}" maxlength="48" required><br>
+							<input type="text" name="member_addr_extra" id="sample6_extraAddress" value="${addrupdateget.member_addr_extra}" maxlength="48" required>
 						</td>
 						<td scope="row" style="text-align: center; border-right-style: none; padding: 25px 0;">
 									${addrupdateget.member_addr_status} <br>

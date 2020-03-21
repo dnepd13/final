@@ -24,4 +24,9 @@ public interface MemberDao {
 	public void memberPointMulti(List<MemberPointVO> list);
 	//비밀번호 초기화
 	public void memberChangePw(MemberDto memberDto);
+	
+	//포인트 자동 소멸
+	public List<MemberPointVO> limitPointList();
+	public String limitUsePoint(MemberPointVO memberPointVO);
+	public void extinctPoint(MemberPointVO memberPointVO);
 }

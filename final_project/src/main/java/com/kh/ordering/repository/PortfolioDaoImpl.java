@@ -24,5 +24,9 @@ public class PortfolioDaoImpl implements PortfolioDao {
 	public List<FilesVO> getFilesList(int seller_no) {
 		return sqlSession.selectList("portfolio.getFilesNo", seller_no);
 	}
+	@Override
+	public void portfolio_delete(PortfolioDto portfolioDto) {
+		sqlSession.delete("portfolio.deleteFiles", portfolioDto);
+	}
 
 }

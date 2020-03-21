@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<style>
+	.arti{
+		overflow: hidden;
+	}
+</style>
 
 <aside>
 <div>
@@ -9,7 +14,7 @@
 </aside>
 
 <section class="admin" style="padding-left: 250px;">
-	<article>
+	<article class="arti">
 <div class="container-fluid">
         <div class="row" style="padding: 50px;">
             <div class="offset-md-1 col-md-10">

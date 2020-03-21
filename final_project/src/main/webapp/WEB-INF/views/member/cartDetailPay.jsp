@@ -19,7 +19,6 @@
 		height: 800px;
 		margin: 0 auto;
 	}
-	
 	.detailPayBox {
 		border-collapse: collapse;
 		float: left;
@@ -27,28 +26,62 @@
 		padding-top: 100px;
 		width: 960px;
 	}
-	.payContent {
+	.detailPay_main{
 		margin: 0 auto;
 		width: 90%;
+		height: 50px;
+		border-bottom: 2px solid #F3F5F8;
+	}
+	.detailPay_mainBox1 {
+		width: 200px;
+		height: auto;
+		padding-top: 10px;
+		margin-left: 30px;
+		float: left;
+		font-size: large;
+	}
+	.payContent {
+		margin:30px auto;
+		width: 90%;
+	}
+	.payCancel,
+	.cartReturn {
+		float: right;
 	}
 </style>
 
 
 <script>
-	function payConfirm(){
-		if(confirm("결제를 취소하시겠습니까? 취소하실 정보를 다시 한 번 확인해주세요.")){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
+
+	$(function(){
+	
+		$(".payCancel").click(function(e){
+			e.preventDefault();
+			
+			if(confirm("결제를 취소하시겠습니까? 취소하실 정보를 다시 한 번 확인해주세요.")){
+				$("form").submit();
+				return true;
+			}
+			else{
+				return false;
+			}
+			
+		});
+	
+	});
+
 </script>
 
 <article class="articleBox">
 <jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
-	<div class="detailPayBox">
-	<table class="table payContent" border="1">
+<div class="detailPayBox">
+	<div class="detailPay_main">
+		<div class="detailPay_mainBox1">
+			주문상품 상세
+		</div>
+	</div>	
+	<div class="payContent">
+	<table class="table" border="1">
 		<tr>
 			<th>주문번호</th>
 			<td>${payDetails.partner_order_id }</td>
@@ -76,21 +109,30 @@
 		</tr>
 		<tr>
 			<td>결제상태</td>
-			<td>${payDetails.cart_info_status } 
+			<td><p>${payDetails.cart_info_status } 
 					<fmt:parseDate value="${payDetails.process_time }" var="process_time" pattern="yyyy-MM-dd HH:mm:ss"/>
 					(<fmt:formatDate value="${process_time }" pattern="yyyy/MM/dd HH:mm:ss"/>)
 					<c:if test="${payDetails.cart_info_status == '결제완료'}">
-					<a href="${pageContext.request.contextPath }/pay/kakao/customPayRevoke?ordering_no=${payDetails.ordering_no}">
-						<button class="btn btn-warning payCancel" style="float:right;" onclick="payConfirm();">
-							결제취소</button>
-					</a>
+						<c:choose>
+							<c:when test="${ okCount ==0 }">
+								<form action="../pay/kakao/customPayRevoke" method="get">
+									<input type="hidden" name="ordering_no" value="${payDetails.ordering_no}">
+									<button class="btn btn-warning payCancel">결제취소</button>
+								</form>
+							</c:when>
+							<c:otherwise>
+								<button class="btn btn-warning cartReturn">교환/환불</button>
+							</c:otherwise>
+						</c:choose>
 					</c:if>
+				</p>
 			</td>
 		</tr>
 	</table>
 
 	<p style="text-align: right;"><a href="${pageContext.request.contextPath }/member/cartList">목록으로</a></p>
 	</div>
+</div>
 </article>
 
 <div class="row-empty-40"></div>

@@ -41,19 +41,19 @@ public class GmailService implements EmailService{
 	private RandomService randomService;
 
 
-	public String sendCert(String member_email, String cert) {
+	public String sendCert(String email, String cert) {
 		try {
 			SimpleMailMessage message = new SimpleMailMessage();
-			String[] to = {member_email};
+			String[] to = {email};
 			message.setTo(to);
 			message.setSubject("[ordering shop회원] 인증을 위한 이메일입니다.");
 			message.setText("인증번호 : " + cert);
 			sender.send(message);
-			return "email_success";
+			return "success";
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			return "email_fail";
+			return "fail";
 		}
 	}
 
