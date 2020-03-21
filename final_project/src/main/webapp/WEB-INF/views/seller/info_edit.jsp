@@ -15,32 +15,28 @@
 	<div class="container-fluid">
         <div class="row" style="padding: 50px;">
             <div class="offset-md-1 col-md-10">
-<div class="row justify-content-center"  style="padding:20px;margin-right: 50px"><h1>판매자 정보 수정하기</h1></div>
-
-
-<!-- <div class="offset-md-2 col-md-5"> -->
-    <form action="info_edit" method="post">
-	<table class="table table-hover">
-  <thead>
-    <tr>
-      <th width="35%">${sellerDto.seller_id}님의 회원 정보입니다</th>
-      <th width="65%"></th>
-<!-- 		<td></td> -->
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="table-light">
-      <th scope="row">아이디</th>
-      <td style="text-align:left: ;">${sellerDto.seller_id}</td>
-    </tr>
-    <tr class="table-light">
-      <th scope="row">이름</th>
-      <td>${sellerDto.seller_name}</td>
-    </tr>
-    <tr class="table-light" >
-      <th scope="row">이메일</th>
-      <td><input class="form-control form-control-sm" type="text" name="seller_email" value="${sellerDto.seller_email}" style="width: 230px;" ></td>
-    </tr>
+			 <div class="row justify-content-center"  style="padding:20px;margin-right: 50px"><h1>판매자 정보 수정하기</h1></div>
+    			<form action="info_edit" method="post">
+					<table class="table table-hover">
+ 					 <thead>
+    					<tr>
+      					 <th width="35%">${sellerDto.seller_id}님의 회원 정보입니다</th>
+      					 <th width="65%"></th>
+    					</tr>
+ 					 </thead>
+  					 <tbody>
+    					<tr class="table-light">
+      					 <th scope="row">아이디</th>
+      					 <td style="text-align:left: ;">${sellerDto.seller_id}</td>
+   					    </tr>
+    					<tr class="table-light">
+      					 <th scope="row">이름</th>
+      					 <td>${sellerDto.seller_name}</td>
+   					    </tr>
+    					<tr class="table-light" >
+      					 <th scope="row">이메일</th>
+     					 <td><input class="form-control form-control-sm" type="text" name="seller_email" value="${sellerDto.seller_email}" style="width: 230px;" ></td>
+   					    </tr>
     <tr class="table-light">
       <th scope="row">연락처</th>
       <td><input class="form-control form-control-sm" type="text" name="seller_phone" value="${sellerDto.seller_phone}"style="width: 230px;"></td>
