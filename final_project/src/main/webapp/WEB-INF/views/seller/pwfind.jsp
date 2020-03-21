@@ -169,7 +169,7 @@ function test() {
 
 <div class="regist-area card border-primary mb-3">
 	<div class="card-header" style="width:100%;">
-		    	이메일 확인
+		    비밀번호 찾기 
 	</div>
 	<div class="card-body">
 		<form action="pwfind" method="post">
@@ -201,7 +201,7 @@ function test() {
 			    				</td>
 			    			</tr>
 			    			<tr>
-			    				<td colspan="3"><input type="button" id="frm" value="이메일확인" onclick="test();" class="btn_regist btn btn-secondary disabled btn-block" />
+			    				<td colspan="3"><input type="button" id="frm" value="비밀번호 찾기" onclick="test();" class="btn_regist btn btn-secondary disabled btn-block" />
 			    			</tr>
 		    			</tbody>
 		    		</table>

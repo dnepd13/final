@@ -9,29 +9,43 @@
   <jsp:include page="/WEB-INF/views/template/header.jsp"/>
  <jsp:include page="/WEB-INF/views/template/menu.jsp"/>                  
   
+  <style>
+  .redirect-box {
+  		margin:auto;
+		border: 1px solid #A6A6A6;
+		width: 400px;
+		height: 200px;
+		margin-top: 10%;
+		margin-left: 10%;
+	}
+	
+  </style>
    <div class="container-fluid">
         <div class="row">
             <div class="offset-md-4 col-md-4 ">
-                <div class="row justify-content-center"><h1>판매자 아이디 찾기</h1></div>
-                <br><br><br>
-                <P style="font-size: 18px ">고객님 정보와 일치하는 아이디 입니다.</P>
-                <form action="find_id_info" method="post">  
-                <div>
-                <p>${sellerDto.seller_id}</p>                
-                </div>
-         		<button type="submit" class="btn btn-secondary disabled">로그인 하기</button>
-         		</form>
-         		<button type="submit" class="btn btn-secondary disabled" onclick="location.href = '#' ">비밀번 찾기</button>
+            	<div align="center" style="margin-top: 10%"><h1>판매자 아이디 찾기</h1></div>
+                	<div class="redirect-box row justify-content-center">
+                	<br><br><br>
+                	 <div class="redirect-content">
+                	 <br><br>
+                	   <P style="font-size: 18px ">고객님 정보와 일치하는 아이디 입니다.</P>
+   				 		<form action="find_id_info" method="post">  
+                		 <div align="center">
+                			<h3 >${sellerDto.seller_id}</h3>                
+                		</div>
+                		
+         			   </form>
+         			<a href="${pageContext.request.contextPath }/seller/login">
+						<button class="btn btn-secondary" style="width:48%;">로그인하기</button>
+				   </a>
+         		   <a href="${pageContext.request.contextPath }/seller/pwfind">
+					<button class="btn btn-secondary" style="width:48%;">비밀번호 찾기</button>
+				   </a>
+					</div>
+					</div>
 			</div>
 		 </div>
-
 	</div>
-	<!-- <h1>판매자 아이디는</h1>
-    <form action="find_id_info" method="post">
-<h3>판매자 아이디 :${sellerDto.seller_id}</h3>
-
-   <input   type="submit" value="로그인하기"> 
-         </form>  -->	
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"/>         
 

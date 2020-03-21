@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -201,9 +202,12 @@ public class MemberController {
 	
 	@PostMapping("/pointregist")
 	public String pointregist(
-			@ModelAttribute MemberPointVO memberPointVO
+			@ModelAttribute MemberPointVO memberPointVO,
+			HttpServletRequest req
 			) {
 			
+		String admin = (String) req.getSession().getAttribute("admin_id");
+		memberPointVO.setMember_point_admin(admin);
 		memberDao.pointRegist(memberPointVO);
 		MemberDto memberDto = MemberDto.builder()
 																.member_no(memberPointVO.getMember_no())
@@ -228,9 +232,11 @@ public class MemberController {
 			@RequestParam(value = "valueArrTest[]") List<String> valueArr,
 			@RequestParam int point,
 			@RequestParam String reason,
-			@RequestParam String lastdate
+			@RequestParam String lastdate,
+			HttpServletRequest req
 			) {
 		
+		String admin = (String) req.getSession().getAttribute("admin_id");
 		log.info("vlaie={}", valueArr.get(0));
 		log.info("point={}", point);
 		log.info("reason={}", reason);
@@ -242,6 +248,7 @@ public class MemberController {
 			memberPointVO.setMember_point_change(point);
 			memberPointVO.setMember_point_limit(lastdate);
 			memberPointVO.setMember_point_content(reason);
+			memberPointVO.setMember_point_admin(admin);
 			list.add(memberPointVO);
 		}
 		log.info("list={}",list);

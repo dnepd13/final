@@ -15,6 +15,7 @@
 <jsp:include page="/WEB-INF/views/template/menu.jsp"/>
 
 
+
 <script type="text/javascript">
 function test() {
 	if ($('input[name="member_pw"]').val() == "") {
@@ -32,6 +33,9 @@ function test() {
 	$("#frm").submit();
 }
 </script>
+
+
+
 
 <style>
 .section1{

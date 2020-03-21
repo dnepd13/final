@@ -27,7 +27,7 @@
 
 <div class="redirect-content">
 	<h4 align="center">차단된 사용자 입니다.</h4>
-	<h4 align="center"> 궁금한 사항이 있으시면 문의 게시판으로 문의 해 주세요</h4><br>
+	<h4 align="center"> 궁금한 사항이 있으시면 문의 게시판으로 문의 해주세요</h4><br>
 	<div class="row-empty-40"><br>
 <%-- 	<span><a href="${pageContext.request.contextPath }/seller/main">메인으로</a></span> --%>
 <!-- 	 &verbar;  -->

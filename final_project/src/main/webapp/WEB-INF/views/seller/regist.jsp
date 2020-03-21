@@ -306,10 +306,10 @@ function test() {
 			  </div>
 			   <!--사업장 은행 주민등록번호 입력창 -->
 			  <div class="form-group">
-  				<label class="col-form-label">사업장 은행 주민등록번호 : </label>
+<!--   				<label class="col-form-label">사업장 은행 주민등록번호 : </label> -->
 							<!--은행 api못 써서 hidden으 받겟당  -->
   				<input type="hidden" class="form-control" name="seller_bank_birth" value="0000" required>
-<!-- 			  </div> -->
+ 			  </div> 
 			   <!--가입일 숨겨서 온다-->
 			  <div class="form-group">
 			  	<input type="hidden" name="seller_agree_date" value="${param.dTime }">

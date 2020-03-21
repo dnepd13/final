@@ -67,8 +67,8 @@
 		<textarea name="admin_qna_content" required rows="15" cols="100" style="resize:none;" class="form-control" placeholder="내용">${sellerupdateget.admin_qna_content}</textarea>
 			<div class="row-empty-20"></div>
 		<p align="right">
-			<button class="btn btn-primary regist" value="등록 ">수정하기</button>&nbsp;&nbsp;
-			<a href="${pageContext.request.contextPath}/board/sellerqna"><button class="btn btn-primary regist" type="button">목록으로</button></a>
+			<button class="btn btn-secondary regist" value="등록 ">수정하기</button>&nbsp;&nbsp;
+			<a href="${pageContext.request.contextPath}/board/sellerqna"><button class="btn btn-secondary regist" type="button">목록으로</button></a>
 		</p>
 	</form>	
 	<p align="right"></p>
