@@ -6,30 +6,36 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css"> 
 
+<jsp:include page="/WEB-INF/views/template/header.jsp"/>
+<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+
+
 <style>
-	.redirect-box {
-		border: 1px solid #A6A6A6;
-		width: 400px;
-		height: 200px;
-		margin-top: 10%;
-		margin-left: 35%;
+	.regist-area {
+		width: 500px;
+		margin: 0 auto;
+		padding-top: 50px;
 	}
-	.redirect-content {
-		padding: 50px;
+	.btn_regist {
+		width: 100%;'
 	}
+
+ 	.card-body table td {
+ 		heigh: 150px;
+ 		padding: 10px 0;
+ 	}
 </style>
 
-<div class="redirect-box row justify-content-center">
+<div class="row-empty-40"></div>
+<div class="row-empty-40"></div>
 
-<div class="redirect-content">
-	<h4 align="center">탈퇴처리되었습니다. 그동안 이용해주셔서 감사합니다.</h4><br>
-	<div class="row-empty-40"><br>
-	<span><a href="${pageContext.request.contextPath }/">메인으로</a></span>
-	 &verbar; 
-	<span><a href="${pageContext.request.contextPath }/member/membermyinfo">마이 페이지로</a></span>
+<div class="regist-area card border-primary mb-3">
+	<div class="" style="width:100%;" align="center">
+	<h2>탈퇴처리되었습니다.<br> 그동안 이용해주셔서 감사합니다.</h2>
 	</div>
-</div>
-
+	<div class="card-body" align="center">
+	<span><a href="${pageContext.request.contextPath }/">메인으로</a></span>
+	</div>
 </div>
 
 

@@ -55,9 +55,9 @@
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
 		<div class="cart_title" style="padding-bottom:50px;">
-			<h3>문의게시판 글 등록</h3>
+			<h3>문의 글 등록</h3>
 		</div>
-<div class="insert_req form-group ">
+	<div class="insert_req form-group ">
 	<form action="qnaregist" method="post">
 
 
@@ -68,7 +68,8 @@
 			<div class="row-empty-20"></div>
 		<p align="right">
 			<button class="btn btn-primary regist" value="등록 ">등록</button>&nbsp;&nbsp;
-			<a href="${pageContext.request.contextPath}/board/memberqna"><button class="btn btn-primary regist" type="button">목록으로</button></a>
+			<a href="${pageContext.request.contextPath}/member/membermyinfo"><button class="btn btn-primary regist" type="button">마이페이지</button></a>
+			<a href="${pageContext.request.contextPath}/board/memberqna"><button class="btn btn-primary regist" type="button">문의목록</button></a>
 		</p>
 	</form>
 	</div>

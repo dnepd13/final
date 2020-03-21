@@ -27,6 +27,8 @@ public class MemberDaoImpl implements MemberDao{
 
 	private int result;
 
+	private int memberinpoupdate;
+
 //	!지우지마세요, 포인트 관련  (월용) //////////////////////////
 	
 	// 회원 포인트 조회
@@ -256,9 +258,10 @@ public class MemberDaoImpl implements MemberDao{
 
 		
 		@Override
-		public MemberDto memberedit(MemberDto member) {
-			result = sqlSession.update("member.memberedit" , member);
-			return member;
+		public void memberedit(MemberDto member) {
+			
+		 sqlSession.update("member.memberedit" , member);
+		
 		}
 		
 		

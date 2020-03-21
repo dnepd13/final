@@ -169,7 +169,7 @@ function test() {
 
 <div class="regist-area card border-primary mb-3">
 	<div class="" style="width:100%;" align="center">
-		    	이메일 확인
+		    	<h2>이메일 확인</h2>
 	</div>
 	<div class="card-body">
 		<form action="pwfind" method="post">
@@ -186,7 +186,7 @@ function test() {
 			    				<td><input type="text" class="form-control" name="member_id" placeholder="아이디를 입력하세요" maxlength="28" required>
 			    						
 			    				</td>
-			    				<td><input class="btn btn-secondary disabled" type="button" id="id_check" value="확인" ><br></td>
+			    				<td><input class="btn btn-secondary" type="button" id="id_check" value="ID 확인" ><br></td>
 			    				<td><input type="hidden" name="idcheck2" value="N"></td>
 			    			</tr>
 			    			<tr class="input_email">
@@ -196,12 +196,12 @@ function test() {
 			    						<input type="text" name="cert" class="form-control" placeholder="인증번호 입력" maxlength="7" required>
 			    						<input type="hidden" name="checkemailcode2">
 			    				</td>
-			    				<td><input class="btn btn-secondary disabled" type="button" id="check_email" value="인증번호 보내기">
-			    						<input class="btn btn-secondary disabled" type="button" name="check_email_code" id="check_email_code" value="인증코드확인">
+			    				<td><input class="btn btn-secondary" type="button" id="check_email" value="인증번호 보내기">
+			    						<input class="btn btn-secondary" type="button" name="check_email_code" id="check_email_code" value="인증코드확인">
 			    				</td>
 			    			</tr>
 			    			<tr>
-			    				<td colspan="3"><input type="button" id="frm" value="이메일확인" onclick="test();" class="btn_regist btn btn-secondary disabled btn-block" />
+			    				<td colspan="3"><input type="button" id="frm" value="확인" onclick="test();" class="btn_regist btn btn-secondary btn-block" />
 			    			</tr>
 		    			</tbody>
 		    		</table>

@@ -26,6 +26,7 @@ import com.kh.ordering.entity.MemberDto;
 import com.kh.ordering.entity.Member_AddrDto;
 import com.kh.ordering.entity.Member_PointDto;
 import com.kh.ordering.entity.PayDto;
+import com.kh.ordering.entity.SellerDto;
 import com.kh.ordering.repository.AdminQnaDao;
 import com.kh.ordering.repository.CertDao;
 import com.kh.ordering.repository.GoodsDao;
@@ -276,6 +277,7 @@ public class MemberController {
 		
 		if(login == null) {//아이디가 없으면
 
+		//리턴 값
 			return "redirect:/member/login?error";
 		}
 		
@@ -432,13 +434,36 @@ public class MemberController {
 	memberDao.memberedit(memberDto);
 }
 	
+	
+	
 	//회원체크
 	@GetMapping("/membercheck")
 	public String membercheck() {
 		
 		return "member/membercheck";
 	}
-	
+	//3차 정보수정
+		@PostMapping("/memberinfoedit")
+		@ResponseBody
+		public String memberinfoedit(
+				@RequestParam int member_no,
+				@RequestParam String member_email,
+				@RequestParam String member_phone) {
+
+		log.info("membereditn={}", member_no);
+		log.info("membereditem={}", member_email);
+		log.info("membereditph={}", member_phone);
+		
+		MemberDto memberDto = MemberDto.builder()
+							.member_no(member_no)
+							.member_email(member_email)
+							.member_phone(member_phone)
+							.build();
+		
+//		memberDao.memberedit(memberDto);
+		return "redirect:/member/memberinfo";
+		}
+		
 
 	
 	

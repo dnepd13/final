@@ -210,7 +210,7 @@
   </thead>
   <tbody>
     <c:forEach var="list" items="${list }">
-    <tr class="table-light"">
+    <tr class="table-light">
       <th scope="row" id="category_no">${list.category_no }</th>
       <td class="bigcate">${list.category_large }</td>
       <td class="middlecate" >${list.category_middle }</td>
