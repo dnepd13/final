@@ -30,7 +30,7 @@
   				<input type="email" class="form-control"id="email"name="member_email"placeholder="이메일 입력" maxlength="48" required>
   			  </div>
   			   
-  			   <button type="submit" class="btn btn-secondary disabled btn-block">아이디 찾기</button>
+  			   <button type="submit" class="btn btn-secondary btn-block" style="width:100%;">아이디 찾기</button>
   			   </form>
   		   </div>
   		</div>

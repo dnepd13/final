@@ -72,16 +72,41 @@ function test() {
  		height: 30px;
  		width: 100px;
  	}
+ 	
+ 		.myInfo_wrap {
+		width: 1200px;
+		height: 1000px;
+		margin: 0 auto;
+	}
+	.main_wrap {
+		float: left;
+		margin-left: 60px;
+		padding-top: 100px;
+		width: 900px;
+	}
+	.main_wrap::after{content:""; display: block; clear:both;}
+	.main_title1,
+	.main_title2 {
+		margin: 0 auto;
+		width: 90%;
+		height: 50px;
+		border-bottom: 2px solid #F3F5F8;
+	}
 </style>
- 
+
 <section class="section1">
 <jsp:include page="/WEB-INF/views/template/memberInfoAside.jsp"/>
 <div class="ordering_area row justify-content-center">
 	<div class="col-lg-8 cart_area">
-	<br><br>
+		<br><br>
 		<div class="cart_title">
 			<h3>비밀번호 변경</h3>
 		</div>
+		<div style="margin:100;">
+			<h3>
+			</h3>
+		</div>
+
 		
 	<div class="insert_req form-group ">
        <form id=frm action="pwchange" method="post">
@@ -94,16 +119,18 @@ function test() {
 				<label for="exampleInputPassword1">비밀번호 확인:</label>
 				<input type="password" class="form-control" name="member_pwcheck" placeholder="Password Check" maxlength="28" required>
 				<div class="row-empty-20"></div>
-				<button type="button" class="btn btn-secondary disabled btn-block" onclick="test()">변경</button>
+				<button type="button" class="btn btn-secondary btn-block" onclick="test()">변경</button>
 			</div>
 	  </fieldset>
 	</form>
 </div>
+
 </div>
 </div>
 </section>
 
- 
+
+
  
  <jsp:include page="/WEB-INF/views/template/footer.jsp"/>
 

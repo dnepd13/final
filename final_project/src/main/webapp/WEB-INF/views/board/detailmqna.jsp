@@ -86,12 +86,12 @@ h4{
 			<c:otherwise>
 			<div class="btn-group-vertical"  style="float:right;">
 				<a href="${pageContext.request.contextPath}/board/updateqna?admin_qna_no=${qnaone.admin_qna_no}">
-					<button type="button" class="btn btn-primary">수정하기</button>
+					<button type="button" class="btn btn-primary">수정하기</button>&nbsp;&nbsp;
 				</a>
 					</div> 
 			</c:otherwise>
 			</c:choose>
-			<div style="float:right;">
+			<div class="btn-group-vertical"  style="float:right;">
 				<a href="${pageContext.request.contextPath}/board/memberqna"><button class="btn btn-primary regist" type="button">목록으로</button></a>
 			</div>
 		</p>

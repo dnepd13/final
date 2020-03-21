@@ -276,8 +276,6 @@
  	<update id="memberedit" parameterType="member">
  		update member
  		set
- 			member_name= #{member_name},
- 			member_birth= #{member_birth},
  			member_email = #{member_email},
  			member_phone = #{member_phone}
  		where

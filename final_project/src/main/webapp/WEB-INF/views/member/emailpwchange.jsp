@@ -34,85 +34,21 @@ function test() {
 </script>
 
 <style>
-display:flex;
-align-items:center;
- 	aside { 
- 		float : left; 
- 		padding: 60px 0px;
-		width: 150px;
- 	}
- 	aside div {
- 		border-radius: 5px;
- 	}	 
- 	aside ul { 
- 		list-style: none; 
- 		padding : 0; 
- 	}
-	
-	.aside-title {
-		border: 2px solid #BFC9D9;
-		margin: 5px;
-		padding: 10px;
+
+	.login-area {
+		width: 500px;
+		margin: 0 auto;
+		padding-top: 50px;
 	}
-	.aside-grade {
-		border: 2px solid #BFC9D9;
-		margin: 5px;
-		padding: 10px;
-	}
-	.aside-content {
-		border: 2px solid #BFC9D9;
-		margin: 5px;
-		padding: 10px;
-	}
-	
-	aside::after {
-		content: "";
-		display: block;
-		clear: both;
-	}
-
-
-
-
-
-.section1{
-	margin: 0 auto;
-	width: 1500px;
-}
-.section2{
-	margin: 0 auto;
-	width: 1000px;
-	padding-left: 200px;
-}
-.ordering_area {
-	margin: 30px 0px;
-}
-
-.col-lg-8 {
-	margin: 25px 0px;
-}
-
-.cart_table_title {
-	border-bottom: 1px solid #171717;
-}
- 	.insert_cate,
- 	.insert_req  {
- 		width: 80%;
+	.login input[type=text],
+	.login input[type=password],
+	.login input[type=submit]{
+		width: 100%;
+		border: 1px solid lightgray;
+		border-radius: 5px;
  	}
- 	.insert_req * {
- 		width: 100%;
- 	}
- 	.text-primary {
- 		font-weight: bold; 
- 	}
- 	.insert_req textarea{
- 		resize: none;
- 		height: 25%;
- 	}
- 	.insert_req .regist {
- 		height: 30px;
- 		width: 100px;
- 	}
+ 	
+
 </style>
 
 <c:if test="${member_id != null}">
@@ -124,37 +60,29 @@ align-items:center;
 
 
 
-<section class="section1">
-<div class="logo-area" align="center">
-<div style="width: 80%; float:none; margin:0 auto" >
-<div class="ordering_area row justify-content-center">
-	<div class="col-lg-8 cart_area">
-	<br><br><br><br><br>
-		<div class="cart_title">
-			<h3>비밀번호 찾기</h3>
-		</div>
-		
-	<div class="insert_req form-group ">
+<div class="container-fluid">
+     <div class="row">
+         <div class="offset-md-4 col-md-4 ">
+            <div class="row justify-content-center" style="padding-top:100px;"><h1>비밀번호 변경</h1></div>
+            <br><br><br>
             <form id=frm action="pwchange" method="post">
-		<fieldset>
+            
 	    	<div class="form-group">
 	 			<div class="row-empty-20"></div>
-	 			<label for="exampleInputPassword1">비밀번호:</label>
+	 			<label for="pw-input">비밀번호:</label>
 				<input type="password" class="form-control" name="member_pw" placeholder="Password" maxlength="28" required>
 				<br>
-				<label for="exampleInputPassword1">비밀번호 확인:</label>
+				<label for="pw-input">비밀번호 확인:</label>
 				<input type="password" class="form-control" name="member_pwcheck" placeholder="Password Check" maxlength="28" required>
 				<div class="row-empty-20"></div>
-				<button type="button" class="btn btn-secondary disabled btn-block" onclick="test()">등록</button>
+				<button type="button" class="btn btn-secondary  btn-block" onclick="test()">등록</button>
 			</div>
-	  </fieldset>
-	</form>
+
+			</form>
+		</div>
+	</div>
 </div>
-</div>
-</div>
-</div>
-</div>
-</section>
+
 
  
  

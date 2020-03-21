@@ -27,6 +27,8 @@ public class MemberDaoImpl implements MemberDao{
 
 	private int result;
 
+	private int memberinpoupdate;
+
 //	!지우지마세요, 포인트 관련  (월용) //////////////////////////
 	
 	// 회원 포인트 조회
@@ -240,13 +242,6 @@ public class MemberDaoImpl implements MemberDao{
 
 				}
 		
-//				@Override
-//				public List<MemberDto> memberGetOne(int member_no) {
-//					// TODO Auto-generated method stub
-//					return null;
-//				}
-		
-				
 		@Override
 		public int getNo(String member_id) {
 			int member_no = sqlSession.selectOne("member.getNo", member_id);
@@ -262,9 +257,10 @@ public class MemberDaoImpl implements MemberDao{
 
 		
 		@Override
-		public MemberDto memberedit(MemberDto member) {
-			result = sqlSession.update("member.memberedit" , member);
-			return member;
+		public void memberedit(MemberDto member) {
+			
+		 sqlSession.update("member.memberedit" , member);
+		
 		}
 		
 		
@@ -296,56 +292,5 @@ public class MemberDaoImpl implements MemberDao{
 		}
 
 	
-
-//		@Override
-//		public List<MemberDto> memberGetOne(int member_no) {
-//			
-//			return sqlSession.selectOne("member.memberGetOne", member_no);
-//		}
-
-
-
-//		@Override
-//		public void saveNO(MemberDto member) {
-//			
-//			member = ; 
-//			
-//		}
-
-//		//멤버 id로 번호 구하기 (영락)
-//		@Override
-//		public int findno(MemberDto member,int member_no) {
-//			
-//			log.info("member_id= {}", member_id);
-//			
-//			
-//	//맵퍼에 있는 정보를 불러오는것 mapper의 namespace member와 select항목의 finddo를 찾아 불러오는것
-//	//parameterType(보내는값 int String vo, Dto등을 지정) 		
-//			member_no = sqlSession.selectOne("member.findno", member_id);
-//			log.info("member_no={}", member_no);
-//			
-//			return member_no;
-//		} 
-
-
-	
-
-		
-	
-		
-		
-//		@Override
-//		public MemberDto getMemberDto(int seq) throws Exception {
-//			
-//			MemberDto memberDto = sqlSession.selectOne("getMemberDto", seq);
-//			return memberDto;
-//		}
-
-//		@Override
-//		public MemberDto login(MemberDto memberDto) {
-//			
-//			return sqlSession.selectOne("member.login", memberDto);
-//		}
-
 
 }

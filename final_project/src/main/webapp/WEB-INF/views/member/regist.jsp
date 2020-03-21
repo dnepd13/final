@@ -159,8 +159,7 @@
 			alert("비밀번호가 일치하지 않습니다.");
 			return false;
 		}
-		
-		
+
 		if ($('input[name="member_name"]').val() == "") {
 			alert("이름을 입력해주세요.");
 			return false;
@@ -203,7 +202,7 @@
   				<label class="col-form-label">ID : </label>
   				<input type="text" class="form-control" name="member_id"required maxlength="28">
 			  	 <!--  name = 값 controller에있는파라미터값변수명하고 일치해야함 -->
-			  	<input type="button"class="btn btn-secondary disabled" id="id_check" value="중복확인" maxlength="28"><br>
+			  	<input type="button"class="btn btn-secondary" id="id_check" value="중복확인" maxlength="28"><br>
 			  	 <input type="hidden"name="idcheck2" value="N">
 			  </div>
               <!-- 비밀번호 입력창 -->
@@ -224,9 +223,9 @@
 			  <div class="form-group">			 
   				<label class="col-form-label" for="email">이메일 : </label>
   				<input type="email" class="form-control"id="email"name="member_email"placeholder="이메일 입력" maxlength="48" required>
-			  	<input type="button" class="btn btn-secondary disabled" id="check_email" value="인증번호 보내기" maxlength=>
+			  	<input type="button" class="btn btn-secondary" id="check_email" value="인증번호 보내기" maxlength=>
 				<input type="text" name="cert" placeholder="인증번호 입력" style="" maxlength="28" >
-				<input type="button" class="btn btn-secondary disabled" name="check_email_code" id="check_email_code" value="인증번호확인"style="">
+				<input type="button" class="btn btn-secondary" name="check_email_code" id="check_email_code" value="인증번호확인"style="">
 				<input type="hidden"name="checkemailcode2" value="N">	
 				<!-- <p id="msg">이메일 인증에 실패하였습니다</p> -->
 			  </div>
@@ -243,7 +242,7 @@
 			  </div>
 			   <!--버튼 창 -->
 			  <div class="form-group">
-			   	<button type="button" class="btn btn-secondary disabled btn-block" onclick="test()">가입하기</button>
+			   	<button type="button" class="btn btn-secondary  btn-block" onclick="test()">가입하기</button>
 			  </div>
 			  </div>
 			  </form>

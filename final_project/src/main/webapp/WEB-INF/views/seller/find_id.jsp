@@ -30,10 +30,10 @@
 	<form action="memberfind_id" method="post">
 		<fieldset>
 	    	<div class="form-group">
-				<label for="exampleInputId">이름</label>
+				<label for="exampleInputId">이름:</label>
 				<input type="text" name="seller_name" id="exampleInputId" class="form-control" placeholder="이름" required>
 	 			<div class="row-empty-20"></div>
-	 			<label for="exampleInputPassword1">PW:</label>
+	 			<label for="exampleInputPassword1">이메일:</label>
 	 			<input type="text" name="seller_email" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
 				<div class="row-empty-20"></div>
 				<input type="submit" value="아이디찾기" class="enter btn btn-secondary" style="width:100%;">
