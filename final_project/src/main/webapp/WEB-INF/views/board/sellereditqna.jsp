@@ -3,8 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"/>
-<jsp:include page="/WEB-INF/views/template/menu.jsp"/>
+<jsp:include page="/WEB-INF/views/template/header-seller.jsp"/>
 
 <!-- 판매자 문의 수정페이지 -->
 
@@ -77,7 +76,7 @@
 
 <div class="row-empty-40"></div>
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"/>
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/>
 
 
 

@@ -85,6 +85,14 @@
   .nav-item{
   color: #fff;
   }
+  .nav-item ul {
+  	list-style: none;
+  	padding: 0;
+    display: none;  
+  }
+	 .nav-item:hover ul{ 
+   		display: block; 
+	} 
 
 </style>
 

@@ -161,9 +161,6 @@
 	});
 </script>
 
-
-<h3>Seller Custom Info Resp.jsp</h3>
-
 <article class="articleBox">
 
 <div class="card mb-3">

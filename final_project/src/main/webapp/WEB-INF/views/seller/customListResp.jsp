@@ -58,12 +58,10 @@ $(function(){
 });
 </script>
 
-<h3>판매자가 보낸 견적서 customListResp.jsp</h3>
-
-<h4>확인 안 한 요청서 몇 개냐: <span class="badge badge-pill badge-info">${customAlarm}</span></h4>	
 
 <article class="articleBox">
 
+<h4>보낸 견적서</h4>
 <!-- 메인 컨텐츠 -->
 <c:choose>
 	<c:when test="${ empty getListResp }">

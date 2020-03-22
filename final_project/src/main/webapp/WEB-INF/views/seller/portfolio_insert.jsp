@@ -34,6 +34,7 @@
 	table {
 		border: 1px darkgray solid;
 		border-collapse: collapse;
+		width: 100%;
 	}
 	table thead :nth-child(1) {	
 		border-bottom: 1px darkgray solid;
@@ -135,6 +136,7 @@
 							<label class="custom-file-label main_label" for="inputGroupFile01">파일 찾기</label>
 						</div>
 					</div>
+					<div class="row-empty-20"></div>
 					<!-- 파일정보 미리보기 영역-->
 					<div align="center">
 					  	<table>
@@ -157,7 +159,7 @@
 					  	</table>
 					  </div>
 					  <br>
-			        <p align="center"><button type="submit" class="btn btn-secondary btn_upload">업로드하기</button></p>   
+			        <p align="right"><button type="submit" class="btn btn-secondary btn_upload">업로드하기</button></p>   
 				</form>
 				</div>
 				

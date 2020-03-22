@@ -116,7 +116,7 @@
 		</c:if>
 	</ul>
 
-<div class="row-empty-40"></div>
+<jsp:include page="/WEB-INF/views/template/footer-seller.jsp"/> 
 <!-- <div align="center" class="btn-group-vertical"> -->
 
 
