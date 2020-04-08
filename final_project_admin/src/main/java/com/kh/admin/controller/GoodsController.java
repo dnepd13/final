@@ -158,7 +158,7 @@ public class GoodsController {
 						.body(resource);
 				
 			} catch (IOException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
 				return ResponseEntity.notFound().build();
 			}
 			

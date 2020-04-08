@@ -157,7 +157,7 @@ public class SellerController {
 			emailService.sendMessage(seller_email);
 			model.addAttribute("email", seller_email);
 		} catch (MessagingException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			
 		}
 		

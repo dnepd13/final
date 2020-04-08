@@ -392,7 +392,7 @@ model.addAttribute("sellerDto",info);
 				return "redirect:/seller/deleteFail";
 			}
 		}catch(Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			return "redirect:/?error";
 		}
 	}

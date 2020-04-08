@@ -227,7 +227,7 @@ public class MemberController {
 			return "redirect:/member/deleteFail";
 		}
 		}catch(Exception e) {
-		e.printStackTrace();
+//		e.printStackTrace();
 		return "redirect:/?error";	
 		}
 	}
@@ -310,7 +310,7 @@ public class MemberController {
 		}
 		
 		}catch(Exception e) {
-		e.printStackTrace();
+//		e.printStackTrace();
 		return "redirect:/?error";
 
 	

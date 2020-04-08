@@ -275,7 +275,7 @@ public class MemberController {
 			emailService.sendMessage(member_email);
 			model.addAttribute("email", member_email);
 		} catch (MessagingException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		
 		return "redirect:/member/manage";

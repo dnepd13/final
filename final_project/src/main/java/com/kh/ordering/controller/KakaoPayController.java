@@ -87,7 +87,7 @@ public class KakaoPayController {
 			return "redirect:"+result.getNext_redirect_pc_url();
 		} 
 		catch (URISyntaxException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			return "redirect:/pay/kakao/confirm";
 		}
 		
@@ -140,7 +140,7 @@ public class KakaoPayController {
 			return "redirect:/pay/kakao/cancel";
 			
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			return "redirect:/pay/kakao/list";
 			
 		}
